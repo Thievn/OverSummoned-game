@@ -2,9 +2,6 @@ import GameScreen from './GameScreen.jsx';
 import WaitlistForm from './WaitlistForm.jsx';
 import {
   about,
-  adults,
-  bottom,
-  dayLine,
   featureBlurbs,
   featuresIntro,
   footer,
@@ -14,7 +11,6 @@ import {
   ledger,
   nav,
   pitch,
-  promise,
   rules,
   sections,
   signupTitle,
@@ -96,7 +92,6 @@ export function Hero({ onOpen }) {
           {pitch.map((line) => (
             <p key={line}>{line}</p>
           ))}
-          <p>{dayLine}</p>
           <p className="joke">{joke}</p>
           <WaitlistForm id="email-top" />
         </section>
@@ -126,7 +121,6 @@ export function About() {
   return (
     <section className="band wrap" id="about">
       <h2>{about.title}</h2>
-      <p className="lead">{pitch[0]}</p>
       <div className="steps">
         {about.steps.map((step, index) => (
           <p key={step} className="step">
@@ -135,7 +129,6 @@ export function About() {
           </p>
         ))}
       </div>
-      <p>{about.body}</p>
     </section>
   );
 }
@@ -175,8 +168,7 @@ export function BottomBand() {
   return (
     <section className="band wrap bottom-band" id="signup" aria-labelledby="bottom-title">
       <div className="panel signup-panel bottom-panel">
-        <h2 id="bottom-title">{bottom.title}</h2>
-        <p>{bottom.line}</p>
+        <h2 id="bottom-title">{signupTitle}</h2>
         <WaitlistForm id="email-bottom" />
       </div>
     </section>
@@ -195,7 +187,6 @@ export function Footer() {
           loading="lazy"
         />
         <p>{footer.adults}</p>
-        <p>{promise}</p>
         <p className="footer-links">
           <a href="#privacy">{footer.privacy}</a>
           <a href="#terms">{footer.terms}</a>
@@ -211,7 +202,6 @@ export function Footer() {
           {legal.terms.map((line) => (
             <p key={line}>{line}</p>
           ))}
-          <p>{adults}</p>
         </section>
       </div>
     </footer>

@@ -16,7 +16,19 @@ async function readBody(req) {
   return raw ? JSON.parse(raw) : {};
 }
 
+const MISSING_PAGE = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OverSummoned</title></head><body><p>Nothing here.</p><p><a href="/">OverSummoned</a></p></body></html>`;
+
+export function missingPage() {
+  return MISSING_PAGE;
+}
+
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end(MISSING_PAGE);
+    return;
+  }
   try {
     const body = await readBody(req);
     const result = await processWaitlist({

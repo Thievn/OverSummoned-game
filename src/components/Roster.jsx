@@ -153,7 +153,6 @@ export function CharacterSheet({ cardId, onClose }) {
                 height="36"
               />
               <span>{card.rarity}</span>
-              <span className="shape">{tier.shape}</span>
             </p>
             <p className="era">{card.era}</p>
             <h3>{sheet.know}</h3>
@@ -218,7 +217,6 @@ export function CharacterSheet({ cardId, onClose }) {
                 ))}
               </tbody>
             </table>
-            <p className="knack-rule">{sheet.knackRule}</p>
             {extras.length > 0 && (
               <p className="also">
                 <span className="kicker">{sheet.also}</span> {extras.join(', ')}
@@ -241,7 +239,7 @@ export function RarityLadder() {
           <figure key={tier.id} className={`rarity-card rarity-${tier.id}`}>
             <img
               src={`/assets/oversummoned/rarity-demo/kevin_${tier.id}.webp`}
-              alt={`Kevin Latham, ${tier.name}, ${tier.shape}`}
+              alt={`Kevin Latham, ${tier.name}`}
               width="300"
               height="470"
               loading="lazy"
@@ -256,7 +254,6 @@ export function RarityLadder() {
                 loading="lazy"
               />
               <span>{tier.name}</span>
-              <span className="visually-hidden">{tier.shape}</span>
             </figcaption>
           </figure>
         ))}
@@ -269,7 +266,6 @@ export function LootStrip() {
   return (
     <section className="band wrap" id="loot">
       <h2>{loot.title}</h2>
-      <p className="lead">{loot.line}</p>
       <p className="hint">{loot.hint}</p>
       <div className="loot-row">
         {itemList.map((item) => {

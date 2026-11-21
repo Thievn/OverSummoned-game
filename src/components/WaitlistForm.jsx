@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { adults, form, join, promise } from '../copy.js';
+import { adults, form, join, spam } from '../copy.js';
 
 const errors = {
   invalid: form.invalid,
@@ -18,7 +18,7 @@ export default function WaitlistForm({ id }) {
     setStatus('saving');
     setMessage('');
     try {
-      const response = await fetch('/api/waitlist', {
+      const response = await fetch('/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function WaitlistForm({ id }) {
       <button className="btn" type="submit" disabled={status === 'saving'}>
         {status === 'saving' ? form.sending : join}
       </button>
-      <p className="form-note">{promise}</p>
+      <p className="form-note">{spam}</p>
       <p className="form-note">{adults}</p>
       {message && (
         <p className="form-note error" role="alert">

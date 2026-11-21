@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { processWaitlist, validateEmail } from '../api/waitlist-core.js';
+import { missingPage } from '../api/waitlist.js';
 
 const env = {
   WAITLIST_BACKEND: 'resend',
@@ -143,6 +144,12 @@ test('refuses anything but the contacts backend', async () => {
     rateStore: new Map(),
   });
   assert.equal(result.status, 503);
+});
+
+test('a browser visit does not describe the plumbing', () => {
+  const page = missingPage();
+  assert.match(page, /OverSummoned/);
+  assert.equal(/\b(resend|vercel|endpoint|segment|backend|supabase|api|method)\b/i.test(page), false);
 });
 
 test('get is not a filing method', async () => {

@@ -75,6 +75,14 @@ test('feature blurbs stay short', () => {
   }
 });
 
+test('visible copy does not name the plumbing', () => {
+  const strings = [];
+  walk(copy, strings);
+  const leak = /\b(resend|vercel|endpoint|segment|backend|supabase|hexagon|torn|api)\b/i;
+  const hits = strings.filter((text) => leak.test(text));
+  assert.deepEqual(hits, []);
+});
+
 test('flavor lines stay in range', () => {
   for (const item of items) {
     const words = item.flavor.trim().split(/\s+/);
