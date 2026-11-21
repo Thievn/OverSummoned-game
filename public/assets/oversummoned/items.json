@@ -1,0 +1,329 @@
+[
+  {
+    "id": "rusty_gladius",
+    "name": "Rusty Gladius",
+    "rarity": "Common",
+    "icon": "/assets/oversummoned/icons/rusty_gladius.png",
+    "icon4x": "/assets/oversummoned/icons/4x/rusty_gladius.png",
+    "glow": "/assets/oversummoned/icons/glow/rusty_gladius.webp",
+    "itemLevel": 5,
+    "slot": "Main Hand",
+    "type": "Short Blade",
+    "era": "Rome, 1st century",
+    "primary": [
+      "+3 Might"
+    ],
+    "secondary": [],
+    "effect": null,
+    "flavor": "Issued to a man named Quintus, who signed for it and then, by the look of the edge, used it to open crates.",
+    "trade": "Tradeable",
+    "durability": "Durability 40 / 40"
+  },
+  {
+    "id": "hobnailed_caligae",
+    "name": "Hobnailed Caligae",
+    "rarity": "Uncommon",
+    "icon": "/assets/oversummoned/icons/hobnailed_caligae.png",
+    "icon4x": "/assets/oversummoned/icons/4x/hobnailed_caligae.png",
+    "glow": "/assets/oversummoned/icons/glow/hobnailed_caligae.webp",
+    "itemLevel": 18,
+    "slot": "Feet",
+    "type": "Light Armor",
+    "era": "Rome, 1st century",
+    "primary": [
+      "+4 Speed",
+      "+3 Grit"
+    ],
+    "secondary": [
+      "+2% Dodge"
+    ],
+    "effect": null,
+    "flavor": "Army sandals. The last owner wore them with wool socks, which the legion allowed and his centurion did not.",
+    "trade": "Tradeable",
+    "durability": "Durability 55 / 55"
+  },
+  {
+    "id": "hi_vis_vest",
+    "name": "Hi-Vis Vest",
+    "rarity": "Uncommon",
+    "icon": "/assets/oversummoned/icons/hi_vis_vest.png",
+    "icon4x": "/assets/oversummoned/icons/4x/hi_vis_vest.png",
+    "glow": "/assets/oversummoned/icons/glow/hi_vis_vest.webp",
+    "itemLevel": 20,
+    "slot": "Chest",
+    "type": "Light Armor",
+    "era": "Modern, 2019",
+    "primary": [
+      "+5 Guard",
+      "+3 Charm"
+    ],
+    "secondary": [
+      "+5% Loot Find"
+    ],
+    "effect": null,
+    "flavor": "Nobody stops a person in a vest. The ghoul let you walk straight past and said sorry.",
+    "trade": "Tradeable",
+    "durability": "Durability 60 / 60"
+  },
+  {
+    "id": "beak_mask",
+    "name": "Beak Mask of Doctor Albrecht",
+    "rarity": "Rare",
+    "icon": "/assets/oversummoned/icons/beak_mask.png",
+    "icon4x": "/assets/oversummoned/icons/4x/beak_mask.png",
+    "glow": "/assets/oversummoned/icons/glow/beak_mask.webp",
+    "itemLevel": 45,
+    "slot": "Head",
+    "type": "Leather",
+    "era": "Medieval, 1348",
+    "primary": [
+      "+6 Grit",
+      "+6 Wits"
+    ],
+    "secondary": [
+      "+15% Rot Resist",
+      "+3% Crit Chance"
+    ],
+    "effect": "Equip: Healing items restore 20% more Life.",
+    "flavor": "The beak is packed with dried lavender and cloves. It did nothing for the plague. It does a lot for the cellar.",
+    "trade": "Tradeable",
+    "durability": "Durability 70 / 70"
+  },
+  {
+    "id": "trench_lantern",
+    "name": "Trench Lantern",
+    "rarity": "Rare",
+    "icon": "/assets/oversummoned/icons/trench_lantern.png",
+    "icon4x": "/assets/oversummoned/icons/4x/trench_lantern.png",
+    "glow": "/assets/oversummoned/icons/glow/trench_lantern.webp",
+    "itemLevel": 42,
+    "slot": "Off Hand",
+    "type": "Lantern",
+    "era": "20th century, 1916",
+    "primary": [
+      "+7 Wits",
+      "+5 Grit"
+    ],
+    "secondary": [
+      "+4% Crit Chance"
+    ],
+    "effect": "Equip: No accuracy penalty on dark floors. Your first Strike in the dark Marks the target.",
+    "flavor": "Still smells of paraffin and wet wool. There is a thumbprint on the glass that nobody has wiped off.",
+    "trade": "Tradeable",
+    "durability": "Durability 65 / 65"
+  },
+  {
+    "id": "duelling_rapier",
+    "name": "Duelling Rapier, Far Too Fancy",
+    "rarity": "Rare",
+    "icon": "/assets/oversummoned/icons/duelling_rapier.png",
+    "icon4x": "/assets/oversummoned/icons/4x/duelling_rapier.png",
+    "glow": "/assets/oversummoned/icons/glow/duelling_rapier.webp",
+    "itemLevel": 48,
+    "slot": "Main Hand",
+    "type": "Long Blade",
+    "era": "Renaissance, 1590s",
+    "primary": [
+      "+8 Hands",
+      "+5 Speed"
+    ],
+    "secondary": [
+      "+6% Crit Damage",
+      "+3% Dodge"
+    ],
+    "effect": "Chance on hit: 10% to Riposte the next attack against you.",
+    "flavor": "The hilt has more gold on it than the blade has steel. Its owner died in a duel about whose hilt was nicer.",
+    "trade": "Tradeable",
+    "durability": "Durability 60 / 60"
+  },
+  {
+    "id": "violin_case",
+    "name": "The Violin Case",
+    "rarity": "Epic",
+    "icon": "/assets/oversummoned/icons/violin_case.png",
+    "icon4x": "/assets/oversummoned/icons/4x/violin_case.png",
+    "glow": "/assets/oversummoned/icons/glow/violin_case.webp",
+    "itemLevel": 70,
+    "slot": "Main Hand",
+    "type": "Firearm",
+    "era": "Prohibition, 1927",
+    "primary": [
+      "+12 Might",
+      "+8 Hands"
+    ],
+    "secondary": [
+      "+6% Crit Chance",
+      "+10% Pierce Damage"
+    ],
+    "effect": "Chance on Strike: 15% to fire a burst that hits every enemy.",
+    "flavor": "There has never been a violin in it. The case has three bullet holes and a receipt for a violin.",
+    "trade": "Tradeable in 18h (fresh drop)",
+    "durability": "Ammo 30 / 30"
+  },
+  {
+    "id": "defib_paddles",
+    "name": "Defibrillator Paddles",
+    "rarity": "Epic",
+    "icon": "/assets/oversummoned/icons/defib_paddles.png",
+    "icon4x": "/assets/oversummoned/icons/4x/defib_paddles.png",
+    "glow": "/assets/oversummoned/icons/glow/defib_paddles.webp",
+    "itemLevel": 72,
+    "slot": "Trinket",
+    "type": "Medical Device",
+    "era": "Modern, 2008",
+    "primary": [
+      "+10 Wits",
+      "+8 Grit"
+    ],
+    "secondary": [
+      "+5% Focus Regen"
+    ],
+    "effect": "Use: Revive a fallen companion at 40% Life, or Shock one enemy and Stun it for 1 turn.",
+    "flavor": "CLEAR is printed on the handles in big letters. The ghouls have learned the word and back off when they hear it.",
+    "trade": "Tradeable",
+    "durability": "Charges 3 / 3"
+  },
+  {
+    "id": "shield_lost_ninth",
+    "name": "Shield of the Lost Ninth",
+    "rarity": "Legendary",
+    "icon": "/assets/oversummoned/icons/shield_lost_ninth.png",
+    "icon4x": "/assets/oversummoned/icons/4x/shield_lost_ninth.png",
+    "glow": "/assets/oversummoned/icons/glow/shield_lost_ninth.webp",
+    "itemLevel": 110,
+    "slot": "Off Hand",
+    "type": "Shield",
+    "era": "Rome, 2nd century",
+    "primary": [
+      "+18 Guard",
+      "+12 Grit",
+      "+8 Might"
+    ],
+    "secondary": [
+      "+12% Block",
+      "+200 Armor",
+      "+5% Life"
+    ],
+    "effect": "Unique: The first time you would die each run, the shield takes the blow instead and breaks until you return to the city.",
+    "flavor": "Five thousand men marched into the fog and never wrote home. One of them, it turns out, dropped this.",
+    "trade": "Bound (trade-locked)",
+    "durability": "Durability 120 / 120"
+  },
+  {
+    "id": "black_ledger",
+    "name": "The Black Ledger's Ledger",
+    "rarity": "Legendary",
+    "icon": "/assets/oversummoned/icons/black_ledger.png",
+    "icon4x": "/assets/oversummoned/icons/4x/black_ledger.png",
+    "glow": "/assets/oversummoned/icons/glow/black_ledger.webp",
+    "itemLevel": 115,
+    "slot": "Trinket",
+    "type": "Book",
+    "era": "Aldermere, Native",
+    "primary": [
+      "+14 Wits",
+      "+14 Charm"
+    ],
+    "secondary": [
+      "+10% Crown Find",
+      "+4% Crit Chance"
+    ],
+    "effect": "Unique: Each enemy you defeat adds a line. At 100 lines, your next Shakedown or Talk always works.",
+    "flavor": "Names in one column, debts in the other. Your name is near the bottom, in fresh ink.",
+    "trade": "Tradeable",
+    "durability": "Lines 0 / 100"
+  },
+  {
+    "id": "pocket_trebuchet",
+    "name": "Pocket Trebuchet",
+    "rarity": "Absurd",
+    "icon": "/assets/oversummoned/icons/pocket_trebuchet.png",
+    "icon4x": "/assets/oversummoned/icons/4x/pocket_trebuchet.png",
+    "glow": "/assets/oversummoned/icons/glow/pocket_trebuchet.webp",
+    "itemLevel": 135,
+    "slot": "Main Hand",
+    "type": "Siege Engine",
+    "era": "Medieval, 1304",
+    "primary": [
+      "+25 Might"
+    ],
+    "secondary": [
+      "+30% Blunt Damage",
+      "-10 Speed"
+    ],
+    "effect": "Equip: Strikes hit very hard. Every third Strike launches you instead of the rock.",
+    "flavor": "The engineer who shrank it is still missing. So is his left boot.",
+    "trade": "Tradeable",
+    "durability": "Durability 90 / 90"
+  },
+  {
+    "id": "inflatable_tube_man",
+    "name": "Inflatable Tube Man",
+    "rarity": "Absurd",
+    "icon": "/assets/oversummoned/icons/inflatable_tube_man.png",
+    "icon4x": "/assets/oversummoned/icons/4x/inflatable_tube_man.png",
+    "glow": "/assets/oversummoned/icons/glow/inflatable_tube_man.webp",
+    "itemLevel": 132,
+    "slot": "Off Hand",
+    "type": "Decoy",
+    "era": "Modern, 1996",
+    "primary": [
+      "+22 Charm",
+      "+15 Guard"
+    ],
+    "secondary": [
+      "+8% Dodge"
+    ],
+    "effect": "Use: Every enemy attacks the tube man for 2 turns. Nobody, including the tube man, knows what powers it.",
+    "flavor": "Taken from outside a used chariot lot. It has not stopped waving since it came through the Circle.",
+    "trade": "Tradeable",
+    "durability": "Air 100%"
+  },
+  {
+    "id": "second_moon",
+    "name": "A Second Moon (Small)",
+    "rarity": "Unhinged",
+    "icon": "/assets/oversummoned/icons/second_moon.png",
+    "icon4x": "/assets/oversummoned/icons/4x/second_moon.png",
+    "glow": "/assets/oversummoned/icons/glow/second_moon.webp",
+    "itemLevel": 160,
+    "slot": "Anomaly",
+    "type": "Celestial Body",
+    "era": "Unknown",
+    "primary": [
+      "+30 to a random stat, rerolled each fight"
+    ],
+    "secondary": [
+      "+10% Crit Chance",
+      "-15% Accuracy at night"
+    ],
+    "effect": "Equip: Each turn, gravity flips for one random fighter. It can be you.",
+    "flavor": "The Crier ran it on page one. The Hero Office says it is a lamp. The lamp has a tide.",
+    "trade": "Tradeable",
+    "durability": "Repairs itself, sometimes"
+  },
+  {
+    "id": "group_chat",
+    "name": "The Group Chat",
+    "rarity": "Unhinged",
+    "icon": "/assets/oversummoned/icons/group_chat.png",
+    "icon4x": "/assets/oversummoned/icons/4x/group_chat.png",
+    "glow": "/assets/oversummoned/icons/glow/group_chat.webp",
+    "itemLevel": 165,
+    "slot": "Anomaly",
+    "type": "Device",
+    "era": "Near future, 2034",
+    "primary": [
+      "+35 Wits",
+      "+35 Charm",
+      "-20 Grit"
+    ],
+    "secondary": [
+      "+12% Focus Regen"
+    ],
+    "effect": "Equip: At the start of each fight, up to 4 people from other centuries join the chat. Each one gives you a random buff, a random curse, or leaves. You cannot mute it.",
+    "flavor": "Eleven people from nine centuries, all typing. Someone reacted to your death with a thumbs up.",
+    "trade": "Bound (trade-locked)",
+    "durability": "Battery 3%, forever"
+  }
+]
