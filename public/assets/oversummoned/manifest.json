@@ -682,41 +682,65 @@
   "web_font_suggestion": "Headings: Grenze (900) or Pirata One; body: a clean serif such as Alegreya."
  },
  "backgrounds": {
-  "status": "generated but NOT on the box",
-  "note": "Painted 16:9 backgrounds were made with GenerateImage, but the tool stored them outside the box filesystem, so they are not in this folder, the tarball or the repo branch. The parent agent needs to place them.",
+  "status": "ok",
+  "source": "GenerateImage, painted 16:9, 1280x720 JPG",
   "items": [
    {
     "id": "bg_summoning_chamber",
+    "file": "backgrounds/bg_summoning_chamber.jpg",
     "section": "Hero / the summoning",
-    "source": "/home/box/agent-data/agents/8fbdd249-bc45-478e-bded-0471c57a7bc3/assets/c49cd0c13084bce7cd80fdb01162f68548d690c526be9f69bde8ef08f721904d.jpg",
-    "size": "1024x576 (shown)",
-    "ground": "flat lit flagstone floor across the bottom ~20%; dark empty left third for headline; broken circle with violet blast center-right; era junk (bike wheel, Roman shield, fedora) bottom right"
+    "width": 1280,
+    "height": 720,
+    "ground_y": 640,
+    "ground_y_pct": 88.9,
+    "floor_top_y": 560,
+    "floor_top_y_pct": 77.8,
+    "composition": "flat lit flagstone floor across the bottom ~20%; dark empty left third for headline; broken circle with violet blast center-right; era junk (bike wheel, Roman shield, fedora) bottom right",
+    "ground_note": "ground_y is where sprite feet should sit (front of the flat floor strip). Anything between floor_top_y and the bottom edge reads as floor; use the % values when the image is scaled with background-size: cover."
    },
    {
     "id": "bg_dungeon_corridor",
+    "file": "backgrounds/bg_dungeon_corridor.jpg",
     "section": "The Descent demo (battle scene)",
-    "source": "/home/box/agent-data/agents/8fbdd249-bc45-478e-bded-0471c57a7bc3/assets/39692d35748b03e2e3d1618da250f1205cb6dccee9a3dc53dfc329ed4df41cac.jpg",
-    "size": "1024x576 (shown)",
-    "ground": "wide flat stone slab floor across bottom ~23%, ideal for player left vs enemy right; green-glow tunnel center, pipes upper left"
+    "width": 1280,
+    "height": 720,
+    "ground_y": 640,
+    "ground_y_pct": 88.9,
+    "floor_top_y": 550,
+    "floor_top_y_pct": 76.4,
+    "composition": "wide flat stone slab floor across bottom ~23%, ideal for player left vs enemy right; green-glow tunnel center, pipes upper left",
+    "ground_note": "ground_y is where sprite feet should sit (front of the flat floor strip). Anything between floor_top_y and the bottom edge reads as floor; use the % values when the image is scaled with background-size: cover."
    },
    {
     "id": "bg_aldermere_night",
+    "file": "backgrounds/bg_aldermere_night.jpg",
     "section": "The City (Aldermere)",
-    "source": "/home/box/agent-data/agents/8fbdd249-bc45-478e-bded-0471c57a7bc3/assets/43df04a9100a5b8cdecdbd6283ea27291cfe2a3d1ef56969bc348369191cafb7.jpg",
-    "size": "1024x576 (shown)",
-    "ground": "wet cobbles across bottom ~20%; dark wall on left third for text; newspaper stand with stacked papers bottom right; castle and moon top center"
+    "width": 1280,
+    "height": 720,
+    "ground_y": 640,
+    "ground_y_pct": 88.9,
+    "floor_top_y": 565,
+    "floor_top_y_pct": 78.5,
+    "composition": "wet cobbles across bottom ~20%; dark wall on left third for text; newspaper stand with stacked papers bottom right; castle and moon top center",
+    "ground_note": "ground_y is where sprite feet should sit (front of the flat floor strip). Anything between floor_top_y and the bottom edge reads as floor; use the % values when the image is scaled with background-size: cover."
    },
    {
     "id": "bg_exit_shrine",
+    "file": "backgrounds/bg_exit_shrine.jpg",
     "section": "Exits / cash out or go deeper (Scars and loot)",
-    "source": "/home/box/agent-data/agents/8fbdd249-bc45-478e-bded-0471c57a7bc3/assets/214129c5e130cd8503de078504d757ecbf35772ab8642c088e3620aa18dc2927.jpg",
-    "size": "1024x576 (shown)",
-    "ground": "stone floor bottom ~20%; red-lit stairs down on left, daylight stairs up center, candle shrine and gate right, loot sacks + chest center-left"
+    "width": 1280,
+    "height": 720,
+    "ground_y": 640,
+    "ground_y_pct": 88.9,
+    "floor_top_y": 560,
+    "floor_top_y_pct": 77.8,
+    "composition": "stone floor bottom ~20%; red-lit stairs down on left, daylight stairs up center, candle shrine and gate right, loot sacks + chest center-left",
+    "ground_note": "ground_y is where sprite feet should sit (front of the flat floor strip). Anything between floor_top_y and the bottom edge reads as floor; use the % values when the image is scaled with background-size: cover."
    }
   ]
  },
  "previews": {
   "characters": "preview_characters.png",
-  "backgrounds": null
+  "backgrounds": "preview_backgrounds.png"
  }
 }
