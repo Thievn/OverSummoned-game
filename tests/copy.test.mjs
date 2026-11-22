@@ -89,3 +89,10 @@ test('flavor lines stay in range', () => {
     assert.ok(words.length >= 12 && words.length <= 30, `${item.id} ${words.length}`);
   }
 });
+
+test('every fight move names an enemy in its room, and every enemy has a move', () => {
+  for (const room of copy.rooms) {
+    for (const move of room.moves) assert.ok(room.foes.includes(move.foe), `${room.id} ${move.label}`);
+    for (const foe of room.foes) assert.ok(room.moves.some((move) => move.foe === foe), `${room.id} ${foe}`);
+  }
+});

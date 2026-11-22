@@ -15,7 +15,7 @@
     ],
     "secondary": [],
     "effect": null,
-    "flavor": "Issued to a man named Quintus, who signed for it and then, by the look of the edge, used it to open crates.",
+    "flavor": "A Roman short sword, pitted with rust but still sharp. It has tasted goblin blood and it wants more.",
     "trade": "Tradeable",
     "durability": "Durability 40 / 40"
   },
@@ -38,7 +38,7 @@
       "+2% Dodge"
     ],
     "effect": null,
-    "flavor": "Army sandals. The last owner wore them with wool socks, which the legion allowed and his centurion did not.",
+    "flavor": "Iron-studded legion sandals built to march a thousand miles. They grip slick dungeon stone like claws.",
     "trade": "Tradeable",
     "durability": "Durability 55 / 55"
   },
@@ -61,7 +61,7 @@
       "+5% Loot Find"
     ],
     "effect": null,
-    "flavor": "Nobody stops a person in a vest. The ghoul let you walk straight past and said sorry.",
+    "flavor": "A glowing safety vest from Earth. Monsters stare at the bright stripes just long enough for you to slip past.",
     "trade": "Tradeable",
     "durability": "Durability 60 / 60"
   },
@@ -85,7 +85,7 @@
       "+3% Crit Chance"
     ],
     "effect": "Equip: Healing items restore 20% more Life.",
-    "flavor": "The beak is packed with dried lavender and cloves. It did nothing for the plague. It does a lot for the cellar.",
+    "flavor": "Packed with lavender and cloves to block the stench of death. Down here, it lets you breathe where others choke.",
     "trade": "Tradeable",
     "durability": "Durability 70 / 70"
   },
@@ -108,13 +108,13 @@
       "+4% Crit Chance"
     ],
     "effect": "Equip: No accuracy penalty on dark floors. Your first Strike in the dark Marks the target.",
-    "flavor": "Still smells of paraffin and wet wool. There is a thumbprint on the glass that nobody has wiped off.",
+    "flavor": "A soldier's lantern from the trenches of 1916. Its flame never dies, even when something in the dark breathes on it.",
     "trade": "Tradeable",
     "durability": "Durability 65 / 65"
   },
   {
     "id": "duelling_rapier",
-    "name": "Duelling Rapier, Far Too Fancy",
+    "name": "Gilded Duelling Rapier",
     "rarity": "Rare",
     "icon": "/assets/oversummoned/icons/duelling_rapier.png",
     "icon4x": "/assets/oversummoned/icons/4x/duelling_rapier.png",
@@ -132,7 +132,7 @@
       "+3% Dodge"
     ],
     "effect": "Chance on hit: 10% to Riposte the next attack against you.",
-    "flavor": "The hilt has more gold on it than the blade has steel. Its owner died in a duel about whose hilt was nicer.",
+    "flavor": "More gold on the hilt than steel on the blade. Its last owner won forty duels in a row before the forty-first.",
     "trade": "Tradeable",
     "durability": "Durability 60 / 60"
   },
@@ -156,7 +156,7 @@
       "+10% Pierce Damage"
     ],
     "effect": "Chance on Strike: 15% to fire a burst that hits every enemy.",
-    "flavor": "There has never been a violin in it. The case has three bullet holes and a receipt for a violin.",
+    "flavor": "There has never been a violin in this case. There has always been a gun, and it still has plenty of rounds.",
     "trade": "Tradeable in 18h (fresh drop)",
     "durability": "Ammo 30 / 30"
   },
@@ -179,7 +179,7 @@
       "+5% Focus Regen"
     ],
     "effect": "Use: Revive a fallen companion at 40% Life, or Shock one enemy and Stun it for 1 turn.",
-    "flavor": "CLEAR is printed on the handles in big letters. The ghouls have learned the word and back off when they hear it.",
+    "flavor": "CLEAR is printed on the handles. The ghouls have learned to fear that word, and the jolt that follows it.",
     "trade": "Tradeable",
     "durability": "Charges 3 / 3"
   },
@@ -205,13 +205,13 @@
       "+5% Life"
     ],
     "effect": "Unique: The first time you would die each run, the shield takes the blow instead and breaks until you return to the city.",
-    "flavor": "Five thousand men marched into the fog and never wrote home. One of them, it turns out, dropped this.",
+    "flavor": "Five thousand legionaries marched into the fog and never came back. This shield returned alone, still warm, still dented.",
     "trade": "Bound (trade-locked)",
     "durability": "Durability 120 / 120"
   },
   {
     "id": "black_ledger",
-    "name": "The Black Ledger's Ledger",
+    "name": "The Black Ledger",
     "rarity": "Legendary",
     "icon": "/assets/oversummoned/icons/black_ledger.png",
     "icon4x": "/assets/oversummoned/icons/4x/black_ledger.png",
@@ -229,7 +229,7 @@
       "+4% Crit Chance"
     ],
     "effect": "Unique: Each enemy you defeat adds a line. At 100 lines, your next Shakedown or Talk always works.",
-    "flavor": "Names in one column, debts in the other. Your name is near the bottom, in fresh ink.",
+    "flavor": "Names in one column, debts in the other. Every name crossed out belongs to someone who paid in blood.",
     "trade": "Tradeable",
     "durability": "Lines 0 / 100"
   },
@@ -252,7 +252,7 @@
       "-10 Speed"
     ],
     "effect": "Equip: Strikes hit very hard. Every third Strike launches you instead of the rock.",
-    "flavor": "The engineer who shrank it is still missing. So is his left boot.",
+    "flavor": "A siege engine shrunk to fit in your pack. It hurls boulders as big as your head, and sometimes it hurls you.",
     "trade": "Tradeable",
     "durability": "Durability 90 / 90"
   },
@@ -274,8 +274,8 @@
     "secondary": [
       "+8% Dodge"
     ],
-    "effect": "Use: Every enemy attacks the tube man for 2 turns. Nobody, including the tube man, knows what powers it.",
-    "flavor": "Taken from outside a used chariot lot. It has not stopped waving since it came through the Circle.",
+    "effect": "Use: Every enemy attacks the tube man for 2 turns.",
+    "flavor": "Ripped from outside a car lot on Earth. It flails so wildly that every monster in the room attacks it first.",
     "trade": "Tradeable",
     "durability": "Air 100%"
   },
@@ -298,7 +298,7 @@
       "-15% Accuracy at night"
     ],
     "effect": "Equip: Each turn, gravity flips for one random fighter. It can be you.",
-    "flavor": "The Crier ran it on page one. The Hero Office says it is a lamp. The lamp has a tide.",
+    "flavor": "A tiny moon that circles your head. It pulls the tides, bends gravity, and glows silver in the deepest dark.",
     "trade": "Tradeable",
     "durability": "Repairs itself, sometimes"
   },
@@ -322,7 +322,7 @@
       "+12% Focus Regen"
     ],
     "effect": "Equip: At the start of each fight, up to 4 people from other centuries join the chat. Each one gives you a random buff, a random curse, or leaves. You cannot mute it.",
-    "flavor": "Eleven people from nine centuries, all typing. Someone reacted to your death with a thumbs up.",
+    "flavor": "Eleven people from nine centuries, all typing at once. Their advice is loud and wild, and sometimes it saves your life.",
     "trade": "Bound (trade-locked)",
     "durability": "Battery 3%, forever"
   }

@@ -1,10 +1,10 @@
 export const meta = {
   title: 'OverSummoned',
   description:
-    'OverSummoned is a browser game set in Aldermere, a city that keeps summoning people from Earth by accident.',
+    'OverSummoned is a fantasy adventure game. You are pulled from Earth into Aldermere, a city built on top of an endless dungeon.',
 };
 
-export const tagline = 'Pulled from Earth. Stuck in Ash.';
+export const tagline = 'Summoned from Earth. Sent into the dark.';
 
 export const nav = [
   { href: '#about', label: 'About' },
@@ -20,11 +20,11 @@ export const spam = "We don't spam.";
 export const adults = 'Adults only. 18+.';
 
 export const pitch = [
-  'OverSummoned is a browser game set in Aldermere, a city that keeps summoning people from Earth by accident.',
-  'Pick who you were, hire a squad from every century, and survive the dungeon under the city.',
+  'OverSummoned throws you out of your life on Earth and into Aldermere, a city built over a dungeon that never ends.',
+  'Hire heroes from every age of history, arm them with legendary gear, and fight your way down.',
 ];
 
-export const joke = 'A Roman can carry a defibrillator. Nobody here will stop him.';
+export const joke = 'Roman sword. Stone Age torch. Ambulance paddles. Any gear works on any hero.';
 
 export const form = {
   email: 'Email',
@@ -32,26 +32,26 @@ export const form = {
   fax: 'Fax',
   sending: 'Sending',
   success: "You're on the list.",
-  invalid: 'That address did not work.',
-  rate: 'Wait a few minutes.',
-  down: 'Try again in a minute.',
+  invalid: 'That email did not work. Try another one.',
+  rate: 'Too many tries. Wait a few minutes.',
+  down: 'Something went wrong. Try again in a minute.',
 };
 
-export const featuresIntro = 'In the city';
+export const featuresIntro = 'What waits for you';
 
 export const featureBlurbs = [
-  { title: 'The Descent', text: 'Go down with a squad of three.' },
-  { title: 'Gear', text: 'Gear up from any century.' },
-  { title: 'The Exchange', text: 'Trade with the whole city.' },
-  { title: 'The Ledger', text: 'Climb the Ledger of Names.' },
+  { title: 'The Descent', text: 'Lead a squad of three into the monster-filled dungeon below the city.' },
+  { title: 'Gear', text: 'Arm any hero with weapons and relics from any age of history.' },
+  { title: 'The Exchange', text: 'Trade your best finds with heroes across the city.' },
+  { title: 'The Ledger', text: 'Carve your name into the Ledger of Names for everyone to see.' },
 ];
 
 export const about = {
   title: 'What you do',
   steps: [
-    'Pick your era.',
-    'Hire your squad.',
-    'Come back richer, or come back with a Scar.',
+    'Choose who you were on Earth.',
+    'Hire two heroes to fight at your side.',
+    'Come back rich, or come back scarred.',
   ],
 };
 
@@ -98,38 +98,38 @@ export const sample = {
 export const headlines = [
   {
     source: 'Infirmary',
-    text: 'A paramedic shocked a ghoul. It said sorry and left.',
+    text: 'A paramedic blasted a ghoul with her paddles. It fled screaming.',
   },
   {
     source: 'Stocks',
-    text: 'Fourteen coins taken. One sandwich left behind.',
+    text: 'A thief stole fourteen Crowns from the market. He spends tonight in the Stocks.',
   },
   {
     source: 'The Crier',
-    text: 'Mr. Pell sighed at the Overflow forms.',
+    text: 'The summoning Circle is glowing. A big batch of heroes arrives Friday.',
   },
   {
     source: 'Docks',
-    text: 'The Office says the second moon is a lamp.',
+    text: 'A second moon rose over the harbor last night. Nobody knows where it came from.',
   },
 ];
 
 export const deskCopy = {
   city: {
     title: 'City',
-    lines: ['Spare heroes earn Crowns while you are out.'],
+    lines: ['Your spare heroes earn Crowns while you are away.'],
   },
   descent: {
     title: 'Descent',
-    lines: ['Pick a door. Read the next move. Hit first.'],
+    lines: ['Choose a door. Read the danger. Strike first.'],
   },
   office: {
     title: 'Hero Office',
-    lines: ['You owe four Crowns for the summoning.'],
+    lines: ['You owe four Crowns for your summoning. The Office always collects.'],
   },
   market: {
     title: 'Exchange',
-    lines: ['Sell gear for Crowns. Real money is banned.'],
+    lines: ['Sell your gear for Crowns. Trading for real money is banned.'],
   },
   crier: {
     title: 'The Crier',
@@ -137,40 +137,40 @@ export const deskCopy = {
   },
   stocks: {
     title: 'Stocks',
-    lines: ['You took the coins and left the sandwich. An hour in the Stocks.'],
+    lines: ['Get caught stealing and you spend an hour locked in the Stocks.'],
   },
   infirmary: {
     title: 'Infirmary',
-    lines: ['At zero Life, you wake up here.'],
+    lines: ['Fall to zero Life and you wake up here, patched up and sore.'],
   },
 };
 
 export const heroes = {
   title: 'Heroes you can hire',
-  lead: 'Every Friday the Circle brings in a new batch. Some of them are worth hiring.',
-  hint: 'Open a card.',
+  lead: 'Every Friday the Circle pulls new heroes from Earth. Find the ones worth fighting beside.',
+  hint: 'Tap a card to see the hero fight.',
 };
 
 export const knowhow = {
-  legionary: 'Formation. Guard rises with each companion beside you.',
-  gangster: 'Shakedown. Intimidate or bribe.',
-  paramedic: 'Triage. Better healing. Stops Bleed.',
-  office_worker: 'Reply All. Marks every enemy for two turns.',
-  hunter: 'Fire-craft. Lights the dark and cooks meat into healing.',
-  engineer: 'Contraptions. Traps and gadgets from scrap.',
-  plague_doctor: 'Miasma Theory. Cures Poison and Rot. Wrong about why.',
-  delivery_rider: 'Last Mile. An exit costs no Energy.',
+  legionary: 'Formation. His guard grows stronger with every ally at his side.',
+  gangster: 'Shakedown. Scares enemies off or buys them out.',
+  paramedic: 'Triage. Heals harder and stops bleeding fast.',
+  office_worker: 'Reply All. Marks every enemy so the squad hits harder for two turns.',
+  hunter: 'Fire-craft. Lights the dark and roasts meat that heals the squad.',
+  engineer: 'Contraptions. Builds traps and gadgets out of scrap.',
+  plague_doctor: 'Miasma Theory. Cures Poison and Rot with old remedies.',
+  delivery_rider: 'Last Mile. Escaping a fight costs no Energy.',
 };
 
 export const bios = {
-  legionary: 'He signed for the sword. He still has the receipt.',
-  gangster: 'He arrived with a violin case and no violin.',
-  paramedic: 'The Circle took her ambulance too. The siren still works.',
-  office_worker: 'Kevin had 412 unread emails when the floor opened under him.',
-  hunter: 'He came through holding a spear and a strip of cooked meat.',
-  engineer: 'She measured the Circle and asked who bought the cheap parts.',
-  plague_doctor: 'Wrong about the cause. Right about the cure.',
-  delivery_rider: 'The bag came with him. The customer did not.',
+  legionary: 'A soldier of Rome who has never dropped his shield. He is not about to start now.',
+  gangster: 'He walked out of 1927 Chicago with a violin case. There is no violin inside.',
+  paramedic: 'The Circle took her in the middle of a rescue. She is still saving lives.',
+  office_worker: 'Kevin fell through his office floor holding a coffee. He has not spilled a drop.',
+  hunter: 'He hunted mammoths across the ice. Ghouls do not scare him.',
+  engineer: 'Give her a pile of scrap and a minute. She will hand you a weapon.',
+  plague_doctor: 'He fought the Black Death with herbs and a beak mask. Now he fights the dark.',
+  delivery_rider: 'Marco has never missed a delivery. A dungeon is just a longer route.',
 };
 
 export const sheet = {
@@ -208,7 +208,7 @@ export const slots = {
 
 export const rarity = {
   title: 'Rarity',
-  line: 'Items get sillier as rarity goes up.',
+  line: 'The rarer the item, the wilder its power.',
 };
 
 export const rarityTiers = [
@@ -223,40 +223,40 @@ export const rarityTiers = [
 
 export const loot = {
   title: 'Loot',
-  hint: 'Tap an icon.',
+  hint: 'Tap an item to inspect it.',
 };
 
 export const sections = [
   {
     id: 'overflow',
     title: 'Overflow Night',
-    lines: ['Every Friday you draw 3. Keep 1.', 'The rest go to the Hiring Hall.'],
+    lines: ['Every Friday, draw three new heroes. Keep one.', 'The rest go to the Hiring Hall for anyone to claim.'],
   },
   {
     id: 'descent',
     title: 'Gear and the Descent',
-    lines: ['Any item fits any hero.', 'Die down there and you keep a Scar.'],
+    lines: ['Any item fits any hero.', 'Fall in the dungeon and you carry a Scar forever.'],
   },
   {
     id: 'trade',
     title: 'The Exchange',
-    lines: ['Sell gear for Crowns.', 'Real-money trades are banned.'],
+    lines: ['Sell your gear for Crowns.', 'Trading for real money is banned.'],
   },
   {
     id: 'crews',
     title: 'Crews',
-    lines: ['A Crew shares a hall and the blame.'],
+    lines: ['Join a Crew. Share a hall, the loot, and the danger.'],
   },
 ];
 
 export const rules = {
   title: 'House rules',
-  lines: ['You and two hired heroes.', 'Real-money trades are banned.'],
+  lines: ['You and two hired heroes against the dark.', 'Trading for real money is banned.'],
 };
 
 export const ledger = {
   title: 'Ledger of Names',
-  lines: ['The public list of who did what.'],
+  lines: ['Every great deed and every great failure, written down for all to see.'],
 };
 
 export const footer = {
@@ -267,18 +267,18 @@ export const footer = {
 
 export const legal = {
   privacyTitle: 'Privacy',
-  privacy: ['We keep your email. We do not sell it.'],
+  privacy: ['We keep your email safe. We never sell it.'],
   termsTitle: 'Terms',
-  terms: ['The store sells looks, never a win.', 'Real-money trades are banned.'],
+  terms: ['The store sells looks, never power.', 'Trading for real money is banned.'],
 };
 
 export const itemVoices = {
-  second_moon: 'Stop calling me a lamp.',
-  group_chat: 'You cannot mute this.',
+  second_moon: 'I move the tides. I can move you.',
+  group_chat: 'Forty new messages. All of them about you.',
 };
 
 export const flip = {
-  hint: 'Hover or tap a card to see them work.',
+  hint: 'Hover or tap a card to see the hero in action.',
   sheet: 'Full sheet',
   skill: 'Know-How',
   back: 'Turn back',
@@ -286,21 +286,21 @@ export const flip = {
 
 export const fight = {
   title: 'Roll for it',
-  lead: 'Read the room. Pick a move. Two dice decide the rest.',
+  lead: 'Every room is a fight. Choose your move, roll two dice, and see if your squad survives.',
   party: 'Your squad',
   foes: 'In the way',
   roll: 'Roll',
-  pick: 'Pick a move. Roll two dice.',
+  pick: 'Choose your move.',
   need: 'need',
   vs: 'vs',
-  win: 'Made it.',
-  lose: 'Missed.',
-  next: 'Next room',
-  again: 'Run it back',
-  lootTitle: 'Loot drops straight into a slot.',
+  win: 'Hit!',
+  lose: 'Miss!',
+  next: 'Into the next room',
+  again: 'Fight again',
+  lootTitle: 'The loot drops straight into your gear.',
   lootEmpty: 'Empty',
-  cleared: 'Room cleared.',
-  scaleNote: 'Everyone stands on the same floor. Big things look big.',
+  cleared: 'Room cleared!',
+  scaleNote: 'Small foes, big foes. Size up what you are fighting.',
 };
 
 export const rooms = [
@@ -308,44 +308,44 @@ export const rooms = [
     id: 'cellars',
     name: 'The Old Cellars',
     foes: ['slime', 'goblin', 'skeleton'],
-    intro: 'Something pink is eating the stairs. A goblin is selling tickets to watch.',
+    intro: 'Acid ooze crawls up the stairs. A goblin grins behind it, knife out. Bones rattle in the dark.',
     loot: 'rusty_gladius',
     moves: [
-      { foe: 'goblin', label: 'Charge the goblin', stat: 'might', dc: 9, win: 'The goblin drops his tickets and his knife.', lose: 'He sidesteps and charges you for the show.' },
-      { foe: 'skeleton', label: 'Raise the shields', stat: 'guard', dc: 8, win: 'The skeleton swings into a wall of wood and gives up.', lose: 'The slime goes over the shields. Then down your collar.' },
-      { foe: 'goblin', label: 'Buy a ticket', stat: 'knack', dc: 10, win: 'Front row seats. The goblin leaves to count his coins.', lose: "The ticket is fake. So is the goblin's smile." },
+      { foe: 'goblin', label: 'Charge the goblin before he runs', stat: 'might', dc: 9, win: 'You slam into the goblin. His knife skitters away and he crashes down.', lose: 'The goblin slips aside and slashes your arm.' },
+      { foe: 'slime', label: 'Lock shields and crush the ooze', stat: 'guard', dc: 8, win: 'Your shields smash the ooze flat. It splatters and melts away.', lose: 'The ooze pours over your shields and burns your hands.' },
+      { foe: 'skeleton', label: 'Kick its legs out from under it', stat: 'knack', dc: 10, win: 'Its legs snap. The skeleton clatters to the floor in pieces.', lose: 'The skeleton stomps forward and swings its rusty blade at your head.' },
     ],
   },
   {
     id: 'kitchen',
     name: 'The Ash Kitchen',
     foes: ['ghoul', 'skeleton'],
-    intro: 'A ghoul is cooking. The smell is mostly the ghoul.',
+    intro: 'A ghoul with a burning skull stirs a boiling pot. A skeleton guards the back door. Both turn toward you.',
     loot: 'trench_lantern',
     moves: [
-      { foe: 'ghoul', label: 'Put the fire out', stat: 'guard', dc: 9, win: 'Lid on the pot. Lid on the ghoul.', lose: 'The fire was the ghoul. It is upset now.' },
-      { foe: 'ghoul', label: 'Hit it first', stat: 'might', dc: 10, win: 'One clean swing. Dinner is cancelled.', lose: 'It ducks. The soup does not.' },
-      { foe: 'ghoul', label: 'Compliment the soup', stat: 'knack', dc: 8, win: 'It cries a little and lets you pass.', lose: 'It wants you to try some. You do not want to.' },
+      { foe: 'ghoul', label: 'Kick the boiling pot at it', stat: 'guard', dc: 9, win: 'Scalding water hits the ghoul. It shrieks and staggers into the flames.', lose: 'The pot will not budge. The ghoul lunges at you through the steam.' },
+      { foe: 'ghoul', label: 'Charge before it turns', stat: 'might', dc: 10, win: 'Your blade bites deep. The ghoul howls and crumbles into ash.', lose: 'The ghoul spins and rakes you with burning claws.' },
+      { foe: 'skeleton', label: 'Shove the skeleton into the oven', stat: 'knack', dc: 8, win: 'It topples into the fire. Its bones blacken and fall apart.', lose: 'The skeleton sidesteps and its blade nicks your cheek.' },
     ],
   },
   {
     id: 'door',
     name: "The Butcher's Door",
     foes: ['goblin', 'brute'],
-    intro: 'The brute fills the whole door. The goblin on his shoulder does the talking.',
+    intro: 'A horned brute blocks the last door, spiked club in hand. A goblin scout screams for blood.',
     loot: 'shield_lost_ninth',
     moves: [
-      { foe: 'brute', label: 'Go for the knees', stat: 'might', dc: 11, win: 'Down he goes. The floor shakes for a while.', lose: 'His knees are fine. Yours are not.' },
-      { foe: 'brute', label: 'Brace and wait', stat: 'guard', dc: 9, win: 'He swings, tires out, and sits down.', lose: 'He did not tire out. He did not sit down.' },
-      { foe: 'goblin', label: 'Talk to the goblin', stat: 'knack', dc: 10, win: 'Ten Crowns and the door is open.', lose: 'The goblin is offended. The brute is very offended.' },
+      { foe: 'brute', label: 'Hack at its knees', stat: 'might', dc: 11, win: 'Steel meets bone. The brute crashes down and the whole floor shakes.', lose: 'Its club comes down first. You barely roll clear.' },
+      { foe: 'brute', label: 'Raise your shield and take the blow', stat: 'guard', dc: 9, win: 'The club slams your shield and you hold. The brute stumbles and falls.', lose: 'The blow knocks you flat. Your shield arm goes numb.' },
+      { foe: 'goblin', label: 'Hurl a torch at the goblin', stat: 'knack', dc: 10, win: 'The torch hits. The goblin shrieks and goes down in flames.', lose: 'The goblin ducks. The brute roars and charges.' },
     ],
   },
 ];
 
 export const foeNames = {
-  slime: 'Pink Slime',
-  goblin: 'Ticket Goblin',
-  skeleton: 'Rattling Guard',
+  slime: 'Acid Ooze',
+  goblin: 'Goblin Cutthroat',
+  skeleton: 'Bone Sentry',
   ghoul: 'Cinder Ghoul',
-  brute: 'Door Brute',
+  brute: 'Horned Brute',
 };

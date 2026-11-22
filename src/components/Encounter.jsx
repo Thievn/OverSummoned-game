@@ -81,8 +81,12 @@ export default function Encounter() {
     setPhase('choose');
   }
 
+  // A move only shows while the enemy it names is still standing, so the story line always matches the fight.
+  const target = (move) => room.foes.findIndex((f, i) => f === move.foe && alive[i]);
+  const openMoves = room.moves.filter((move) => target(move) >= 0);
+
   function choose(move) {
-    if (phase !== 'choose') return;
+    if (phase !== 'choose' || target(move) < 0) return;
     setPhase('rolling');
     let spins = 0;
     const spin = window.setInterval(() => {
@@ -99,14 +103,13 @@ export default function Encounter() {
       setLast({ total, mod, dc: move.dc, won, stat: move.stat });
       setLog((lines) => [won ? move.win : move.lose, ...lines].slice(0, 4));
       if (won) {
-        const named = room.foes.findIndex((f, i) => f === move.foe && alive[i]);
-        const target = named >= 0 ? named : alive.findIndex(Boolean);
+        const hitIx = target(move);
         play(setHeroAnim, 2, 'skill');
         later(() => play(setHeroAnim, 1, 'attack'), 120);
-        later(() => play(setFoeAnim, target, 'hit'), 380);
+        later(() => play(setFoeAnim, hitIx, 'hit'), 380);
         later(() => {
-          play(setFoeAnim, target, 'death');
-          const nextAlive = alive.map((v, i) => (i === target ? false : v));
+          play(setFoeAnim, hitIx, 'death');
+          const nextAlive = alive.map((v, i) => (i === hitIx ? false : v));
           setAlive(nextAlive);
           later(() => setPhase(nextAlive.some(Boolean) ? 'choose' : 'cleared'), 700);
         }, 720);
@@ -228,7 +231,7 @@ export default function Encounter() {
             </div>
           ) : (
             <div className="moves">
-              {room.moves.map((move) => (
+              {openMoves.map((move) => (
                 <button key={move.label} type="button" className="move" disabled={phase !== 'choose'} onClick={() => choose(move)}>
                   <span>{move.label}</span>
                   <small>
