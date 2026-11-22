@@ -18,38 +18,10 @@ import {
   tagline,
 } from '../copy.js';
 
-function Emblem({ children }) {
-  return (
-    <svg className="emblem" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="3" y="3" width="58" height="58" rx="3" fill="#2a140f" stroke="#c6a15a" strokeWidth="2" />
-      {children}
-    </svg>
-  );
-}
-
-const emblems = [
-  <Emblem key="door">
-    <path d="M20 50 V28 h24 v22" fill="none" stroke="#e4c27a" strokeWidth="1.6" />
-    <path d="M24 50 V24 h16 v26" fill="#6e2a22" stroke="#f0d48a" strokeWidth="1.4" />
-    <path d="M27 50 V36 h10 v14" fill="#1a0d0a" />
-    <circle cx="35" cy="43" r="1.2" fill="#f0d48a" />
-  </Emblem>,
-  <Emblem key="gear">
-    <path d="M24 18 h16 l2 6 h6 v8 l-6 2 v6 h-8 l-2 6 h-8 l-2 -6 h-8 v-6 l-6 -2 v-8 h6 l2 -6 z" fill="#8a6230" stroke="#f0d48a" strokeWidth="1.3" />
-    <circle cx="32" cy="32" r="4" fill="#2a140f" stroke="#f0d48a" />
-  </Emblem>,
-  <Emblem key="trade">
-    <circle cx="24" cy="28" r="9" fill="#8a6230" stroke="#f0d48a" strokeWidth="1.4" />
-    <circle cx="40" cy="38" r="9" fill="#6e2a22" stroke="#f0d48a" strokeWidth="1.4" />
-    <circle cx="24" cy="28" r="3" fill="none" stroke="#2a140f" strokeWidth="1.4" />
-    <circle cx="40" cy="38" r="3" fill="none" stroke="#f0d48a" strokeWidth="1.4" />
-  </Emblem>,
-  <Emblem key="ledger">
-    <path d="M16 16 h14 c6 4 6 28 0 32 H16 z" fill="#3a2414" stroke="#e4c27a" />
-    <path d="M48 16 H34 c-6 4 -6 28 0 32 h14 z" fill="#4a301c" stroke="#e4c27a" />
-    <path d="M22 26 h8 M22 32 h8 M22 38 h6 M36 26 h8 M36 32 h8 M36 38 h6" stroke="#f0d48a" strokeWidth="1.2" />
-  </Emblem>,
-];
+const emblemIcons = ['trench_lantern', 'hi_vis_vest', 'violin_case', 'black_ledger'];
+const emblems = emblemIcons.map((id) => (
+  <img key={id} className="emblem pixel" src={`/assets/oversummoned/icons/${id}.png`} alt="" width="48" height="48" />
+));
 
 export function Header() {
   return (
@@ -119,7 +91,7 @@ export function Hero({ onOpen }) {
 
 export function About() {
   return (
-    <section className="band wrap" id="about">
+    <section className="band wrap reveal" id="about">
       <h2>{about.title}</h2>
       <div className="steps">
         {about.steps.map((step, index) => (
@@ -135,7 +107,7 @@ export function About() {
 
 export function InfoGrid() {
   return (
-    <div className="wrap bands">
+    <div className="wrap bands reveal">
       <div className="info-grid">
         {sections.map((section) => (
           <section key={section.id} id={section.id} className="panel info-panel">

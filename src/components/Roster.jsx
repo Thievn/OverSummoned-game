@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Sprite from './Sprite.jsx';
+import { pixelPortrait } from '../sprites.js';
 import { cardById, cardList, equippedItems, itemList, sheetSlots } from '../catalog.js';
 import { combineGear, formatSigned, otherGearLines, overstatRows } from '../gear.js';
-import { bios, heroes, knowhow, loot, rarity, rarityTiers, sheet, slots } from '../copy.js';
+import { bios, flip, heroes, knowhow, loot, rarity, rarityTiers, sheet, slots } from '../copy.js';
 import { ItemButton } from './Tips.jsx';
 
 const dollOrder = ['head', 'main', 'chest', 'off', 'legs', 'feet'];
@@ -10,35 +12,71 @@ function rarityOf(name) {
   return rarityTiers.find((tier) => tier.name === name);
 }
 
+function FlipCard({ card, active, onOpen }) {
+  const [flipped, setFlipped] = useState(false);
+  const tier = rarityOf(card.rarity);
+  const gear = equippedItems(card.id).slice(0, 5);
+  const [skillName, ...skillRest] = knowhow[card.id].split('. ');
+  return (
+    <div
+      className={`flip-card rarity-${tier.id}${flipped ? ' flipped' : ''}`}
+      style={{ '--tier': tier.color }}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && setFlipped(true)}
+      onPointerLeave={(e) => e.pointerType === 'mouse' && setFlipped(false)}
+    >
+      <button
+        type="button"
+        className="flip-hit"
+        aria-pressed={flipped}
+        aria-label={`${card.name}, ${card.title}, ${card.rarity}`}
+        onClick={() => setFlipped((v) => !v)}
+      >
+        <span className="flip-inner">
+          <span className="flip-face flip-front">
+            <span className="gem" aria-hidden="true" />
+            <img className="pixel portrait" src={pixelPortrait(card.id)} alt="" width="192" height="256" loading="lazy" />
+            <span className="card-name">{card.name}</span>
+            <span className="card-title">{card.rarity} {card.title}</span>
+            <span className="card-stats">
+              <span><small>{sheet.guard}</small><b className="nums">{card.guard}</b></span>
+              <span><small>{sheet.might}</small><b className="nums">{card.might}</b></span>
+              <span><small>{sheet.knack}</small><b className="nums">{card.knack}</b></span>
+            </span>
+          </span>
+          <span className="flip-face flip-back">
+            <span className="back-stage">
+              {flipped ? <Sprite id={card.id} anim="skill" scale={3} ms={120} /> : <Sprite id={card.id} anim="idle" scale={3} />}
+            </span>
+            <span className="skill-name">{skillName}.</span>
+            <span className="skill-text">{skillRest.join('. ')}</span>
+            <span className="gear-row" aria-hidden="true">
+              {gear.map((item) => (
+                <img key={item.id} className={`pixel rarity-${rarityOf(item.rarity).id}`} src={item.icon} alt="" width="28" height="28" />
+              ))}
+            </span>
+          </span>
+        </span>
+      </button>
+      <button type="button" className="sheet-link" aria-expanded={active} onClick={(event) => onOpen(card.id, event)}>
+        {flip.sheet}
+      </button>
+    </div>
+  );
+}
+
 export function CardRow({ activeId, onOpen }) {
   return (
-    <section className="band wrap" id="origins">
-      <h2>{heroes.title}</h2>
-      <p className="lead">{heroes.lead}</p>
+    <section className="band wrap reveal" id="origins">
+      <div className="section-head">
+        <h2>{heroes.title}</h2>
+        <p className="lead">{heroes.lead}</p>
+      </div>
       <div className="card-row">
         {cardList.map((card) => (
-          <button
-            key={card.id}
-            type="button"
-            className="card-hit"
-            aria-expanded={activeId === card.id}
-            onClick={(event) => onOpen(card.id, event)}
-          >
-            <picture>
-              <source media="(max-width: 759px)" srcSet={card.thumb} type="image/webp" />
-              <img
-                src={card.card}
-                alt={`${card.name}, ${card.title}, ${card.rarity}`}
-                width="300"
-                height="470"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </button>
+          <FlipCard key={card.id} card={card} active={activeId === card.id} onOpen={onOpen} />
         ))}
       </div>
-      <p className="hint">{heroes.hint}</p>
+      <p className="hint">{flip.hint}</p>
     </section>
   );
 }
@@ -137,13 +175,10 @@ export function CharacterSheet({ cardId, onClose }) {
           </button>
         </div>
         <div className="sheet-grid">
-          <img
-            className="sheet-portrait"
-            src={card.portrait}
-            alt=""
-            width="864"
-            height="1152"
-          />
+          <div className="sheet-portrait">
+            <img className="pixel" src={pixelPortrait(card.id)} alt="" width="288" height="384" />
+            <span className="sheet-sprite"><Sprite id={card.id} anim="skill" scale={2} /></span>
+          </div>
           <div className="sheet-copy">
             <p className="sheet-rarity" style={{ color: tier.color }}>
               <img
@@ -231,20 +266,15 @@ export function CharacterSheet({ cardId, onClose }) {
 
 export function RarityLadder() {
   return (
-    <section className="band wrap" id="rarity">
+    <section className="band wrap reveal" id="rarity">
       <h2>{rarity.title}</h2>
       <p className="lead">{rarity.line}</p>
       <div className="rarity-row">
         {rarityTiers.map((tier) => (
           <figure key={tier.id} className={`rarity-card rarity-${tier.id}`}>
-            <img
-              src={`/assets/oversummoned/rarity-demo/kevin_${tier.id}.webp`}
-              alt={`Kevin Latham, ${tier.name}`}
-              width="300"
-              height="470"
-              loading="lazy"
-              decoding="async"
-            />
+            <span className="rarity-frame" style={{ '--tier': tier.color }}>
+              <img className="pixel" src={pixelPortrait('office_worker')} alt={`Kevin Latham, ${tier.name}`} width="144" height="192" loading="lazy" />
+            </span>
             <figcaption style={{ color: tier.color }}>
               <img
                 src={`/assets/oversummoned/frames/gem_${tier.id}.png`}
@@ -264,7 +294,7 @@ export function RarityLadder() {
 
 export function LootStrip() {
   return (
-    <section className="band wrap" id="loot">
+    <section className="band wrap reveal" id="loot">
       <h2>{loot.title}</h2>
       <p className="hint">{loot.hint}</p>
       <div className="loot-row">

@@ -276,3 +276,76 @@ export const itemVoices = {
   second_moon: 'Stop calling me a lamp.',
   group_chat: 'You cannot mute this.',
 };
+
+export const flip = {
+  hint: 'Hover or tap a card to see them work.',
+  sheet: 'Full sheet',
+  skill: 'Know-How',
+  back: 'Turn back',
+};
+
+export const fight = {
+  title: 'Roll for it',
+  lead: 'Read the room. Pick a move. Two dice decide the rest.',
+  party: 'Your squad',
+  foes: 'In the way',
+  roll: 'Roll',
+  pick: 'Pick a move. Roll two dice.',
+  need: 'need',
+  vs: 'vs',
+  win: 'Made it.',
+  lose: 'Missed.',
+  next: 'Next room',
+  again: 'Run it back',
+  lootTitle: 'Loot drops straight into a slot.',
+  lootEmpty: 'Empty',
+  cleared: 'Room cleared.',
+  scaleNote: 'Everyone stands on the same floor. Big things look big.',
+};
+
+export const rooms = [
+  {
+    id: 'cellars',
+    name: 'The Old Cellars',
+    foes: ['slime', 'goblin', 'skeleton'],
+    intro: 'Something pink is eating the stairs. A goblin is selling tickets to watch.',
+    loot: 'rusty_gladius',
+    moves: [
+      { label: 'Charge the goblin', stat: 'might', dc: 9, win: 'The goblin drops his tickets and his knife.', lose: 'He sidesteps and charges you for the show.' },
+      { label: 'Raise the shields', stat: 'guard', dc: 8, win: 'The skeleton swings into a wall of wood and gives up.', lose: 'The slime goes over the shields. Then down your collar.' },
+      { label: 'Buy a ticket', stat: 'knack', dc: 10, win: 'Front row seats. The goblin leaves to count his coins.', lose: "The ticket is fake. So is the goblin's smile." },
+    ],
+  },
+  {
+    id: 'kitchen',
+    name: 'The Ash Kitchen',
+    foes: ['ghoul', 'skeleton'],
+    intro: 'A ghoul is cooking. The smell is mostly the ghoul.',
+    loot: 'trench_lantern',
+    moves: [
+      { label: 'Put the fire out', stat: 'guard', dc: 9, win: 'Lid on the pot. Lid on the ghoul.', lose: 'The fire was the ghoul. It is upset now.' },
+      { label: 'Hit it first', stat: 'might', dc: 10, win: 'One clean swing. Dinner is cancelled.', lose: 'It ducks. The soup does not.' },
+      { label: 'Compliment the soup', stat: 'knack', dc: 8, win: 'It cries a little and lets you pass.', lose: 'It wants you to try some. You do not want to.' },
+    ],
+  },
+  {
+    id: 'door',
+    name: "The Butcher's Door",
+    foes: ['goblin', 'brute'],
+    intro: 'The brute fills the whole door. The goblin on his shoulder does the talking.',
+    loot: 'shield_lost_ninth',
+    moves: [
+      { label: 'Go for the knees', stat: 'might', dc: 11, win: 'Down he goes. The floor shakes for a while.', lose: 'His knees are fine. Yours are not.' },
+      { label: 'Brace and wait', stat: 'guard', dc: 9, win: 'He swings, tires out, and sits down.', lose: 'He did not tire out. He did not sit down.' },
+      { label: 'Talk to the goblin', stat: 'knack', dc: 10, win: 'Ten Crowns and the door is open.', lose: 'The goblin is offended. The brute is very offended.' },
+    ],
+  },
+];
+
+export const foeNames = {
+  slime: 'Pink Slime',
+  goblin: 'Ticket Goblin',
+  skeleton: 'Rattling Guard',
+  ghoul: 'Cinder Ghoul',
+  brute: 'Door Brute',
+};

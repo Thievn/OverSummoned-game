@@ -105,6 +105,7 @@ export default function GameScreen({ onOpen }) {
           {tab === 'home' ? (
             <div className="home-lower">
               <button type="button" className="char-block" onClick={(event) => onOpen(card.id, event)}>
+                <img className="pixel char-pic" src={`/assets/oversummoned/pixel/${card.id}.png`} alt="" width="72" height="96" />
                 <span className="kicker">{screen.character}</span>
                 <span className="char-name">{card.name}</span>
                 <span className="char-title">{card.title}</span>
