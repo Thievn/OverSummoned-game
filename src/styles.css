@@ -1229,7 +1229,7 @@ h1, h2, h3, .kicker, .btn { font-family: "Pixelify Sans", "Space Grotesk", sans-
   background: url(/assets/oversummoned/pixel/bg_dungeon.png) 30% 100% / auto 230px no-repeat;
   image-rendering: pixelated; border: 1px solid rgba(255, 255, 255, 0.12);
 }
-.back-stage .sprite { margin-bottom: 10px; filter: drop-shadow(0 0 6px var(--tier)); }
+.back-stage .sprite { margin-bottom: 27px; filter: drop-shadow(0 0 6px var(--tier)); }
 .skill-name { font: 700 1rem "Pixelify Sans", sans-serif; color: var(--tier); text-shadow: 0 0 10px var(--tier); }
 .skill-text { font-size: 0.82rem; line-height: 1.3; text-align: center; color: var(--ink); }
 .gear-row { display: flex; gap: 4px; margin-top: auto; }

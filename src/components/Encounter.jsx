@@ -5,8 +5,8 @@ import { fight, foeNames, rooms, sheet } from '../copy.js';
 import { pixelPortrait } from '../sprites.js';
 
 const BG_W = 384;
-const FLOOR = 122; // feet line inside the background art
-const TOP = FLOOR - 60; // every sprite frame keeps its feet 4px above its bottom edge
+const FLOOR = 135; // top of the floor ledge in the background art
+const TOP = FLOOR - 61; // feet sit on frame row 60, outline included
 const HERO_X = [28, 64, 100];
 const FOE_X = { 1: [250], 2: [218, 268], 3: [196, 240, 284] };
 const PIPS = {
