@@ -311,9 +311,9 @@ export const rooms = [
     intro: 'Something pink is eating the stairs. A goblin is selling tickets to watch.',
     loot: 'rusty_gladius',
     moves: [
-      { label: 'Charge the goblin', stat: 'might', dc: 9, win: 'The goblin drops his tickets and his knife.', lose: 'He sidesteps and charges you for the show.' },
-      { label: 'Raise the shields', stat: 'guard', dc: 8, win: 'The skeleton swings into a wall of wood and gives up.', lose: 'The slime goes over the shields. Then down your collar.' },
-      { label: 'Buy a ticket', stat: 'knack', dc: 10, win: 'Front row seats. The goblin leaves to count his coins.', lose: "The ticket is fake. So is the goblin's smile." },
+      { foe: 'goblin', label: 'Charge the goblin', stat: 'might', dc: 9, win: 'The goblin drops his tickets and his knife.', lose: 'He sidesteps and charges you for the show.' },
+      { foe: 'skeleton', label: 'Raise the shields', stat: 'guard', dc: 8, win: 'The skeleton swings into a wall of wood and gives up.', lose: 'The slime goes over the shields. Then down your collar.' },
+      { foe: 'goblin', label: 'Buy a ticket', stat: 'knack', dc: 10, win: 'Front row seats. The goblin leaves to count his coins.', lose: "The ticket is fake. So is the goblin's smile." },
     ],
   },
   {
@@ -323,9 +323,9 @@ export const rooms = [
     intro: 'A ghoul is cooking. The smell is mostly the ghoul.',
     loot: 'trench_lantern',
     moves: [
-      { label: 'Put the fire out', stat: 'guard', dc: 9, win: 'Lid on the pot. Lid on the ghoul.', lose: 'The fire was the ghoul. It is upset now.' },
-      { label: 'Hit it first', stat: 'might', dc: 10, win: 'One clean swing. Dinner is cancelled.', lose: 'It ducks. The soup does not.' },
-      { label: 'Compliment the soup', stat: 'knack', dc: 8, win: 'It cries a little and lets you pass.', lose: 'It wants you to try some. You do not want to.' },
+      { foe: 'ghoul', label: 'Put the fire out', stat: 'guard', dc: 9, win: 'Lid on the pot. Lid on the ghoul.', lose: 'The fire was the ghoul. It is upset now.' },
+      { foe: 'ghoul', label: 'Hit it first', stat: 'might', dc: 10, win: 'One clean swing. Dinner is cancelled.', lose: 'It ducks. The soup does not.' },
+      { foe: 'ghoul', label: 'Compliment the soup', stat: 'knack', dc: 8, win: 'It cries a little and lets you pass.', lose: 'It wants you to try some. You do not want to.' },
     ],
   },
   {
@@ -335,9 +335,9 @@ export const rooms = [
     intro: 'The brute fills the whole door. The goblin on his shoulder does the talking.',
     loot: 'shield_lost_ninth',
     moves: [
-      { label: 'Go for the knees', stat: 'might', dc: 11, win: 'Down he goes. The floor shakes for a while.', lose: 'His knees are fine. Yours are not.' },
-      { label: 'Brace and wait', stat: 'guard', dc: 9, win: 'He swings, tires out, and sits down.', lose: 'He did not tire out. He did not sit down.' },
-      { label: 'Talk to the goblin', stat: 'knack', dc: 10, win: 'Ten Crowns and the door is open.', lose: 'The goblin is offended. The brute is very offended.' },
+      { foe: 'brute', label: 'Go for the knees', stat: 'might', dc: 11, win: 'Down he goes. The floor shakes for a while.', lose: 'His knees are fine. Yours are not.' },
+      { foe: 'brute', label: 'Brace and wait', stat: 'guard', dc: 9, win: 'He swings, tires out, and sits down.', lose: 'He did not tire out. He did not sit down.' },
+      { foe: 'goblin', label: 'Talk to the goblin', stat: 'knack', dc: 10, win: 'Ten Crowns and the door is open.', lose: 'The goblin is offended. The brute is very offended.' },
     ],
   },
 ];

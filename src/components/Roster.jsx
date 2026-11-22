@@ -45,7 +45,7 @@ function FlipCard({ card, active, onOpen }) {
           </span>
           <span className="flip-face flip-back">
             <span className="back-stage">
-              {flipped ? <Sprite id={card.id} anim="skill" scale={3} ms={120} /> : <Sprite id={card.id} anim="idle" scale={3} />}
+              {flipped ? <Sprite id={card.id} anim="skill" scale={3} ms={110} x={70} y={154} /> : <Sprite id={card.id} anim="idle" scale={3} x={70} y={154} />}
             </span>
             <span className="skill-name">{skillName}.</span>
             <span className="skill-text">{skillRest.join('. ')}</span>
@@ -177,7 +177,7 @@ export function CharacterSheet({ cardId, onClose }) {
         <div className="sheet-grid">
           <div className="sheet-portrait">
             <img className="pixel" src={pixelPortrait(card.id)} alt="" width="288" height="384" />
-            <span className="sheet-sprite"><Sprite id={card.id} anim="skill" scale={2} /></span>
+            <span className="sheet-sprite"><Sprite id={card.id} anim="skill" scale={2} x={0} y={0} /></span>
           </div>
           <div className="sheet-copy">
             <p className="sheet-rarity" style={{ color: tier.color }}>

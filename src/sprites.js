@@ -1,11 +1,12 @@
 import info from '../public/assets/oversummoned/sprites/sprites.json';
 
-export const FRAME = 64;
 export const ROWS = {
   hero: ['idle', 'attack', 'hit', 'skill'],
   enemy: ['idle', 'attack', 'hit', 'death'],
 };
 
+// Each sheet has its own frame size. ax/ay is the feet point (body center, sole line)
+// inside a frame, so every character can be stood on the same floor at the same pixel scale.
 export function spriteInfo(id) {
   const entry = info[id];
   const rows = ROWS[entry.kind];
@@ -13,5 +14,5 @@ export function spriteInfo(id) {
   return { ...entry, rows, cols };
 }
 
-export const sheetUrl = (id) => `/assets/oversummoned/sprites/${id}.png`;
+export const sheetUrl = (id) => `/assets/oversummoned/sprites/${id}.png?v=4`;
 export const pixelPortrait = (id) => `/assets/oversummoned/pixel/${id}.png`;

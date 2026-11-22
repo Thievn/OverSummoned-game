@@ -1,119 +1,262 @@
 {
  "legionary": {
+  "kind": "hero",
+  "w": 56,
+  "h": 50,
+  "ax": 29,
+  "ay": 48,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "t_idle_pmm",
+   "attack": "t_atk_v3",
+   "hit": "hit",
+   "skill": "skill"
+  }
  },
  "gangster": {
+  "kind": "hero",
+  "w": 45,
+  "h": 51,
+  "ax": 22,
+  "ay": 49,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack",
+   "hit": "hit",
+   "skill": "skill"
+  }
  },
  "paramedic": {
+  "kind": "hero",
+  "w": 42,
+  "h": 51,
+  "ax": 16,
+  "ay": 49,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack",
+   "hit": "hit",
+   "skill": "skill"
+  }
  },
  "office_worker": {
+  "kind": "hero",
+  "w": 72,
+  "h": 50,
+  "ax": 36,
+  "ay": 48,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack2",
+   "hit": "hit3",
+   "skill": "skill"
+  }
  },
  "hunter": {
+  "kind": "hero",
+  "w": 54,
+  "h": 53,
+  "ax": 30,
+  "ay": 48,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack2",
+   "hit": "hit2",
+   "skill": "skill2"
+  }
  },
  "engineer": {
+  "kind": "hero",
+  "w": 61,
+  "h": 51,
+  "ax": 24,
+  "ay": 49,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack",
+   "hit": "hit",
+   "skill": "skill"
+  }
  },
  "plague_doctor": {
+  "kind": "hero",
+  "w": 52,
+  "h": 50,
+  "ax": 25,
+  "ay": 48,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack",
+   "hit": "hit3",
+   "skill": "skill"
+  }
  },
  "delivery_rider": {
+  "kind": "hero",
+  "w": 42,
+  "h": 51,
+  "ax": 18,
+  "ay": 49,
+  "height": 47,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "skill": 8
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "skill": 11
   },
-  "kind": "hero"
+  "src": {
+   "idle": "idle",
+   "attack": "attack2",
+   "hit": "hit",
+   "skill": "skill2"
+  }
  },
  "slime": {
+  "kind": "enemy",
+  "w": 44,
+  "h": 32,
+  "ax": 22,
+  "ay": 30,
+  "height": 26,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "death": 5
+   "idle": 9,
+   "attack": 9,
+   "hit": 7,
+   "death": 11
   },
-  "kind": "enemy"
+  "src": {
+   "idle": "idle",
+   "attack": "attack2",
+   "hit": "hit",
+   "death": "death3"
+  }
  },
  "goblin": {
+  "kind": "enemy",
+  "w": 44,
+  "h": 42,
+  "ax": 23,
+  "ay": 40,
+  "height": 38,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "death": 5
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "death": 11
   },
-  "kind": "enemy"
+  "src": {
+   "idle": "idle",
+   "attack": "attack",
+   "hit": "hit",
+   "death": "death"
+  }
  },
  "skeleton": {
+  "kind": "enemy",
+  "w": 57,
+  "h": 52,
+  "ax": 23,
+  "ay": 49,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "death": 5
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "death": 11
   },
-  "kind": "enemy"
+  "src": {
+   "idle": "idle",
+   "attack": "attack3",
+   "hit": "hit",
+   "death": "death"
+  }
  },
  "ghoul": {
+  "kind": "enemy",
+  "w": 51,
+  "h": 52,
+  "ax": 29,
+  "ay": 49,
+  "height": 46,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "death": 5
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "death": 11
   },
-  "kind": "enemy"
+  "src": {
+   "idle": "idle",
+   "attack": "attack2",
+   "hit": "hit3",
+   "death": "death"
+  }
  },
  "brute": {
+  "kind": "enemy",
+  "w": 75,
+  "h": 65,
+  "ax": 33,
+  "ay": 63,
+  "height": 59,
   "frames": {
-   "idle": 4,
-   "attack": 6,
-   "hit": 3,
-   "death": 5
+   "idle": 8,
+   "attack": 9,
+   "hit": 7,
+   "death": 11
   },
-  "kind": "enemy"
+  "src": {
+   "idle": "idle",
+   "attack": "attack4",
+   "hit": "hit",
+   "death": "death2"
+  }
  }
 }

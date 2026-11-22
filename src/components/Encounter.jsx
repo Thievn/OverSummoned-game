@@ -2,17 +2,15 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import Sprite from './Sprite.jsx';
 import { cardById, cardList, itemList } from '../catalog.js';
 import { fight, foeNames, rooms, sheet } from '../copy.js';
-import { pixelPortrait } from '../sprites.js';
+import { pixelPortrait, spriteInfo } from '../sprites.js';
 
 const BG_W = 384;
 const FLOOR = 135; // top of the floor ledge in the background art
-const TOP = FLOOR - 61; // feet sit on frame row 60, outline included
-const HERO_X = [28, 64, 100];
-const FOE_X = { 1: [250], 2: [218, 268], 3: [196, 240, 284] };
+const HERO_X = [58, 100, 142]; // body centers
+const FOE_X = { 1: [290], 2: [258, 314], 3: [236, 284, 334] };
 const PIPS = {
   1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8],
 };
-const FOE_H = { slime: 12, goblin: 25, skeleton: 36, ghoul: 42, brute: 57 };
 const SLOT_ORDER = ['Main Hand', 'Off Hand', 'Head', 'Chest', 'Feet', 'Trinket'];
 
 function Die({ value, rolling }) {
@@ -101,8 +99,9 @@ export default function Encounter() {
       setLast({ total, mod, dc: move.dc, won, stat: move.stat });
       setLog((lines) => [won ? move.win : move.lose, ...lines].slice(0, 4));
       if (won) {
-        const target = alive.findIndex(Boolean);
-        play(setHeroAnim, 2, 'attack');
+        const named = room.foes.findIndex((f, i) => f === move.foe && alive[i]);
+        const target = named >= 0 ? named : alive.findIndex(Boolean);
+        play(setHeroAnim, 2, 'skill');
         later(() => play(setHeroAnim, 1, 'attack'), 120);
         later(() => play(setFoeAnim, target, 'hit'), 380);
         later(() => {
@@ -144,8 +143,10 @@ export default function Encounter() {
             <div className="stage-fog" />
             <p className="room-name">{room.name}</p>
             {party.map((id, i) => (
-              <div key={`${id}-${i}`} className={`actor hero-actor${i === 2 ? ' lead' : ''}`} style={{ left: px(HERO_X[i]), top: px(TOP) }}>
-                <Sprite id={id} scale={s} anim={heroAnim[i].anim} tick={heroAnim[i].tick} loop={heroAnim[i].anim === 'idle'} onEnd={backToIdle(setHeroAnim, i)} />
+              <div key={`${id}-${i}`} className={`actor hero-actor${i === 2 ? ' lead' : ''}`} style={{ left: px(HERO_X[i]), top: px(FLOOR) }}>
+                <span key={heroAnim[i].tick} className={`pose${heroAnim[i].anim === 'attack' || heroAnim[i].anim === 'skill' ? ' lunge-r' : ''}`}>
+                  <Sprite id={id} scale={s} x={0} y={0} anim={heroAnim[i].anim} tick={heroAnim[i].tick} loop={heroAnim[i].anim === 'idle'} onEnd={backToIdle(setHeroAnim, i)} />
+                </span>
               </div>
             ))}
             {room.foes.map((id, i) => {
@@ -153,10 +154,13 @@ export default function Encounter() {
               const st = foeAnim[i] || idle();
               const gone = !alive[i] && st.anim === 'death';
               return (
-                <div key={`${room.id}-${id}-${i}`} className={`actor foe-actor${gone ? ' down' : ''}`} style={{ left: px(x), top: px(TOP) }}>
+                <div key={`${room.id}-${id}-${i}`} className={`actor foe-actor${gone ? ' down' : ''}`} style={{ left: px(x), top: px(FLOOR) }}>
+                  <span key={st.tick} className={`pose${st.anim === 'attack' ? ' lunge-l' : ''}`}>
                   <Sprite
                     id={id}
                     scale={s}
+                    x={0}
+                    y={0}
                     anim={st.anim}
                     tick={st.tick}
                     loop={st.anim === 'idle'}
@@ -167,12 +171,13 @@ export default function Encounter() {
                         : backToIdle(setFoeAnim, i)
                     }
                   />
-                  {!gone && s >= 2 && <span className="foe-tag" style={{ top: px(60 - FOE_H[id] - 9) }}>{foeNames[id]}</span>}
+                  </span>
+                  {!gone && s >= 2 && <span className="foe-tag" style={{ top: px(-spriteInfo(id).height - 12) }}>{foeNames[id]}</span>}
                 </div>
               );
             })}
             {phase === 'cleared' && loot && (
-              <img className="loot-pop pixel" src={loot.icon} alt="" style={{ left: px(236), top: px(70), width: px(32), height: px(32) }} />
+              <img className="loot-pop pixel" src={loot.icon} alt="" style={{ left: px(250), top: px(70), width: px(32), height: px(32) }} />
             )}
           </div>
         </div>

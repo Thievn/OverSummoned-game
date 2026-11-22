@@ -1128,7 +1128,7 @@ h1, h2, h3, .kicker, .btn { font-family: "Pixelify Sans", "Space Grotesk", sans-
   color: var(--cyan); text-shadow: 0 0 10px rgba(54, 214, 255, 0.8);
   background: rgba(7, 4, 13, 0.6); padding: 4px 10px; border-radius: 999px;
 }
-.actor { position: absolute; }
+.actor { position: absolute; width: 0; height: 0; }
 .actor .sprite { filter: drop-shadow(0 0 6px rgba(255, 46, 138, 0.0)); }
 .hero-actor.lead .sprite { filter: drop-shadow(0 0 5px rgba(54, 214, 255, 0.7)); }
 .foe-actor .sprite { filter: drop-shadow(0 0 5px rgba(255, 46, 138, 0.55)); }
@@ -1225,11 +1225,11 @@ h1, h2, h3, .kicker, .btn { font-family: "Pixelify Sans", "Space Grotesk", sans-
 .card-stats b { font-size: 0.95rem; color: #fff; }
 .flip-back { transform: rotateY(180deg); justify-content: flex-start; gap: 6px; }
 .back-stage {
-  width: 176px; height: 190px; border-radius: 8px; display: grid; place-items: end center; overflow: hidden;
+  position: relative; width: 176px; height: 190px; border-radius: 8px; display: block; overflow: hidden;
   background: url(/assets/oversummoned/pixel/bg_dungeon.png) 30% 100% / auto 230px no-repeat;
   image-rendering: pixelated; border: 1px solid rgba(255, 255, 255, 0.12);
 }
-.back-stage .sprite { margin-bottom: 27px; filter: drop-shadow(0 0 6px var(--tier)); }
+.back-stage .sprite { filter: drop-shadow(0 0 6px var(--tier)); }
 .skill-name { font: 700 1rem "Pixelify Sans", sans-serif; color: var(--tier); text-shadow: 0 0 10px var(--tier); }
 .skill-text { font-size: 0.82rem; line-height: 1.3; text-align: center; color: var(--ink); }
 .gear-row { display: flex; gap: 4px; margin-top: auto; }
@@ -1265,7 +1265,7 @@ h1, h2, h3, .kicker, .btn { font-family: "Pixelify Sans", "Space Grotesk", sans-
 .sheet-panel { border-radius: 16px; background: linear-gradient(160deg, rgba(255, 46, 138, 0.08), transparent 40%), #0e0720; border: 1px solid rgba(184, 77, 255, 0.4); }
 .sheet-portrait { position: relative; display: block; max-height: none; }
 .sheet-portrait > img { width: 100%; height: auto; border-radius: 10px; max-height: 300px; object-fit: contain; }
-.sheet-sprite { position: absolute; right: -6px; bottom: -10px; filter: drop-shadow(0 0 6px var(--cyan)); }
+.sheet-sprite { position: absolute; right: 40px; bottom: 6px; width: 0; height: 0; filter: drop-shadow(0 0 6px var(--cyan)); }
 
 @media (min-width: 900px) {
   .fight-shell { grid-template-columns: minmax(0, 1fr) 360px; align-items: stretch; }
@@ -1273,3 +1273,11 @@ h1, h2, h3, .kicker, .btn { font-family: "Pixelify Sans", "Space Grotesk", sans-
 @media (min-width: 900px) and (max-width: 1240px) {
   .fight-shell { grid-template-columns: 1fr; }
 }
+
+/* attackers step in toward the other side, then back */
+.actor .pose { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.actor .lunge-r { animation: lunge-r 820ms cubic-bezier(.3,.7,.4,1) both; }
+.actor .lunge-l { animation: lunge-l 820ms cubic-bezier(.3,.7,.4,1) both; }
+@keyframes lunge-r { 0%, 100% { transform: translateX(0); } 35%, 60% { transform: translateX(calc(var(--s, 2) * 12px)); } }
+@keyframes lunge-l { 0%, 100% { transform: translateX(0); } 35%, 60% { transform: translateX(calc(var(--s, 2) * -12px)); } }
+@media (prefers-reduced-motion: reduce) { .actor .lunge-r, .actor .lunge-l { animation: none; } }
