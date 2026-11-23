@@ -1,0 +1,9 @@
+# Repo-only files that should never be served on the site.
+supabase
+test
+scripts
+SUPABASE.md
+README.md
+*.mjs
+!js/**
+.git
