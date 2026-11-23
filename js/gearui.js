@@ -2,12 +2,13 @@
 // Used by the homepage and the game. No game rules live here; the math is in fight.js.
 import { GEAR, ERA_SETS, HERO_BASE, STAT_NAMES, SLOT_NAMES, BELT_SLOTS, slotKind } from './gear.js';
 import { heroTotals, canEquip } from './fight.js';
+import { portraitSrc, backSrc, iconFor } from './art.js';
 
 const RN = {common:'Common', uncommon:'Uncommon', rare:'Rare', epic:'Epic', legendary:'Legendary', absurd:'Absurd', unhinged:'Unhinged'};
 const SLOT_LABEL = {head:'Head', chest:'Chest', legs:'Legs', feet:'Boots', hands:'Gloves', neck:'Amulet', ring:'Ring', main:'Main hand', off:'Off hand', trinket:'Trinket', belt:'Belt'};
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt = (n) => Number(n || 0).toLocaleString('en-US');
-export const itemIcon = (id) => { const it = GEAR[id]; if (!it) return '/assets/gen/chest.png'; return '/assets/' + it.icon + '.png'; };
+export const itemIcon = (id) => { const it = GEAR[id]; if (!it) return iconFor(id, null); return iconFor(id, it.icon); };
 
 const GLY = {
   head:'<path d="M5 13c0-4 3-7 7-7s7 3 7 7v3h-3v-3h-8v3H5z"/><path d="M11 3h2v3h-2z"/>',
@@ -63,14 +64,14 @@ export function cardHTML(hero, opt = {}) {
   <div class="lift"><div class="tilt"><div class="f3">
    <div class="face front card r-${r}"><div class="card-in">
     <div class="card-top"><span class="gem"></span><span class="rar">${RN[r]}</span><span class="lvl">Lv ${opt.level || 1}</span></div>
-    <div class="card-art"><img class="px" src="/assets/portrait/${hid}.png" alt="${esc(hero.name)}"></div>
+    <div class="card-art"><img class="px" src="${portraitSrc(hid)}" alt="${esc(hero.name)}"></div>
     <div class="card-name h">${esc(hero.name)}</div><div class="card-title">${esc(hero.title)}</div>
     <div class="card-stats"><span class="s-str"><small>Attack</small><b>${T.total.atk}</b></span><span class="s-def"><small>Defense</small><b>${T.total.def}</b></span><span class="s-wit"><small>Health</small><b>${T.total.hp}</b></span></div>
     <div class="card-sub"><span>Speed <b>${T.total.spd}</b></span><span>Crit <b>${T.total.crit}%</b></span><span>Luck <b>${T.total.luck}</b></span></div>
     <div class="card-era">${esc(hero.era)}</div>
    </div><div class="glare"></div><span class="flip-hint">${FLIP}Flip</span></div>
    <div class="face back cardback r-${r}" data-view="${opt.view || 'bio'}"><div class="cb-in">
-    <div class="cb-scene"><img class="gif" alt="" src="/card_backs/${hero.gif || hid}.gif" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${esc(hero.era)}</span><div class="vig"></div>
+    <div class="cb-scene"><img class="gif" alt="" src="${backSrc(hid, hero.gif)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${esc(hero.era)}</span><div class="vig"></div>
       <div class="gcol l">${L}</div><div class="gcol r">${Rr}</div>
       ${S ? `<div class="ledger"><div class="lt">Ledger of Belongings</div><div class="ln">${esc(S.name)}</div><div class="row3">${ledger}</div></div>` : ''}
     </div>

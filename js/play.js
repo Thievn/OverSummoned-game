@@ -1,4 +1,5 @@
-import { SB_URL, SB_KEY, HEROES, ITEMS } from './catalog.js';
+import { SB_URL, SB_KEY, HEROES, ITEMS, GEAR_OF } from './catalog.js';
+import { registerArt } from './art.js';
 import { bibleState, freshState, tick, dispatch } from './engine.js';
 import { render, gate } from './ui.js';
 import { bindCards, setGearProvider, isOpen, hideTip } from './gearui.js';
@@ -281,6 +282,26 @@ async function loadCollection() {
 async function loadDefs() {
   const { data, error } = await sb.rpc('os_defs');
   if (error || !data) return;
+  applyDefs(data);
+  if (Object.values(data.heroes || {}).some(h => h.own)) await loadOwnArt();
+}
+
+function applyDefs(data) {
+  // Cards that belong to this account arrive with the catalog. They exist nowhere else.
+  for (const [id, it] of Object.entries(data.items || {})) {
+    if (!it || !it.own || GEAR[id]) continue;
+    GEAR[id] = {name: it.name, rarity: it.rarity, slot: it.slot, icon: it.icon, hero: it.hero, set: it.set, own: true};
+    ITEMS[id] = {name: it.name, rarity: it.rarity, icon: it.icon, own: true, kind: it.slot === 'belt' ? 'food' : 'gear', slot: it.slot, value: 0};
+  }
+  for (const [id, st] of Object.entries(data.sets || {})) if (st.own && !ERA_SETS[id]) ERA_SETS[id] = {name: st.name, items: st.items || [], own: true};
+  for (const [id, h] of Object.entries(data.heroes || {})) {
+    if (!h.own || HEROES[id]) continue;
+    const o = h.own;
+    HEROES[id] = {id, name: o.name, title: o.title, rarity: o.rarity, era: o.era, eraBg: o.eraBg || 'era_modern', perk: o.perk || '', perkKey: o.perkKey || '',
+      skill: o.skill || 'Delve', back: o.back || '', backText: o.backText || '', foot: o.foot, bio: o.bio, gif: id, own: true, base: h.base};
+    HERO_BASE[id] = {short: h.short || o.name.split(' ')[0], base: h.base, fx: h.fx || {}};
+    GEAR_OF[id] = Object.keys(GEAR).filter(x => GEAR[x].hero === id);
+  }
   for (const [id, it] of Object.entries(data.items || {})) {
     if (!GEAR[id] || !it) continue;
     const g = GEAR[id];
@@ -288,6 +309,20 @@ async function loadDefs() {
   }
   for (const [id, st] of Object.entries(data.sets || {})) if (ERA_SETS[id]) Object.assign(ERA_SETS[id], {name: st.name, bonus: st.bonus, text: st.text, stats: st.stats || {}, fx: st.fx || {}});
   for (const [id, h] of Object.entries(data.heroes || {})) if (HERO_BASE[id] && h.base) { HERO_BASE[id].base = h.base; HERO_BASE[id].fx = h.fx || HERO_BASE[id].fx; }
+}
+
+// Own-card art, kept on this device after the first load and refreshed when it changes.
+async function loadOwnArt() {
+  const key = 'os_own_art_' + ((await sb.auth.getUser()).data.user?.id || '');
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+  if (cached) for (const [id, a] of Object.entries(cached)) registerArt(id, a);
+  const { data, error } = await sb.rpc('os_owner_art');
+  if (error || !data) return;
+  const same = cached && Object.keys(data).every(id => cached[id] && cached[id].v === data[id].v);
+  if (same) return;
+  for (const [id, a] of Object.entries(data)) registerArt(id, a);
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) {}
 }
 
 setGearProvider((card) => {
@@ -367,6 +402,17 @@ async function boot() {
     state.isAdmin = params.get('admin') === '1'; // preview only: shows the button, the books still check the server
     state.pickMin = 15;
     state.floor = state.floor || 7;
+    // Preview only: a test page can hand in an owned card (catalog + art) to see how it looks.
+    const own = window.__osOwnPreview;
+    if (own && own.defs) {
+      applyDefs(own.defs);
+      for (const [id, a] of Object.entries(own.art || {})) registerArt(id, a);
+      for (const h of own.heroes || []) { state.heroes[h.id] = {level: h.level || 1, dupes: 0}; state.gear = state.gear || {}; state.gear[h.id] = h.gear || {}; }
+      state.found = state.found || [];
+      (own.found || []).forEach(x => { if (!state.found.includes(x)) state.found.push(x); });
+      if (own.sel) state.sel = own.sel;
+      if (own.party) { state.party = own.party; if (state.delve) state.delve.party = own.party; }
+    }
     paint();
     if (!state.freeze) setInterval(() => { tick(state, Date.now()); }, 1000);
     return;

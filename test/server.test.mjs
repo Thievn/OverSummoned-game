@@ -37,6 +37,7 @@ test('every skill spot on the server matches the game list', {skip}, () => {
     const spec = JSON.parse(psql(`select os_node('${sk}', '${n.id}')`));
     assert.equal(spec.sec, n.sec, sk + ':' + n.id); assert.equal(spec.xp, n.xp); assert.equal(spec.item, n.item); assert.equal(spec.qty, n.qty || 1);
     assert.deepEqual(spec.use || null, n.use || null);
+    assert.equal(spec.every || null, n.every || null, sk + ':' + n.id + ' every');
     assert.equal(Number(psql(`select os_node_lv('${sk}', '${n.id}')`)), n.lv);
   }
 });
@@ -228,4 +229,92 @@ test('the admin check is done on the server', {skip}, () => {
 test('signed-out callers get nothing', {skip}, () => {
   const nobody = {uid: '', email: ''};
   for (const sql of ['select os_state()', 'select os_claim()', `select os_act('pack', '{}')`, 'select os_collection()', `select os_equip('legionary', 'head', 'galea_helmet')`]) fails(nobody, sql, /not allowed/);
+});
+
+test('sigil rite pays one sigil per 4 actions and keeps the leftover actions', {skip}, () => {
+  const u = newPlayer();
+  psql(`update os_player set skill = jsonb_set(coalesce(skill, '{}'::jsonb), '{summoning}', '{"xp": 9000000}'::jsonb) where uid = '${u.uid}'`);
+  as(u, `select os_act('skill', '{"skill":"summoning","node":"sigil"}') \\g /dev/null`);
+  const iv = 8 * Number(psql(`select os_skill_mult('${u.uid}', 'summoning', null)`));
+  const s0 = Number(P(u, 'sigils'));
+  psql(`update os_player set last_tick = now() - make_interval(secs => ${iv * 6 + 0.2}) where uid = '${u.uid}'`);
+  as(u, 'select os_state() \\g /dev/null');
+  assert.equal(Number(P(u, 'sigils')) - s0, 1, 'six actions: one sigil');
+  assert.equal(P(u, "skill->'summoning'->>'part'"), '2', 'two actions carried');
+  psql(`update os_player set last_tick = now() - make_interval(secs => ${iv * 2 + 0.2}) where uid = '${u.uid}'`);
+  as(u, 'select os_state() \\g /dev/null');
+  assert.equal(Number(P(u, 'sigils')) - s0, 2, 'two more actions finish the second sigil');
+});
+
+// Owned cards: one card that belongs to the den owner's account and nobody else's.
+const OWNER = {uid: '00000000-0000-4000-8000-00000000d0e0', email: 'thievnsden@gmail.com'};
+const OWNED = !URL ? [] : psql(`select coalesce(string_agg(id, ','), '') from os_hero_def where owner_uid is not null`).split(',').filter(Boolean);
+const ownSkip = skip || (!OWNED.length && 'no owned card seeded');
+const asRls = (u, sql) => as(u, `set role authenticated;\n${sql}`).split('\n').pop();
+
+test('the owner gets the owned card once, already wearing its gear', {skip: ownSkip}, () => {
+  psql(`delete from os_event where uid = '${OWNER.uid}' and kind = 'kit'; delete from os_gear where uid = '${OWNER.uid}'; delete from os_bag where uid = '${OWNER.uid}' and item_id in (select id from os_item_def where owner_uid is not null); delete from os_hero where uid = '${OWNER.uid}' and hero_id = any(array['${OWNED.join("','")}'])`);
+  const st = asJson(OWNER, 'select os_state()');
+  for (const h of OWNED) {
+    assert.ok(st.heroes.some(x => x.hero_id === h), 'owner has ' + h);
+    const worn = JSON.parse(psql(`select jsonb_object_agg(slot, item_id) from os_gear where uid = '${OWNER.uid}' and hero_id = '${h}'`));
+    const set = psql(`select string_agg(id, ',' order by id) from os_item_def where set_id = '${h}'`).split(',');
+    for (const it of set) assert.ok(Object.values(worn).includes(it), it + ' is worn');
+    assert.ok(worn.belt1, 'a potion on the belt');
+    // The full set is on, so the set bonus counts in the real stats.
+    const stats = JSON.parse(psql(`select os_hero_stats('${OWNER.uid}', '${h}')`));
+    const bonus = JSON.parse(psql(`select stats from os_set where id = '${h}'`));
+    const base = JSON.parse(psql(`select base from os_hero_def where id = '${h}'`));
+    for (const k of Object.keys(bonus)) assert.ok(stats[k] >= base[k] + bonus[k], k + ' includes the set bonus');
+  }
+  // Taking gear off and coming back does not hand out a second kit.
+  as(OWNER, `select os_equip('${OWNED[0]}', 'neck', '') \\g /dev/null`);
+  as(OWNER, 'select os_state() \\g /dev/null');
+  assert.equal(Number(psql(`select count(*) from os_event where uid = '${OWNER.uid}' and kind = 'kit'`)), OWNED.length);
+  const neck = psql(`select id from os_item_def where set_id = '${OWNED[0]}' and slot = 'neck'`);
+  assert.equal(bag(OWNER, neck), 1, 'the necklace went to the bank, not doubled');
+});
+
+test('nobody else can see the owned card, its set, its gear or its art', {skip: ownSkip}, () => {
+  const u = newPlayer();
+  const defs = asJson(u, 'select os_defs()');
+  const ownItems = psql(`select string_agg(id, ',') from os_item_def where owner_uid is not null`).split(',');
+  for (const h of OWNED) { assert.ok(!(h in defs.heroes)); assert.ok(!(h in defs.sets)); }
+  for (const i of ownItems) assert.ok(!(i in defs.items), i + ' hidden from the catalog');
+  assert.deepEqual(asJson(u, 'select os_owner_art()'), {});
+  assert.ok(!asJson(u, 'select os_state()').known.some(h => OWNED.includes(h)));
+  // Straight table reads under row security see none of it either.
+  assert.equal(asRls(u, `select count(*) from os_hero_def where owner_uid is not null`), '0');
+  assert.equal(asRls(u, `select count(*) from os_item_def where owner_uid is not null`), '0');
+  assert.equal(asRls(u, `select count(*) from os_set where owner_uid is not null`), '0');
+  assert.ok(Number(asRls(u, `select count(*) from os_hero_def`)) >= 9, 'the shared cards are still there');
+  // The owner does see them.
+  assert.equal(asRls(OWNER, `select count(*) from os_hero_def where owner_uid is not null`), String(OWNED.length));
+  const mine = asJson(OWNER, 'select os_defs()');
+  for (const h of OWNED) { assert.ok(mine.heroes[h].own.name); assert.ok(mine.sets[h].own); }
+});
+
+test('the owned card and its gear can never reach another account', {skip: ownSkip}, () => {
+  const u = newPlayer();
+  const ownItems = psql(`select string_agg(id, ',') from os_item_def where owner_uid is not null`).split(',');
+  for (const h of OWNED) assert.equal(psql(`select os_grant_hero('${u.uid}', '${h}')`), 'f');
+  for (const i of ownItems) {
+    psql(`select os_give('${u.uid}', '${i}', 1)`);
+    psql(`insert into os_bag(uid, item_id, qty) values ('${u.uid}', '${i}', 1) on conflict do nothing`);
+    psql(`insert into os_gear(uid, hero_id, slot, item_id) values ('${u.uid}', 'office_worker', 'trinket2', '${i}') on conflict do nothing`);
+  }
+  for (const h of OWNED) psql(`insert into os_hero(uid, hero_id) values ('${u.uid}', '${h}') on conflict do nothing`);
+  assert.equal(psql(`select count(*) from os_bag where uid = '${u.uid}' and item_id = any(array['${ownItems.join("','")}'])`), '0');
+  assert.equal(psql(`select count(*) from os_gear where uid = '${u.uid}' and item_id = any(array['${ownItems.join("','")}'])`), '0');
+  assert.equal(psql(`select count(*) from os_hero where uid = '${u.uid}' and hero_id = any(array['${OWNED.join("','")}'])`), '0');
+  // Packs and delve loot never roll it. Forty packs would find a one-in-ten card almost surely.
+  psql(`update os_player set gold = 1000000 where uid = '${u.uid}'`);
+  for (let i = 0; i < 40; i++) as(u, `select os_act('pack', '{}') \\g /dev/null`);
+  assert.equal(psql(`select count(*) from os_hero where uid = '${u.uid}' and hero_id = any(array['${OWNED.join("','")}'])`), '0');
+  assert.equal(psql(`select count(*) from os_item_def where owner_uid is not null and in_pool`), '0');
+  assert.equal(psql(`select count(*) from os_hero_def where owner_uid is not null and found`), '0', 'never marked as found for the shared pool');
+  // It cannot be sold or listed, not even by the owner.
+  psql(`select os_give('${OWNER.uid}', '${ownItems[0]}', 1)`);
+  fails(OWNER, `select os_sell('${ownItems[0]}', 1)`, /stays with you/);
+  assert.throws(() => psql(`insert into os_listing(seller, kind, item_id, qty, price) values ('${OWNER.uid}', 'item', '${ownItems[0]}', 1, 5)`), /stays with you/);
 });

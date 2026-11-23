@@ -1,5 +1,6 @@
 import { GEAR, HERO_BASE } from './gear.js';
 /* OverSummoned catalog. Keep node numbers in sync with supabase/migrations os_node(). */
+import { iconFor } from './art.js';
 export const SB_URL = 'https://eresamyqxarlrdgudgrw.supabase.co';
 export const SB_KEY = 'sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
 
@@ -53,6 +54,7 @@ for (const [id, h] of Object.entries(HERO_BASE)) if (HEROES[id]) HEROES[id].base
 export function itemSrc(id) {
   const it = ITEMS[id];
   if (!it) return '/assets/gen/chest.png';
+  if (it.own || it.icon.startsWith('own/')) return iconFor(id, it.icon);
   if (it.icon.startsWith('items/')) return '/assets/' + it.icon + '.png';
   return '/assets/gen/' + it.icon + '.png';
 }

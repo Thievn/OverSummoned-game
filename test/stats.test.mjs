@@ -181,3 +181,16 @@ test('timers in the browser follow the server once it is in charge', () => {
   const want = Math.round(3.0 * fasterMult(heroOutFx('engineer', lv, s.gear.engineer).mining) * 1000);
   assert.equal(intervalMs(s, 'mining', 'moonsilver'), Math.max(400, want));
 });
+
+test('sigil rite: one sigil per 4 actions, leftovers carry over (same as the server)', async () => {
+  const { tick } = await import('../js/engine.js');
+  const s = freshState('T'); s.preview = true;
+  s.skills.summoning.xp = 9000000; s.active = 'summoning'; s.skills.summoning.node = 'sigil';
+  const iv = intervalMs(s, 'summoning', 'sigil');
+  const before = s.sigils || 0;
+  s.lastTick = 1e12; tick(s, 1e12 + iv * 6 + 5);
+  assert.equal((s.sigils || 0) - before + ((s.bag || {}).summon_sigil || 0), 1);
+  assert.equal(s.skills.summoning.part, 2);
+  tick(s, s.lastTick + iv * 2 + 5);
+  assert.equal((s.sigils || 0) - before + ((s.bag || {}).summon_sigil || 0), 2);
+});

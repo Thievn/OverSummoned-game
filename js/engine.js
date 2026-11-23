@@ -299,8 +299,9 @@ export function tick(state, now) {
         if (poolPct(state, state.active) >= 95 && rng(state) < 0.5) qty += actions;
         if (hero && hero.perkKey === 'wood' && state.active === 'woodcutting') qty += Math.floor(actions * 0.2);
         if (hero && hero.perkKey === 'alchemy' && state.active === 'alchemy') qty += actions;
-        if (node.every) qty = Math.floor(actions / node.every);
-        if (!node.every || qty > 0) grantItem(state, node.item, Math.max(node.every ? qty : qty, node.every ? qty : actions > 0 && !node.every ? qty : 0), hold);
+        // Slow finds (one per N actions) keep the leftover actions, the same as the server.
+        if (node.every) { const all = (sk.part || 0) + actions; qty = Math.floor(all / node.every) * (node.qty || 1); sk.part = all % node.every; }
+        if (qty > 0) grantItem(state, node.item, qty, hold);
         if (node.item === 'card_shard' || rng(state) < actions * 0.002) {
           if (rng(state) < 0.15) grantItem(state, 'card_shard', 1, hold);
         }

@@ -5,6 +5,7 @@ const rows = [], lvs = [];
 for (const [sk, list] of Object.entries(NODES)) for (const n of list) {
   const spec = {sec: n.sec, xp: n.xp, item: n.item, qty: n.qty || 1};
   if (n.use) spec.use = n.use;
+  if (n.every) spec.every = n.every;
   rows.push(`    when '${sk}:${n.id}' then '${JSON.stringify(spec)}'::jsonb`);
   lvs.push(`    when '${sk}:${n.id}' then ${n.lv}`);
 }

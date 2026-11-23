@@ -6,6 +6,7 @@ import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.
 import { heroTotals, coins } from './fight.js';
 import { GEAR, STAT_NAMES, ERA_SETS } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
+import { portraitSrc, backSrc, sideSrc, sideMeta, frontSrc, frontMeta } from './art.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ico = (n, cls='') => `<img class="px ${cls}" src="/assets/gen/${n}.png" alt="">`;
@@ -27,7 +28,7 @@ function cardFront(id, level, z) {
   const T = heroTotals(id, level || 1, GEARS[id] || {}).total;
   return `<div class="card r-${h.rarity}" style="--z:${z || 1}" data-act="sel" data-hero="${id}"><div class="card-in">
 <div class="card-top"><span class="gem"></span><span class="rar">${RARITY_NAME[h.rarity]}</span><span class="lvl">Lv ${level || 1}</span></div>
-<div class="card-art"><img class="px" src="/assets/portrait/${id}.png" alt="${esc(h.name)}"></div>
+<div class="card-art"><img class="px" src="${portraitSrc(id)}" alt="${esc(h.name)}"></div>
 <div class="card-name h">${esc(h.name)}</div><div class="card-title">${esc(h.title)}</div>
 <div class="card-stats"><span class="s-str"><small>Attack</small><b>${T.atk}</b></span><span class="s-def"><small>Defense</small><b>${T.def}</b></span><span class="s-wit"><small>Health</small><b>${T.hp}</b></span></div>
 <div class="card-era">${esc(h.era)}</div></div></div>`;
@@ -37,7 +38,7 @@ function cardBack(id, z) {
   const h = HEROES[id];
   if (!h) return '';
   return `<div class="cardback r-${h.rarity}" style="--z:${z || 1}"><div class="cb-in">
-<div class="cb-scene"><img class="px" alt="" src="/card_backs/${h.gif}.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${esc(h.era)}</span></div>
+<div class="cb-scene"><img class="px" alt="" src="${backSrc(h.id || id, h.gif)}" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${esc(h.era)}</span></div>
 <div class="row"><div class="cb-skill">${esc(h.back)}</div><div class="sp"></div><span class="tag v">Skill</span></div>
 <div class="cb-text">${esc(h.backText)}</div>
 <div class="cb-foot"><span>${esc(h.foot || h.perk)}</span><span>${RARITY_NAME[h.rarity]}</span></div>
@@ -46,7 +47,7 @@ function cardBack(id, z) {
 
 function mini(id) {
   const h = HEROES[id];
-  return `<button type="button" class="mini-card r-${h.rarity}" data-act="sel" data-hero="${id}"><div class="in"><img class="px" src="/assets/portrait/${id}.png" alt=""></div><div class="nm">${esc(h.name.split(' ')[0] === h.name ? h.name : h.name)}<small>${RARITY_NAME[h.rarity]}</small></div></button>`;
+  return `<button type="button" class="mini-card r-${h.rarity}" data-act="sel" data-hero="${id}"><div class="in"><img class="px" src="${portraitSrc(id)}" alt=""></div><div class="nm">${esc(h.name.split(' ')[0] === h.name ? h.name : h.name)}<small>${RARITY_NAME[h.rarity]}</small></div></button>`;
 }
 
 function clock(ms) {
@@ -117,7 +118,7 @@ ${meters(s)}<div class="sp"></div>${chip(s)}
 function frontRow(heroes) {
   return heroes.map(h => {
     const fr = {legionary:{w:41,h:50,ax:23,ay:48,n:8}, engineer:{w:53,h:51,ax:24,ay:49,n:8}, will_slapton:{w:63,h:57,ax:32,ay:55,n:11}, gangster:{w:37,h:50,ax:17,ay:48,n:8}, paramedic:{w:59,h:49,ax:30,ay:47,n:8}};
-    const meta = fr[h.id] || fr.engineer;
+    const meta = frontMeta(h.id) || fr[h.id] || fr.engineer;
     const scale = h.scale || 2.9;
     const w = meta.w * scale, ht = meta.h * scale, n = h.anim === 'skill' ? 11 : meta.n;
     const ww = (h.anim === 'skill' ? (h.id === 'will_slapton' ? 63 : meta.w) : meta.w) * scale;
@@ -126,7 +127,7 @@ function frontRow(heroes) {
     const fh = (h.id === 'will_slapton' && h.anim === 'skill' ? 57 : meta.h) * scale;
     const left = h.x - (h.id === 'will_slapton' ? 32 : meta.ax) * scale;
     const topv = h.y - (h.id === 'will_slapton' ? 55 : meta.ay) * scale;
-    return `<div class="sprite fsp" style="width:${fw}px;height:${fh}px;left:${left}px;top:${topv}px;background-image:url(/assets/front/${h.id}_${h.anim}.png);background-size:${frames * fw}px ${fh}px;animation:fs ${frames * 110}ms steps(${frames}) infinite;--sw:-${frames * fw}px"></div>`;
+    return `<div class="sprite fsp" style="width:${fw}px;height:${fh}px;left:${left}px;top:${topv}px;background-image:url(${frontSrc(h.id, h.anim)});background-size:${frames * fw}px ${fh}px;animation:fs ${frames * 110}ms steps(${frames}) infinite;--sw:-${frames * fw}px"></div>`;
   }).join('');
 }
 
@@ -148,8 +149,8 @@ function cityDesk(s) {
    <div class="row" style="margin-top:8px">${btn('Watch the fight', 'go', 'sm').replace('data-act="go"', 'data-go="delve"')}</div></div>` : `<div class="panel"><div class="ph">${ico('swords','ico')}<div><h3>Delve</h3><small>The stairs are quiet</small></div></div><div class="row">${btn('Send them down', 'go', 'sm').replace('data-act="go"', 'data-go="delve"')}</div></div>`;
   const crier = s.crier.slice(0, 4).map((c, i) => `<div class="li blk"><span class="tag ${['p','c','l','v'][i % 4]}">${esc(c.tag)}</span> ${esc(c.msg)}</div>`).join('');
   const stockLeft = (s.stocksUntil > s.now ? s.stocksUntil : (s.stocksWho?.until || 0)) - s.now;
-  const stocks = stockLeft > 0 ? `<div class="li"><img class="px" src="/assets/portrait/${s.stocksWho?.face || 'gangster'}.png" style="border-radius:6px;object-fit:cover" alt=""><div><b>${esc(s.stocksWho?.name || s.name)}</b><br><small class="mut">${esc(s.stocksWho?.reason || 'In the Stocks')}</small></div><div class="sp"></div><span class="nums pk">${clock(stockLeft)}</span></div>` : '';
-  const inf = s.infirmary.filter(i => i.until > s.now).map(i => `<div class="li"><img class="px" src="/assets/portrait/${i.face || i.id}.png" style="border-radius:6px;object-fit:cover" alt=""><div><b>${esc(i.name)}</b><br><small class="mut">${esc(i.reason)}</small></div><div class="sp"></div><span class="nums cy">${clock(i.until - s.now)}</span></div>`).join('');
+  const stocks = stockLeft > 0 ? `<div class="li"><img class="px" src="${portraitSrc(s.stocksWho?.face || 'gangster')}" style="border-radius:6px;object-fit:cover" alt=""><div><b>${esc(s.stocksWho?.name || s.name)}</b><br><small class="mut">${esc(s.stocksWho?.reason || 'In the Stocks')}</small></div><div class="sp"></div><span class="nums pk">${clock(stockLeft)}</span></div>` : '';
+  const inf = s.infirmary.filter(i => i.until > s.now).map(i => `<div class="li"><img class="px" src="${portraitSrc(i.face || i.id)}" style="border-radius:6px;object-fit:cover" alt=""><div><b>${esc(i.name)}</b><br><small class="mut">${esc(i.reason)}</small></div><div class="sp"></div><span class="nums cy">${clock(i.until - s.now)}</span></div>`).join('');
   const crew = s.crew ? `<div class="panel"><div class="ph">${ico('banner','ico')}<div><h3>${esc(s.crew.name)}</h3><small>Crew goal</small></div></div>
    <div style="font-size:13px;margin-bottom:6px">Fill the crew vault with ${num(s.crew.goal)} Moonsilver</div>
    ${bar(Math.round(100 * s.crew.vaultOre / s.crew.goal), 'l')}<div class="row" style="margin-top:6px;font-size:12px"><span class="mut">${num(s.crew.vaultOre)} / ${num(s.crew.goal)}</span><div class="sp"></div><span class="lm">You gave ${num(s.crew.youGave)}</span></div></div>` : `<div class="panel"><div class="ph"><h3>Crew</h3></div><p class="mut">No banner yet.</p>${btn('Find a crew', 'go', 'sm').replace('data-act="go"', 'data-go="crew"')}</div>`;
@@ -213,7 +214,7 @@ function collectionsView(s) {
     const S = ERA_SETS[id], h = HEROES[id]; const own = !!s.heroes[id];
     const have = S.items.filter(x => fs.has(x)).length; piecesFound += have; if (have === 3) setsDone++;
     return `<div class="col-set ${have === 3 ? 'done' : have ? 'some' : 'none'} ${own ? '' : 'nohero'}">
-  <div class="cs-head"><img class="px cs-face" src="/assets/portrait/${id}.png" alt=""><div><b class="h">${esc(S.name)}</b><small>${esc(h.name)}${own ? '' : ' · card not found yet'}</small></div><div class="sp"></div><span class="cs-pips">${[0,1,2].map(n => `<i class="${n < have ? 'on' : ''}"></i>`).join('')}</span></div>
+  <div class="cs-head"><img class="px cs-face" src="${portraitSrc(id)}" alt=""><div><b class="h">${esc(S.name)}</b><small>${esc(h.name)}${own ? '' : ' · card not found yet'}</small></div><div class="sp"></div><span class="cs-pips">${[0,1,2].map(n => `<i class="${n < have ? 'on' : ''}"></i>`).join('')}</span></div>
   <div class="cs-items">${S.items.map(cell).join('')}</div>
   <div class="cs-bonus ${have === 3 ? 'on' : ''}"><b>${esc(S.bonus)}</b> ${have === 3 ? esc(S.text) : 'Wear all three on ' + esc(h.name.replace(/^Doctor /, '').split(' ')[0]) + ' to wake this up.'}</div></div>`;
   }).join('');
@@ -237,8 +238,7 @@ function delvePct(s) {
   return Math.max(0, Math.min(100, (s.now - a) / Math.max(1, b - a) * 100));
 }
 
-function sideSprite(id, row, scale, x, y, flip) {
-  const meta = {
+const SIDE_META = {
     legionary:{w:56,h:50,ax:29,ay:48,idle:8,attack:9},
     paramedic:{w:42,h:51,ax:16,ay:49,idle:8,attack:9},
     engineer:{w:61,h:51,ax:24,ay:49,idle:8,attack:9},
@@ -246,14 +246,24 @@ function sideSprite(id, row, scale, x, y, flip) {
     skeleton:{w:57,h:52,ax:23,ay:49,idle:8,attack:9},
     gangster:{w:45,h:51,ax:22,ay:49,idle:8,attack:9},
     hunter:{w:54,h:53,ax:30,ay:48,idle:8,attack:9}
-  }[id];
+};
+// The squad in the room: the real party where we have their sprites, the usual three otherwise.
+function delveCrew(d, s) {
+  let crew = ((d && d.party) || s.party || []).filter(hasSide).slice(0, 3);
+  if (crew.length < 3) crew = crew.concat(['legionary','paramedic','engineer'].filter(x => !crew.includes(x))).slice(0, 3);
+  const spots = [[150,'idle'],[250,'idle'],[400,'attack']];
+  return crew.map((id, i) => sideSprite(id, spots[i][1], 3, spots[i][0], 250, false)).join('');
+}
+const hasSide = (id) => !!(SIDE_META[id] || sideMeta(id));
+function sideSprite(id, row, scale, x, y, flip) {
+  const meta = SIDE_META[id] || sideMeta(id);
   if (!meta) return '';
   const rows = {idle:0, attack:1, hit:2, skill:3};
   const frames = meta[row] || 8;
   const cols = 11;
   const w = meta.w * scale, h = meta.h * scale;
   const left = x - meta.ax * scale, top = y - meta.ay * scale;
-  return `<div class="sprite ${flip ? 'face-r' : ''}" style="width:${w}px;height:${h}px;left:${left}px;top:${top}px;background-image:url(/assets/sprites/${id}.png);background-size:${cols*w}px ${4*h}px;background-position:0 ${-rows[row]*h}px;animation:fs ${frames*110}ms steps(${frames}) infinite;--sw:-${frames*w}px"></div>`;
+  return `<div class="sprite ${flip ? 'face-r' : ''}" style="width:${w}px;height:${h}px;left:${left}px;top:${top}px;background-image:url(${sideSrc(id)});background-size:${cols*w}px ${4*h}px;background-position:0 ${-rows[row]*h}px;animation:fs ${frames*110}ms steps(${frames}) infinite;--sw:-${frames*w}px"></div>`;
 }
 
 function skillView(s, id) {
@@ -271,7 +281,7 @@ function skillView(s, id) {
     const on = active && sk.node === n.id;
     const rock = n.rock.startsWith('items/') ? '/assets/' + n.rock + '.png' : '/assets/gen/' + n.rock + '.png';
     return `<button type="button" class="panel ${on ? 'glowc' : ''}" style="${locked ? 'opacity:.5;' : ''}padding:10px;text-align:left" data-act="skill" data-skill="${id}" data-node="${n.id}" ${locked ? 'disabled' : ''}>
-<div class="row"><img class="px" src="${rock}" style="width:64px;height:64px;${locked ? 'filter:grayscale(1) brightness(.5)' : ''}" alt=""><div style="flex:1"><b class="h" style="font-size:15px">${esc(n.name)}</b><div class="mut" style="font-size:12px">${locked ? 'Unlocks at Lv ' + n.lv : n.xp + ' XP · ' + n.sec.toFixed(1) + 's'}</div>
+<div class="row"><img class="px" src="${rock}" style="width:64px;height:64px;${locked ? 'filter:grayscale(1) brightness(.5)' : ''}" alt=""><div style="flex:1"><b class="h" style="font-size:15px">${esc(n.name)}</b><div class="mut" style="font-size:12px">${locked ? 'Unlocks at Lv ' + n.lv : n.xp + ' XP · ' + n.sec.toFixed(1) + 's' + (n.every ? ' · 1 per ' + n.every + ' tries' : '')}</div>
 <div class="row" style="margin-top:4px"><img class="px" src="${itemSrc(n.item)}" style="width:20px" alt=""><span class="tag ${locked ? '' : 'c'}">${locked ? 'Locked' : 'Mastery ' + Math.round(sk.mastery[n.id] || 0)}</span></div></div></div>
 ${bar(locked ? 0 : (sk.mastery[n.id] || (on ? 62 : 100)), '')}</button>`;
   }).join('');
@@ -357,7 +367,7 @@ function delveView(s) {
   const squad = (d.party || []).map((id, i) => {
     const hp = fa ? [fa.hp[i] ?? 0, fa.max[i] ?? 1] : ((d.hp && d.hp[id]) || [100,100]);
     const pct = Math.round(100 * hp[0] / Math.max(1, hp[1]));
-    return `<div class="li"><img class="px" src="/assets/portrait/${id}.png" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><div class="row"><b>${esc(HEROES[id].name)}</b><div class="sp"></div><span class="nums mut" style="font-size:12px">${hp[0]}/${hp[1]}</span></div>${bar(pct, hp[0] > 0 ? 'l' : 'p')}</div></div>`;
+    return `<div class="li"><img class="px" src="${portraitSrc(id)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><div class="row"><b>${esc(HEROES[id].name)}</b><div class="sp"></div><span class="nums mut" style="font-size:12px">${hp[0]}/${hp[1]}</span></div>${bar(pct, hp[0] > 0 ? 'l' : 'p')}</div></div>`;
   }).join('');
   const lines = fa ? fa.seen.slice(-9).reverse() : [];
   const log = lines.map(e => `<div class="li" style="font-size:12.5px">${e.c === 'room' || e.c === 'end' ? `<b class="cy">${esc(e.x)}</b>` : esc(e.x)} ${e.v ? `<b class="${e.c === 'hurt' || e.c === 'down' ? 'pk' : e.c === 'heal' ? 'lm' : 'cy'}">${esc(e.v)}</b>` : ''}</div>`).join('') || '<div class="li mut">The squad is still on the stairs.</div>';
@@ -368,7 +378,7 @@ function delveView(s) {
   return `<div style="display:grid;grid-template-columns:1fr 300px;gap:12px;height:100%">
 <div class="g" style="grid-template-rows:auto 300px 1fr;min-height:0">
  <div class="panel"><div class="row">${ico('swords','ico')}<b class="h" style="font-size:20px">${esc(d.name)}</b><span class="tag p">Floor ${d.floor} of 10</span><div class="sp"></div>${pips}${ico('skull')}</div></div>
- <div class="scene" style="background-image:url(/assets/bg_dungeon.png)"><div style="position:absolute;inset:0;z-index:2">${sideSprite('legionary','idle',3,150,250,false)}${sideSprite('paramedic','idle',3,250,250,true)}${sideSprite('engineer','attack',3,400,250,false)}${sideSprite('ghoul','attack',3,560,250,false)}${sideSprite('skeleton','idle',3,700,250,false)}</div>
+ <div class="scene" style="background-image:url(/assets/bg_dungeon.png)"><div style="position:absolute;inset:0;z-index:2">${delveCrew(d, s)}${sideSprite('ghoul','attack',3,560,250,false)}${sideSprite('skeleton','idle',3,700,250,false)}</div>
   <div style="position:absolute;left:16px;top:12px;z-index:3"><div class="eb pk">${esc(d.room || 'In the dark')}</div><div class="h" style="font-size:20px">${esc(d.blurb || '')}</div></div>
   <div style="position:absolute;right:16px;top:12px;z-index:3;width:250px" class="g">${foes}</div></div>
  <div class="g" style="grid-template-columns:1fr 1fr;min-height:0">
@@ -403,7 +413,7 @@ function delveSetup(s) {
   <div class="row" style="margin-bottom:10px"><button class="btn g sm" type="button" data-act="floor" data-dir="-1">Lower</button><b class="h" style="font-size:28px">${floor}</b><button class="btn g sm" type="button" data-act="floor" data-dir="1">Higher</button><span class="mut">Deepest open: ${s.deepest}</span></div>
   <div class="row" style="flex-wrap:wrap">${lengths}</div>
   <p class="mut" style="margin:10px 0">Vigor pays for the stairs. Longer walks bring more home. The one-minute walk is a real delve.</p>
-  <div class="row">${s.party.map(id => `<img class="px" src="/assets/portrait/${id}.png" alt="" style="width:48px;height:64px;object-fit:cover;border-radius:8px">`).join('')}</div>
+  <div class="row">${s.party.map(id => `<img class="px" src="${portraitSrc(id)}" alt="" style="width:48px;height:64px;object-fit:cover;border-radius:8px">`).join('')}</div>
   <div class="row" style="margin-top:12px">${btn('Send the party', 'delve-go')}</div>
  </div>
  <div class="panel"><div class="ph"><h3>Party</h3><small>Up to three</small></div><div class="row" style="flex-wrap:wrap">${Object.keys(s.heroes).map(id => `<button type="button" class="tag ${s.party.includes(id) ? 'p' : ''}" data-act="toggle-party" data-hero="${id}">${esc(HEROES[id].name.split(' ')[0])}</button>`).join('')}</div></div>
@@ -454,7 +464,7 @@ function marketView(s) {
     const today = l.today || 0;
     return `<div class="li"><img class="px" src="${src}" alt=""><b style="width:160px">${esc(name)}</b><span class="nums" style="width:80px">${num(l.price)}g</span><span class="nums ${today >= 0 ? 'lm' : 'pk'}" style="width:60px">${today >= 0 ? '+' : ''}${today}%</span><span class="mut nums" style="width:70px">${num(l.qty)}</span><span class="sp"></span><button class="btn sm c" type="button" data-act="buy" data-item="${l.item}">Buy</button><button class="btn sm g" type="button" data-act="sell" data-item="${l.item}">Sell</button></div>`;
   }).join('');
-  const cards = (s.cardListings || []).map(c => `<div class="li"><img class="px" src="/assets/portrait/${c.hero}.png" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt=""><div><b>${esc(HEROES[c.hero].name)}</b><br><small class="mut">${RARITY_NAME[HEROES[c.hero].rarity]} · Lv ${c.level} · by ${esc(c.seller)}</small></div><span class="sp"></span><b class="nums">${num(c.price)}g</b><button class="btn sm" type="button" data-act="buy-card" data-id="${c.id}">Buy</button></div>`).join('');
+  const cards = (s.cardListings || []).map(c => `<div class="li"><img class="px" src="${portraitSrc(c.hero)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt=""><div><b>${esc(HEROES[c.hero].name)}</b><br><small class="mut">${RARITY_NAME[HEROES[c.hero].rarity]} · Lv ${c.level} · by ${esc(c.seller)}</small></div><span class="sp"></span><b class="nums">${num(c.price)}g</b><button class="btn sm" type="button" data-act="buy-card" data-id="${c.id}">Buy</button></div>`).join('');
   const orders = (s.orders || []).map(o => `<div class="li">${esc(o.text)}<span class="sp"></span><span class="${o.good ? 'lm' : 'mut'}">${esc(o.meta)}</span></div>`).join('');
   return `<div style="display:grid;grid-template-columns:1fr 1fr 300px;gap:12px;align-content:start">
 <div class="panel" style="grid-column:span 2"><div class="row" style="margin-bottom:6px"><b class="h" style="font-size:20px">Market</b><span class="tag c">Prices move as players trade</span><div class="sp"></div>${btn('Sell something', 'list', 'sm')}</div>
@@ -495,7 +505,7 @@ function hustlesView(s) {
 </div>
 <div class="g" style="align-content:start">
  <div class="panel glow"><div class="ph">${ico('shackle','ico')}<div><h3>The Stocks</h3><small>The town jail</small></div></div>
-  ${(s.stocksUntil > s.now || (who && who.until > s.now)) ? `<div class="row"><img class="px" src="/assets/portrait/${who?.face || 'gangster'}.png" style="width:44px;height:44px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><b>${esc(who?.name || 'Someone')} is locked up</b><br><small class="mut">${esc(who?.reason || 'Caught')}</small></div><b class="nums pk">${clock((s.stocksUntil > s.now ? s.stocksUntil : who.until) - s.now)}</b></div><div class="row" style="margin-top:10px">${btn('Pay bail, 900g', 'bail', 'sm')}${btn('Ask the crew', 'ask', 'sm g')}</div>` : '<p class="mut">The Stocks are empty.</p>'}
+  ${(s.stocksUntil > s.now || (who && who.until > s.now)) ? `<div class="row"><img class="px" src="${portraitSrc(who?.face || 'gangster')}" style="width:44px;height:44px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><b>${esc(who?.name || 'Someone')} is locked up</b><br><small class="mut">${esc(who?.reason || 'Caught')}</small></div><b class="nums pk">${clock((s.stocksUntil > s.now ? s.stocksUntil : who.until) - s.now)}</b></div><div class="row" style="margin-top:10px">${btn('Pay bail, 900g', 'bail', 'sm')}${btn('Ask the crew', 'ask', 'sm g')}</div>` : '<p class="mut">The Stocks are empty.</p>'}
  </div>
  <div class="panel"><div class="ph"><h3>Last jobs</h3></div><div class="list">${log || '<div class="li mut">No jobs yet.</div>'}</div></div>
  ${s.heroes.gangster ? `<div class="panel"><div class="ph"><h3>Hero bonus</h3></div><div class="row">${cardFront('gangster', s.heroes.gangster.level, 0.55)}<div style="font-size:12.5px"><b class="lm">+15% hustle chance</b><br><span class="mut">Vincenzo has done this before. Many times.</span></div></div></div>` : ''}
@@ -507,8 +517,8 @@ function crewView(s) {
  <form data-act="crew-create" class="g"><input name="name" placeholder="Crew name" aria-label="Crew name" style="background:#100818;border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px"><div class="row">${btn('Raise the banner', 'submit')}</div></form>
  <form data-act="crew-join" class="row" style="margin-top:12px"><input name="code" placeholder="Crew code" aria-label="Crew code" style="background:#100818;border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px;flex:1">${btn('Join', 'submit', 'g')}</form></div>`;
   const c = s.crew;
-  const members = (c.roster || []).map(m => `<div class="li"><img class="px" src="/assets/portrait/${m.face}.png" style="width:36px;height:36px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(m.name)}</b> <span class="tag ${m.role === 'Leader' ? 'p' : ''}">${esc(m.role)}</span><br><small class="mut">${esc(m.line)}</small></div><span class="sp"></span><span style="width:8px;height:8px;border-radius:50%;background:${m.on ? 'var(--lime)' : 'var(--dim)'}"></span></div>`).join('');
-  const chat = (c.chat || []).map(m => `<div class="li" style="align-items:flex-start"><img class="px" src="/assets/portrait/${m.face}.png" style="width:28px;height:28px;border-radius:6px;object-fit:cover" alt=""><div><b class="${m.color || 'cy'}">${esc(m.who)}</b> <small class="dim">${esc(m.t)}</small><br>${esc(m.text)}</div></div>`).join('');
+  const members = (c.roster || []).map(m => `<div class="li"><img class="px" src="${portraitSrc(m.face)}" style="width:36px;height:36px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(m.name)}</b> <span class="tag ${m.role === 'Leader' ? 'p' : ''}">${esc(m.role)}</span><br><small class="mut">${esc(m.line)}</small></div><span class="sp"></span><span style="width:8px;height:8px;border-radius:50%;background:${m.on ? 'var(--lime)' : 'var(--dim)'}"></span></div>`).join('');
+  const chat = (c.chat || []).map(m => `<div class="li" style="align-items:flex-start"><img class="px" src="${portraitSrc(m.face)}" style="width:28px;height:28px;border-radius:6px;object-fit:cover" alt=""><div><b class="${m.color || 'cy'}">${esc(m.who)}</b> <small class="dim">${esc(m.t)}</small><br>${esc(m.text)}</div></div>`).join('');
   const cup = (c.cup || []).map((row, i) => `<div class="li" style="${row[0] === c.name ? 'color:var(--pink)' : ''}">${i + 1}. ${esc(row[0])}<span class="sp"></span><b class="nums">${num(row[1])}</b></div>`).join('');
   return `<div style="display:grid;grid-template-columns:300px 1fr 300px;gap:12px;height:100%">
 <div class="g" style="align-content:start"><div class="panel glow"><div class="row">${ico('banner')}<div><b class="h" style="font-size:19px">${esc(c.name)}</b><br><small class="mut">${c.members} / ${c.max} members · Rank ${c.rank}</small></div></div>
@@ -533,7 +543,7 @@ function travelView(s) {
 }
 
 function infirmaryView(s) {
-  const rows = s.infirmary.filter(i => i.until > s.now).map(i => `<div class="li"><img class="px" src="/assets/portrait/${i.face || i.id}.png" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(i.name)}</b><br><small class="mut">${esc(i.reason)}</small></div><span class="sp"></span><b class="nums cy">${clock(i.until - s.now)}</b></div>`).join('');
+  const rows = s.infirmary.filter(i => i.until > s.now).map(i => `<div class="li"><img class="px" src="${portraitSrc(i.face || i.id)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(i.name)}</b><br><small class="mut">${esc(i.reason)}</small></div><span class="sp"></span><b class="nums cy">${clock(i.until - s.now)}</b></div>`).join('');
   const jail = s.stocksUntil > s.now ? `<div class="panel glow"><div class="ph"><h3>The Stocks</h3></div><p>${esc(s.stocksWho?.name || 'A hustler')} sits the lock for ${clock(s.stocksUntil - s.now)}.</p>${btn('Pay bail, 900 gold', 'bail', 'sm')}</div>` : '';
   return `<div class="g" style="max-width:720px"><div class="panel"><div class="ph">${ico('cross','ico')}<div><h3>Infirmary</h3><small>Rest, then walk</small></div></div><div class="list">${rows || '<div class="li mut">The beds are made and empty.</div>'}</div></div>${jail}</div>`;
 }
@@ -550,7 +560,7 @@ function welcomeView(s) {
   return `<div class="g" style="max-width:640px">
  <div class="scene" style="height:180px;background-image:url(/assets/gen/city_bg.png)"><div style="position:absolute;left:16px;top:16px;z-index:2"><div class="eb cy">You were away ${esc(w.away)}</div><div class="h" style="font-size:28px">Welcome back, ${esc(s.name)}!</div></div></div>
  <div class="panel"><div class="ph"><h3>While you were gone</h3><div class="sp"></div><small>Up to 24h counts</small></div><div class="list">${lines}</div></div>
- ${w.note ? `<div class="panel glow"><div class="row"><img class="px" src="/assets/portrait/${w.note.face}.png" style="width:42px;height:42px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(w.note.title)}</b><br><span class="mut">${esc(w.note.text)}</span></div></div></div>` : ''}
+ ${w.note ? `<div class="panel glow"><div class="row"><img class="px" src="${portraitSrc(w.note.face)}" style="width:42px;height:42px;border-radius:8px;object-fit:cover" alt=""><div><b>${esc(w.note.title)}</b><br><span class="mut">${esc(w.note.text)}</span></div></div></div>` : ''}
  ${w.chat ? `<div class="panel"><div class="row">${ico('chat','ico')}<div><b>Crew chat</b><br><span class="mut">${esc(w.chat)}</span></div></div></div>` : ''}
  ${btn('Collect everything', 'collect', 'l')}
 </div>`;
