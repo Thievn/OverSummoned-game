@@ -1,0 +1,32 @@
+{
+  "name": "OverSummoned",
+  "short_name": "OverSummoned",
+  "description": "A pixel idle RPG you play in your browser. Summon heroes from every era and let them work while you are away.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07040d",
+  "theme_color": "#07040d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "games",
+    "entertainment"
+  ]
+}

@@ -1,5 +1,93 @@
+# OverSummoned. Search engines and AI answer engines are welcome on the public pages.
+
 User-agent: *
 Allow: /
 Disallow: /ledger
+Disallow: /gm
+
+User-agent: Googlebot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Bingbot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: GPTBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Claude-User
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Applebot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: CCBot
+Allow: /
+Disallow: /ledger
+Disallow: /gm
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /ledger
+Disallow: /gm
 
 Sitemap: https://oversummoned.com/sitemap.xml

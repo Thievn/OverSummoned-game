@@ -1,0 +1,50 @@
+# OverSummoned
+
+> OverSummoned is a pixel idle RPG you play in your browser. You summon parody heroes from different eras of history, put them to work in the river city of Aldermere, and send them on delves for loot and era gear sets. Your heroes keep working while you are away.
+
+## The game in plain words
+
+- Genre: idle RPG, pixel RPG, browser RPG, hero collector, summoning game.
+- Where you play: in any web browser, on a computer or a phone. Nothing to download.
+- Cost: free to play.
+- Setting: Aldermere, a river city where an old ledger keeps pulling people out of the wrong century.
+- Heroes: nine so far, each from a different time. A Roman legionary, a plague doctor from 1348, an Ice Age hunter, a Chicago gangster from 1927, a Victorian engineer from 1880s London, a Hollywood leading man, a paramedic, an office worker and a delivery rider from the modern day.
+- Skills: mining, woodcutting, fishing, cooking, smithing, alchemy and summoning. Heroes keep at them while you are offline.
+- Delves: send a squad down for a short walk or most of a night, then watch the fight play out. You can step in with food, shields and more.
+- Loot and gear: weapons, trinkets, rings and a potion belt. Every item has stats like Attack, Defense, Health, Speed and Crit Chance, and they count in every fight.
+- Era sets: each hero has a three-piece set from their own era. Wearing all three on that hero gives a set bonus.
+- Cards: every hero is a collectible card with an animated back that shows them in the place they came from.
+- Market and crews: trade ore, food, gems and cards in a market where prices move, and join a crew with a shared chat, vault and weekly goal.
+
+## Pages
+
+- [Home](https://oversummoned.com/): what OverSummoned is, the heroes, screenshots and questions.
+- [The Story](https://oversummoned.com/story): how Aldermere ended up with more borrowed heroes than people.
+- [Privacy Policy](https://oversummoned.com/privacy)
+- [Terms of Service](https://oversummoned.com/terms)
+
+## Questions
+
+### What is OverSummoned?
+OverSummoned is a pixel idle RPG you play in your browser. You summon heroes from different eras of history, put them to work in the river city of Aldermere, and send them on delves for loot.
+
+### Is OverSummoned an idle game?
+Yes. Your heroes keep mining, fishing, cooking and fighting while you are away. When you come back, everything they did still counts.
+
+### Do I need to download anything?
+No. OverSummoned runs in your web browser on a computer or a phone. There is nothing to install.
+
+### Is OverSummoned free?
+Yes. OverSummoned is a free online RPG you can play right in your browser.
+
+### Who are the heroes?
+They are parody heroes pulled out of their own time. There is a Roman legionary, a plague doctor from 1348, an Ice Age hunter, a Chicago gangster from 1927, a Victorian engineer, a Hollywood leading man, and a few folks from the modern day. Nine are in the city right now, with more on the way.
+
+### How do loot and gear sets work?
+Heroes bring back gear from their delves, like weapons, trinkets, rings and potions for their belt. Every item has stats such as Attack, Defense, Health and Speed, and those numbers count in every fight. Each hero also has a three-piece set from their own era. Wear all three on that hero to get the set bonus.
+
+### What skills can my heroes learn?
+There are seven: mining, woodcutting, fishing, cooking, smithing, alchemy and summoning. Each hero is better at some of them, so who you send where matters.
+
+### Can I play with friends?
+Yes. Join a crew to get a shared chat, a shared vault and a goal for the week. At night your squad can sign up for the big fight together.

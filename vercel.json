@@ -1,6 +1,56 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/gm", "destination": "https://thievns-den-gm.vercel.app/" }
+    {
+      "source": "/gm",
+      "destination": "https://thievns-den-gm.vercel.app/"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(assets|card_backs)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(favicon.ico|favicon_16.png|favicon_32.png|apple-touch-icon.png|icon-192.png|icon-512.png)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/site.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
+    },
+    {
+      "source": "/(ledger|play|gm)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }
