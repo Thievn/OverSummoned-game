@@ -22,3 +22,10 @@ const out = page.replace(/<!-- updates:start -->[\s\S]*?<!-- updates:end -->/, `
 if (out === page && !page.includes(html)) throw new Error('markers not found');
 writeFileSync(root + 'updates.html', out);
 console.log('update log:', data.entries.length, 'entries, newest', data.entries[0].v);
+// Keep the service worker version in step with the newest entry, so a new update also refreshes the app.
+const swPath = root + 'sw.js';
+const sw = readFileSync(swPath, 'utf8');
+const sw2 = sw.replace(/const VERSION = '[^']*';/, `const VERSION = '${data.entries[0].v}';`);
+if (sw2 === sw && !sw.includes(`const VERSION = '${data.entries[0].v}';`)) throw new Error('sw.js VERSION line not found');
+writeFileSync(swPath, sw2);
+console.log('service worker version:', data.entries[0].v);

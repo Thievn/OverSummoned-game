@@ -3,6 +3,7 @@
 (function () {
   var KEY = 'os_update_seen';
   var busy = false;
+  var reload = false; // a new version took over while the page was open
   function seen() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function markSeen(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -21,8 +22,8 @@
         return '<section class="upd-entry"><div class="upd-when">' + esc(when(e.date)) + '</div><h3>' + esc(e.title) + '</h3><ul>' +
           e.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>';
       }).join('') +
-      '<div class="upd-acts"><a class="upd-all" href="/updates">See the full update log</a><button class="upd-ok" type="button">Got it</button></div></div>';
-    function done() { markSeen(latest); removeBar(); if (dlg.open) dlg.close(); }
+      '<div class="upd-acts"><a class="upd-all" href="/updates">See the full update log</a><button class="upd-ok" type="button">' + (reload ? 'Play the new version' : 'Got it') + '</button></div></div>';
+    function done() { markSeen(latest); removeBar(); if (dlg.open) dlg.close(); if (reload) location.reload(); }
     dlg.querySelector('.upd-x').onclick = done;
     dlg.querySelector('.upd-ok').onclick = done;
     dlg.querySelector('.upd-all').onclick = function () { markSeen(latest); };
@@ -43,7 +44,8 @@
     document.documentElement.classList.add('has-upd');
   }
 
-  function check() {
+  function check(opts) {
+    if (opts && opts.reload) reload = true;
     if (busy) return Promise.resolve();
     busy = true;
     return fetch('/updates.json', {cache: 'no-cache'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {

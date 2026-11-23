@@ -8,3 +8,4 @@ CHANGELOG.md
 *.mjs
 !js/**
 .git
+docs

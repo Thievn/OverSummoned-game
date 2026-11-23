@@ -2,6 +2,18 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.4",
+      "date": "2026-11-23",
+      "title": "Take OverSummoned with you",
+      "items": [
+        "You can now install OverSummoned on your phone or computer and open it from its own icon.",
+        "On iPhone and iPad, a quick guide shows you how to add it to your Home Screen.",
+        "Opening the app plays a short summoning circle. Tap anywhere to skip it.",
+        "If your signal drops, a friendly page waits with you and reopens the city once you're back.",
+        "Card fronts are now still pictures, gear on the back stays put, and the backs are brighter."
+      ]
+    },
+    {
       "v": "2026.11.23.3",
       "date": "2026-11-23",
       "title": "What's new, right in the game",

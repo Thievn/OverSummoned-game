@@ -96,10 +96,15 @@ function rail(s) {
   const crew = s.crew ? s.crew.name : 'No crew yet';
   return `<aside class="rail"><img class="logo" src="/assets/logo.svg" alt="OverSummoned">${s.isAdmin ? sigilBtn() : ''}
 <div class="me"><img class="px" src="/assets/portrait/engineer.png" alt=""><div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></div>
-<div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>
+<div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>${installBtn()}
 <h6>The City</h6><nav class="nav">${city}</nav>
 <h6>Skills</h6><nav class="nav">${skills}</nav>
 <h6>Adventure</h6><nav class="nav">${adv}</nav></aside>`;
+}
+
+const DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>';
+function installBtn() {
+  return `<button class="install-btn" type="button" data-install aria-label="Install the app">${DL}<span>Install the app</span></button>`;
 }
 
 function sigilBtn(small) {
@@ -651,7 +656,7 @@ export function render(s) {
     else if (s.view === 'cards') body = phoneCard(s);
     else if (s.view === 'city') body = phoneHome(s);
     else body = desktopBody(s);
-    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span><button class="bell" type="button" data-go="crew">${ico('banner')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
+    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${installBtn()}${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span><button class="bell" type="button" data-go="crew">${ico('banner')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
   }
   const crumb = CRUMB[s.view] || CRUMB.city;
   return `<div class="app">${rail(s)}<div class="main">${top(s, crumb[0], crumb[1])}<div class="content">${desktopBody(s)}</div></div></div>`;

@@ -122,6 +122,8 @@ def head_block(name, cfg):
       '<meta name="twitter:image:alt" content="OverSummoned logo over a pixel city at night, with nine hero portraits">',
       '<meta name="application-name" content="OverSummoned">',
       '<meta name="apple-mobile-web-app-title" content="OverSummoned">',
+      '<meta name="apple-mobile-web-app-capable" content="yes">',
+      '<meta name="mobile-web-app-capable" content="yes">',
       '<link rel="icon" href="/favicon.ico" sizes="any">',
       '<link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">',
       '<link rel="icon" type="image/png" sizes="16x16" href="/favicon_16.png">',
@@ -267,13 +269,19 @@ def write_static():
         rb += f"User-agent: {b}\n" + rules + "\n"
     rb += f"Sitemap: {SITE}/sitemap.xml\n"
     open("robots.txt", "w").write(rb)
-    man = {"name": "OverSummoned", "short_name": "OverSummoned",
+    man = {"id": "/play", "name": "OverSummoned", "short_name": "OverSummoned",
            "description": "A pixel idle RPG you play in your browser. Summon heroes from every era and let them work while you are away.",
-           "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#07040d", "theme_color": "#07040d",
-           "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
-                     {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
-                     {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
-           "categories": ["games", "entertainment"]}
+           "start_url": "/play", "scope": "/", "display": "standalone", "display_override": ["standalone"], "orientation": "any",
+           "lang": "en", "dir": "ltr", "background_color": "#07040d", "theme_color": "#07040d",
+           "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+                     {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+                     {"src": "/assets/pwa/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+                     {"src": "/assets/pwa/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
+           "screenshots": [{"src": "/assets/pwa/shot-phone-city.png", "sizes": "824x1830", "type": "image/png", "form_factor": "narrow", "label": "Your squad on shift in Aldermere"},
+                           {"src": "/assets/pwa/shot-phone-cards.png", "sizes": "824x1830", "type": "image/png", "form_factor": "narrow", "label": "Hero cards from every era"},
+                           {"src": "/assets/preview/city.png", "sizes": "1440x900", "type": "image/png", "form_factor": "wide", "label": "The city of Aldermere"},
+                           {"src": "/assets/preview/delve.png", "sizes": "1440x900", "type": "image/png", "form_factor": "wide", "label": "A delve with your squad"}],
+           "categories": ["games", "entertainment"], "prefer_related_applications": False}
     open("site.webmanifest", "w").write(json.dumps(man, indent=2) + "\n")
     faq = "\n".join(f"### {q}\n{a}\n" for q, a in FAQ)
     llms = f"""# OverSummoned
