@@ -1,11 +1,16 @@
 // A walking skill scene: a looping backdrop and floor, a hero on the ground,
 // unique trees or rocks for the spot you picked, a room that gains furniture
 // as you level, and a short flash when you find something good.
-// Positions snap to whole pixels so nothing ripples.
+// Positions snap to whole pixels so nothing ripples. Room art keeps square
+// pixels: it is scaled evenly, then letterboxed or cropped, never stretched.
 import {walkSrc} from './art.js';
 
 const FR = 64, FALLBACK = 'engineer';
 const SCROLL = 16;
+const FIRST = {
+  mining: 'copper', woodcutting: 'ash', fishing: 'eel',
+  cooking: 'stew', smithing: 'iron', alchemy: 'draught', summoning: 'whisper'
+};
 
 const HERO_FOR = {
   mining: 'engineer', woodcutting: 'hunter', fishing: 'delivery_rider',
@@ -47,7 +52,8 @@ const FURN = {
     {src:'/assets/gen/sks/smith_barrel.png', at:30, x:0.0156, y:0.8387, w:14/ROOM_W},
     {src:'/assets/gen/sks/smith_swords.png', at:40, x:0.4375, y:0.0484, w:28/ROOM_W},
     {src:'/assets/gen/sks/smith_shoes.png', at:50, x:0.3906, y:0.9032, w:18/ROOM_W},
-    {src:'/assets/gen/sks/smith_armor.png', at:60, x:0.5104, y:0.5806, w:24/ROOM_W},
+    // Parked on the right, out of the walking lane in front of the forge.
+    {src:'/assets/gen/sks/smith_armor.png', at:60, x:0.8200, y:0.5806, w:24/ROOM_W},
     {src:'/assets/gen/sks/smith_hammer.png', at:70, x:0.3906, y:0.0484, w:14/ROOM_W},
     {src:'/assets/gen/sks/smith_barrel.png', at:80, x:0.5990, y:0.8387, w:14/ROOM_W},
     {src:'/assets/gen/sks/smith_lean.png', at:90, x:0.3281, y:0.6613, w:16/ROOM_W}
@@ -70,6 +76,7 @@ let raf = 0, last = 0, still = false;
 let W = 0, H = 0, k = 1.5, cam = 0, floorH = 0;
 let skill = '', spot = '', heroId = '', level = 0, finds = 0, moving = false;
 let x = 0, dir = 1, v = 28, f = 0, ft = 0, frames = 4, hopping = 0, primed = false, isRoom = false;
+let lay = {s: 1, dw: 384, dh: 160, ox: 0, oy: 0};
 
 function build() {
   node = document.createElement('div');
@@ -94,6 +101,47 @@ function build() {
   fxEl = node.querySelector('.sks-fx');
 }
 
+function artSize(sk, id) {
+  if (sk === 'cooking' || sk === 'smithing') return {w: 384, h: 124, floor: 16};
+  if (sk === 'alchemy') return {w: 384, h: 135, floor: 18};
+  if (sk === 'mining') return {w: 384, h: 160, floor: 36};
+  if (sk === 'woodcutting') return {w: 380, h: 136, floor: 24};
+  if (sk === 'fishing') return {w: 384, h: id === 'eel' ? 125 : 160, floor: 20};
+  return {w: 384, h: 160, floor: 16};
+}
+
+// Whole-number scale when crop and letterbox stay modest; otherwise a uniform
+// cover scale so pixels stay square (never stretch X and Y apart).
+function fitScale(rw, rh) {
+  if (!W || !H) return 1;
+  const cover = Math.max(W / rw, H / rh);
+  const contain = Math.min(W / rw, H / rh);
+  const cand = [Math.round(contain), Math.floor(contain), Math.round(cover), Math.ceil(cover), Math.floor(cover)];
+  let best = null, bestScore = 0.35;
+  for (const i of cand) {
+    if (!Number.isInteger(i) || i < 1) continue;
+    const cropW = Math.max(0, (i * rw - W) / Math.max(i * rw, 1));
+    const cropH = Math.max(0, (i * rh - H) / Math.max(i * rh, 1));
+    const barW = Math.max(0, (W - i * rw) / W);
+    const barH = Math.max(0, (H - i * rh) / H);
+    if (cropW > 0.45 || cropH > 0.45 || barW > 0.4 || barH > 0.4) continue;
+    const score = cropW + cropH + 0.6 * (barW + barH);
+    if (score < bestScore) { bestScore = score; best = i; }
+  }
+  return best || cover;
+}
+
+function layout() {
+  const art = artSize(skill, spot);
+  const s = isRoom ? fitScale(art.w, art.h) : (H ? H / art.h : 1);
+  const dw = art.w * s, dh = art.h * s;
+  const ox = (W - dw) / 2;
+  const oy = H - dh;
+  floorH = Math.round(art.floor * s);
+  lay = {s, dw, dh, ox, oy, art};
+  return lay;
+}
+
 function setSheet(id) {
   const src = walkSrc(id);
   const img = new Image();
@@ -108,9 +156,10 @@ function setSheet(id) {
 
 function sizeHero() {
   if (!sprite) return;
-  sprite.style.width = FR * k + 'px';
-  sprite.style.height = FR * k + 'px';
-  sprite.style.backgroundSize = `${FR * frames * k}px ${FR * k}px`;
+  const kk = k;
+  sprite.style.width = FR * kk + 'px';
+  sprite.style.height = FR * kk + 'px';
+  sprite.style.backgroundSize = `${FR * frames * kk}px ${FR * kk}px`;
   walkEl.style.bottom = Math.round(floorH) + 'px';
 }
 
@@ -118,13 +167,29 @@ function measure() {
   const r = node.getBoundingClientRect();
   if (!r.width || !r.height) return false;
   W = r.width; H = r.height;
-  k = Math.max(1, Math.min(2.2, H * 0.42 / FR));
+  layout();
+  const cap = Math.max(1, Math.floor((H * 0.85) / FR));
+  k = Math.max(1, Math.min(cap, Math.round(lay.s)));
   sizeHero();
   return true;
 }
 
+function placeFurniture() {
+  const list = FURN[skill] || [];
+  const {dw, dh, ox, oy} = lay;
+  [...furnLayer.children].forEach((p, i) => {
+    const it = list[i];
+    if (!it) return;
+    p.style.left = Math.round(ox + it.x * dw) + 'px';
+    p.style.top = Math.round(oy + it.y * dh) + 'px';
+    if (it.w) p.style.width = Math.round(it.w * dw) + 'px';
+    p.style.opacity = level >= it.at ? '1' : '0';
+  });
+}
+
 function applyScene(opts) {
-  const sk = opts.skill, id = opts.node || '';
+  const sk = opts.skill;
+  const id = opts.node || FIRST[sk] || '';
   const lv = opts.level || 1;
   const changed = sk !== skill || id !== spot || lv !== level;
   skill = sk; spot = id; level = lv;
@@ -132,37 +197,36 @@ function applyScene(opts) {
   moving = !!opts.active && !still;
 
   isRoom = !!FURN[sk];
+  layout();
   let bg = '/assets/gen/scene_' + sk + '.png';
   let floor = '';
   if (sk === 'mining') { bg = '/assets/gen/sks/bg_mine.png'; floor = '/assets/gen/sks/floor_mine.png'; }
   else if (sk === 'woodcutting') { bg = '/assets/gen/sks/bg_wood.png'; floor = '/assets/gen/sks/floor_wood.png'; }
-  else if (sk === 'fishing') bg = FISH_BG[id] || FISH_BG.eel;
+  else if (sk === 'fishing') { bg = FISH_BG[id] || FISH_BG.eel; floor = '/assets/gen/sks/floor_fish.png'; }
   bgEl.style.backgroundImage = `url(${bg})`;
   bgEl.style.backgroundRepeat = isRoom ? 'no-repeat' : 'repeat-x';
   if (floor) {
     floorEl.style.display = '';
     floorEl.style.backgroundImage = `url(${floor})`;
-    floorH = Math.max(10, Math.round(H * 0.12));
+    floorEl.style.backgroundRepeat = 'repeat-x';
   } else {
     floorEl.style.display = 'none';
-    floorH = Math.round(H * 0.08);
   }
-  walkEl.style.bottom = floorH + 'px';
+  walkEl.style.bottom = Math.round(floorH) + 'px';
 
-  // resource props
   if (changed) {
     propLayer.textContent = '';
     const src = PROP[id];
     if (src) {
       const count = sk === 'woodcutting' || sk === 'mining' ? 3 : 1;
+      const isTree = sk === 'woodcutting';
       for (let i = 0; i < count; i++) {
         const p = document.createElement('img');
         p.className = 'sks-prop';
         p.src = src;
         p.alt = '';
-        const isTree = sk === 'woodcutting';
-        p.style.width = (isTree ? 120 : 88) + 'px';
-        p.style.left = (18 + i * 28) + '%';
+        p.dataset.slot = String(i);
+        p.style.left = (14 + i * 30) + '%';
         propLayer.appendChild(p);
       }
     }
@@ -173,10 +237,8 @@ function applyScene(opts) {
       hut.alt = '';
       hut.style.right = '4%';
       hut.style.left = 'auto';
-      hut.style.width = '110px';
       propLayer.appendChild(hut);
     }
-    // furniture
     furnLayer.textContent = '';
     const list = FURN[sk] || [];
     for (const it of list) {
@@ -184,19 +246,17 @@ function applyScene(opts) {
       p.className = 'sks-furn-item';
       p.src = it.src;
       p.alt = '';
-      p.style.left = (it.x * 100) + '%';
-      p.style.top = (it.y * 100) + '%';
-      if (it.w) p.style.width = (it.w * 100) + '%';
       if (it.flip) p.style.transform = 'scaleX(-1)';
-      p.style.opacity = lv >= it.at ? '1' : '0';
       furnLayer.appendChild(p);
     }
-  } else {
-    [...furnLayer.children].forEach((p, i) => {
-      const it = (FURN[sk] || [])[i];
-      if (it) p.style.opacity = lv >= it.at ? '1' : '0';
-    });
   }
+  placeFurniture();
+  const treeW = Math.round(130 * lay.s);
+  const rockW = Math.round(64 * Math.max(1.2, lay.s));
+  [...propLayer.querySelectorAll('.sks-prop')].forEach(p => {
+    if (p.classList.contains('sks-hut')) p.style.width = Math.round(110 * Math.max(1, lay.s * 0.7)) + 'px';
+    else p.style.width = (skill === 'woodcutting' ? treeW : rockW) + 'px';
+  });
 
   bobEl.style.display = sk === 'fishing' && moving ? '' : 'none';
 
@@ -221,28 +281,31 @@ function frame(now) {
   if (!measure()) { raf = requestAnimationFrame(frame); return; }
   const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
 
-  if (!still && !isRoom) cam += SCROLL * (k / 1.5) * dt;
+  if (!still && !isRoom) cam += SCROLL * (lay.s || 1) * dt;
   const camPx = Math.round(cam);
+  const bgW = Math.round(lay.dw);
+  const bgH = Math.round(lay.dh);
+  const ox = Math.round(lay.ox), oy = Math.round(lay.oy);
+  bgEl.style.backgroundSize = `${bgW}px ${bgH}px`;
   if (isRoom) {
-    bgEl.style.backgroundSize = '100% 100%';
-    bgEl.style.backgroundPosition = '0 0';
+    bgEl.style.backgroundPosition = `${ox}px ${oy}px`;
     propLayer.style.transform = '';
   } else {
-    const bgW = Math.round(Math.max(W * 1.4, H * 2.2));
-    const bgH = Math.round(H);
-    bgEl.style.backgroundSize = `${bgW}px ${bgH}px`;
-    bgEl.style.backgroundPosition = `${-Math.round(((camPx % bgW) + bgW) % bgW)}px 0`;
+    const shift = bgW ? ((camPx % bgW) + bgW) % bgW : 0;
+    bgEl.style.backgroundPosition = `${ox - Math.round(shift)}px ${oy}px`;
     propLayer.style.transform = `translateX(${-Math.round((camPx * 0.85) % Math.max(W, 1))}px)`;
   }
   if (floorEl.style.display !== 'none') {
-    const flW = Math.round(bgW);
+    const flW = bgW;
     floorEl.style.backgroundSize = `${flW}px ${Math.round(floorH)}px`;
-    floorEl.style.backgroundPosition = `${-Math.round(((camPx % flW) + flW) % flW)}px 100%`;
+    const shift = flW ? ((camPx % flW) + flW) % flW : 0;
+    floorEl.style.backgroundPosition = `${ox - Math.round(shift)}px 100%`;
     floorEl.style.height = Math.round(floorH) + 'px';
   }
+  placeFurniture();
 
   if (moving) {
-    x += dir * v * dt * (k / 1.5);
+    x += dir * v * dt * Math.max(0.8, lay.s / 1.5);
     const half = FR * k / 2;
     if (x > W + half) x = -half;
     if (x < -half) x = W + half;
@@ -255,6 +318,7 @@ function frame(now) {
   sprite.style.backgroundPosition = `${-Math.round(f * FR * k)}px 0`;
   sprite.style.transform = dir < 0 ? 'scaleX(-1)' : '';
   walkEl.style.transform = `translateX(${Math.round(x - FR * k / 2)}px) translateY(${-hop}px)`;
+  walkEl.style.bottom = Math.round(floorH) + 'px';
 
   if (skill === 'fishing' && moving) {
     const bx = Math.round(W * 0.62);

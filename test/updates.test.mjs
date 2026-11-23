@@ -40,3 +40,11 @@ test('the update log page is built from the file, indexable, in the sitemap and 
   }
   assert.ok(readFileSync(R + 'play.html', 'utf8').includes('/js/updates.js'));
 });
+
+test('signed-in players can read the update log', () => {
+  const pub = readFileSync(R + 'js/public.js', 'utf8');
+  assert.match(pub, /path === '\/updates'/);
+  // A signed-in visit to /updates must not bounce into the game.
+  const admit = pub.slice(pub.indexOf('function admit'), pub.indexOf('function admit') + 700);
+  assert.match(admit, /if \(path === '\/updates'\) return/);
+});

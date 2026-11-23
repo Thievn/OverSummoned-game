@@ -91,8 +91,11 @@
   function admit() {
     if (!client) return;
     return client.from('den_allow').select('email').maybeSingle().then(function (q) {
-      if (q.data) location.replace('/play');
-      else if (!q.error) reject();
+      if (q.data) {
+        var path = (location.pathname || '').replace(/\/+$/, '').replace(/\.html$/, '') || '/';
+        if (path === '/updates') return;
+        location.replace('/play');
+      } else if (!q.error) reject();
       else say('The city is busy. Try again in a moment.');
     });
   }

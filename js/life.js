@@ -153,23 +153,28 @@ function stepChat(now) {
   talk.next = now + 1900 + line.text.length * 55;
 }
 
-// Keep everyone at least one step apart. No turning around.
-function separate(g, left, right) {
+// Keep everyone at least one step apart. No turning around, and no pinning
+// anyone to the visible frame — standing or chatting heroes stay in the world
+// so they travel with the ground as the street scrolls.
+function separate(g) {
   const o = onStage().sort((p, q) => p.world - q.world);
+  const talking = w => talk && (w === talk.a || w === talk.b);
   for (let pass = 0; pass < 3; pass++) {
     for (let i = 0; i < o.length - 1; i++) {
       const a = o[i], b = o[i + 1], d = b.world - a.world;
       if (d >= g) continue;
-      const fixA = talk && (a === talk.a || a === talk.b), fixB = talk && (b === talk.a || b === talk.b);
+      const fixA = talking(a), fixB = talking(b);
       const push = g - d;
       if (fixA && !fixB) b.world += push; else if (fixB && !fixA) a.world -= push; else { a.world -= push / 2; b.world += push / 2; }
     }
-    if (o.length) {
-      if (o[0].world < cam + left) o[0].world = cam + left;
-      if (o[o.length - 1].world > cam + right) o[o.length - 1].world = cam + right;
+    for (let i = 1; i < o.length; i++) {
+      if (talking(o[i])) continue;
+      if (o[i].world - o[i - 1].world < g) o[i].world = o[i - 1].world + g;
     }
-    for (let i = 1; i < o.length; i++) if (o[i].world - o[i - 1].world < g) o[i].world = Math.min(cam + right, o[i - 1].world + g);
-    for (let i = o.length - 2; i >= 0; i--) if (o[i + 1].world - o[i].world < g) o[i].world = Math.max(cam + left, o[i + 1].world - g);
+    for (let i = o.length - 2; i >= 0; i--) {
+      if (talking(o[i])) continue;
+      if (o[i + 1].world - o[i].world < g) o[i].world = o[i + 1].world - g;
+    }
   }
 }
 
@@ -258,7 +263,22 @@ function frame(now) {
       w.world += w.dir * v * dt * (k / 1.5);
       w.moving = true;
     }
-    separate(g, left, right);
+    separate(g);
+    const half = FR * k / 2;
+    for (const w of onStage()) {
+      const sx = w.world - cam;
+      if (sx >= -half * 1.2 && sx <= W + half * 1.2) continue;
+      if (talk && (w === talk.a || w === talk.b)) {
+        talk.a.el.querySelector('.lc-b').classList.remove('on');
+        talk.b.el.querySelector('.lc-b').classList.remove('on');
+        talk.a.dir = talk.a.holdDir || talk.a.dir;
+        talk.b.dir = talk.b.holdDir || talk.b.dir;
+        talk = null;
+      }
+      w.st = 'off'; w.moving = false; w.el.style.visibility = 'hidden';
+      w.backAt = now + rnd(2500, 9000);
+      w.el.querySelector('.lc-b').classList.remove('on');
+    }
   } else {
     const span = W / (walkers.length + 1);
     walkers.forEach((w, i) => { w.world = cam + span * (i + 1); w.moving = false; w.st = 'on'; w.el.style.visibility = ''; });

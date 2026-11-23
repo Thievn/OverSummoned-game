@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import test from 'node:test';
 import { NODES, ITEMS } from '../js/catalog.js';
 
@@ -55,7 +56,7 @@ test('trees, rocks, lakes and floors are in the pack', () => {
     'assets/city/panorama.png',
     'assets/walk/will_slapton.png',
     'assets/gen/sks/bg_mine.png', 'assets/gen/sks/bg_wood.png',
-    'assets/gen/sks/floor_mine.png', 'assets/gen/sks/floor_wood.png',
+    'assets/gen/sks/floor_mine.png', 'assets/gen/sks/floor_wood.png', 'assets/gen/sks/floor_fish.png',
     'assets/gen/sks/tree_ash.png', 'assets/gen/sks/tree_ironbark.png',
     'assets/gen/sks/tree_moonwood.png', 'assets/gen/sks/tree_emberroot.png',
     'assets/gen/sks/tree_voidtrunk.png',
@@ -75,4 +76,48 @@ test('rarity rule for new cards is written down', () => {
   assert.match(md, /12–20/);
   assert.match(md, /new cards only|Existing heroes/i);
   assert.match(md, /fronts stay still/i);
+});
+
+
+test('mining and woodcutting can lay out a floor without a missing width', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  const i = src.indexOf('const bgW = Math.round(lay.dw)');
+  const j = src.indexOf('floorEl.style.backgroundSize');
+  assert.ok(i >= 0 && j > i, 'floor width is declared before it is used');
+  assert.doesNotMatch(src, /backgroundSize = '100% 100%'/);
+  assert.match(src, /fitScale/);
+});
+
+test('a skill with no picked spot falls back to the first vein or grove', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  assert.match(src, /mining:\s*'copper'/);
+  assert.match(src, /woodcutting:\s*'ash'/);
+  assert.match(src, /opts\.node \|\| FIRST/);
+});
+
+test('tree art has a transparent background', () => {
+  const out = execFileSync('python3', ['-c',
+    'from PIL import Image\n' +
+    'for n in ["ash","ironbark","moonwood","emberroot","voidtrunk"]:\n' +
+    '    im=Image.open("assets/gen/sks/tree_"+n+".png").convert("RGBA")\n' +
+    '    a=im.split()[-1]\n' +
+    '    pix=list(a.getdata())\n' +
+    '    trans=sum(1 for v in pix if v==0)\n' +
+    '    opaque=sum(1 for v in pix if v>10)\n' +
+    '    assert trans>1000 and opaque>1000, n\n' +
+    'print("ok")\n'
+  ], {encoding: 'utf8'});
+  assert.match(out, /ok/);
+});
+
+test('fishing has a shore for the hero to walk on', () => {
+  assert.ok(existsSync('assets/gen/sks/floor_fish.png'));
+  assert.match(readFileSync('js/skillscene.js', 'utf8'), /floor_fish/);
+});
+
+test('the forge armor stand stands to the side of the walking lane', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  const m = src.match(/smith_armor\.png',\s*at:60,\s*x:([0-9.]+)/);
+  assert.ok(m, 'armor placement is in the scene');
+  assert.ok(Number(m[1]) >= 0.75, 'armor is on the right, out of the mid-floor lane');
 });

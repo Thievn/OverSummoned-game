@@ -26,3 +26,9 @@ test('after a chat, each hero keeps the way they were already going', () => {
   assert.ok(life.includes('holdDir'));
   assert.ok(life.includes('a.dir = a.holdDir'));
 });
+
+test('standing and chatting heroes stay in the world and are not pinned to the screen', () => {
+  assert.ok(!life.includes('o[0].world = cam + left'), 'the left edge no longer pins a walker to the camera');
+  assert.ok(!life.includes('o[o.length - 1].world = cam + right'));
+  assert.ok(life.includes('w.world - cam'), 'draw position is world minus camera');
+});
