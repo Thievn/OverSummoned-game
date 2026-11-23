@@ -735,7 +735,7 @@ export function render(s) {
     else if (s.view === 'delve') body = phoneDelve(s);
     else if (s.view === 'cards') body = phoneCard(s);
     else if (s.view === 'city') body = phoneHome(s);
-    else body = desktopBody(s);
+    else body = `<div class="pdesk">${desktopBody(s)}</div>`;
     return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${installBtn()}${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span>${meBtn(s)}</header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
   }
   const crumb = CRUMB[s.view] || CRUMB.city;

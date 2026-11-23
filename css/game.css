@@ -129,3 +129,19 @@ html.no-install .install-btn{display:none!important}
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:860px){.acct .ph{flex-wrap:wrap;row-gap:2px}.acct .ph small{flex-basis:100%}}
 .feat-open{all:unset;cursor:pointer;display:block;border-radius:14px}.feat-open:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+/* phone: desktop-only pages stack into one column */
+.pdesk [style*="grid-template-columns"]:not([style*="repeat"]){grid-template-columns:minmax(0,1fr)!important;height:auto!important}
+.pbody [style*="grid-template-columns:repeat(3"],.pbody [style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.pbody [style*="grid-template-columns:repeat(8"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.pdesk [style*="grid-template-rows"]{grid-template-rows:none!important}
+.pdesk .scene{min-height:200px;overflow:hidden}
+.pdesk .panel .row:has(> [style*="width:260px"]){flex-wrap:wrap}
+.pdesk [style*="width:260px"]{width:100%!important}
+.pdesk [style*="grid-column:span"],.pdesk [style*="grid-row:span"]{grid-column:auto!important;grid-row:auto!important}
+.pdesk .row,.pdesk .li{flex-wrap:wrap}
+.pdesk .li [style*="width:160px"]{width:auto!important;flex:1 1 110px}
+.pdesk .li [style*="width:80px"],.pdesk .li [style*="width:70px"],.pdesk .li [style*="width:60px"]{width:auto!important}
+.pdesk .li.dim{display:none}
+.pdesk [style*="width:120px"]{min-width:120px}
+.pdesk .tabs,.pdesk .seg{overflow-x:auto;scrollbar-width:none}
+.pdesk .panel>.row>div[style="flex:1"]{flex:1 1 calc(100% - 60px)!important}
