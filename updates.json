@@ -2,6 +2,14 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.8",
+      "date": "2026-11-23",
+      "title": "Little touches around the city",
+      "items": [
+        "Some heroes have a little more life in them."
+      ]
+    },
+    {
       "v": "2026.11.23.7",
       "date": "2026-11-23",
       "title": "Faces front and center",
