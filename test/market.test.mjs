@@ -178,3 +178,18 @@ test('the browser and the server agree on market math', {skip}, () => {
     const [lo, hi] = hallBand(st, id); assert.equal(lo, Math.ceil(f / 2)); assert.equal(hi, f * 4);
   }
 });
+
+test('selling or crafting away the last of something empties the slot cleanly', {skip}, () => {
+  const u = player();
+  give(u, 'eel_stew', 3);
+  as(u, `select os_trader_act('sell', '{"item":"eel_stew","qty":3}') \\g /dev/null`);
+  assert.equal(bag(u, 'eel_stew'), 0);
+  give(u, 'raw_eel', 2); give(u, 'ash_log', 2);
+  as(u, `select os_act('skill', '{"skill":"alchemy","node":"draught"}') \\g /dev/null`);
+  psql(`update os_player set last_tick = now() - interval '60 seconds' where uid = '${u.uid}'`);
+  as(u, 'select os_state() \\g /dev/null');
+  assert.equal(bag(u, 'raw_eel'), 0); assert.equal(bag(u, 'potion_pink'), 2);
+  give(u, 'iron_bar', 4);
+  hall(u, 'list', {item: 'iron_bar', qty: 4, unit: 9000, hours: 2});
+  assert.equal(bag(u, 'iron_bar'), 0);
+});

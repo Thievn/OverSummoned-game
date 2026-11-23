@@ -6,7 +6,7 @@ create or replace function auth.jwt() returns jsonb language sql stable as $$ se
 create table public.den_admin_log(id bigserial primary key, at timestamptz default now() not null, admin text, action text, target text, detail jsonb);
 create table public.den_allow(email text primary key, is_admin boolean default false not null);
 create table public.den_waitlist(id uuid default gen_random_uuid() primary key, email text not null, created_at timestamptz default now() not null);
-create table public.os_bag(uid uuid not null, item_id text not null, qty integer not null, primary key(uid,item_id));
+create table public.os_bag(uid uuid not null, item_id text not null, qty integer not null check (qty > 0), primary key(uid,item_id));
 create table public.os_config(key text primary key, value jsonb not null, updated_at timestamptz default now() not null);
 create table public.os_crew(id uuid default gen_random_uuid() primary key, name text not null, code text unique not null, owner uuid, motto text, vault jsonb default '{}' not null, goal_need int default 50000 not null, goal_have int default 0 not null, cup int default 0 not null, created_at timestamptz default now() not null);
 create table public.os_crew_member(crew_id uuid not null, uid uuid primary key, role text default 'member' not null);
