@@ -2,6 +2,15 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.10",
+      "date": "2026-11-23",
+      "title": "A place for every craft",
+      "items": [
+        "Every skill has its own place to work now, from a misty forest to a glowing ritual chamber.",
+        "Crafting cards now show what each one uses before you start."
+      ]
+    },
+    {
       "v": "2026.11.23.9",
       "date": "2026-11-23",
       "title": "The long road",
