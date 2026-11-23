@@ -2,6 +2,17 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.6",
+      "date": "2026-11-23",
+      "title": "The city comes alive",
+      "items": [
+        "The banner on your city page now shows ten streets from your heroes' home times, and it drifts from one to the next.",
+        "Every hero you've collected strolls along the street, so your crowd grows as your collection does.",
+        "Keep an eye out: now and then two of your heroes stop and have a little chat.",
+        "Calmer screens keeps everyone standing still if you'd rather the city rest."
+      ]
+    },
+    {
       "v": "2026.11.23.5",
       "date": "2026-11-23",
       "title": "Your own corner of the city",

@@ -5,6 +5,8 @@ import { render, gate, NAME_WHY } from './ui.js';
 import { bindCards, setGearProvider, isOpen, hideTip, flipCard } from './gearui.js';
 import { GEAR, ERA_SETS, HERO_BASE } from './gear.js';
 import { coins } from './fight.js';
+import { mountLife, setChats } from './life.js';
+import { PREVIEW_CHATS } from './banter-preview.js';
 
 const root = document.getElementById('root');
 const toastEl = document.getElementById('toast');
@@ -37,7 +39,19 @@ function paint() {
   if (keep) { const i = document.getElementById('acct-name'); if (i) { i.value = keep.v; i.focus(); nameInput(i, true); } }
   applySettings();
   if (params.get('shot') === '1') document.body.classList.add('still');
+  mountLife(root.querySelector('[data-lc]'), {heroes: Object.keys(state.heroes || {}), still: document.body.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches, chatFrom: state.phone ? 0.3 : 0.47});
+  loadChats();
   if (heroModal) showHero(heroModal);
+}
+
+// ---------- city chats ----------
+let chatsFor = '';
+function loadChats() {
+  const key = Object.keys(state.heroes || {}).sort().join(',');
+  if (key === chatsFor) return;
+  chatsFor = key;
+  if (!remote || !sb) { setChats(PREVIEW_CHATS); return; }
+  sb.rpc('os_banter').then(({data, error}) => { if (!error) setChats(data); }, () => {});
 }
 
 // ---------- account ----------

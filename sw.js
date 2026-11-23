@@ -2,7 +2,7 @@
 // and never stores sign-in, account or game-server answers: only same-site pages, styles,
 // scripts and art, plus the one pinned client library from jsDelivr.
 // VERSION is stamped by scripts/build-updates.mjs from the newest updates.json entry.
-const VERSION = '2026.11.23.5';
+const VERSION = '2026.11.23.6';
 const SHELL = 'os-shell-' + VERSION;
 const ART = 'os-art-v1';
 const ART_MAX = 400;
@@ -16,7 +16,7 @@ const PRECACHE = PAGES.concat([
   '/css/mocks.css', '/css/game.css', '/css/cards3d.css', '/css/collect.css', '/css/updates.css', '/css/land.css',
   '/css/home.css', '/css/story.css', '/css/faq.css', '/css/pwa.css',
   '/js/analytics.js', '/js/updates.js', '/js/pwa.js', '/js/splash.js', '/js/public.js', '/js/home.js',
-  '/js/play.js', '/js/catalog.js', '/js/art.js', '/js/engine.js', '/js/ui.js', '/js/gearui.js', '/js/gear.js', '/js/fight.js',
+  '/js/play.js', '/js/catalog.js', '/js/art.js', '/js/engine.js', '/js/ui.js', '/js/gearui.js', '/js/gear.js', '/js/fight.js', '/js/life.js', '/js/banter-preview.js',
   LIB
 ]);
 

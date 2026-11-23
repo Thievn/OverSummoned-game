@@ -145,3 +145,21 @@ html.no-install .install-btn{display:none!important}
 .pdesk [style*="width:120px"]{min-width:120px}
 .pdesk .tabs,.pdesk .seg{overflow-x:auto;scrollbar-width:none}
 .pdesk .panel>.row>div[style="flex:1"]{flex:1 1 calc(100% - 60px)!important}
+/* the living city banner */
+.lc-scene{background:#120a24}
+.lc-slot{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:inherit}
+.lc{position:absolute;inset:0}
+.lc-bg{position:absolute;inset:0;background-repeat:no-repeat;image-rendering:pixelated;opacity:0}
+.lc::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,4,13,.78),rgba(7,4,13,.35) 45%,rgba(7,4,13,0) 70%),linear-gradient(0deg,rgba(7,4,13,.35),rgba(7,4,13,0) 30%);pointer-events:none}
+.lc-walk{position:absolute;inset:0;z-index:1;pointer-events:none}
+.lc-w{position:absolute;left:0;bottom:0;will-change:transform}
+.lc-s{background-repeat:no-repeat;image-rendering:pixelated;filter:drop-shadow(0 2px 0 rgba(0,0,0,.45))}
+.lc-b{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);width:max-content;max-width:210px;padding:6px 9px;border-radius:10px;background:#fff8ec;color:#1a1026;font:600 12px/1.25 var(--font-b,system-ui);box-shadow:0 2px 0 #1a1026,0 0 0 2px #1a1026;opacity:0;transition:opacity .2s;white-space:normal;text-align:center;z-index:2}
+.lc-b::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-5px;border:5px solid transparent;border-top-color:#fff8ec;border-bottom:0;filter:drop-shadow(0 2px 0 #1a1026)}
+.lc-b.on{opacity:1}
+.lc-place{position:absolute;right:12px;bottom:8px;z-index:2;font:600 10.5px/1 var(--font-b,system-ui);letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:0;text-shadow:0 1px 0 #000}
+.lc-place.on{animation:lcp 5s ease forwards}
+@keyframes lcp{0%{opacity:0}12%{opacity:.85}80%{opacity:.85}100%{opacity:0}}
+.phone .lc-b{max-width:150px;font-size:10px;padding:4px 7px}
+.phone .lc::after{background:linear-gradient(180deg,rgba(7,4,13,.6),rgba(7,4,13,0) 45%)}
+.phone .lc-scene>div:not(.lc-slot){transition:opacity .3s}.phone .lc-scene:has(.lc.talking)>div:not(.lc-slot){opacity:0}

@@ -128,34 +128,6 @@ ${meters(s)}<div class="sp"></div>${chip(s)}
 ${meBtn(s)}</header>`;
 }
 
-// The squad standing in a banner: a bottom-aligned row that scales with the banner width,
-// feet on one line, never squashed (sizes come from CSS so a resize only changes --k).
-function crowd(heroes) {
-  const fr = {legionary:{w:41,h:50,ax:23,ay:48,n:8}, engineer:{w:53,h:51,ax:24,ay:49,n:8}, will_slapton:{w:63,h:57,ax:32,ay:55,n:11}, gangster:{w:37,h:50,ax:17,ay:48,n:8}, paramedic:{w:59,h:49,ax:30,ay:47,n:8}};
-  return `<div class="crowd">${heroes.map(h => {
-    const skill = h.anim === 'skill';
-    const meta = (h.id === 'will_slapton' && skill) ? fr.will_slapton : (frontMeta(h.id) || fr[h.id] || fr.engineer);
-    const n = skill ? 11 : 8;
-    return `<div class="cs" style="--w:${meta.w};--h:${meta.h};--n:${n};--fb:${meta.h - meta.ay};background-image:url(${frontSrc(h.id, h.anim)})"></div>`;
-  }).join('')}</div>`;
-}
-
-function frontRow(heroes) {
-  return heroes.map(h => {
-    const fr = {legionary:{w:41,h:50,ax:23,ay:48,n:8}, engineer:{w:53,h:51,ax:24,ay:49,n:8}, will_slapton:{w:63,h:57,ax:32,ay:55,n:11}, gangster:{w:37,h:50,ax:17,ay:48,n:8}, paramedic:{w:59,h:49,ax:30,ay:47,n:8}};
-    const meta = frontMeta(h.id) || fr[h.id] || fr.engineer;
-    const scale = h.scale || 2.9;
-    const w = meta.w * scale, ht = meta.h * scale, n = h.anim === 'skill' ? 11 : meta.n;
-    const ww = (h.anim === 'skill' ? (h.id === 'will_slapton' ? 63 : meta.w) : meta.w) * scale;
-    const frames = h.anim === 'skill' ? 11 : 8;
-    const fw = (h.id === 'will_slapton' && h.anim === 'skill' ? 63 : meta.w) * scale;
-    const fh = (h.id === 'will_slapton' && h.anim === 'skill' ? 57 : meta.h) * scale;
-    const left = h.x - (h.id === 'will_slapton' ? 32 : meta.ax) * scale;
-    const topv = h.y - (h.id === 'will_slapton' ? 55 : meta.ay) * scale;
-    return `<div class="sprite fsp" style="width:${fw}px;height:${fh}px;left:${left}px;top:${topv}px;background-image:url(${frontSrc(h.id, h.anim)});background-size:${frames * fw}px ${fh}px;animation:fs ${frames * 110}ms steps(${frames}) infinite;--sw:-${frames * fw}px"></div>`;
-  }).join('');
-}
-
 function cityDesk(s) {
   const away = s.welcome ? (s.welcome.away || 'a while') : '';
   const banner = s.welcome ? `<div class="eb cy">Aldermere, the city that summoned you</div>
@@ -182,9 +154,9 @@ function cityDesk(s) {
   const will = HEROES.will_slapton;
   return `<div class="city-grid">
 <div class="g" style="grid-template-rows:262px auto 1fr;min-height:0">
- <div class="scene city-scene" style="background-image:url(/assets/gen/city_bg.png)">
+ <div class="scene city-scene lc-scene">
+  <div class="lc-slot" data-lc></div>
   <div class="scene-copy">${banner}</div>
-  ${crowd([{id:'engineer', anim:'idle'}, {id:'will_slapton', anim:'skill'}, {id:'legionary', anim:'idle'}, {id:'gangster', anim:'idle'}])}
   <div style="position:absolute;right:14px;top:14px;z-index:2" class="row scene-tags"><span class="tag l">${s.preview ? '5 heroes on shift' : Object.keys(s.heroes).length + ' heroes in hand'}</span>${s.delve ? '<span class="tag p">1 delve running</span>' : ''}</div>
  </div>
  <div class="g" style="grid-template-columns:repeat(4,1fr)">${train}${delve}
@@ -594,12 +566,7 @@ function welcomeView(s) {
 }
 
 function phoneHome(s) {
-  return `<div class="scene" style="height:180px;background-image:url(/assets/gen/city_bg.png)"><div style="position:absolute;inset:0;z-index:1">${frontRow([
-    {id:'legionary', anim:'idle', x:70, y:150, scale:2.2},
-    {id:'engineer', anim:'idle', x:150, y:150, scale:2.2},
-    {id:'will_slapton', anim:'skill', x:230, y:150, scale:2.2},
-    {id:'paramedic', anim:'idle', x:320, y:155, scale:2.0}
-  ])}</div><div style="position:absolute;left:12px;top:10px;z-index:2"><div class="eb cy">Aldermere</div><div class="h" style="font-size:20px">Your squad is on shift</div></div></div>
+  return `<div class="scene lc-scene" style="height:180px"><div class="lc-slot" data-lc></div><div style="position:absolute;left:12px;top:10px;z-index:2"><div class="eb cy">Aldermere</div><div class="h" style="font-size:20px">Your squad is on shift</div></div></div>
 <div class="row" style="gap:6px"><div class="meter m-c" style="flex:1">${ico('bolt')}<div><div class="mrow"><b>Vigor</b><span class="nums">${s.vigor}/${s.vigorMax}</span></div>${bar(Math.round(100*s.vigor/s.vigorMax))}<small>+5 in 4:12</small></div></div><div class="meter m-p" style="flex:1">${ico('flame')}<div><div class="mrow"><b>Daring</b><span class="nums">${s.daring}/${s.daringMax}</span></div>${bar(Math.round(100*s.daring/s.daringMax))}<small>+1 in 2:40</small></div></div></div>
 <div class="panel glow" style="display:flex;gap:12px;align-items:center"><button type="button" class="feat-open" data-act="feat-open" aria-label="Turn over the Will Slapton card">${cardFront('will_slapton', s.heroes.will_slapton?.level || 1, 0.68).replace(/ data-(act|go|hero)="[^"]*"/g, '')}</button><div><span class="tag p">Featured</span><div class="h" style="font-size:18px;margin:4px 0">Will Slapton</div><div class="mut" style="font-size:12px">One slap stuns any enemy. Double damage if they just told a joke.</div>${btn('Summon, 1 sigil', 'summon', 'sm')}</div></div>
 <div class="g" style="grid-template-columns:1fr 1fr;gap:8px">
