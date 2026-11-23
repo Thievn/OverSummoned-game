@@ -6,10 +6,21 @@
 <meta name="theme-color" content="#07040d">
 <title>OverSummoned</title>
 <meta name="description" content="OverSummoned. Heroes from every era keep working while you are away. Aldermere is not open yet.">
+<meta property="og:title" content="OverSummoned">
+<meta property="og:description" content="Heroes from every era keep working while you are away.">
+<meta property="og:image" content="https://oversummoned.com/profile_1024.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OverSummoned">
+<meta name="twitter:description" content="Heroes from every era keep working while you are away.">
+<meta name="twitter:image" content="https://oversummoned.com/profile_1024.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">
+<link rel="apple-touch-icon" href="/profile_1024.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TCB64F0VEP"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TCB64F0VEP');</script>
 <link rel="stylesheet" href="/css/mocks.css">
 <link rel="stylesheet" href="/css/game.css">
+<link rel="stylesheet" href="/css/land.css">
 </head>
 <body>
 <div class="land">
@@ -19,46 +30,142 @@
   <button class="btn g sm" id="openlogin" type="button">Log in</button>
 </header>
 <main class="land-main">
-  <div class="scene" style="height:min(42vw,280px);min-height:200px;background-image:url(/assets/gen/city_bg.png)">
-    <div style="position:absolute;inset:0;z-index:1;overflow:hidden" id="parade"></div>
-    <div style="position:absolute;left:16px;top:16px;z-index:2;max-width:640px">
+  <section class="cine">
+    <div class="cine-copy">
+      <img class="logo" src="/assets/logo.svg" alt="" style="height:34px;margin-bottom:14px">
       <div class="eb cy">Aldermere</div>
       <h1>Your heroes never stop working.</h1>
-    </div>
-  </div>
-  <div class="land-grid">
-    <div class="panel glow">
-      <p class="pitch">Aldermere pulls people out of every era, puts a craft in their hands, and sends them under the city. Close the door. Come back to what they carried home.</p>
-      <p class="pitch" style="margin-top:8px">The gates are still shut. Leave your name.</p>
+      <p class="pitch">Aldermere pulls them out of every era and sets them to work. They mine, they fight, and they bring the haul home. You can close the door.</p>
+      <p class="gates">The gates are still shut. Leave your name.</p>
       <form class="wl" id="wl" novalidate>
-        <label class="hp" for="em">Email</label>
+        <label class="sr" for="em">Email</label>
         <input id="em" type="email" autocomplete="email" placeholder="you@email.com" required>
-        <label class="hp" for="co">Company</label>
-        <input class="hp" id="co" name="company" tabindex="-1" autocomplete="off">
+        <div class="hp" aria-hidden="true">
+          <label for="co">Company</label>
+          <input id="co" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
         <button class="btn" id="wlbtn" type="submit">Put me on the list</button>
       </form>
       <div id="wlmsg" role="status"></div>
       <p class="fine">We don't spam.</p>
     </div>
-    <div class="panel glow" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:radial-gradient(240px 180px at 50% 20%,rgba(229,38,46,.28),transparent 70%)">
-      <span class="tag p">Featured</span>
-      <div class="card r-absurd" style="--z:1.05"><div class="card-in">
-        <div class="card-top"><span class="gem"></span><span class="rar">Absurd</span><span class="lvl">Lv 1</span></div>
-        <div class="card-art"><img class="px" src="/assets/portrait/will_slapton.png" alt="Will Slapton"></div>
-        <div class="card-name h">Will Slapton</div>
-        <div class="card-title">Leading Man</div>
-        <div class="card-stats"><span class="s-str"><small>Might</small><b>16</b></span><span class="s-def"><small>Guard</small><b>9</b></span><span class="s-wit"><small>Knack</small><b>13</b></span></div>
-        <div class="card-era">Hollywood, 2022</div>
-      </div></div>
-      <p style="font-size:13px;text-align:center">One slap stuns any enemy. Double damage if they just told a joke.</p>
+    <div class="cine-stage" aria-hidden="true">
+      <div class="parade">
+        <div class="sprite fsp hero-l" style="background-image:url(/assets/front/legionary_idle.png);animation:fs 880ms steps(8) infinite"></div>
+        <div class="sprite fsp hero-e" style="background-image:url(/assets/front/engineer_idle.png);animation:fs 880ms steps(8) infinite"></div>
+        <div class="sprite fsp hero-w" style="background-image:url(/assets/front/will_slapton_skill.png);animation:fs 1210ms steps(11) infinite"></div>
+        <div class="sprite fsp hero-g" style="background-image:url(/assets/front/gangster_idle.png);animation:fs 880ms steps(8) infinite"></div>
+      </div>
     </div>
-  </div>
-  <div class="g" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/pickaxe.png" alt=""><h3>Train</h3></div><p class="mut">Mining, cooking, smithing. The work keeps going for a day while you are gone.</p></div>
-    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/swords.png" alt=""><h3>Delve</h3></div><p class="mut">Send three heroes down. Watch the fight. Bring the pack home.</p></div>
-    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/cards.png" alt=""><h3>Collect</h3></div><p class="mut">Every hero is a card. Flip it. The back moves. Sets and copies make them stronger.</p></div>
-  </div>
-  <footer class="dim" style="font-size:13px;padding:8px 0 24px">OverSummoned. 18+. Free. The city is not open yet.</footer>
+  </section>
+
+  <section class="show">
+    <div class="show-copy">
+      <div class="eb cy">City Hub</div>
+      <h2>The whole night, in one look.</h2>
+      <p>Who is at the rock. Who is under the street. What the paper is saying, and how close the crew is to the goal.</p>
+    </div>
+    <figure class="frame"><img src="/assets/preview/city.png" alt="The City Hub, with the welcome, the delve, and Will Slapton"></figure>
+  </section>
+
+  <section class="show flip">
+    <div class="show-copy">
+      <div class="eb cy">Skills</div>
+      <h2>The crafts do not stop.</h2>
+      <p>Mining, woodcutting, fishing, cooking, smithing, alchemy, summoning. Come back and a day of work can be waiting.</p>
+    </div>
+    <figure class="frame"><img src="/assets/preview/mining.png" alt="Mining, with Edith on the moonsilver vein"></figure>
+  </section>
+
+  <section class="show">
+    <div class="show-copy">
+      <div class="eb cy">Delve</div>
+      <h2>Send them down. Stay for the fight.</h2>
+      <p>Pick how long they walk. When the dark gets loud, you choose the push, the wall, or the meal.</p>
+    </div>
+    <figure class="frame"><img src="/assets/preview/delve.png" alt="A delve in the Ash Kitchen"></figure>
+  </section>
+
+  <section class="show flip">
+    <div class="show-copy">
+      <div class="eb cy">Cards</div>
+      <h2>Turn the card over.</h2>
+      <p>The face is a portrait. The back is the hero, moving, in the place they came from. Copies make a card stronger.</p>
+      <div class="pair" style="margin-top:14px">
+        <div class="card r-absurd" style="--z:.92"><div class="card-in">
+          <div class="card-top"><span class="gem"></span><span class="rar">Absurd</span><span class="lvl">Lv 1</span></div>
+          <div class="card-art"><img class="px" src="/assets/portrait/will_slapton.png" alt="Will Slapton"></div>
+          <div class="card-name h">Will Slapton</div><div class="card-title">Leading Man</div>
+          <div class="card-stats"><span class="s-str"><small>Might</small><b>16</b></span><span class="s-def"><small>Guard</small><b>9</b></span><span class="s-wit"><small>Knack</small><b>13</b></span></div>
+          <div class="card-era">Hollywood, 2022</div>
+        </div></div>
+        <div class="cardback r-absurd" style="--z:.92"><div class="cb-in">
+          <div class="cb-scene"><img alt="" src="/card_backs/will_slapton.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Hollywood, 2022</span></div>
+          <div class="cb-skill">Keep It Out Your Mouth</div>
+          <div class="cb-text">A thunderous slap that stuns one enemy for 2 turns. Double damage if they just made a joke.</div>
+        </div></div>
+      </div>
+    </div>
+    <figure class="frame"><img src="/assets/preview/cards.png" alt="The card collection, front and animated back"></figure>
+  </section>
+
+  <section>
+    <div class="eb cy">The nine</div>
+    <h2 class="h" style="font-size:clamp(26px,5vw,40px);margin:4px 0 8px">Every hero has a living back.</h2>
+    <p class="mut" style="max-width:46ch">Swipe the row. Each back is that hero at home, then at their craft, then home again.</p>
+    <div class="reel" id="reel">
+      <div class="reel-item"><div class="cardback r-absurd" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/will_slapton.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Hollywood, 2022</span></div><div class="cb-skill">Keep It Out Your Mouth</div><div class="cb-text">One slap. The loudest enemy goes quiet.</div></div></div><small>Will Slapton · Absurd</small></div>
+      <div class="reel-item"><div class="cardback r-rare" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/legionary.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Rome</span></div><div class="cb-skill">Formation</div><div class="cb-text">His guard grows with every ally still standing.</div></div></div><small>Gaius Marcellus · Rare</small></div>
+      <div class="reel-item"><div class="cardback r-epic" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/gangster.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Chicago, 1927</span></div><div class="cb-skill">Shakedown</div><div class="cb-text">He scares a mark off, or he buys the room.</div></div></div><small>Vincenzo Moretti · Epic</small></div>
+      <div class="reel-item"><div class="cardback r-rare" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/engineer.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">London, 1880s</span></div><div class="cb-skill">Contraptions</div><div class="cb-text">Scrap, steam, and a way through.</div></div></div><small>Edith Crane · Rare</small></div>
+      <div class="reel-item"><div class="cardback r-rare" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/plague_doctor.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">1348</span></div><div class="cb-skill">Miasma Theory</div><div class="cb-text">Old remedies, sharp enough for rot.</div></div></div><small>Doctor Albrecht · Rare</small></div>
+      <div class="reel-item"><div class="cardback r-uncommon" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/paramedic.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Modern day</span></div><div class="cb-skill">Triage</div><div class="cb-text">She stops the bleeding and gets everyone walking.</div></div></div><small>Maya Washington · Uncommon</small></div>
+      <div class="reel-item"><div class="cardback r-uncommon" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/hunter.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Ice Age</span></div><div class="cb-skill">Fire-craft</div><div class="cb-text">He lights the dark. The meat comes off hot.</div></div></div><small>Brokk · Uncommon</small></div>
+      <div class="reel-item"><div class="cardback r-common" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/office_worker.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Modern day</span></div><div class="cb-skill">Reply All</div><div class="cb-text">He marks the room so the squad hits harder.</div></div></div><small>Kevin Latham · Common</small></div>
+      <div class="reel-item"><div class="cardback r-common" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/delivery_rider.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Modern day</span></div><div class="cb-skill">Last Mile</div><div class="cb-text">He treats the dark like a late order.</div></div></div><small>Marco Reyes · Common</small></div>
+    </div>
+  </section>
+
+  <section class="show">
+    <div class="show-copy">
+      <div class="eb cy">Market</div>
+      <h2>Prices move when people trade.</h2>
+      <p>Buy where the goods are cheap. Sell them where Aldermere is hungry.</p>
+    </div>
+    <figure class="frame"><img src="/assets/preview/market.png" alt="The market and the waystone deals"></figure>
+  </section>
+
+  <section class="show flip">
+    <div class="show-copy">
+      <div class="eb cy">Crews</div>
+      <h2>A banner you share.</h2>
+      <p>Chat, a vault, a raid after dark, and a cup the city can see.</p>
+    </div>
+    <figure class="frame"><img src="/assets/preview/crew.png" alt="A crew, its chat, and the Crew Cup"></figure>
+  </section>
+
+  <section class="panel glow cta">
+    <div class="eb cy">The list</div>
+    <h2>Leave your name.</h2>
+    <p class="pitch">When the lights come on, you will hear from us.</p>
+    <form class="wl" id="wl2" novalidate>
+      <label class="sr" for="em2">Email</label>
+      <input id="em2" type="email" autocomplete="email" placeholder="you@email.com" required>
+      <div class="hp" aria-hidden="true">
+        <label for="co2">Company</label>
+        <input id="co2" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      </div>
+      <button class="btn" id="wlbtn2" type="submit">Put me on the list</button>
+    </form>
+    <div id="wlmsg2" role="status"></div>
+    <p class="fine">We don't spam.</p>
+  </section>
+
+  <footer class="land-foot">
+    <img class="logo" src="/assets/logo.svg" alt="OverSummoned">
+    <div>OverSummoned. 18+. Free.</div>
+    <div>Aldermere is not open yet.</div>
+  </footer>
 </main>
 </div>
 <dialog id="login"><div class="dl">
@@ -66,33 +173,35 @@
   <p class="mut">Only one guest gets in for now. Everyone else, leave a name and wait for the lights.</p>
   <button class="btn" id="gbtn" type="button">Continue with Google</button>
   <button class="btn g" id="lclose" type="button">Never mind</button>
-  <div id="lmsg" role="alert" class="pk"></div>
+  <div id="lmsg" role="alert"></div>
 </div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script>
 (function(){
   var SB='https://eresamyqxarlrdgudgrw.supabase.co', KEY='sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
-  var parade=document.getElementById('parade');
-  parade.innerHTML='<div class="sprite fsp" style="width:127px;height:122px;left:40px;top:70px;background-image:url(/assets/front/engineer_idle.png);background-size:1016px 122px;animation:fs 880ms steps(8) infinite;--sw:-1016px"></div><div class="sprite fsp" style="width:151px;height:137px;left:150px;top:58px;background-image:url(/assets/front/will_slapton_skill.png);background-size:1661px 137px;animation:fs 1210ms steps(11) infinite;--sw:-1661px"></div><div class="sprite fsp" style="width:112px;height:100px;left:300px;top:88px;background-image:url(/assets/front/legionary_idle.png);background-size:896px 100px;animation:fs 880ms steps(8) infinite;--sw:-896px"></div>';
-  var wl=document.getElementById('wl'), msg=document.getElementById('wlmsg'), btn=document.getElementById('wlbtn');
-  wl.addEventListener('submit', function(e){
-    e.preventDefault();
-    var em=document.getElementById('em').value.trim();
-    msg.textContent='';
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ msg.style.color='var(--pink)'; msg.textContent="That's not an email. Try again."; return; }
-    btn.disabled=true;
-    fetch(SB+'/functions/v1/waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,company:wl.elements.company.value})})
-      .then(function(r){return r.json().catch(function(){return{}})})
-      .then(function(j){
-        if(j&&j.ok){ msg.style.color='var(--lime)'; msg.textContent=j.dupe?"You're already on the list.":"You're on the list."; if(!j.dupe){try{gtag('event','waitlist_join')}catch(e){}} wl.reset(); }
-        else { msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; }
-      })
-      .catch(function(){ msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; })
-      .then(function(){ btn.disabled=false; });
-  });
+  function bind(form, msg, btn){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var em=form.querySelector('input[type=email]').value.trim();
+      msg.textContent='';
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ msg.style.color='var(--pink)'; msg.textContent="That's not an email. Try again."; return; }
+      btn.disabled=true;
+      var company=form.querySelector('[name=company]');
+      fetch(SB+'/functions/v1/waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,company:company?company.value:''})})
+        .then(function(r){return r.json().catch(function(){return{}})})
+        .then(function(j){
+          if(j&&j.ok){ msg.style.color='var(--lime)'; msg.textContent=j.dupe?"You're already on the list.":"You're on the list."; if(!j.dupe){try{gtag('event','waitlist_join')}catch(err){}} form.reset(); }
+          else { msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; }
+        })
+        .catch(function(){ msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; })
+        .then(function(){ btn.disabled=false; });
+    });
+  }
+  bind(document.getElementById('wl'), document.getElementById('wlmsg'), document.getElementById('wlbtn'));
+  bind(document.getElementById('wl2'), document.getElementById('wlmsg2'), document.getElementById('wlbtn2'));
   var dlg=document.getElementById('login'), lm=document.getElementById('lmsg'), client=null;
   try{ client=window.supabase.createClient(SB,KEY,{auth:{persistSession:true,detectSessionInUrl:true}});}catch(e){}
-  function say(t){ lm.textContent=t||''; }
+  function say(t){ lm.textContent=t||''; lm.style.color='var(--pink)'; }
   document.getElementById('openlogin').onclick=function(){ say(''); dlg.showModal&&dlg.showModal(); };
   document.getElementById('lclose').onclick=function(){ dlg.close(); };
   function deny(){ say("You're not on the guest list yet. Leave your name and wait for the lights."); if(client) client.auth.signOut(); }

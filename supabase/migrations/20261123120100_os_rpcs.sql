@@ -401,6 +401,7 @@ declare
   qty int;
   price int;
   cid uuid;
+  hid text;
 begin
   if u is null or not os_ok() then raise exception 'not allowed'; end if;
   perform os_tick(u);
@@ -423,7 +424,7 @@ begin
     job := payload->>'job';
     chance := case job when 'pockets' then 92 when 'dice' then 72 when 'smuggle' then 54 when 'duke' then 31 else 0 end;
     if exists(select 1 from os_hero where uid = u and hero_id = 'gangster') then chance := least(95, chance + 15); end if;
-    if p.daring < case job when 'pockets' then 2 when 'dice' then 5 when 'smuggle' then 10 when 'duke' then 15 else 99 end then
+    if p.daring < (case job when 'pockets' then 2 when 'dice' then 5 when 'smuggle' then 10 when 'duke' then 15 else 99 end) then
       raise exception 'Not enough Daring.';
     end if;
     update os_player set daring = daring - case job when 'pockets' then 2 when 'dice' then 5 when 'smuggle' then 10 else 15 end, hustle_xp = hustle_xp + 20 where uid = u;
