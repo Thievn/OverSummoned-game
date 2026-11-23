@@ -35,7 +35,7 @@
 .cb-low{display:grid;flex:1;min-height:11.4em;position:relative}
 .cb-low>.layer{grid-area:1/1;transition:opacity .32s ease,transform .38s cubic-bezier(.2,.8,.2,1),filter .32s}
 .layer.bio{display:flex;flex-direction:column;gap:.5em;padding-top:1.5em}
-.cb-bio{font:500 calc(8.6px*var(--z))/1.36 'Space Grotesk';color:var(--ink,#e9e3f5);max-height:15em;overflow:auto;scrollbar-width:thin;padding-right:.2em;padding-bottom:1.2em;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.cb-bio{font:500 calc(9.4px*var(--z))/1.38 'Space Grotesk';color:var(--ink,#e9e3f5);}
 .layer.bio:has(.cb-bio){padding-top:.6em;gap:.35em}
 .cardback:not([data-view=bio]) .layer.bio{opacity:0;transform:translateY(.8em);filter:blur(3px);pointer-events:none}
 .layer.gear,.layer.set{opacity:0;transform:translateY(-.6em);pointer-events:none;padding-top:1.7em}
