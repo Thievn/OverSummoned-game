@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100c08">
+<title>The Ledger of Aldermere · OverSummoned</title>
+<meta name="description" content="The Ledger of Aldermere. How the river city ended up with more borrowed heroes than people.">
+<meta property="og:title" content="The Ledger of Aldermere">
+<meta property="og:description" content="Some time ago, an archivist read one name from a book he shouldn't have opened.">
+<meta property="og:image" content="https://oversummoned.com/profile_1024.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">
+<link rel="apple-touch-icon" href="/profile_1024.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pixelify+Sans:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/mocks.css">
+<link rel="stylesheet" href="/css/game.css">
+<link rel="stylesheet" href="/css/land.css">
+<link rel="stylesheet" href="/css/story.css">
+</head>
+<body class="story-body">
+<script>document.documentElement.classList.add('js')</script>
+<div class="land">
+<header class="land-top">
+  <a href="/"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"></a>
+  <div class="sp"></div>
+  <div class="land-acts">
+    <a class="btn gold sm" href="/story" aria-current="page">The Story</a>
+    <button class="btn g sm" id="openlogin" type="button">Log in</button>
+  </div>
+</header>
+<main class="land-main">
+  <article class="book">
+    <div class="page">
+      <h1 class="leaf in">The Ledger of Aldermere</h1>
+      <section class="leaf lead">
+        <p>Some time ago, in the river city of Aldermere, the king's archivist Tobias Wren had one bad habit. He read things he wasn't supposed to. One winter night, deep in the vaults under the cathedral, he found a ledger bound in black leather and gold. Every page held a name, a date, and a place, and not one of those people had been born yet.</p>
+      </section>
+      <section class="leaf with-hero">
+        <p>He read one name out loud, just to hear how it sounded. The candles bent sideways, the floor filled with light, and a Roman legionary crashed through his desk with his sword drawn, demanding to know which emperor had done this to him.</p>
+        <figure class="step" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="desk"><i></i></div>
+          <div class="sprite fsp s-legion" style="background-image:url(/assets/front/legionary_skill.png);animation:fs 990ms steps(11) infinite"></div>
+        </figure>
+      </section>
+      <section class="leaf">
+        <p>So Tobias read another name. Then another. By spring the streets were full of strangers from every age: a gladiator looking for a rematch with a man dead for twelve hundred years, a 1920s gangster asking where the speakeasy was, a knight who would not take off his helmet for anyone. Nobody could send them home. The ledger only works one way.</p>
+        <div class="trio">
+          <figure class="step" aria-hidden="true">
+            <div class="glow"></div>
+            <div class="sprite fsp s-hunt" style="background-image:url(/assets/front/hunter_skill.png);animation:fs 990ms steps(11) infinite"></div>
+          </figure>
+          <figure class="step" aria-hidden="true">
+            <div class="glow"></div>
+            <div class="sprite fsp s-gang" style="background-image:url(/assets/front/gangster_idle.png);animation:fs 880ms steps(8) infinite"></div>
+          </figure>
+          <figure class="step" aria-hidden="true">
+            <div class="glow"></div>
+            <div class="sprite fsp s-legion-idle" style="background-image:url(/assets/front/legionary_idle.png);animation:fs 880ms steps(8) infinite"></div>
+          </figure>
+        </div>
+      </section>
+      <section class="leaf">
+        <p>Scholars have a word for a city with more borrowed heroes than people. They call it OverSummoned.</p>
+      </section>
+      <section class="leaf">
+        <p>Tobias disappeared long ago, but the ledger is still here. It passes from hand to hand, and every new owner learns the same thing: you can't send them back, but you can put them to work. They'll dig your gold, fight your battles, and run your schemes while you sleep.</p>
+      </section>
+      <section class="leaf">
+        <p>The ledger has found you now. Turn the page.</p>
+      </section>
+      <div class="turn-wrap leaf">
+        <a class="turn" href="/#signup">Turn the page</a>
+      </div>
+    </div>
+  </article>
+</main>
+</div>
+<dialog class="authdlg" id="login"><div class="dl auth">
+  <button class="x" id="lclose" type="button" aria-label="Close">×</button>
+  <div class="auth-tabs">
+    <button type="button" data-tab="in" class="on">Sign In</button>
+    <button type="button" data-tab="up">Create Account</button>
+  </div>
+  <h3 class="h" id="auth-title">Sign in</h3>
+  <div id="pane-in">
+    <form id="signin">
+      <label>Email<input id="in-email" type="email" autocomplete="email" required></label>
+      <label>Password<input id="in-pass" type="password" autocomplete="current-password" required></label>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+    <button class="g-auth" id="g-in" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
+    <button class="switch" type="button" data-tab="up">New here? Create an account</button>
+  </div>
+  <div id="pane-up" hidden>
+    <form id="create-form">
+      <label>Username<input id="up-name" type="text" autocomplete="username" maxlength="20"></label>
+      <div id="name-note" class="field-note"></div>
+      <label>Email<input id="up-email" type="email" autocomplete="email"></label>
+      <label>Password<input id="up-pass" type="password" autocomplete="new-password"></label>
+      <ul class="rules" aria-label="Password rules">
+        <li data-rule="len">8 or more characters</li>
+        <li data-rule="upper">An uppercase letter</li>
+        <li data-rule="lower">A lowercase letter</li>
+        <li data-rule="num">A number</li>
+        <li data-rule="sym">A symbol</li>
+      </ul>
+      <label>Confirm password<span class="confirm-row"><input id="up-pass2" type="password" autocomplete="new-password"><span id="match" class="match" aria-hidden="true">✓</span></span></label>
+      <button class="btn" type="submit">Create Account</button>
+    </form>
+    <button class="g-auth" id="g-up" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
+    <button class="switch" type="button" data-tab="in">Already have an account? Sign in</button>
+  </div>
+  <div id="lmsg" role="alert"></div>
+</div></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="/js/public.js"></script>
+<script>
+(function () {
+  var leaves = document.querySelectorAll('.leaf');
+  if (!('IntersectionObserver' in window)) {
+    leaves.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+  leaves.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

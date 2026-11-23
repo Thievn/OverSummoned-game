@@ -185,7 +185,7 @@ async function remoteAct(action) {
 
 function human(error) {
   const m = (error && error.message) || '';
-  if (/not allowed/i.test(m)) return 'The door is shut.';
+  if (/not allowed/i.test(m)) return 'That did not open.';
   if (/not enough vigor/i.test(m)) return 'Not enough Vigor.';
   if (/stocks/i.test(m)) return 'You are in the Stocks.';
   if (/banned|closed its door/i.test(m)) return 'The city has closed its door to you.';
@@ -345,7 +345,7 @@ async function boot() {
       setInterval(() => { tick(state, Date.now()); save(); }, 1000);
       return;
     }
-    root.innerHTML = gate('The door stuck. Reload and try again.');
+    root.innerHTML = gate('The city hiccuped. Reload and try again.');
   }
 }
 boot();

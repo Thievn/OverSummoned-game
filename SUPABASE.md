@@ -19,11 +19,14 @@ Project ref `eresamyqxarlrdgudgrw`. Run the files in this order. They are idempo
 3. `supabase/migrations/20261123120200_os_admin.sql`
    `os_is_admin()` is true when `den_allow.is_admin` is set for the signed-in email, or when `app_metadata.den_owner` is true. `os_admin(op text, payload jsonb)` serves the books and writes `den_admin_log`.
 
-The waitlist page keeps calling the existing `waitlist` edge function, which inserts into `den_waitlist`. Signup still goes through `den_block_signup` and `den_allow`. Sign-in on the site is Google only, matching the live project.
+4. `supabase/migrations/20261123130000_os_username_taken.sql`
+   `os_username_taken(p_name text)` returns boolean. It is granted to `anon` and `authenticated`. It checks `os_player.name` and a reserved list. The front page calls it while someone types a name. It does not create a row.
+
+The waitlist page keeps calling the existing `waitlist` edge function, which inserts into `den_waitlist`. New accounts are still stopped by `den_block_signup`. The front page offers email and password, and Google. The Create Account button does not call `signUp`.
 
 Hero finds are stored on the player and counted in `os_event` for the books. They are not inserted into `os_feed`. `os_feed_post` drops a line that names a hero. The first time a hero is met, `os_grant_hero` still opens that hero's things into the loot pool and does not print it.
 
-The private books are at `/ledger`. That address is not linked from the city or the front page.
+The books are at `/ledger`. That address is not linked from the city or the front page.
 
 If a replace fails because a live function has a different argument type, stop and paste the error. Do not drop the live function.
 

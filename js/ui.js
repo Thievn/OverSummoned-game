@@ -575,5 +575,5 @@ export function render(s) {
 }
 
 export function gate(msg) {
-  return `<div class="phone" style="align-items:center;justify-content:center"><div class="panel" style="max-width:420px;margin:24px"><img class="logo" src="/assets/logo.svg" alt="OverSummoned" style="height:36px"><h2 class="h" style="font-size:28px;margin:12px 0">The door is shut.</h2><p class="mut">${esc(msg)}</p><div class="row" style="margin-top:12px"><a class="btn" href="/">Back to the gate</a></div></div></div>`;
+  return `<div class="phone" style="align-items:center;justify-content:center"><div class="panel" style="max-width:420px;margin:24px"><img class="logo" src="/assets/logo.svg" alt="OverSummoned" style="height:36px"><h2 class="h" style="font-size:28px;margin:12px 0">That did not open.</h2><p class="mut">${esc(msg)}</p><div class="row" style="margin-top:12px"><a class="btn" href="/">Back to the city</a></div></div></div>`;
 }

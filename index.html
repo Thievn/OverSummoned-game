@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07040d">
 <title>OverSummoned</title>
-<meta name="description" content="OverSummoned. Heroes from every era keep working while you are away. Aldermere is not open yet.">
+<meta name="description" content="OverSummoned. Heroes from every era keep working while you are away.">
 <meta property="og:title" content="OverSummoned">
 <meta property="og:description" content="Heroes from every era keep working while you are away.">
 <meta property="og:image" content="https://oversummoned.com/profile_1024.png">
@@ -27,16 +27,19 @@
 <header class="land-top">
   <img class="logo" src="/assets/logo.svg" alt="OverSummoned">
   <div class="sp"></div>
-  <button class="btn g sm" id="openlogin" type="button">Log in</button>
+  <div class="land-acts">
+    <a class="btn gold sm" href="/story">The Story</a>
+    <button class="btn g sm" id="openlogin" type="button">Log in</button>
+  </div>
 </header>
 <main class="land-main">
-  <section class="cine">
+  <section class="cine" id="signup">
     <div class="cine-copy">
       <img class="logo" src="/assets/logo.svg" alt="" style="height:34px;margin-bottom:14px">
       <div class="eb cy">Aldermere</div>
       <h1>Your heroes never stop working.</h1>
-      <p class="pitch">Aldermere pulls them out of every era and sets them to work. They mine, they fight, and they bring the haul home. You can close the door.</p>
-      <p class="gates">The gates are still shut. Leave your name.</p>
+      <p class="pitch">Aldermere keeps pulling people out of the wrong century and handing them a job. They mine, cook, fight, and trade while you are off living your day. Come back when you want. They will be a little dustier, and the pack will be heavier.</p>
+      <p class="gates">The city is still getting its streets in order. Leave your name, and we will call you when there is a place for you.</p>
       <form class="wl" id="wl" novalidate>
         <label class="sr" for="em">Email</label>
         <input id="em" type="email" autocomplete="email" placeholder="you@email.com" required>
@@ -59,11 +62,16 @@
     </div>
   </section>
 
+  <section class="tease">
+    <p>Some time ago, an archivist read one name from a book he shouldn't have opened. Aldermere hasn't been the same since.</p>
+    <a href="/story">Read the story</a>
+  </section>
+
   <section class="show">
     <div class="show-copy">
       <div class="eb cy">City Hub</div>
-      <h2>The whole night, in one look.</h2>
-      <p>Who is at the rock. Who is under the street. What the paper is saying, and how close the crew is to the goal.</p>
+      <h2>One screen for the whole evening.</h2>
+      <p>The hub is where you start. You can see who is still at the rock, how far the delve has gone, what the city paper is shouting about, and how close your crew is to the week's goal. Will Slapton is usually on the right, waiting to be pointed at something loud.</p>
     </div>
     <figure class="frame"><img src="/assets/preview/city.png" alt="The City Hub, with the welcome, the delve, and Will Slapton"></figure>
   </section>
@@ -71,8 +79,8 @@
   <section class="show flip">
     <div class="show-copy">
       <div class="eb cy">Skills</div>
-      <h2>The crafts do not stop.</h2>
-      <p>Mining, woodcutting, fishing, cooking, smithing, alchemy, summoning. Come back and a day of work can be waiting.</p>
+      <h2>Seven crafts that keep going after you leave.</h2>
+      <p>Mining, woodcutting, fishing, cooking, smithing, alchemy, and summoning. Put a hero on a shift and they stay with it. If you are gone for a day, the work still counts when you walk back in.</p>
     </div>
     <figure class="frame"><img src="/assets/preview/mining.png" alt="Mining, with Edith on the moonsilver vein"></figure>
   </section>
@@ -80,8 +88,8 @@
   <section class="show">
     <div class="show-copy">
       <div class="eb cy">Delve</div>
-      <h2>Send them down. Stay for the fight.</h2>
-      <p>Pick how long they walk. When the dark gets loud, you choose the push, the wall, or the meal.</p>
+      <h2>Send them down, then stay for the fight.</h2>
+      <p>You pick how long they are gone, from a short walk to most of a night. The battle plays in front of you. When it turns ugly you get to kick the pot, raise the shields, or stop and eat.</p>
     </div>
     <figure class="frame"><img src="/assets/preview/delve.png" alt="A delve in the Ash Kitchen"></figure>
   </section>
@@ -89,8 +97,8 @@
   <section class="show flip">
     <div class="show-copy">
       <div class="eb cy">Cards</div>
-      <h2>Turn the card over.</h2>
-      <p>The face is a portrait. The back is the hero, moving, in the place they came from. Copies make a card stronger.</p>
+      <h2>A face on the front, a life on the back.</h2>
+      <p>Collect the hero, then turn the card over. The back is that person, moving, in the street they came from. Extra copies make the card stronger. Finish a set and the city remembers the whole era.</p>
       <div class="pair" style="margin-top:14px">
         <div class="card r-absurd" style="--z:.92"><div class="card-in">
           <div class="card-top"><span class="gem"></span><span class="rar">Absurd</span><span class="lvl">Lv 1</span></div>
@@ -111,8 +119,8 @@
 
   <section>
     <div class="eb cy">The nine</div>
-    <h2 class="h" style="font-size:clamp(26px,5vw,40px);margin:4px 0 8px">Every hero has a living back.</h2>
-    <p class="mut" style="max-width:46ch">Swipe the row. Each back is that hero at home, then at their craft, then home again.</p>
+    <h2 class="h" style="font-size:clamp(26px,5vw,40px);margin:4px 0 8px">Nine heroes, and the row is only the start.</h2>
+    <p class="mut" style="max-width:52ch;line-height:1.5">Swipe through them. Each back shows that hero at home, then at the thing they are known for, then home again.</p>
     <div class="reel" id="reel">
       <div class="reel-item"><div class="cardback r-absurd" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/will_slapton.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Hollywood, 2022</span></div><div class="cb-skill">Keep It Out Your Mouth</div><div class="cb-text">One slap. The loudest enemy goes quiet.</div></div></div><small>Will Slapton · Absurd</small></div>
       <div class="reel-item"><div class="cardback r-rare" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="" src="/card_backs/legionary.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">Rome</span></div><div class="cb-skill">Formation</div><div class="cb-text">His guard grows with every ally still standing.</div></div></div><small>Gaius Marcellus · Rare</small></div>
@@ -129,8 +137,8 @@
   <section class="show">
     <div class="show-copy">
       <div class="eb cy">Market</div>
-      <h2>Prices move when people trade.</h2>
-      <p>Buy where the goods are cheap. Sell them where Aldermere is hungry.</p>
+      <h2>The price moves because people are buying.</h2>
+      <p>Moonsilver, stew, gems, and cards change hands all day. Buy them where a waystone makes them cheap, and sell them in Aldermere when the city wants them.</p>
     </div>
     <figure class="frame"><img src="/assets/preview/market.png" alt="The market and the waystone deals"></figure>
   </section>
@@ -138,16 +146,16 @@
   <section class="show flip">
     <div class="show-copy">
       <div class="eb cy">Crews</div>
-      <h2>A banner you share.</h2>
-      <p>Chat, a vault, a raid after dark, and a cup the city can see.</p>
+      <h2>A crew that shows up when it gets dark.</h2>
+      <p>You get a chat, a shared vault, and a goal for the week. At night the squad can sign up for the big fight. The Crew Cup is just the city keeping score, out loud.</p>
     </div>
     <figure class="frame"><img src="/assets/preview/crew.png" alt="A crew, its chat, and the Crew Cup"></figure>
   </section>
 
   <section class="panel glow cta">
     <div class="eb cy">The list</div>
-    <h2>Leave your name.</h2>
-    <p class="pitch">When the lights come on, you will hear from us.</p>
+    <h2>Leave your name with the city.</h2>
+    <p class="pitch">When there is a place for you in Aldermere, you will hear from us.</p>
     <form class="wl" id="wl2" novalidate>
       <label class="sr" for="em2">Email</label>
       <input id="em2" type="email" autocomplete="email" placeholder="you@email.com" required>
@@ -164,54 +172,48 @@
   <footer class="land-foot">
     <img class="logo" src="/assets/logo.svg" alt="OverSummoned">
     <div>OverSummoned. 18+. Free.</div>
-    <div>Aldermere is not open yet.</div>
+    <div>A river city with too many heroes.</div>
   </footer>
 </main>
 </div>
-<dialog id="login"><div class="dl">
-  <h3 class="h" style="font-size:26px">The door is shut.</h3>
-  <p class="mut">Only one guest gets in for now. Everyone else, leave a name and wait for the lights.</p>
-  <button class="btn" id="gbtn" type="button">Continue with Google</button>
-  <button class="btn g" id="lclose" type="button">Never mind</button>
+<dialog class="authdlg" id="login"><div class="dl auth">
+  <button class="x" id="lclose" type="button" aria-label="Close">×</button>
+  <div class="auth-tabs">
+    <button type="button" data-tab="in" class="on">Sign In</button>
+    <button type="button" data-tab="up">Create Account</button>
+  </div>
+  <h3 class="h" id="auth-title">Sign in</h3>
+  <div id="pane-in">
+    <form id="signin">
+      <label>Email<input id="in-email" type="email" autocomplete="email" required></label>
+      <label>Password<input id="in-pass" type="password" autocomplete="current-password" required></label>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+    <button class="g-auth" id="g-in" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
+    <button class="switch" type="button" data-tab="up">New here? Create an account</button>
+  </div>
+  <div id="pane-up" hidden>
+    <form id="create-form">
+      <label>Username<input id="up-name" type="text" autocomplete="username" maxlength="20"></label>
+      <div id="name-note" class="field-note"></div>
+      <label>Email<input id="up-email" type="email" autocomplete="email"></label>
+      <label>Password<input id="up-pass" type="password" autocomplete="new-password"></label>
+      <ul class="rules" aria-label="Password rules">
+        <li data-rule="len">8 or more characters</li>
+        <li data-rule="upper">An uppercase letter</li>
+        <li data-rule="lower">A lowercase letter</li>
+        <li data-rule="num">A number</li>
+        <li data-rule="sym">A symbol</li>
+      </ul>
+      <label>Confirm password<span class="confirm-row"><input id="up-pass2" type="password" autocomplete="new-password"><span id="match" class="match" aria-hidden="true">✓</span></span></label>
+      <button class="btn" type="submit">Create Account</button>
+    </form>
+    <button class="g-auth" id="g-up" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
+    <button class="switch" type="button" data-tab="in">Already have an account? Sign in</button>
+  </div>
   <div id="lmsg" role="alert"></div>
 </div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
-<script>
-(function(){
-  var SB='https://eresamyqxarlrdgudgrw.supabase.co', KEY='sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
-  function bind(form, msg, btn){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      var em=form.querySelector('input[type=email]').value.trim();
-      msg.textContent='';
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ msg.style.color='var(--pink)'; msg.textContent="That's not an email. Try again."; return; }
-      btn.disabled=true;
-      var company=form.querySelector('[name=company]');
-      fetch(SB+'/functions/v1/waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,company:company?company.value:''})})
-        .then(function(r){return r.json().catch(function(){return{}})})
-        .then(function(j){
-          if(j&&j.ok){ msg.style.color='var(--lime)'; msg.textContent=j.dupe?"You're already on the list.":"You're on the list."; if(!j.dupe){try{gtag('event','waitlist_join')}catch(err){}} form.reset(); }
-          else { msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; }
-        })
-        .catch(function(){ msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; })
-        .then(function(){ btn.disabled=false; });
-    });
-  }
-  bind(document.getElementById('wl'), document.getElementById('wlmsg'), document.getElementById('wlbtn'));
-  bind(document.getElementById('wl2'), document.getElementById('wlmsg2'), document.getElementById('wlbtn2'));
-  var dlg=document.getElementById('login'), lm=document.getElementById('lmsg'), client=null;
-  try{ client=window.supabase.createClient(SB,KEY,{auth:{persistSession:true,detectSessionInUrl:true}});}catch(e){}
-  function say(t){ lm.textContent=t||''; lm.style.color='var(--pink)'; }
-  document.getElementById('openlogin').onclick=function(){ say(''); dlg.showModal&&dlg.showModal(); };
-  document.getElementById('lclose').onclick=function(){ dlg.close(); };
-  function deny(){ say("You're not on the guest list yet. Leave your name and wait for the lights."); if(client) client.auth.signOut(); }
-  function check(){ if(!client) return; return client.auth.getSession().then(function(r){ var s=r.data&&r.data.session; if(!s) return;
-    return client.from('den_allow').select('email').maybeSingle().then(function(q){ if(q.data) location.replace('/play'); else if(!q.error){ deny(); dlg.showModal&&dlg.showModal(); } }); }); }
-  document.getElementById('gbtn').onclick=function(){ if(!client) return say('The door is warming up. Try again in a second.');
-    client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/'}}).then(function(r){ if(r.error) say('Google did not open. Try again.'); }); };
-  if(/[?&]login=1/.test(location.search)||/[?&]denied/.test(location.search)) setTimeout(function(){ if(/denied/.test(location.search)) deny(); dlg.showModal&&dlg.showModal(); }, 200);
-  check();
-})();
-</script>
+<script src="/js/public.js"></script>
 </body>
 </html>

@@ -135,7 +135,7 @@ async function call(op, payload) {
   const { data: res, error } = await sb.rpc('os_admin', {op, payload: payload || {}});
   if (error) {
     const m = error.message || '';
-    if (/not allowed/i.test(m)) { root.innerHTML = shell('<div class="panel"><h2 class="h">This room is not for you.</h2></div>'); return null; }
+    if (/not allowed/i.test(m)) { root.innerHTML = shell('<div class="panel"><h2 class="h">That did not open.</h2></div>'); return null; }
     if (/does not exist|PGRST202/i.test(m)) { toast('The books are still being bound.'); return null; }
     toast('That did not land.');
     return null;
@@ -220,7 +220,7 @@ async function boot() {
   try { sb = window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, detectSessionInUrl:true}}); } catch (e) { sb = null; }
   const session = sb && (await sb.auth.getSession()).data.session;
   if (!session) {
-    root.innerHTML = `<div class="land"><header class="land-top"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"></header><main class="land-main"><div class="panel" style="max-width:460px"><h2 class="h" style="font-size:28px">The door is shut.</h2><p class="mut">This room is not on the street.</p><button class="btn" id="g" type="button">Continue with Google</button></div></main></div>`;
+    root.innerHTML = `<div class="land"><header class="land-top"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div><a class="btn gold sm" href="/story">The Story</a><a class="btn g sm" href="/">Log in</a></header><main class="land-main"><div class="panel" style="max-width:460px"><h2 class="h" style="font-size:28px">Sign in to open the books.</h2><p class="mut">Use the same sign-in as the city.</p><a class="btn" href="/?login=1">Log in</a></div></main></div>`;
     document.getElementById('g').onclick = () => sb.auth.signInWithOAuth({provider:'google', options:{redirectTo: location.origin + '/ledger'}});
     return;
   }
