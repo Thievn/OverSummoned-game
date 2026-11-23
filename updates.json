@@ -1,0 +1,63 @@
+{
+  "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
+  "entries": [
+    {
+      "v": "2026.11.23.3",
+      "date": "2026-11-23",
+      "title": "What's new, right in the game",
+      "items": [
+        "A bar at the top of the game now tells you when something new has landed. Tap it to read what changed.",
+        "Every update is written down in the new update log, so you can always look back."
+      ]
+    },
+    {
+      "v": "2026.11.23.2",
+      "date": "2026-11-23",
+      "title": "Your squad, in the room",
+      "items": [
+        "The delve room now shows the heroes you actually sent down.",
+        "The sigil rite pays out at a steady pace, and your progress toward the next sigil is kept between visits."
+      ]
+    },
+    {
+      "v": "2026.11.23.1",
+      "date": "2026-11-23",
+      "title": "Collections and new gear sets",
+      "items": [
+        "New Collections page. Everything you find lights up, and anything still out there stays gray.",
+        "New gear sets to find, one for every hero. Wear all three pieces on the right hero for a bonus.",
+        "Skills keep every bit of progress between visits, and Vigor and Daring refill properly while you are away.",
+        "Hustles can bring back a little extra now and then. Some jobs can also go wrong."
+      ]
+    },
+    {
+      "v": "2026.11.22.3",
+      "date": "2026-11-22",
+      "title": "Gear and real fights",
+      "items": [
+        "Heroes now wear gear. Weapons, rings, trinkets and armor all change how a fight goes.",
+        "Flip a card to see what your hero is wearing and swap things in from your bank.",
+        "Delve fights now play out swing by swing, and potions on the belt really get used.",
+        "More loot added to the delves."
+      ]
+    },
+    {
+      "v": "2026.11.22.2",
+      "date": "2026-11-22",
+      "title": "A warmer welcome",
+      "items": [
+        "A fresh front page with the heroes, screenshots and the story of Aldermere.",
+        "Signing in is quicker, and the game remembers you on this device."
+      ]
+    },
+    {
+      "v": "2026.11.22.1",
+      "date": "2026-11-22",
+      "title": "OverSummoned opens its doors",
+      "items": [
+        "The river city of Aldermere is open. Summon heroes, put them to work, and come back to see what they found.",
+        "Seven skills to train, delves to send your squad on, and a market where prices move."
+      ]
+    }
+  ]
+}

@@ -19,6 +19,7 @@
 
 - [Home](https://oversummoned.com/): what OverSummoned is, the heroes, screenshots and questions.
 - [The Story](https://oversummoned.com/story): how Aldermere ended up with more borrowed heroes than people.
+- [Update Log](https://oversummoned.com/updates): everything new in the game, newest first.
 - [Privacy Policy](https://oversummoned.com/privacy)
 - [Terms of Service](https://oversummoned.com/terms)
 

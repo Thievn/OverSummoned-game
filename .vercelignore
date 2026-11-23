@@ -4,6 +4,7 @@ test
 scripts
 SUPABASE.md
 README.md
+CHANGELOG.md
 *.mjs
 !js/**
 .git

@@ -51,6 +51,12 @@ PAGES = {
    og_title="Terms of Service · OverSummoned",
    og_desc="The rules for using OverSummoned and playing fair.",
    crumbs=[("Home", "/"), ("Terms of Service", "/terms")], theme=None),
+ "updates.html": dict(
+   path="/updates", title="Update Log · OverSummoned",
+   desc="Everything new in OverSummoned, newest first: new loot, new gear sets, new places and the fixes that make the game play better.",
+   og_title="Update Log · OverSummoned",
+   og_desc="Everything new in the river city of Aldermere, newest first.",
+   crumbs=[("Home", "/"), ("Update Log", "/updates")], theme=None),
 }
 
 def url(p): return SITE + ("/" if p == "/" else p)
@@ -249,6 +255,7 @@ def write_static():
     sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
           + u(SITE + "/", "1.0", "weekly", im) + u(SITE + "/story", "0.8", "monthly")
+          + u(SITE + "/updates", "0.6", "weekly")
           + u(SITE + "/privacy", "0.3", "yearly") + u(SITE + "/terms", "0.3", "yearly") + "</urlset>\n")
     open("sitemap.xml", "w").write(sm)
     bots = ["Googlebot", "Bingbot", "Google-Extended", "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot",
@@ -290,6 +297,7 @@ def write_static():
 
 - [Home]({SITE}/): what OverSummoned is, the heroes, screenshots and questions.
 - [The Story]({SITE}/story): how Aldermere ended up with more borrowed heroes than people.
+- [Update Log]({SITE}/updates): everything new in the game, newest first.
 - [Privacy Policy]({SITE}/privacy)
 - [Terms of Service]({SITE}/terms)
 
