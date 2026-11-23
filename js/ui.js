@@ -30,7 +30,6 @@ function cardFront(id, level, z) {
 <div class="card-art"><img class="px" src="/assets/portrait/${id}.png" alt="${esc(h.name)}"></div>
 <div class="card-name h">${esc(h.name)}</div><div class="card-title">${esc(h.title)}</div>
 <div class="card-stats"><span class="s-str"><small>Attack</small><b>${T.atk}</b></span><span class="s-def"><small>Defense</small><b>${T.def}</b></span><span class="s-wit"><small>Health</small><b>${T.hp}</b></span></div>
-<div class="card-sub"><span>Speed <b>${T.spd}</b></span><span>Crit <b>${T.crit}%</b></span><span>Luck <b>${T.luck}</b></span></div>
 <div class="card-era">${esc(h.era)}</div></div></div>`;
 }
 

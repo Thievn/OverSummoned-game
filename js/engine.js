@@ -3,7 +3,7 @@ import {
   levelFromXp, xpForLevel, mentionsHero, GEAR_OF
 } from './catalog.js';
 import { heroTotals, partyFor, partyFx, simulate, roomsFor, canEquip, heroOutFx, fasterMult, luckWeights, makeRng } from './fight.js';
-import { GEAR, ALL_SLOTS, slotKind } from './gear.js';
+import { GEAR, ALL_SLOTS, slotKind, EXAMPLE_GEAR } from './gear.js';
 
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
@@ -123,6 +123,7 @@ export function bibleState() {
     paramedic:{main:'defib_paddles', off:'medic_bag', trinket1:'trauma_shears', belt1:'potion_pink', belt2:'eel_stew'},
     engineer:{head:'brass_goggles', hands:'steam_gauntlet', main:'pocket_trebuchet', belt1:'potion_pink'}
   };
+  for (const id of Object.keys(s.heroes)) if (!s.gear[id] && EXAMPLE_GEAR[id]) s.gear[id] = JSON.parse(JSON.stringify(EXAMPLE_GEAR[id]));
   s.heroes.legionary.level = 6; s.heroes.paramedic.level = 4; s.heroes.engineer.level = 5;
   s.crier = [
     {tag:'Breaking', msg:'Ghoul chef bursts out of the Ash Kitchen. Three crews are hunting it now.'},
