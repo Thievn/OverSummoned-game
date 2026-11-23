@@ -79,7 +79,7 @@ function setHeroes(list) {
   walkLayer.textContent = '';
   walkers = [];
   talk = null;
-  const room = Math.max(1, Math.floor(((W || 600) - gap()) / (gap() * 1.45)));
+  const room = Math.max(1, Math.floor(((W || 600) * (1 - chatFrom * 0.5) - gap()) / (gap() * 1.2)));
   const pick = want.slice().sort(() => Math.random() - 0.5).slice(0, Math.min(8, room));
   pick.forEach((id, i) => {
     const el = document.createElement('div');
@@ -140,9 +140,9 @@ function separate(g, edge) {
       if (!fixA && a.dir === 1) a.dir = -1;
       if (!fixB && b.dir === -1) b.dir = 1;
     }
-    if (o.length) { if (o[0].x < edge) o[0].x = edge; if (o[o.length - 1].x > W - edge) o[o.length - 1].x = W - edge; }
+    if (o.length) { const lb = Math.max(edge, W * chatFrom * 0.5); if (o[0].x < lb) o[0].x = lb; if (o[o.length - 1].x > W - edge) o[o.length - 1].x = W - edge; }
     for (let i = 1; i < o.length; i++) if (o[i].x - o[i - 1].x < g) o[i].x = Math.min(W - edge, o[i - 1].x + g);
-    for (let i = o.length - 2; i >= 0; i--) if (o[i + 1].x - o[i].x < g) o[i].x = Math.max(edge, o[i + 1].x - g);
+    for (let i = o.length - 2; i >= 0; i--) if (o[i + 1].x - o[i].x < g) o[i].x = Math.max(Math.max(edge, W * chatFrom * 0.5), o[i + 1].x - g);
   }
 }
 
@@ -158,9 +158,15 @@ function frame(now) {
   const pan = still ? 0.5 : (Math.sin((now - t0) / PAN_MS * Math.PI * 2) + 1) / 2;
   for (const l of layers) { l.style.backgroundSize = `${bw}px ${bh}px`; l.style.backgroundPosition = `${-(bw - W) * pan}px ${H - bh}px`; }
 
-  const g = gap(), edge = g * 0.55;
+  const g = gap(), edge = g * 0.55, left = Math.max(edge, W * chatFrom * 0.5);
   if (!still) {
     stepChat(now);
+    // a quiet street for a while: the two nearest heroes on the right side turn to face each other
+    if (!talk && chats.length && walkers.length > 1 && now > chatAt + 14000) {
+      const o = walkers.slice().sort((p, q) => p.x - q.x);
+      for (let i = o.length - 2; i >= 0; i--) if (chatFor(o[i], o[i + 1])) { o[i].dir = 1; o[i + 1].dir = -1; break; }
+      chatAt = now;
+    }
     const order = walkers.slice().sort((p, q) => p.x - q.x);
     for (const w of walkers) {
       if (talk && (w === talk.a || w === talk.b)) { w.moving = false; continue; }
@@ -170,7 +176,7 @@ function frame(now) {
         const d = (o.x - w.x) * w.dir;
         if (d <= 0 || d > g * 1.02) continue;
         const busy = talk && (o === talk.a || o === talk.b);
-        if (!busy && o.dir === -w.dir && !talk && now > chatAt && Math.min(w.x, o.x) > Math.max(g, W * chatFrom) && Math.max(w.x, o.x) < W - g) {
+        if (!busy && o.dir === -w.dir && !talk && now > chatAt && (w.x + o.x) / 2 > Math.max(g, W * chatFrom * 0.85) && Math.max(w.x, o.x) < W - g) {
           const c = chatFor(w, o);
           if (c && Math.random() < 0.7) { startChat(w, o, c, now); break; }
           chatAt = now + 2500;
@@ -181,7 +187,7 @@ function frame(now) {
       }
       if (talk && (w === talk.a || w === talk.b)) { w.moving = false; continue; }
       w.x += w.dir * v * dt * (k / 1.5);
-      if (w.x < edge) { w.x = edge; w.dir = 1; }
+      if (w.x < left) { w.x = left; w.dir = 1; }
       if (w.x > W - edge) { w.x = W - edge; w.dir = -1; }
       w.moving = true;
     }
