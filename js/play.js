@@ -1,11 +1,12 @@
 import { SB_URL, SB_KEY, HEROES, ITEMS, GEAR_OF } from './catalog.js';
 import { registerArt } from './art.js';
-import { bibleState, freshState, tick, dispatch } from './engine.js';
+import { bibleState, freshState, tick, dispatch, skillLevel } from './engine.js';
 import { render, gate, NAME_WHY, hallQuote } from './ui.js';
 import { bindCards, setGearProvider, isOpen, hideTip, flipCard } from './gearui.js';
 import { GEAR, ERA_SETS, HERO_BASE } from './gear.js';
 import { coins } from './fight.js';
 import { mountLife, setChats } from './life.js';
+import { mountSkillScene } from './skillscene.js';
 import { PREVIEW_CHATS } from './banter-preview.js';
 
 const root = document.getElementById('root');
@@ -39,7 +40,14 @@ function paint() {
   if (keep) { const i = document.getElementById('acct-name'); if (i) { i.value = keep.v; i.focus(); nameInput(i, true); } }
   applySettings();
   if (params.get('shot') === '1') document.body.classList.add('still');
-  mountLife(root.querySelector('[data-lc]'), {heroes: Object.keys(state.heroes || {}), still: document.body.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches, chatFrom: state.phone ? 0.3 : 0.47});
+  const still = document.body.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  mountLife(root.querySelector('[data-lc]'), {heroes: Object.keys(state.heroes || {}), still, chatFrom: state.phone ? 0.3 : 0.47});
+  const skEl = root.querySelector('[data-sks]');
+  if (skEl && state.skills && state.skills[state.view]) {
+    const sk = state.skills[state.view];
+    const finds = Object.values((sk.session && sk.session.items) || {}).reduce((a, b) => a + b, 0);
+    mountSkillScene(skEl, {skill: state.view, node: sk.node, hero: sk.hero, active: state.active === state.view, level: skillLevel(state, state.view), finds, still});
+  } else mountSkillScene(null);
   loadChats();
   if (heroModal) showHero(heroModal);
 }

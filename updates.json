@@ -2,6 +2,17 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.12",
+      "date": "2026-11-23",
+      "title": "A longer walk through town",
+      "items": [
+        "The city street runs as one long road now, and people mostly walk the same way.",
+        "Walks look steadier, and the ground stays still under their feet.",
+        "The mines, the woods and the lakes have their own spots now, and the kitchen, the forge and the lab pick up a little more furniture as you go.",
+        "New fish come from later waters, and the kitchen has new meals for them."
+      ]
+    },
+    {
       "v": "2026.11.23.11",
       "date": "2026-11-23",
       "title": "A market of your own",

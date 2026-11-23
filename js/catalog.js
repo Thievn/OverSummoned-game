@@ -37,7 +37,13 @@ export const ITEMS = {
   emberroot_log:{name:'Ember root log', rarity:'rare', icon:'emberroot_log', kind:'mat', value:0.96, sell:9600, blurb:'Warm to the touch, even in winter.'},
   voidtrunk_log:{name:'Void trunk log', rarity:'epic', icon:'voidtrunk_log', kind:'mat', value:1.94, sell:19400, blurb:'No bird has ever sat on it.'},
   raw_eel:{name:'Raw eel', rarity:'common', icon:'raw_eel', kind:'food', value:0.18, sell:1800},
+  ash_perch:{name:'Ash perch', rarity:'common', icon:'ash_perch', kind:'food', value:0.36, sell:3600, blurb:'A quiet pond fish, silver-green.'},
+  moon_trout:{name:'Moon trout', rarity:'uncommon', icon:'moon_trout', kind:'food', value:0.8, sell:8000, blurb:'It shines a little, even in a bucket.'},
+  deep_pike:{name:'Deep pike', rarity:'rare', icon:'deep_pike', kind:'food', value:1.6, sell:16000, blurb:'Long, dark, and it does not give up easily.'},
   eel_stew:{name:'Eel stew', rarity:'uncommon', icon:'eel_stew', kind:'food', value:0.5, sell:5000, heal:28},
+  perch_supper:{name:'Perch supper', rarity:'uncommon', icon:'perch_supper', kind:'food', value:1, sell:10000, heal:36, blurb:'Crisp skin, herbs from the garden.'},
+  moon_bake:{name:'Moon bake', rarity:'rare', icon:'moon_bake', kind:'food', value:2.2, sell:22000, heal:55, blurb:'It shines a little even after the oven.'},
+  pike_feast:{name:'Pike feast', rarity:'epic', icon:'pike_feast', kind:'food', value:4.5, sell:45000, heal:90, blurb:'Enough for the whole squad, and then some.'},
   potion_pink:{name:'Healing draught', rarity:'rare', icon:'potion_pink', kind:'food', value:0.8, sell:8000, heal:70},
   potion_cyan:{name:'Guard oil', rarity:'rare', icon:'potion_cyan', kind:'food', value:1, sell:10000},
   iron_bar:{name:'Iron bar', rarity:'uncommon', icon:'iron_bar', kind:'mat', value:0.9, sell:9000},
@@ -76,11 +82,11 @@ export const SKILLS = [
 export const NODES = {
   mining: [
     {id:'copper', name:'Copper vein', lv:1, sec:2.0, xp:5, item:'copper_ore', rock:'rock_copper', line:'The seam is bright and easy.'},
-    {id:'iron', name:'Iron vein', lv:10, sec:2.6, xp:14, item:'iron_ore', rock:'rock_copper', line:'Dark ore, good for a blade.'},
+    {id:'iron', name:'Iron vein', lv:10, sec:2.6, xp:14, item:'iron_ore', rock:'rock_iron', line:'Dark ore, good for a blade.'},
     {id:'moonsilver', name:'Moonsilver vein', lv:25, sec:3.0, xp:38, item:'moonsilver_ore', rock:'rock_moon', line:'Edith swings. The rock cracks. Glowing ore spills out.'},
     {id:'ember', name:'Ember vein', lv:55, sec:4.2, xp:70, item:'ember_ore', rock:'rock_ember', line:'Ember ore makes the blades that cut ghouls.'},
     {id:'void', name:'Void vein', lv:70, sec:5.2, xp:110, item:'void_ore', rock:'rock_void', line:'The rock drinks the lamplight.'},
-    {id:'starfall', name:'Starfall crater', lv:85, sec:6.4, xp:180, item:'gem_violet', every:6, rock:'rock_ember', line:'Mostly scorched rock. Now and then, a violet heart.'}
+    {id:'starfall', name:'Starfall crater', lv:85, sec:6.4, xp:180, item:'gem_violet', every:6, rock:'rock_star', line:'Mostly scorched rock. Now and then, a violet heart.'}
   ],
   woodcutting: [
     {id:'ash', name:'Ash grove', lv:1, sec:2.2, xp:6, item:'ash_log', rock:'ash_log', line:'Pale wood, good for fires and hafts.'},
@@ -90,15 +96,18 @@ export const NODES = {
     {id:'voidtrunk', name:'Void trunk', lv:75, sec:5.5, xp:120, item:'voidtrunk_log', qty:3, rock:'voidtrunk_log', line:'The tree has no birds.'}
   ],
   fishing: [
-    {id:'eel', name:'Eel run', lv:1, sec:2.4, xp:6, item:'raw_eel', rock:'raw_eel', line:'Silver backs in black water.'},
-    {id:'lantern', name:'Lantern pool', lv:20, sec:3.2, xp:20, item:'raw_eel', qty:2, rock:'raw_eel', line:'They follow the lamp and the hook.'},
-    {id:'ashpond', name:'Ash pond', lv:40, sec:4.0, xp:48, item:'raw_eel', qty:2, rock:'raw_eel', line:'Warm water, fat eels.'},
-    {id:'deep', name:'The deep cut', lv:65, sec:5.4, xp:100, item:'raw_eel', qty:3, rock:'raw_eel', line:'Something bigger tugs, then an eel comes up.'}
+    {id:'eel', name:'The night docks', lv:1, sec:2.4, xp:6, item:'raw_eel', rock:'raw_eel', line:'Silver backs in black water.'},
+    {id:'lantern', name:'Ash pond', lv:20, sec:3.2, xp:20, item:'ash_perch', rock:'ash_perch', line:'Quiet water under the trees.'},
+    {id:'ashpond', name:'Moonlit lake', lv:40, sec:4.0, xp:48, item:'moon_trout', rock:'moon_trout', line:'The moon sits on the water, and so does the hook.'},
+    {id:'deep', name:'The deep cut', lv:65, sec:5.4, xp:100, item:'deep_pike', rock:'deep_pike', line:'Something long tugs in the dark.'}
   ],
   cooking: [
     {id:'stew', name:'Eel stew', lv:1, sec:3.0, xp:18, item:'eel_stew', use:{raw_eel:1}, rock:'eel_stew', line:'The pot smells like the harbor and home.'},
     {id:'feast', name:'Watch feast', lv:25, sec:4.0, xp:40, item:'eel_stew', qty:2, use:{raw_eel:2}, rock:'eel_stew', line:'Enough for a squad coming up the stairs.'},
-    {id:'broth', name:'Pink broth', lv:45, sec:5.0, xp:80, item:'potion_pink', use:{raw_eel:1, gem_violet:1}, rock:'potion_pink', line:'A gem dissolves. The broth glows.'}
+    {id:'perch', name:'Perch supper', lv:20, sec:3.6, xp:28, item:'perch_supper', use:{ash_perch:1}, rock:'perch_supper', line:'Crisp skin, herbs from the garden.'},
+    {id:'moonbake', name:'Moon bake', lv:40, sec:4.6, xp:60, item:'moon_bake', use:{moon_trout:1}, rock:'moon_bake', line:'It shines a little even after the oven.'},
+    {id:'broth', name:'Pink broth', lv:45, sec:5.0, xp:80, item:'potion_pink', use:{raw_eel:1, gem_violet:1}, rock:'potion_pink', line:'A gem dissolves. The broth glows.'},
+    {id:'pike', name:'Pike feast', lv:65, sec:5.6, xp:110, item:'pike_feast', use:{deep_pike:1}, rock:'pike_feast', line:'Enough for the whole squad, and then some.'}
   ],
   smithing: [
     {id:'iron', name:'Iron bar', lv:1, sec:3.2, xp:16, item:'iron_bar', use:{iron_ore:2}, rock:'iron_bar', line:'The bar takes a dark shine.'},
