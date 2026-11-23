@@ -17,7 +17,7 @@ function toUrl(data) {
 export function registerArt(id, a) {
   if (!a || !id) return;
   const o = OWN[id] = {sideMeta: a.sideMeta || null, frontMeta: a.frontMeta || null, front: {}};
-  o.portrait = toUrl(a.portrait); o.back = toUrl(a.back); o.side = toUrl(a.side); o.avatar = toUrl(a.avatar);
+  o.portrait = toUrl(a.portrait); o.back = toUrl(a.back); o.side = toUrl(a.side); o.avatar = toUrl(a.avatar); o.walk = toUrl(a.walk);
   for (const [k, v] of Object.entries(a.front || {})) o.front[k] = toUrl(v);
   for (const [k, v] of Object.entries(a.icons || {})) ICONS[k] = toUrl(v);
 }
@@ -27,6 +27,9 @@ export const portraitSrc = (id) => (OWN[id] && OWN[id].portrait) || `/assets/por
 // Profile pictures: pixel head shots made from each card's art.
 export const avatarSrc = (id) => (OWN[id] && (OWN[id].avatar || OWN[id].portrait)) || `/assets/avatar/${id}.png?v=2`;
 export const backSrc = (id, gif) => (OWN[id] && OWN[id].back) || `/card_backs/${gif || id}.gif`;
+// City banner walk strip: an account's own hero brings hers, everyone else uses the site's files.
+export const walkSrc = (id) => (OWN[id] && OWN[id].walk) || `/assets/walk/${id}.png`;
+export const hasWalk = (id) => !!(OWN[id] && OWN[id].walk);
 export const sideSrc = (id) => (OWN[id] && OWN[id].side) || `/assets/sprites/${id}.png`;
 export const sideMeta = (id) => (OWN[id] && OWN[id].sideMeta) || null;
 export const frontSrc = (id, anim) => (OWN[id] && OWN[id].front[anim]) || `/assets/front/${id}_${anim}.png`;

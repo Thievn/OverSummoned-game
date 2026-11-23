@@ -81,7 +81,7 @@ export function cardHTML(hero, opt = {}) {
       ${S ? `<button type="button" class="tab" data-v="set" aria-label="Era set" aria-pressed="${opt.view === 'set'}">${ICO.set}</button>` : ''}
     </div>
     <div class="cb-low">
-      <div class="layer bio"><div class="cb-skill">${esc(hero.back)}</div><div class="cb-text">${esc(hero.backText)}</div><div class="cb-foot" style="margin-top:auto"><span>${esc(hero.foot || hero.perk || '')}</span><span>${RN[r]}</span></div></div>
+      <div class="layer bio">${hero.own && hero.bio ? `<div class="cb-bio">${esc(hero.bio)}</div>` : ''}<div class="cb-skill">${esc(hero.back)}</div><div class="cb-text">${esc(hero.backText)}</div><div class="cb-foot" style="margin-top:auto"><span>${esc(hero.foot || hero.perk || '')}</span><span>${RN[r]}</span></div></div>
       <div class="layer gear"><div class="gsum">${sum}</div><div class="grow">${row}</div><div class="belt"><span class="buckle"></span>${belt}<span class="lbl">Belt</span></div></div>
       ${S ? `<div class="layer set"><div class="bonus ${on ? 'on' : ''}"><div class="bh">${on ? 'Set bonus active' : 'Wear all 3'}<span class="pips">${pips}</span></div><div class="bn">${esc(S ? S.bonus : '')}</div><div class="bt">${esc(S ? S.text : '')}</div></div>
         <div class="bonus-wear" style="text-align:center;font:600 .95em 'Space Grotesk';color:var(--mut);margin-top:.55em">${on ? 'All three worn. The era remembers.' : found.length ? `${found.length} of 3 found. Keep delving.` : 'None found yet. They are out there.'}</div></div>` : ''}

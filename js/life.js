@@ -3,6 +3,8 @@
 // Now and then a hero wanders off one side and someone (maybe a hero who was waiting) walks back in,
 // so the crowd keeps mixing. Chats come from the saved set the server hands over; nothing is written here.
 // Everything moves from one requestAnimationFrame loop, so a repaint of the page never restarts it.
+// A hero that belongs to one account walks here only for that account, using the walk art it was sent.
+import {walkSrc, hasWalk} from './art.js';
 const WALKERS = ['office_worker', 'delivery_rider', 'paramedic', 'hunter', 'legionary', 'engineer', 'plague_doctor', 'gangster', 'will_slapton'];
 export const PLACES = [
   {id: 'aldermere', name: 'Aldermere Square'},
@@ -74,7 +76,7 @@ function sizeWalker(w) {
 function gap() { return FR * k * 0.78; }
 
 function setHeroes(list) {
-  const want = list.filter(id => WALKERS.includes(id));
+  const want = list.filter(id => WALKERS.includes(id) || hasWalk(id));
   const key = want.join(',');
   if (key === ids && walkers.length) return;
   ids = key;
@@ -88,7 +90,7 @@ function setHeroes(list) {
   pick.forEach((id, i) => {
     const el = document.createElement('div');
     el.className = 'lc-w';
-    el.innerHTML = `<div class="lc-s" style="background-image:url(/assets/walk/${id}.png)"></div><div class="lc-b"></div>`;
+    el.innerHTML = `<div class="lc-s" style="background-image:url(${walkSrc(id)})"></div><div class="lc-b"></div>`;
     walkLayer.appendChild(el);
     const span = (W || 600) / (pick.length + 1);
     const w = {id, el, x: span * (i + 1) + rnd(-span * 0.2, span * 0.2), dir: Math.random() < 0.5 ? -1 : 1, v: rnd(26, 38), f: 0, ft: 0, stop: 0, say: null,
@@ -169,7 +171,7 @@ function comings(now) {
       if (bench.length && Math.random() < 0.7) {
         const j = Math.floor(Math.random() * bench.length);
         const next = bench[j]; bench[j] = w.id; w.id = next;
-        w.el.firstChild.style.backgroundImage = `url(/assets/walk/${next}.png)`;
+        w.el.firstChild.style.backgroundImage = `url(${walkSrc(next)})`;
       }
       const fromLeft = Math.random() < 0.5, half = FR * k / 2;
       w.x = fromLeft ? -half : W + half; w.dir = fromLeft ? 1 : -1; w.v = rnd(26, 38);
