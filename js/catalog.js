@@ -1,3 +1,4 @@
+import { GEAR, HERO_BASE } from './gear.js';
 /* OverSummoned catalog. Keep node numbers in sync with supabase/migrations os_node(). */
 export const SB_URL = 'https://eresamyqxarlrdgudgrw.supabase.co';
 export const SB_KEY = 'sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
@@ -6,15 +7,15 @@ export const RARITY = ['common','uncommon','rare','epic','legendary','absurd','u
 export const RARITY_NAME = {common:'Common',uncommon:'Uncommon',rare:'Rare',epic:'Epic',legendary:'Legendary',absurd:'Absurd',unhinged:'Unhinged'};
 
 export const HEROES = {
-  office_worker: {id:'office_worker', name:'Kevin Latham', title:'Office Worker', rarity:'common', era:'Modern day', eraBg:'era_office', might:7, guard:8, knack:12, perk:'Mastery comes quicker while Kevin keeps the ledger.', perkKey:'mastery', skill:'Any', back:'Reply All', backText:'Marks every enemy so the squad hits harder for two turns.', gif:'office_worker'},
-  delivery_rider: {id:'delivery_rider', name:'Marco Reyes', title:'Delivery Rider', rarity:'common', era:'Modern day', eraBg:'era_modern', might:9, guard:8, knack:11, perk:'Delves finish a little sooner. Marco knows the short stairs.', perkKey:'delve', skill:'Delve', back:'Last Mile', backText:'He treats the dark like a late order and does not linger.', gif:'delivery_rider'},
-  paramedic: {id:'paramedic', name:'Maya Washington', title:'Paramedic', rarity:'uncommon', era:'Modern day', eraBg:'era_modern', might:7, guard:10, knack:14, perk:'Cooked meals heal harder when Maya is on the squad.', perkKey:'cook', skill:'Cooking', back:'Triage', backText:'She stops the bleeding and gets everyone walking.', gif:'paramedic'},
-  hunter: {id:'hunter', name:'Brokk', title:'Stone Age Hunter', rarity:'uncommon', era:'Ice Age', eraBg:'era_iceage', might:16, guard:11, knack:6, perk:'Woodcutting sometimes drops a second log.', perkKey:'wood', skill:'Woodcutting', back:'Fire-craft', backText:'He lights the dark and the meat comes off the fire hot.', gif:'hunter'},
-  legionary: {id:'legionary', name:'Gaius Marcellus', title:'Roman Legionary', rarity:'rare', era:'Rome, 1st century', eraBg:'forum_bg', might:12, guard:15, knack:8, perk:'Smithing runs faster with Gaius at the anvil.', perkKey:'smith', skill:'Smithing', back:'Formation', backText:'His guard grows with every ally still standing.', gif:'legionary'},
-  engineer: {id:'engineer', name:'Edith Crane', title:'Victorian Engineer', rarity:'rare', era:'London, 1880s', eraBg:'era_london', might:8, guard:9, knack:16, perk:'Mining +15% speed', perkKey:'mine', skill:'Mining', back:'Contraptions', backText:'She builds a way through with scrap, steam and spite.', gif:'engineer'},
-  plague_doctor: {id:'plague_doctor', name:'Doctor Albrecht', title:'Plague Doctor', rarity:'rare', era:'Medieval, 1348', eraBg:'era_plague', might:8, guard:10, knack:15, perk:'Alchemy brews one extra dose.', perkKey:'alchemy', skill:'Alchemy', back:'Miasma Theory', backText:'Old remedies, sharp enough for rot and poison.', gif:'plague_doctor'},
-  gangster: {id:'gangster', name:'Vincenzo Moretti', title:'Prohibition Gangster', rarity:'epic', era:'Chicago, 1927', eraBg:'era_chicago', might:13, guard:9, knack:15, perk:'+15% hustle chance', perkKey:'hustle', skill:'Hustles', back:'Shakedown', backText:'He scares a mark off, or he buys the room.', gif:'gangster'},
-  will_slapton: {id:'will_slapton', name:'Will Slapton', title:'Leading Man', rarity:'absurd', era:'Hollywood, 2022', eraBg:'era_hollywood', might:16, guard:9, knack:13, perk:'One slap stuns the loudest enemy.', perkKey:'stun', skill:'Delve', back:'Keep It Out Your Mouth', backText:'A thunderous slap that stuns one enemy for 2 turns. Double damage if they just made a joke.', foot:'Stuns the loudest enemy', gif:'will_slapton',
+  office_worker: {id:'office_worker', name:'Kevin Latham', title:'Office Worker', rarity:'common', era:'Modern day', eraBg:'era_office', perk:'Mastery comes quicker while Kevin keeps the ledger.', perkKey:'mastery', skill:'Any', back:'Reply All', backText:'Marks every enemy so the squad hits harder for two turns.', gif:'office_worker'},
+  delivery_rider: {id:'delivery_rider', name:'Marco Reyes', title:'Delivery Rider', rarity:'common', era:'Modern day', eraBg:'era_modern', perk:'Delves finish a little sooner. Marco knows the short stairs.', perkKey:'delve', skill:'Delve', back:'Last Mile', backText:'He treats the dark like a late order and does not linger.', gif:'delivery_rider'},
+  paramedic: {id:'paramedic', name:'Maya Washington', title:'Paramedic', rarity:'uncommon', era:'Modern day', eraBg:'era_modern', perk:'Cooked meals heal harder when Maya is on the squad.', perkKey:'cook', skill:'Cooking', back:'Triage', backText:'She stops the bleeding and gets everyone walking.', gif:'paramedic'},
+  hunter: {id:'hunter', name:'Brokk', title:'Stone Age Hunter', rarity:'uncommon', era:'Ice Age', eraBg:'era_iceage', perk:'Woodcutting sometimes drops a second log.', perkKey:'wood', skill:'Woodcutting', back:'Fire-craft', backText:'He lights the dark and the meat comes off the fire hot.', gif:'hunter'},
+  legionary: {id:'legionary', name:'Gaius Marcellus', title:'Roman Legionary', rarity:'rare', era:'Rome, 1st century', eraBg:'forum_bg', perk:'Smithing runs faster with Gaius at the anvil.', perkKey:'smith', skill:'Smithing', back:'Formation', backText:'His guard grows with every ally still standing.', gif:'legionary'},
+  engineer: {id:'engineer', name:'Edith Crane', title:'Victorian Engineer', rarity:'rare', era:'London, 1880s', eraBg:'era_london', perk:'Mining +15% speed', perkKey:'mine', skill:'Mining', back:'Contraptions', backText:'She builds a way through with scrap, steam and spite.', gif:'engineer'},
+  plague_doctor: {id:'plague_doctor', name:'Doctor Albrecht', title:'Plague Doctor', rarity:'rare', era:'Medieval, 1348', eraBg:'era_plague', perk:'Alchemy brews one extra dose.', perkKey:'alchemy', skill:'Alchemy', back:'Miasma Theory', backText:'Old remedies, sharp enough for rot and poison.', gif:'plague_doctor'},
+  gangster: {id:'gangster', name:'Vincenzo Moretti', title:'Prohibition Gangster', rarity:'epic', era:'Chicago, 1927', eraBg:'era_chicago', perk:'+15% hustle chance', perkKey:'hustle', skill:'Hustles', back:'Shakedown', backText:'He scares a mark off, or he buys the room.', gif:'gangster'},
+  will_slapton: {id:'will_slapton', name:'Will Slapton', title:'Leading Man', rarity:'absurd', era:'Hollywood, 2022', eraBg:'era_hollywood', perk:'One slap stuns the loudest enemy.', perkKey:'stun', skill:'Delve', back:'Keep It Out Your Mouth', backText:'A thunderous slap that stuns one enemy for 2 turns. Double damage if they just made a joke.', foot:'Stuns the loudest enemy', gif:'will_slapton',
     bio:'He was walking back to his seat at the biggest awards show on Earth when the Circle grabbed him. A goblin made one joke. Nobody has seen that goblin since.'}
 };
 
@@ -38,31 +39,16 @@ export const ITEMS = {
   moonsilver_bar:{name:'Moonsilver bar', rarity:'rare', icon:'moonsilver_bar', kind:'mat', value:41, blurb:'Cold to the touch and glowing. Smiths turn it into blades that hurt ghosts.'},
   card_shard:{name:'Card shard', rarity:'rare', icon:'cards', kind:'mat', value:80},
   summon_sigil:{name:'Summoning sigil', rarity:'legendary', icon:'summon_sigil', kind:'mat', value:500},
-  rusty_gladius:{name:'Rusty Gladius', rarity:'rare', icon:'items/rusty_gladius', kind:'gear', slot:'main', might:4, by:'Gaius Marcellus'},
-  shield_lost_ninth:{name:'Shield of the Lost Ninth', rarity:'legendary', icon:'items/shield_lost_ninth', kind:'gear', slot:'off', guard:10, might:3, by:'Gaius Marcellus'},
-  hobnailed_caligae:{name:'Hobnailed Caligae', rarity:'uncommon', icon:'items/hobnailed_caligae', kind:'gear', slot:'feet', guard:4, by:'Gaius Marcellus'},
-  brass_goggles:{name:'Brass Goggles', rarity:'rare', icon:'items/brass_goggles', kind:'gear', slot:'head', knack:5, by:'Edith Crane'},
-  steam_gauntlet:{name:'Steam Gauntlet', rarity:'epic', icon:'items/steam_gauntlet', kind:'gear', slot:'off', might:3, guard:4, by:'Edith Crane'},
-  violin_case:{name:'The Violin Case', rarity:'epic', icon:'items/violin_case', kind:'gear', slot:'main', might:8, by:'Vincenzo Moretti'},
-  defib_paddles:{name:'Defibrillator Paddles', rarity:'epic', icon:'items/defib_paddles', kind:'gear', slot:'trinket', knack:7, by:'Maya Washington'},
-  herb_pomander:{name:'Herb Pomander', rarity:'uncommon', icon:'items/herb_pomander', kind:'gear', slot:'belt', knack:4, by:'Doctor Albrecht'},
-  trench_lantern:{name:'Trench Lantern', rarity:'rare', icon:'items/trench_lantern', kind:'gear', slot:'trinket', knack:5, by:'a soldier'},
-  stained_mug:{name:'Stained Mug', rarity:'common', icon:'items/stained_mug', kind:'gear', slot:'trinket', knack:3, by:'Kevin Latham'},
-  courier_helmet:{name:'Courier Helmet', rarity:'common', icon:'items/courier_helmet', kind:'gear', slot:'head', guard:4, by:'Marco Reyes'},
-  pinstripe_fedora:{name:'Pinstripe Fedora', rarity:'uncommon', icon:'items/pinstripe_fedora', kind:'gear', slot:'head', guard:3, knack:3, by:'Vincenzo Moretti'},
-  medic_bag:{name:'Medic Bag', rarity:'uncommon', icon:'items/medic_bag', kind:'gear', slot:'off', guard:3, knack:3, by:'Maya Washington'},
-  item_red_carpet_tux:{name:'Red Carpet Tux', rarity:'epic', icon:'items/item_red_carpet_tux', kind:'gear', slot:'chest', guard:3, by:'Will Slapton'},
-  item_golden_statuette:{name:'Golden Statuette', rarity:'legendary', icon:'items/item_golden_statuette', kind:'gear', slot:'trinket', might:2, knack:2, by:'Will Slapton'},
-  moonsilver_gladius:{name:'Moonsilver Gladius', rarity:'epic', icon:'items/rusty_gladius', kind:'gear', slot:'main', might:6, by:'the smiths', blurb:'Hurts ghosts.'}
 };
 
-export const GEAR_OF = {
-  legionary:['rusty_gladius','shield_lost_ninth','hobnailed_caligae'],
-  engineer:['brass_goggles','steam_gauntlet'],
-  gangster:['violin_case','pinstripe_fedora'],
-  paramedic:['defib_paddles','medic_bag'],
-  will_slapton:['item_red_carpet_tux','item_golden_statuette']
-};
+// Gear joins the item list from gear.js. Each hero's own things enter the world with them.
+for (const [id, g] of Object.entries(GEAR)) {
+  if (ITEMS[id]) { Object.assign(ITEMS[id], {name: g.name, rarity: g.rarity}); continue; }
+  ITEMS[id] = {name: g.name, rarity: g.rarity, icon: g.icon.replace(/^gen\//, ''), kind: g.slot === 'belt' ? 'food' : 'gear', slot: g.slot, value: Math.max(1, Math.round((g.sell || 0) / 10000))};
+}
+export const GEAR_OF = {};
+for (const id of Object.keys(HEROES)) GEAR_OF[id] = Object.keys(GEAR).filter(x => GEAR[x].hero === id);
+for (const [id, h] of Object.entries(HERO_BASE)) if (HEROES[id]) HEROES[id].base = h.base;
 
 export function itemSrc(id) {
   const it = ITEMS[id];

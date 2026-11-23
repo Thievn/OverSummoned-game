@@ -2,7 +2,10 @@ import {
   HEROES, HERO_ORDER, ITEMS, SKILLS, NODES, NAV_CITY, NAV_ADV, MASTERY, DELVE_LENGTHS,
   FLOORS, HUSTLES, CITIES, SETS, RARITY_NAME, itemSrc, levelFromXp
 } from './catalog.js';
-import { skillLevel, poolPct, intervalMs, hustleLevel } from './engine.js';
+import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.js';
+import { heroTotals, coins } from './fight.js';
+import { GEAR, STAT_NAMES } from './gear.js';
+import { cardHTML, itemIcon } from './gearui.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ico = (n, cls='') => `<img class="px ${cls}" src="/assets/gen/${n}.png" alt="">`;
@@ -14,17 +17,20 @@ const qty = (n) => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\
 function slot(id, q, on) {
   if (!id) return `<div class="slot r-common empty"></div>`;
   const it = ITEMS[id] || {rarity:'common'};
-  return `<button type="button" class="slot r-${it.rarity} ${on ? 'on' : ''}" data-act="pick" data-item="${id}"><img class="px" src="${itemSrc(id)}" alt=""><span class="q">${q ? qty(q) : ''}</span></button>`;
+  return `<button type="button" class="slot r-${it.rarity} ${on ? 'on' : ''}" data-act="pick" data-item="${id}"${GEAR[id] ? ` data-tip-item="${id}"` : ''}><img class="px" src="${itemSrc(id)}" alt=""><span class="q">${q ? qty(q) : ''}</span></button>`;
 }
 
+let GEARS = {};
 function cardFront(id, level, z) {
   const h = HEROES[id];
   if (!h) return '';
+  const T = heroTotals(id, level || 1, GEARS[id] || {}).total;
   return `<div class="card r-${h.rarity}" style="--z:${z || 1}" data-act="sel" data-hero="${id}"><div class="card-in">
 <div class="card-top"><span class="gem"></span><span class="rar">${RARITY_NAME[h.rarity]}</span><span class="lvl">Lv ${level || 1}</span></div>
 <div class="card-art"><img class="px" src="/assets/portrait/${id}.png" alt="${esc(h.name)}"></div>
 <div class="card-name h">${esc(h.name)}</div><div class="card-title">${esc(h.title)}</div>
-<div class="card-stats"><span class="s-str"><small>Might</small><b>${h.might}</b></span><span class="s-def"><small>Guard</small><b>${h.guard}</b></span><span class="s-wit"><small>Knack</small><b>${h.knack}</b></span></div>
+<div class="card-stats"><span class="s-str"><small>Attack</small><b>${T.atk}</b></span><span class="s-def"><small>Defense</small><b>${T.def}</b></span><span class="s-wit"><small>Health</small><b>${T.hp}</b></span></div>
+<div class="card-sub"><span>Speed <b>${T.spd}</b></span><span>Crit <b>${T.crit}%</b></span><span>Luck <b>${T.luck}</b></span></div>
 <div class="card-era">${esc(h.era)}</div></div></div>`;
 }
 
@@ -265,7 +271,8 @@ function cardsView(s) {
     const have = set.have.filter(id => s.heroes[id]).length;
     return `<div class="li"><b>${set.name}</b><span class="sp"></span><span class="mut nums">${have} / ${set.need}</span><div class="bar" style="width:90px"><i style="width:${Math.round(100 * have / set.need)}%"></i></div></div>`;
   }).join('');
-  const gear = (GEAR_SAFE[sel] || []).map(id => `<div class="li"><img class="px" src="${itemSrc(id)}" alt=""><b>${esc(ITEMS[id].name)}</b><span class="sp"></span><span class="mut">${statLine(ITEMS[id])}</span></div>`).join('');
+  const T = ownedH ? heroTotals(sel, ownedH.level, (s.gear || {})[sel] || {}).total : null;
+  const statRow = T ? `<div class="row" style="flex-wrap:wrap;gap:6px;font-size:12px;justify-content:center">${Object.keys(STAT_NAMES).map(k => `<span class="tag">${STAT_NAMES[k]} <b>${T[k]}${k === 'crit' ? '%' : ''}</b></span>`).join('')}</div>` : '';
   const count = s.foundCount || owned.length;
   return `<div style="display:grid;grid-template-columns:1fr 470px;gap:12px;height:100%">
 <div class="g" style="align-content:start;min-height:0">
@@ -274,36 +281,42 @@ function cardsView(s) {
   <div class="row" style="margin-top:6px;flex-wrap:wrap">${['common','uncommon','rare','epic','legendary','absurd','unhinged'].map(r => `<button type="button" class="tag r-${r}" style="color:var(--rc);border-color:var(--rc)" data-act="rar" data-rar="${r}">${RARITY_NAME[r]}</button>`).join('')}</div></div>
  <div class="panel" style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;align-content:start">${grid}${locks}</div>
  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px"><div class="panel"><div class="ph"><h3>Era sets</h3><small>Finish a set for a permanent bonus and a gold frame</small></div><div class="list">${sets}</div></div>
-  <div class="panel"><div class="ph"><h3>Copies become power</h3></div><div style="font-size:12.5px" class="mut">Every extra copy levels the card up. Level 5 unlocks its gear. Level 10 turns the frame gold.</div><div class="row" style="margin-top:10px">${btn('Level this card', 'level', 'sm c')}</div></div></div>
+  <div class="panel"><div class="ph"><h3>Copies become power</h3></div><div style="font-size:12.5px" class="mut">Every extra copy levels the card up, and every level adds 5% to Attack, Defense, Health and Speed. Better gear asks for a higher level. Level 10 turns the frame gold.</div><div class="row" style="margin-top:10px">${btn('Level this card', 'level', 'sm c')}</div></div></div>
 </div>
 <div class="panel glow" style="display:flex;flex-direction:column;gap:10px"><div class="row"><h3 class="h" style="font-size:16px">${esc(h.name)}</h3><span class="tag p">${RARITY_NAME[h.rarity]}</span><div class="sp"></div><span class="mut" style="font-size:12px">Tap a card to choose it</span></div>
- <div class="row" style="align-items:flex-start;gap:14px;justify-content:center">${ownedH ? cardFront(sel, ownedH.level, 1.07) : ''}${cardBack(sel, 1.07)}</div>
- <div class="row" style="justify-content:center;gap:28px;font-size:12px"><span class="mut">Front</span><span class="mut">Back: the skill, live</span></div>
- <div class="list" style="font-size:12.5px">${gear || '<div class="li mut">Their things enter the world quietly, the first time anyone meets them.</div>'}</div>
+ <div class="row" style="justify-content:center;padding:6px 0 18px">${cardHTML(h, {level: ownedH ? ownedH.level : 1, gear: ownedH ? ((s.gear || {})[sel] || {}) : {}, stock: s.bag, z: 1.5, flipped: !!s.showBack, view: s.cardView || 'gear', id: 'card-' + sel, mine: !!ownedH && !s.preview})}</div>
+ ${statRow}
+ <div class="mut" style="font-size:12px;text-align:center">Tap the card to turn it over. On the back, tap a slot to wear something from your bank.</div>
  <div class="row">${btn('Send on a delve', 'party-add')}${btn('Show to my crew', 'show', 'g')}</div>
  ${ownedH ? `<div class="mut" style="font-size:12px">Level ${ownedH.level}. Spare copies: ${ownedH.dupes}.</div>` : `<div class="mut">Not in your hand yet.</div>`}
 </div></div>`;
 }
-const GEAR_SAFE = {legionary:['rusty_gladius','shield_lost_ninth','hobnailed_caligae'], engineer:['brass_goggles','steam_gauntlet'], gangster:['violin_case','pinstripe_fedora'], paramedic:['defib_paddles','medic_bag'], will_slapton:['item_red_carpet_tux','item_golden_statuette']};
-function statLine(it) {
-  const bits = [];
-  if (it.might) bits.push('+' + it.might + ' Might');
-  if (it.guard) bits.push('+' + it.guard + ' Guard');
-  if (it.knack) bits.push('+' + it.knack + ' Knack');
-  return bits.join(', ') || it.blurb || '';
+function statLine(id) {
+  const g = GEAR[id];
+  if (!g) return '';
+  const bits = Object.entries(g.stats || {}).map(([k, v]) => '+' + v + ' ' + STAT_NAMES[k]);
+  if (g.dmg) bits.unshift(g.dmg[0] + ' to ' + g.dmg[1] + ' damage');
+  if (g.armor) bits.push(g.armor.toLocaleString() + ' Armor');
+  if (g.use) bits.push(g.use.text);
+  return bits.join(', ');
 }
+function coinLine(c) { const k = coins(c); return (k.g ? num(k.g) + 'g ' : '') + (k.s || k.g ? k.s + 's ' : '') + k.c + 'c'; }
 
 function delveView(s) {
   if (!s.delve) return delveSetup(s);
   const d = s.delve;
   const pips = Array.from({length:10}, (_, i) => `<span style="width:34px;height:8px;border-radius:4px;background:${i < d.floor - 1 ? 'var(--pink)' : i === d.floor - 1 ? 'linear-gradient(90deg,var(--pink) 50%,rgba(255,255,255,.1) 50%)' : 'rgba(255,255,255,.1)'}"></span>`).join('');
-  const squad = (d.party || []).map(id => {
-    const hp = (d.hp && d.hp[id]) || [100,100];
-    const pct = Math.round(100 * hp[0] / hp[1]);
-    return `<div class="li"><img class="px" src="/assets/portrait/${id}.png" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><div class="row"><b>${esc(HEROES[id].name)}</b><div class="sp"></div><span class="nums mut" style="font-size:12px">${hp[0]}/${hp[1]}</span></div>${bar(pct, 'l')}</div></div>`;
+  const fa = fightAt(d, s.now);
+  const squad = (d.party || []).map((id, i) => {
+    const hp = fa ? [fa.hp[i] ?? 0, fa.max[i] ?? 1] : ((d.hp && d.hp[id]) || [100,100]);
+    const pct = Math.round(100 * hp[0] / Math.max(1, hp[1]));
+    return `<div class="li"><img class="px" src="/assets/portrait/${id}.png" style="width:40px;height:40px;border-radius:8px;object-fit:cover" alt=""><div style="flex:1"><div class="row"><b>${esc(HEROES[id].name)}</b><div class="sp"></div><span class="nums mut" style="font-size:12px">${hp[0]}/${hp[1]}</span></div>${bar(pct, hp[0] > 0 ? 'l' : 'p')}</div></div>`;
   }).join('');
-  const log = (d.log || []).map(row => `<div class="li" style="font-size:12.5px">${row[0] ? `<b class="${row[0] === 'Maya' ? 'lm' : 'cy'}">${esc(row[0])}</b> ` : ''}${esc(row[1] || '')} ${row[2] ? `<b class="pk">${esc(row[2])}</b>` : ''}</div>`).join('');
-  const foes = (d.foes || [{name:'Something in the dark', hp:40, max:80}]).map(f => `<div><div class="row" style="font-size:12px"><b>${esc(f.name)}</b><div class="sp"></div><span class="nums">${f.hp}/${f.max}</span></div>${bar(Math.round(100 * f.hp / Math.max(1,f.max)), 'p')}</div>`).join('');
+  const lines = fa ? fa.seen.slice(-9).reverse() : [];
+  const log = lines.map(e => `<div class="li" style="font-size:12.5px">${e.c === 'room' || e.c === 'end' ? `<b class="cy">${esc(e.x)}</b>` : esc(e.x)} ${e.v ? `<b class="${e.c === 'hurt' || e.c === 'down' ? 'pk' : e.c === 'heal' ? 'lm' : 'cy'}">${esc(e.v)}</b>` : ''}</div>`).join('') || '<div class="li mut">The squad is still on the stairs.</div>';
+  const foes = (fa ? fa.foes : []).map(f => `<div><div class="row" style="font-size:12px"><b>${esc(f.name)}</b><div class="sp"></div><span class="nums">${f.hp}/${f.max}</span></div>${bar(Math.round(100 * f.hp / Math.max(1,f.max)), 'p')}</div>`).join('');
+  d.room = fa ? (fa.done ? (fa.result === 'won' ? 'Floor cleared' : fa.result === 'wiped' ? 'Carried out' : 'Backed out') : 'Room ' + fa.room + ' of ' + fa.rooms) : 'In the dark';
+  d.blurb = fa && fa.foes[0] ? (fa.done ? (fa.result === 'won' ? 'Every room is quiet now.' : 'They made it out with what they carried.') : fa.foes.length > 1 ? 'Something big and its friends' : 'A ' + fa.foes[0].name + ' blocks the way') : '';
   const ready = d.ends <= s.now;
   return `<div style="display:grid;grid-template-columns:1fr 300px;gap:12px;height:100%">
 <div class="g" style="grid-template-rows:auto 300px 1fr;min-height:0">
@@ -313,17 +326,23 @@ function delveView(s) {
   <div style="position:absolute;right:16px;top:12px;z-index:3;width:250px" class="g">${foes}</div></div>
  <div class="g" style="grid-template-columns:1fr 1fr;min-height:0">
   <div class="panel"><div class="ph"><h3>Your squad</h3><small>Auto-fighting</small></div><div class="list">${squad}</div></div>
-  <div class="panel"><div class="ph"><h3>Battle log</h3></div><div class="list">${log}</div>${ready ? `<div class="row" style="margin-top:8px">${btn('Bring it home', 'claim')}</div>` : ''}</div>
+  <div class="panel"><div class="ph"><h3>Battle log</h3><small>Newest first</small></div><div class="list">${log}</div>${ready ? `<div class="row" style="margin-top:8px">${btn('Bring it home', 'claim')}</div>` : ''}</div>
  </div>
 </div>
 <div class="g" style="align-content:start">
- <div class="panel glow"><div class="ph"><h3>Big moment</h3></div><div style="font-size:13px;margin-bottom:10px">The ghoul is staggering. Push now or play it safe?</div>
+ <div class="panel glow"><div class="ph"><h3>Big moment</h3></div><div style="font-size:13px;margin-bottom:10px">Push for more loot, play it safe, or eat a stew so anyone hurt heals twice as fast.</div>
   <div class="g" style="gap:8px">${btn('Kick the boiling pot at it', 'choice-kick')}${btn('Raise the shield wall', 'choice-shield', 'c')}${btn('Eat and heal first', 'choice-eat', 'g')}</div>
   ${d.choice ? `<div class="mut" style="margin-top:8px">You chose to ${esc(d.choice)}.</div>` : ''}</div>
- <div class="panel"><div class="ph"><h3>Food</h3></div><div class="row">${slot('eel_stew', d.food ? d.food.eel_stew : (s.bag.eel_stew || 0))}${slot('potion_pink', d.food ? d.food.potion_pink : (s.bag.potion_pink || 0))}${slot('potion_cyan', d.food ? d.food.potion_cyan : (s.bag.potion_cyan || 0))}${slot(null)}</div><small class="dim">Your squad eats on its own below 40% Life.</small></div>
- <div class="panel"><div class="ph"><h3>Loot so far</h3></div><div class="row" style="flex-wrap:wrap">${Object.keys(d.loot || {}).map(id => slot(id, d.loot[id])).join('') || '<span class="mut">The packs are still light.</span>'}</div></div>
+ <div class="panel"><div class="ph"><h3>On their belts</h3></div><div class="row" style="flex-wrap:wrap">${beltsOf(s, d.party).map(id => slot(id, s.bag[id] || 0)).join('') || '<span class="mut">Nothing on the belts. Put potions on a card back.</span>'}</div><small class="dim">Each hero drinks on their own below ${(s.rules && s.rules.heal) ?? 40}% Health. The squad backs out below ${(s.rules && s.rules.retreat) ?? 25}%.</small></div>
+ <div class="panel"><div class="ph"><h3>Rooms</h3></div><div class="mut" style="font-size:12.5px">${fa ? (fa.done ? `${fa.cleared} of ${fa.rooms} rooms cleared. What they find depends on how far they got.` : `Room ${fa.room} of ${fa.rooms}. Loot is counted when they come home.`) : ''}</div></div>
  <div class="panel"><div class="row">${ico('boss_bishop')}<div style="font-size:12.5px"><b class="pk">Boss: The Hollow Bishop</b><br><span class="mut">Floor 10. A strange card waits at the bottom, and the paper will not print the name.</span></div></div></div>
 </div></div>`;
+}
+
+function beltsOf(s, party) {
+  const out = [];
+  (party || []).forEach(id => ['belt1','belt2','belt3','belt4'].forEach(k => { const x = ((s.gear || {})[id] || {})[k]; if (x && !out.includes(x)) out.push(x); }));
+  return out;
 }
 
 function delveSetup(s) {
@@ -369,13 +388,14 @@ function bankView(s) {
  <div style="display:grid;grid-template-columns:repeat(auto-fill,52px);gap:8px">${cells}${blanks}</div></div>
 <div class="g" style="align-content:start">
  ${it ? `<div class="panel glowc"><div class="row"><div class="slot r-${it.rarity}" style="width:64px;height:64px"><img class="px" src="${itemSrc(pick)}" style="width:52px;height:52px" alt=""></div><div><b class="h" style="font-size:17px">${esc(it.name)}</b><br><span class="tag c">${RARITY_NAME[it.rarity]}</span> <span class="mut" style="font-size:12px">x${s.bag[pick] || 0}</span></div></div>
-  <div class="mut" style="font-size:12.5px;margin:8px 0">${esc(it.blurb || statLine(it) || 'It sits in the Bank until you use it or sell it.')}</div>
-  <div class="row">${btn('Sell for ' + (it.value || 1) + ' each', 'sell', 'sm c')}${btn('List on Market', 'list', 'sm g')}</div></div>` : ''}
+  <div class="mut" style="font-size:12.5px;margin:8px 0">${esc(statLine(pick) || it.blurb || 'It sits in the Bank until you use it or sell it.')}</div>
+  ${GEAR[pick] && GEAR[pick].req ? `<div class="mut" style="font-size:12px;margin-bottom:8px">Needs card level ${GEAR[pick].req}. Wear it from the back of a card.</div>` : ''}
+  <div class="row">${btn('Sell for ' + (GEAR[pick] && GEAR[pick].sell ? coinLine(GEAR[pick].sell) : (it.value || 1) + 'g') + ' each', 'sell', 'sm c')}${btn('List on Market', 'list', 'sm g')}</div></div>` : ''}
  <div class="panel"><div class="ph">${ico('anvil','ico')}<div><h3>Smithing</h3><small>Lv ${skillLevel(s, 'smithing')}</small></div></div>
-  <div class="row" style="margin-bottom:8px"><img class="px" src="/assets/items/rusty_gladius.png" style="width:40px" alt=""><div><b>Moonsilver Gladius</b><br><small class="mut">Might +6 · Hurts ghosts</small></div></div>
+  <div class="row" style="margin-bottom:8px"><img class="px" src="/assets/items/rusty_gladius.png" style="width:40px" alt=""><div><b>Moonsilver Gladius</b><br><small class="mut">+8 Attack · Hurts the undead</small></div></div>
   <div class="row" style="font-size:12px;margin-bottom:8px">${slot('moonsilver_bar', 4)}${slot('ash_log', 2)}<span class="mut">→</span>${slot('moonsilver_gladius', 1)}</div>
   <div class="row">${btn('Forge a sword', 'forge', 'sm')}<span class="mut" style="font-size:12px">4 bars, 2 logs, 120 XP</span></div></div>
- <div class="panel"><div class="ph"><h3>Gaius is using</h3></div><div class="row">${(s.gear.legionary || []).map(id => slot(id)).join('')}${slot(null)}</div></div>
+ ${(s.party || []).filter(id => s.gear && s.gear[id] && Object.keys(s.gear[id]).length).slice(0, 2).map(id => `<div class="panel"><div class="ph"><h3>${esc(HEROES[id].name.split(' ')[0])} is wearing</h3></div><div class="row" style="flex-wrap:wrap">${Object.entries(s.gear[id]).filter(([k]) => !k.startsWith('belt')).map(([, x]) => slot(x)).join('')}</div></div>`).join('')}
 </div></div>`;
 }
 
@@ -509,22 +529,26 @@ function phoneHome(s) {
 function phoneDelve(s) {
   if (!s.delve) return delveSetup(s);
   const d = s.delve;
-  return `<div class="row"><b class="h" style="font-size:19px">${esc(d.name)}</b><span class="tag p">Floor ${d.floor}</span></div>
+  const fa = fightAt(d, s.now);
+  const sh = fa ? fa.hp.reduce((a, x) => a + x, 0) : 1, sm = fa ? fa.max.reduce((a, x) => a + x, 0) : 1;
+  const f0 = fa && fa.foes[0];
+  const lines = fa ? fa.seen.slice(-4).reverse() : [];
+  const ready = d.ends <= s.now;
+  return `<div class="row"><b class="h" style="font-size:19px">${esc(d.name)}</b><span class="tag p">Floor ${d.floor}</span>${fa ? `<span class="tag">Room ${fa.room}/${fa.rooms}</span>` : ''}</div>
 <div class="scene" style="height:210px;background-image:url(/assets/bg_dungeon.png)"><div style="position:absolute;inset:0;z-index:1">${sideSprite('legionary','idle',2,80,170,false)}${sideSprite('engineer','attack',2,160,170,false)}${sideSprite('ghoul','attack',2,250,170,false)}${sideSprite('skeleton','idle',2,320,170,false)}</div>
-<div style="position:absolute;left:10px;right:10px;top:8px;z-index:2" class="row"><div style="flex:1"><small>Squad</small>${bar(80, 'l')}</div><div style="flex:1"><small>${esc(d.foes?.[0]?.name || 'Foe')}</small>${bar(37, 'p')}</div></div></div>
-<div class="panel" style="font-size:13px"><b class="cy">Edith</b> rams her wrench into the ghoul. <b class="pk">38 damage!</b> It shrieks and stumbles toward the fire.</div>
-<div class="panel glow"><div style="font-size:13px;margin-bottom:8px">The ghoul is staggering. What now?</div><div class="g" style="gap:8px">${btn('Kick the boiling pot at it', 'choice-kick')}${btn('Raise the shield wall', 'choice-shield', 'c')}${btn('Eat and heal first', 'choice-eat', 'g')}</div></div>`;
+<div style="position:absolute;left:10px;right:10px;top:8px;z-index:2" class="row"><div style="flex:1"><small>Squad ${sh}/${sm}</small>${bar(Math.round(100 * sh / Math.max(1, sm)), 'l')}</div><div style="flex:1"><small>${esc(f0 ? f0.name : 'Foe')}</small>${bar(f0 ? Math.round(100 * f0.hp / Math.max(1, f0.max)) : 0, 'p')}</div></div></div>
+<div class="panel" style="font-size:13px">${lines.map(e => `<div>${esc(e.x)} ${e.v ? `<b class="${e.c === 'hurt' || e.c === 'down' ? 'pk' : e.c === 'heal' ? 'lm' : 'cy'}">${esc(e.v)}</b>` : ''}</div>`).join('') || 'The squad is still on the stairs.'}</div>
+${ready ? `<div class="row">${btn('Bring it home', 'claim')}</div>` : ''}
+<div class="panel glow"><div style="font-size:13px;margin-bottom:8px">Push for more loot, or play it safe?</div><div class="g" style="gap:8px">${btn('Kick the boiling pot at it', 'choice-kick')}${btn('Raise the shield wall', 'choice-shield', 'c')}${btn('Eat and heal first', 'choice-eat', 'g')}</div></div>`;
 }
 
 function phoneCard(s) {
-  const id = s.sel || 'will_slapton';
-  const h = HEROES[id];
-  if (s.showBack !== false) {
-    return `<div class="row"><b class="h" style="font-size:20px">${esc(h.name)}</b><span class="tag p">${RARITY_NAME[h.rarity]}</span><div class="sp"></div><span class="tag">Back</span></div>
-<div style="display:flex;justify-content:center">${cardBack(id, 1.35)}</div>
-<div class="row" style="justify-content:center">${btn('Flip to front', 'flip', 'g')}${btn('Send on a delve', 'party-add')}</div>`;
-  }
-  return `<div class="row"><b class="h" style="font-size:20px">${esc(h.name)}</b><div class="sp"></div>${btn('Flip', 'flip', 'sm g')}</div><div style="display:flex;justify-content:center">${cardFront(id, s.heroes[id]?.level || 1, 1.4)}</div>`;
+  const id = s.sel && HEROES[s.sel] ? s.sel : (Object.keys(s.heroes)[0] || 'will_slapton');
+  const h = HEROES[id]; const own = s.heroes[id];
+  return `<div class="row"><b class="h" style="font-size:20px">${esc(h.name)}</b><span class="tag p">${RARITY_NAME[h.rarity]}</span></div>
+<div class="row" style="flex-wrap:wrap;gap:6px">${Object.keys(s.heroes).map(x => `<button type="button" class="tag ${x === id ? 'p' : ''}" data-act="sel" data-hero="${x}">${esc(HEROES[x].name.split(' ')[0])}</button>`).join('')}</div>
+<div style="display:flex;justify-content:center;padding:8px 0 16px">${cardHTML(h, {level: own ? own.level : 1, gear: own ? ((s.gear || {})[id] || {}) : {}, stock: s.bag, z: 1.55, flipped: !!s.showBack, view: s.cardView || 'gear', id: 'card-' + id, mine: !!own && !s.preview})}</div>
+<div class="row" style="justify-content:center">${btn('Send on a delve', 'party-add')}</div>`;
 }
 
 function nowbar(s) {
@@ -561,6 +585,7 @@ function desktopBody(s) {
 const CRUMB = {city:['Aldermere','City Hub'], mining:['Skills','Mining'], woodcutting:['Skills','Woodcutting'], fishing:['Skills','Fishing'], cooking:['Skills','Cooking'], smithing:['Skills','Smithing'], alchemy:['Skills','Alchemy'], summoning:['Skills','Summoning'], cards:['Adventure','Cards'], delve:['Adventure','Delve'], bank:['Adventure','Bank'], market:['The City','Market'], hustles:['The City','Hustles'], crew:['The City','Crew'], travel:['The City','Travel'], infirmary:['The City','Infirmary'], crier:['The City','The Crier'], welcome:['Aldermere','Welcome back']};
 
 export function render(s) {
+  GEARS = s.gear || {};
   if (s.phone) {
     let body = '';
     if (s.view === 'welcome') body = welcomeView(s);

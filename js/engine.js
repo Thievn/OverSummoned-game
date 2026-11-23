@@ -2,6 +2,8 @@ import {
   HEROES, ITEMS, NODES, SKILLS, HUSTLES, DELVE_LENGTHS, DEFAULT_CONFIG,
   levelFromXp, xpForLevel, mentionsHero, GEAR_OF
 } from './catalog.js';
+import { heroTotals, partyFor, partyFx, simulate, roomsFor, canEquip, heroOutFx, fasterMult, luckWeights, makeRng } from './fight.js';
+import { GEAR, ALL_SLOTS, slotKind } from './gear.js';
 
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
@@ -116,7 +118,12 @@ export function bibleState() {
     trench_lantern:1, stained_mug:1, courier_helmet:1, shield_lost_ninth:1, steam_gauntlet:1,
     pinstripe_fedora:1, medic_bag:1
   };
-  s.gear = {legionary:['rusty_gladius','shield_lost_ninth','hobnailed_caligae']};
+  s.gear = {
+    legionary:{head:'galea_helmet', main:'rusty_gladius', off:'shield_lost_ninth', feet:'hobnailed_caligae', belt1:'potion_pink', belt2:'eel_stew'},
+    paramedic:{main:'defib_paddles', off:'medic_bag', trinket1:'trauma_shears', belt1:'potion_pink', belt2:'eel_stew'},
+    engineer:{head:'brass_goggles', hands:'steam_gauntlet', main:'pocket_trebuchet', belt1:'potion_pink'}
+  };
+  s.heroes.legionary.level = 6; s.heroes.paramedic.level = 4; s.heroes.engineer.level = 5;
   s.crier = [
     {tag:'Breaking', msg:'Ghoul chef bursts out of the Ash Kitchen. Three crews are hunting it now.'},
     {tag:'Market', msg:'Moonsilver hits a record 41 gold a bar. Miners are cheering.'},
@@ -149,28 +156,8 @@ export function bibleState() {
     cup:[['Ironclad Rats',48200],['Moth Court',44950],['The Ninth',40100],['Neon Lanterns',38770]]
   };
   s.unread = 3;
-  s.delve = {
-    floor:7, minutes:60, name:'The Ash Kitchen',
-    started: Date.now() - 22*60e3,
-    ends: Date.now() + 38*60e3,
-    party:['legionary','paramedic','engineer'],
-    choice:null,
-    hp:{legionary:[182,210], paramedic:[96,140], engineer:[120,130]},
-    foes:[{name:'Ash Ghoul', hp:44, max:120},{name:'Skeleton', hp:80, max:80}],
-    log:[
-      ['Edith', 'rams her wrench into the ghoul.', '38 damage!'],
-      [null, 'The ghoul shrieks and hurls a pot of boiling soup.', null],
-      ['Gaius', 'lifts his shield. The soup splashes off harmlessly.', null],
-      ['Maya', 'patches up Edith.', '+24 Life'],
-      [null, 'A skeleton rattles out of the pantry, sword raised.', null],
-      ['Gaius', 'slams his shield into the skeleton.', '22 damage!'],
-      [null, 'The ghoul is down to its last bit of strength. One more hit could end it.', null]
-    ],
-    loot:{ash_log:18, iron_bar:6, gem_violet:1, card_shard:2, gold:840},
-    food:{eel_stew:24, potion_pink:6, potion_cyan:3},
-    room:'Room 3 of 5',
-    blurb:'A ghoul guards the boiling pots'
-  };
+  s.delve = makeDelve(s, 7, 60, s.now - 22 * 60e3, 924731);
+  s.delve.loot = {ash_log:18, iron_bar:6, gem_violet:1, card_shard:2};
   s.infirmary = [{id:'delivery_rider', name:'Marco', reason:'Healing after Floor 6', until: Date.now()+4*60e3+15e3}];
   s.stocksUntil = 0;
   s.stocksWho = {name:'Vincenzo', reason:'In the Stocks for a botched heist', face:'gangster', until: Date.now()+12*60e3+40e3};
@@ -232,8 +219,7 @@ export function intervalMs(state, skill, node) {
   const hero = state.skills[skill].hero;
   const h = hero && HEROES[hero];
   const lv = h ? (state.heroes[hero]?.level || 1) : 1;
-  if (h && h.perkKey === 'mine' && skill === 'mining') sec *= 1 - Math.min(0.4, 0.15 + (lv - 1) * 0.01);
-  if (h && h.perkKey === 'smith' && skill === 'smithing') sec *= 0.85;
+  if (h) sec *= fasterMult(heroOutFx(hero, lv, state.gear && state.gear[hero])[skill] || 0);
   const pool = poolPct(state, skill);
   if (pool >= 50) sec *= 0.95;
   sec /= state.config.xpRate > 0 ? 1 : 1;
@@ -446,6 +432,7 @@ export function dispatch(state, action) {
   if (a.type === 'pack') return openPack(state, out);
   if (a.type === 'level') return levelCard(state, a.hero, out);
   if (a.type === 'party') return setParty(state, a.ids, out);
+  if (a.type === 'equip') return equip(state, a.hero, a.slot, a.item, out);
   if (a.type === 'chat') {
     const text = String(a.text || '').trim().slice(0, 240);
     if (!text) return out;
@@ -538,7 +525,8 @@ function doHustle(state, id, out) {
   const ok = rng(state) * 100 < chance;
   state.hustleXp += 20;
   if (ok) {
-    const gold = job.gold[0] + Math.floor(rng(state) * (job.gold[1] - job.gold[0] + 1));
+    const hg = partyFx(partyFor(state.party.map(pid => ({id: pid, level: state.heroes[pid]?.level || 1})), state.gear)).hustle_gold || 0;
+    const gold = Math.floor((job.gold[0] + Math.floor(rng(state) * (job.gold[1] - job.gold[0] + 1))) * (1 + Math.min(100, hg) / 100));
     state.gold += gold;
     if (job.shard && rng(state) < job.shard) grantItem(state, 'card_shard', 1, false);
     if (job.rare && rng(state) < job.rare) grantItem(state, 'gem_violet', 1, false);
@@ -579,27 +567,7 @@ function startDelve(state, floor, minutes, out) {
   const cost = vigorCost(minutes, floor);
   if (state.vigor < cost) { out.toast = 'Not enough Vigor.'; return out; }
   state.vigor -= cost;
-  let mins = minutes;
-  if (state.party.includes('delivery_rider')) mins = mins * 0.9;
-  const name = ['The Cellar Door','Drip Hall','Rat Parliament','The Mushroom Stacks','The Long Stairs','Bone Orchard','The Ash Kitchen','The Lantern Market','Hollow Cathedral','The Hollow Bishop'][(floor - 1) % 10];
-  state.delve = {
-    floor, minutes, name,
-    started: state.now,
-    ends: state.now + mins * 60e3,
-    party: state.party.slice(),
-    choice: null,
-    hp: {},
-    foes: [{name: floor >= 10 ? 'The Hollow Bishop' : 'Ash Ghoul', hp: 80 + floor * 10, max: 80 + floor * 10}],
-    log: [[null, 'The squad steps onto floor ' + floor + '.', null]],
-    loot: {},
-    room: 'Room 1',
-    blurb: 'The dark shifts.'
-  };
-  state.party.forEach(id => {
-    const h = HEROES[id];
-    const max = 40 + h.guard * 8 + (state.heroes[id].level * 6);
-    state.delve.hp[id] = [max, max];
-  });
+  state.delve = makeDelve(state, floor, minutes, state.now, Math.floor(rng(state) * 2147483000) + 1);
   state.events.push({kind:'delve', ref: String(floor), at: state.now});
   out.toast = 'Down they go.';
   return out;
@@ -609,32 +577,54 @@ function claimDelve(state, out) {
   const d = state.delve;
   if (!d) { out.toast = 'Nothing to bring home.'; return out; }
   if (d.ends > state.now) { out.toast = 'They are still in the dark.'; return out; }
-  const mult = (d.choice === 'kick' ? 1.15 : d.choice === 'shield' ? 0.95 : 1);
-  const rolls = Math.max(2, Math.round(d.minutes / 4) + 1);
+  const f = d.fight || {rooms: 1, cleared: 1, result: 'won', used: {}, downed: []};
+  const party = partyFor((d.party || []).map(id => ({id, level: state.heroes[id]?.level || 1})), state.gear);
+  const fx = partyFx(party);
+  const luck = party.reduce((a, p) => a + p.total.luck, 0);
+  const floorMult = (1 + (d.floor - 1) * 0.08) * (d.choice === 'kick' ? 1.15 : d.choice === 'shield' ? 0.95 : 1);
+  const hr = new Date(state.now).getHours();
+  const w = luckWeights(state.config.dropRates || DEFAULT_CONFIG.dropRates, luck, floorMult, (hr >= 20 || hr < 6) ? (fx.night_rare || 0) : 0);
+  const base = Math.max(2, Math.floor(d.minutes / 4) + 1) + (d.party.length - 1);
+  let rolls = f.cleared > 0 ? Math.max(1, Math.round(base * f.cleared / Math.max(1, f.rooms))) : 0;
+  if (f.cleared > 0) rolls += (fx.extra_roll || 0) + (fx.chest_find || 0) * Math.floor(f.cleared / 3);
   const loot = {};
-  const pool = state.pool.length ? state.pool : ['ash_log','iron_bar','copper_ore'];
+  const tiers = ['unhinged','absurd','legendary','epic','rare','uncommon','common'];
+  const tot = tiers.reduce((a, t) => a + w[t], 0);
   for (let i = 0; i < rolls; i++) {
-    const id = pool[Math.floor(rng(state) * pool.length)] || 'copper_ore';
-    const q = Math.max(1, Math.round(mult));
-    loot[id] = (loot[id] || 0) + q;
-    grantItem(state, id, q, false);
+    let r = rng(state) * tot, rar = 'common';
+    for (const t of tiers) { if (r < w[t]) { rar = t; break; } r -= w[t]; }
+    let id = null;
+    for (let k = tiers.indexOf(rar); k < tiers.length && !id; k++) {
+      const pool = state.pool.filter(x => ITEMS[x] && ITEMS[x].rarity === tiers[k]);
+      if (pool.length) id = pool[Math.floor(rng(state) * pool.length)];
+    }
+    id = id || 'copper_ore';
+    loot[id] = (loot[id] || 0) + 1;
+    grantItem(state, id, 1, false);
     state.events.push({kind:'item', ref:id, at: state.now});
   }
-  const gold = Math.round((d.minutes * d.floor * 2 + Math.floor(rng(state) * 20)) * mult);
+  let gold = Math.floor((d.minutes * d.floor * 2 + Math.floor(rng(state) * (d.minutes + 5))) * f.cleared / Math.max(1, f.rooms) * (1 + Math.min(100, fx.delve_gold || 0) / 100));
+  if (f.result === 'wiped') gold = Math.floor(gold * 0.5);
   state.gold += gold;
-  if (d.floor >= state.deepest && d.minutes >= 15) state.deepest += 1;
+  if (f.result === 'won' && d.floor >= state.deepest && d.minutes >= 15) state.deepest += 1;
+  for (const [id, q] of Object.entries(f.used || {})) { const have = state.bag[id] || 0; state.bag[id] = have - Math.min(have, q); if (state.bag[id] <= 0) delete state.bag[id]; }
+  const rest = 10 * d.floor * (d.choice === 'eat' ? 0.5 : 1);
+  (f.downed || []).forEach(id => {
+    state.infirmary = state.infirmary.filter(i => i.id !== id);
+    state.infirmary.push({id, name: HEROES[id].name.split(' ')[0], reason: 'Hurt on floor ' + d.floor, until: state.now + rest * 60e3, face: id});
+  });
   const hc = (state.config.heroChance || {})[String(d.minutes)] ?? 0.02;
   let hero = null;
-  if (rng(state) < hc * (1 + d.floor * 0.05)) {
+  if (f.cleared > 0 && rng(state) < hc * (1 + d.floor * 0.05)) {
     const ids = Object.keys(HEROES);
     const id = ids[Math.floor(rng(state) * ids.length)];
     hero = grantHero(state, id, false);
     out.hero = hero;
   }
   state.delve = null;
-  state.life = state.lifeMax;
-  out.toast = 'The party is back.';
-  out.report = {gold, loot, hero, floor: d.floor, minutes: d.minutes};
+  refreshLife(state);
+  out.toast = f.result === 'won' ? 'The party is back.' : f.result === 'wiped' ? 'The squad was carried out. Half the gold made it.' : 'The squad backed out early.';
+  out.report = {gold, loot, hero, floor: d.floor, minutes: d.minutes, result: f.result, cleared: f.cleared, rooms: f.rooms};
   pushCrier(state, 'Streets', 'A party came up from floor ' + d.floor + ' with a heavy pack.');
   return out;
 }
@@ -722,8 +712,10 @@ function openPack(state, out) {
 function levelCard(state, id, out) {
   const h = state.heroes[id];
   if (!h || h.dupes < 1) { out.toast = 'No spare copy to fold in.'; return out; }
+  if (h.level >= 10) { out.toast = 'That card is already at level 10.'; return out; }
   h.dupes -= 1;
   h.level += 1;
+  refreshLife(state);
   out.toast = HEROES[id].name.split(' ')[0] + ' hits level ' + h.level + '.';
   return out;
 }
@@ -732,11 +724,66 @@ function setParty(state, ids, out) {
   const clean = (ids || []).filter(id => state.heroes[id]).slice(0, 3);
   if (state.delve) { out.toast = 'The party is already out.'; return out; }
   state.party = clean;
-  let life = 0;
-  clean.forEach(id => { life += 40 + HEROES[id].guard * 8; });
-  state.lifeMax = life || 100;
-  state.life = state.lifeMax;
+  refreshLife(state);
   out.toast = 'The party is set.';
+  return out;
+}
+
+export function refreshLife(state) {
+  const party = partyFor((state.party || []).filter(id => state.heroes[id]).map(id => ({id, level: state.heroes[id].level || 1})), state.gear);
+  state.lifeMax = party.reduce((a, p) => a + p.total.hp, 0) || 100;
+  if (!state.delve) state.life = state.lifeMax;
+}
+
+// Build a delve with its whole fight worked out from the squad's real stats.
+export function makeDelve(state, floor, minutes, started, seed) {
+  const party = partyFor(state.party.map(id => ({id, level: state.heroes[id]?.level || 1})), state.gear);
+  const stock = {};
+  party.forEach(p => p.belt.forEach(id => { if (id) stock[id] = state.bag[id] || 0; }));
+  const fight = simulate({party, floor, minutes, seed, rules: state.rules, stock});
+  let mins = minutes;
+  if (state.party.includes('delivery_rider')) mins *= 0.9;
+  mins *= 1 - Math.min(60, partyFx(party).delve_speed || 0) / 100;
+  return {floor, minutes, name: FLOOR_NAMES[(floor - 1) % 10], started, ends: started + Math.max(20e3, Math.round(mins * 60) * 1000),
+    party: state.party.slice(), choice: null, seed, fight, loot: {}};
+}
+const FLOOR_NAMES = ['The Cellar Door','Drip Hall','Rat Parliament','The Mushroom Stacks','The Long Stairs','Bone Orchard','The Ash Kitchen','The Lantern Market','Hollow Cathedral','The Hollow Bishop'];
+
+// What the squad has seen so far: the fight plays out across the delve's length.
+export function fightAt(d, now) {
+  const f = d && d.fight;
+  if (!f || !f.log || !f.log.length) return null;
+  const span = Math.max(1, d.ends - d.started);
+  const frac = Math.max(0, Math.min(1, (now - d.started) / span));
+  const n = frac >= 1 ? f.log.length : Math.max(1, Math.floor(f.log.length * frac));
+  const seen = f.log.slice(0, n);
+  const last = seen[seen.length - 1];
+  const room = last.r || 1;
+  const roomFoes = (f.foes && f.foes[room - 1]) || [];
+  const fh = last.fh && last.fh.length ? last.fh : roomFoes.map(x => x.max);
+  return {seen, hp: last.hp, max: f.max, ids: f.ids || d.party, room, rooms: f.rooms, foes: roomFoes.map((x, i) => ({name: x.name, max: x.max, hp: fh[i] ?? x.max})), done: frac >= 1, result: f.result, cleared: f.cleared};
+}
+
+function equip(state, hero, slot, item, out) {
+  if (!state.heroes[hero]) { out.toast = 'That card is not in your hand.'; return out; }
+  if (!ALL_SLOTS.includes(slot)) { out.toast = 'No such slot.'; return out; }
+  if (state.delve && state.delve.party.includes(hero)) { out.toast = 'That hero is out on a delve.'; return out; }
+  state.gear = state.gear || {};
+  const g = state.gear[hero] = state.gear[hero] || {};
+  const kind = slotKind(slot);
+  const give = (id, q) => { if (!id) return; state.bag[id] = (state.bag[id] || 0) + q; if (state.bag[id] <= 0) delete state.bag[id]; };
+  if (!item) {
+    if (g[slot]) { if (kind !== 'belt') give(g[slot], 1); delete g[slot]; out.toast = 'Taken off.'; }
+    refreshLife(state); return out;
+  }
+  const why = canEquip(item, slot, hero, state.heroes[hero].level, g);
+  if (why) { out.toast = why; return out; }
+  if ((state.bag[item] || 0) < 1) { out.toast = 'You do not have one of those.'; return out; }
+  if (kind === 'main' && GEAR[item].hand === 'Two-Hand' && g.off) { give(g.off, 1); delete g.off; }
+  if (kind !== 'belt') { if (g[slot]) give(g[slot], 1); give(item, -1); }
+  g[slot] = item;
+  refreshLife(state);
+  out.toast = GEAR[item].name + (kind === 'belt' ? ' goes on the belt.' : ' is on.');
   return out;
 }
 

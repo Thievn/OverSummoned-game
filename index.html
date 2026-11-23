@@ -52,6 +52,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="/css/game.css">
 <link rel="stylesheet" href="/css/land.css">
 <link rel="stylesheet" href="/css/faq.css">
+<link rel="stylesheet" href="/css/cards3d.css">
+<link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NN244PNK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -130,21 +132,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="show-copy">
       <div class="eb cy">Cards</div>
       <h2>A face on the front, a life on the back.</h2>
-      <p>Collect the hero, then turn the card over. The back is that person, moving, in the street they came from. Extra copies make the card stronger. Finish a set and the city remembers the whole era.</p>
-      <div class="pair" style="margin-top:14px">
-        <div class="card r-absurd" style="--z:.92"><div class="card-in">
-          <div class="card-top"><span class="gem"></span><span class="rar">Absurd</span><span class="lvl">Lv 1</span></div>
-          <div class="card-art"><img class="px" src="/assets/portrait/will_slapton.png" alt="Will Slapton" decoding="async" loading="lazy" width="96" height="128"></div>
-          <div class="card-name h">Will Slapton</div><div class="card-title">Leading Man</div>
-          <div class="card-stats"><span class="s-str"><small>Might</small><b>16</b></span><span class="s-def"><small>Guard</small><b>9</b></span><span class="s-wit"><small>Knack</small><b>13</b></span></div>
-          <div class="card-era">Hollywood, 2022</div>
-        </div></div>
-        <div class="cardback r-absurd" style="--z:.92"><div class="cb-in">
-          <div class="cb-scene"><img alt="Will Slapton's animated card back, Hollywood 2022" src="/card_backs/will_slapton.gif" style="width:100%;height:100%;object-fit:cover;display:block" decoding="async" loading="lazy" width="384" height="480"><span class="cb-era">Hollywood, 2022</span></div>
-          <div class="cb-skill">Keep It Out Your Mouth</div>
-          <div class="cb-text">A thunderous slap that stuns one enemy for 2 turns. Double damage if they just made a joke.</div>
-        </div></div>
-      </div>
+      <p>Collect the hero, then turn the card over. The back holds what they wear and the skill they bring. Extra copies make the card stronger, and three pieces from the hero's own time switch on a set bonus.</p>
+      <div class="home-pair" id="home-will"></div>
     </div>
     <figure class="frame"><picture><source type="image/webp" srcset="/assets/preview/cards.webp"><img src="/assets/preview/cards.png" alt="The card collection, front and animated back" decoding="async" loading="lazy" width="1440" height="900"></picture></figure>
   </section>
@@ -152,7 +141,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <section>
     <div class="eb cy">The nine</div>
     <h2 class="h" style="font-size:clamp(26px,5vw,40px);margin:4px 0 8px">Nine heroes, and the row is only the start.</h2>
-    <p class="mut" style="max-width:52ch;line-height:1.5">Swipe through them. Each back shows that hero at home, then at the thing they are known for, then home again.</p>
+    <p class="mut" style="max-width:52ch;line-height:1.5">They drift past on their own. Grab the row to look closer, tap a card to turn it, and touch any piece of gear to see what it does.</p>
     <div class="reel" id="reel">
       <div class="reel-item"><div class="cardback r-absurd" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="Will Slapton's animated card back, Hollywood 2022" src="/card_backs/will_slapton.gif" style="width:100%;height:100%;object-fit:cover;display:block" decoding="async" loading="lazy" width="384" height="480"><span class="cb-era">Hollywood, 2022</span></div><div class="cb-skill">Keep It Out Your Mouth</div><div class="cb-text">One slap. The loudest enemy goes quiet.</div></div></div><small>Will Slapton · Absurd</small></div>
       <div class="reel-item"><div class="cardback r-rare" style="--z:1"><div class="cb-in"><div class="cb-scene"><img alt="Gaius Marcellus the Roman legionary's animated card back" src="/card_backs/legionary.gif" style="width:100%;height:100%;object-fit:cover;display:block" decoding="async" loading="lazy" width="384" height="480"><span class="cb-era">Rome</span></div><div class="cb-skill">Formation</div><div class="cb-text">His guard grows with every ally still standing.</div></div></div><small>Gaius Marcellus · Rare</small></div>
@@ -264,5 +253,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/public.js"></script>
+<script type="module" src="/js/home.js"></script>
 </body>
 </html>

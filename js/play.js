@@ -1,6 +1,9 @@
 import { SB_URL, SB_KEY, HEROES, ITEMS } from './catalog.js';
 import { bibleState, freshState, tick, dispatch } from './engine.js';
 import { render, gate } from './ui.js';
+import { bindCards, setGearProvider, isOpen, hideTip } from './gearui.js';
+import { GEAR, ERA_SETS, HERO_BASE } from './gear.js';
+import { coins } from './fight.js';
 
 const root = document.getElementById('root');
 const toastEl = document.getElementById('toast');
@@ -84,7 +87,7 @@ function act(type, data, form) {
     flip: null
   };
   if (type === 'pick') { state.pick = data.item; paint(); return; }
-  if (type === 'sel') { state.sel = data.hero; state.showBack = false; paint(); return; }
+  if (type === 'sel') { state.sel = data.hero; paint(); return; }
   if (type === 'flip') { state.showBack = state.showBack === false; paint(); return; }
   if (type === 'rar') { state.rar = state.rar === data.rar ? 'all' : data.rar; paint(); return; }
   if (type === 'len') { state.pickMin = +data.min; paint(); return; }
@@ -138,6 +141,7 @@ async function remoteAct(action) {
     travel: ['travel', {dest: action.dest}],
     choice: ['choice', {choice: action.choice}],
     claim: ['claim', {}],
+    'hero-skill': ['skill', {op:'hero', skill: action.skill, hero: action.hero || ''}],
     sell: ['market', {op:'sell', item: action.item, qty: action.qty || 1}],
     buy: ['market', {op:'buy', item: action.item, qty: action.qty || 1}],
     summon: ['summon', {}],
@@ -167,12 +171,15 @@ async function remoteAct(action) {
     const { data, error } = await sb.rpc('os_claim');
     if (error) { toast(human(error)); return; }
     if (data && data.hero) heroModal = {id: data.hero.id, fresh: data.hero.new};
-    await pull(); toast('The party is back.'); return;
+    await pull();
+    const res = data && data.result;
+    toast(res === 'wiped' ? 'The squad was carried out. Half the gold made it home.' : res === 'retreat' ? 'The squad backed out with ' + (data.cleared || 0) + ' of ' + (data.rooms || 0) + ' rooms cleared.' : 'The party is back. +' + ((data && data.gold) || 0) + ' gold.');
+    return;
   }
   if (action.type === 'sell') {
     const { data, error } = await sb.rpc('os_sell', {i: action.item, q: action.qty || 1});
     if (error) { toast(human(error)); return; }
-    await pull(); toast('Sold for ' + data + ' gold.'); return;
+    await pull(); const k = coins(data); toast('Sold for ' + (k.g ? k.g.toLocaleString() + ' gold ' : '') + (k.s ? k.s + ' silver ' : '') + (k.c || (!k.g && !k.s) ? k.c + ' copper' : '').trim() + '.'); return;
   }
   const { data, error } = await sb.rpc('os_act', {op: op[0], payload: op[1]});
   if (error) {
@@ -211,6 +218,11 @@ function applyServer(data) {
     state.heroes = {};
     data.heroes.forEach(h => { state.heroes[h.hero_id] = {level: h.level, dupes: h.dupes}; });
   }
+  if (data.gear) state.gear = data.gear;
+  if (data.stats) state.stats = data.stats;
+  if (p.copper != null) state.copper = p.copper;
+  if (p.life_max) { state.lifeMax = p.life_max; state.life = p.life ?? p.life_max; }
+  if (Array.isArray(data.infirmary)) state.infirmary = data.infirmary.map(i => ({id: i.id, name: (HEROES[i.id] ? HEROES[i.id].name.split(' ')[0] : i.id), reason: i.reason, until: Date.parse(i.until), face: i.id}));
   if (Array.isArray(data.bag)) {
     state.bag = {};
     data.bag.forEach(b => { state.bag[b.id] = b.qty; });
@@ -223,7 +235,8 @@ function applyServer(data) {
     state.delve.ends = Date.parse(data.delve.ends_at);
     state.delve.party = data.delve.party || state.party;
     state.delve.choice = data.delve.choice || null;
-    state.delve.name = state.delve.name || 'The Ash Kitchen';
+    state.delve.fight = data.delve.fight || null;
+    state.delve.name = ['The Cellar Door','Drip Hall','Rat Parliament','The Mushroom Stacks','The Long Stairs','Bone Orchard','The Ash Kitchen','The Lantern Market','Hollow Cathedral','The Hollow Bishop'][((data.delve.floor || 1) - 1) % 10];
   } else if (data.delve === null) state.delve = null;
   if (Array.isArray(data.feed)) {
     state.crier = data.feed.map(msg => (typeof msg === 'string' ? {tag:'Streets', msg} : msg));
@@ -254,8 +267,42 @@ async function pull() {
   const { data, error } = await sb.rpc('os_state');
   if (error) throw error;
   applyServer(data);
-  paint();
+  if (!isOpen()) paint();
 }
+
+async function loadDefs() {
+  const { data, error } = await sb.rpc('os_defs');
+  if (error || !data) return;
+  for (const [id, it] of Object.entries(data.items || {})) {
+    if (!GEAR[id] || !it) continue;
+    const g = GEAR[id];
+    ['name','rarity','ilvl','bind','unique','hand','type','armor','block','dmg','speed','stats','equip','fx','use','req','sell','stack','flavor'].forEach(k => { if (it[k] !== undefined) g[k] = it[k]; });
+  }
+  for (const [id, st] of Object.entries(data.sets || {})) if (ERA_SETS[id]) Object.assign(ERA_SETS[id], {name: st.name, bonus: st.bonus, text: st.text, stats: st.stats || {}, fx: st.fx || {}});
+  for (const [id, h] of Object.entries(data.heroes || {})) if (HERO_BASE[id] && h.base) { HERO_BASE[id].base = h.base; HERO_BASE[id].fx = h.fx || HERO_BASE[id].fx; }
+}
+
+setGearProvider((card) => {
+  const id = card.dataset.hero;
+  if (!state || !state.heroes || !state.heroes[id]) return null;
+  return {gear: (state.gear || {})[id] || {}, level: state.heroes[id].level || 1, bag: state.bag, mine: card.dataset.mine === '1'};
+});
+bindCards();
+document.addEventListener('os-flip', (e) => { if (state) state.showBack = e.detail.flipped; });
+document.addEventListener('os-view', (e) => { if (state) state.cardView = e.detail.view; });
+document.addEventListener('os-equip', async (e) => {
+  const {hero, slot, item} = e.detail;
+  if (!state) return;
+  if (remote) {
+    const { data, error } = await sb.rpc('os_equip', {p_hero: hero, p_slot: slot, p_item: item || ''});
+    if (error) { toast(human(error)); return; }
+    applyServer(data); paint();
+    toast(item ? ((GEAR[item] && GEAR[item].name) || 'It') + ' is on.' : 'Taken off.');
+    return;
+  }
+  const r = dispatch(state, {type:'equip', hero, slot, item});
+  toast(r.toast); save(); paint();
+});
 
 root.addEventListener('click', (e) => {
   const go = e.target.closest('[data-go]');
@@ -274,6 +321,7 @@ root.addEventListener('click', (e) => {
 root.addEventListener('change', (e) => {
   const sel = e.target.closest('select[data-act="hero-skill"]');
   if (!sel) return;
+  if (remote) { remoteAct({type:'hero-skill', skill: sel.dataset.skill, hero: sel.value}); return; }
   const r = dispatch(state, {type:'hero-skill', skill: sel.dataset.skill, hero: sel.value});
   toast(r.toast); save(); paint();
 });
@@ -286,7 +334,11 @@ root.addEventListener('submit', (e) => {
 addEventListener('hashchange', paint);
 addEventListener('resize', () => { if (!state) return; const p = matchMedia('(max-width: 860px)').matches; if (p !== state.phone) paint(); });
 
+let lastDelvePaint = 0;
 function loop() {
+  if (state && !state.freeze && state.view === 'delve' && state.delve && Date.now() - lastDelvePaint > 2000 && !isOpen()) {
+    lastDelvePaint = Date.now(); state.now = Date.now(); paint();
+  }
   if (!state || state.freeze || remote) return;
   tick(state, Date.now());
   const bars = root.querySelectorAll('.chip .bar i, .nowbar .bar i');
@@ -321,6 +373,7 @@ async function boot() {
   state.freeze = false;
   state.pickMin = 15;
   try {
+    await loadDefs().catch(() => {});
     await pull();
     remote = true;
     sb.channel('crier').on('postgres_changes', {event:'INSERT', schema:'public', table:'os_feed'}, payload => {
