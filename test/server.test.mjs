@@ -179,12 +179,12 @@ test('a choice needs a delve, and stew comes out of the bank once', {skip}, () =
   assert.equal(bag(u, 'eel_stew'), s0 - 1);
 });
 
-test('selling pays in copper, less the market fee', {skip}, () => {
+test('the shop floor pays half the fair price, in copper', {skip}, () => {
   const u = newPlayer();
   psql(`update os_player set gold = 0, copper = 0 where uid = '${u.uid}'`);
   const sc = Number(psql(`select sell_copper from os_item_def where id = 'stained_mug'`));
   const v = Number(as(u, `select os_sell('stained_mug', 5)`).split('\n').pop());
-  assert.equal(v, Math.max(1, sc - Math.round(sc * 0.05)), 'only the one owned is sold');
+  assert.equal(v, Math.max(1, Math.floor(sc / 2)), 'only the one owned is sold, at half');
   const tot = Number(P(u, 'gold')) * 10000 + Number(P(u, 'copper'));
   assert.equal(tot, v);
   fails(u, `select os_sell('stained_mug', 1)`, /nothing to sell/);
@@ -360,14 +360,14 @@ test('phase 2a: brewing needs ingredients and violet gems are a rare find', {ski
   assert.equal(spec.every, 6);
 });
 
-test('phase 2a: selling pays the item value, not the stall price, and shards stay', {skip}, () => {
+test('selling pays the item value, not the stall price, and shards stay', {skip}, () => {
   const u = newPlayer();
   psql(`update os_player set gold = 0, copper = 0 where uid = '${u.uid}'`);
   psql(`insert into os_bag(uid, item_id, qty) values ('${u.uid}', 'gem_violet', 1), ('${u.uid}', 'copper_ore', 100), ('${u.uid}', 'card_shard', 2) on conflict (uid, item_id) do update set qty = excluded.qty`);
   as(u, `select os_sell('gem_violet', 1) \\g /dev/null`);
-  assert.equal(Number(P(u, 'gold')), 57, 'a violet gem pays 60 gold less the 5% fee');
+  assert.equal(Number(P(u, 'gold')), 30, 'the shop floor pays half of a violet gem');
   as(u, `select os_sell('copper_ore', 100) \\g /dev/null`);
-  assert.equal(Number(P(u, 'gold')) * 10000 + Number(P(u, 'copper')), 570000 + 161500);
+  assert.equal(Number(P(u, 'gold')) * 10000 + Number(P(u, 'copper')), 300000 + 85000);
   fails(u, `select os_sell('card_shard', 1)`, /cannot be sold/);
   assert.equal(bag(u, 'card_shard'), 2);
 });

@@ -248,8 +248,8 @@ export function luckWeights(rates, partyLuck, floorMult, night) {
   };
 }
 
-// Out-of-fight speed: percent faster from perks, gear and sets, capped at 60%.
-export function fasterMult(pct) { return 1 - Math.min(60, Math.max(0, pct || 0)) / 100; }
+// Out-of-fight speed: percent faster from perks, gear and sets, capped at 30%.
+export function fasterMult(pct) { return 1 - Math.min(30, Math.max(0, pct || 0)) / 100; }
 export function heroOutFx(heroId, level, gear) { const t = heroTotals(heroId, level, gear || {}); const fx = Object.assign({}, t.fx); addFx(fx, HERO_PERK_FX[heroId]); return fx; }
 
 // Coins: 100 copper = 1 silver, 100 silver = 1 gold.

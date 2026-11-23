@@ -2,6 +2,18 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.11",
+      "date": "2026-11-23",
+      "title": "A market of your own",
+      "items": [
+        "The Market has a Trading Hall now. List what you make at your own price.",
+        "City traders buy your goods every day and sell what you need.",
+        "Prices follow what players pay, and every good shows its last seven days.",
+        "Each tree drops its own wood now.",
+        "Logs, stew, draughts and moonsilver bars sell for fair prices, and hero speed bonuses top out a little lower."
+      ]
+    },
+    {
       "v": "2026.11.23.10",
       "date": "2026-11-23",
       "title": "A place for every craft",

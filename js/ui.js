@@ -2,7 +2,7 @@ import {
   HEROES, HERO_ORDER, ITEMS, SKILLS, NODES, NAV_CITY, NAV_ADV, MASTERY, DELVE_LENGTHS,
   FLOORS, HUSTLES, CITIES, SETS, RARITY_NAME, itemSrc, levelFromXp, hustleFromXp
 } from './catalog.js';
-import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt, sellCopper } from './engine.js';
+import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt, sellCopper, fairCopper, traderRows, hallDeposit, hallBand, hallTradeable, HALL_HOURS } from './engine.js';
 import { heroTotals, coins } from './fight.js';
 import { GEAR, STAT_NAMES, ERA_SETS, HERO_BASE } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
@@ -443,17 +443,17 @@ function bankView(s) {
   const blanks = Array.from({length: Math.max(12, 48 - ids.length)}).map(() => slot(null)).join('');
   const pick = s.pick && ITEMS[s.pick] ? s.pick : ids[0];
   const it = pick ? ITEMS[pick] : null;
-  const worth = Math.floor(Object.keys(s.bag).reduce((a, id) => a + (GEAR[id] && GEAR[id].sell ? GEAR[id].sell : sellCopper(id)) * s.bag[id], 0) / 10000);
+  const worth = Math.floor(Object.keys(s.bag).reduce((a, id) => a + (ITEMS[id] && ITEMS[id].keep ? 0 : fairCopper(s, id)) * s.bag[id], 0) / 10000);
   return `<div style="display:grid;grid-template-columns:1fr 330px;gap:12px;height:100%">
 <div class="panel" style="min-height:0;overflow:auto"><div class="row" style="margin-bottom:10px"><b class="h" style="font-size:20px">Bank</b><span class="tag">${ids.length} / 200 slots</span><div class="sp"></div>
  ${['all','ores','bars','food','gear','cards'].map(f => `<button type="button" class="tag ${filter === f ? 'p' : ''}" data-act="bank" data-filter="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}
- <span class="tag c">Worth ${num(worth)} gold</span></div>
+ <span class="tag c">Worth ${num(worth)} gold at fair prices</span></div>
  <div style="display:grid;grid-template-columns:repeat(auto-fill,52px);gap:8px">${cells}${blanks}</div></div>
 <div class="g" style="align-content:start">
  ${it ? `<div class="panel glowc"><div class="row"><div class="slot r-${it.rarity}" style="width:64px;height:64px"><img class="px" src="${itemSrc(pick)}" style="width:52px;height:52px" alt=""></div><div><b class="h" style="font-size:17px">${esc(it.name)}</b><br><span class="tag c">${RARITY_NAME[it.rarity]}</span> <span class="mut" style="font-size:12px">x${s.bag[pick] || 0}</span></div></div>
   <div class="mut" style="font-size:12.5px;margin:8px 0">${esc(statLine(pick) || it.blurb || 'It sits in the Bank until you use it or sell it.')}</div>
   ${GEAR[pick] && GEAR[pick].req ? `<div class="mut" style="font-size:12px;margin-bottom:8px">Needs card level ${GEAR[pick].req}. Wear it from the back of a card.</div>` : ''}
-  <div class="row">${it.keep ? '<span class="tag">Kept for the circle</span>' : btn('Sell for ' + coinLine(GEAR[pick] && GEAR[pick].sell ? GEAR[pick].sell : sellCopper(pick)) + ' each', 'sell', 'sm c')}${btn('List on Market', 'list', 'sm g')}</div></div>` : ''}
+  <div class="row">${it.keep ? '<span class="tag">Kept for the circle</span>' : btn('Shop pays ' + coinLine(sellCopper(pick, s)) + ' each', 'sell', 'sm c')}${hallTradeable(pick) ? btn('Sell on the Market', 'list', 'sm g') : ''}</div></div>` : ''}
  <div class="panel"><div class="ph">${ico('anvil','ico')}<div><h3>Smithing</h3><small>Lv ${skillLevel(s, 'smithing')}</small></div></div>
   <div class="row" style="margin-bottom:8px"><img class="px" src="/assets/items/rusty_gladius.png" style="width:40px" alt=""><div><b>Moonsilver Gladius</b><br><small class="mut">+8 Attack · Hurts the undead</small></div></div>
   <div class="row" style="font-size:12px;margin-bottom:8px">${slot('moonsilver_bar', 4)}${slot('ash_log', 2)}<span class="mut">→</span>${slot('moonsilver_gladius', 1)}</div>
@@ -462,29 +462,77 @@ function bankView(s) {
 </div></div>`;
 }
 
+function timeLeft(until, now) {
+  const ms = Math.max(0, (typeof until === 'string' ? Date.parse(until) : until) - now);
+  const h = Math.floor(ms / 3600e3), m = Math.floor(ms / 60e3) % 60;
+  return h ? h + 'h ' + m + 'm' : m + 'm';
+}
+export function hallQuote(s, item, qty, unit, hours) {
+  if (!item || !ITEMS[item]) return '';
+  const f = fairCopper(s, item), [lo, hi] = hallBand(s, item);
+  const bad = unit && (unit < lo || unit > hi);
+  const dep = hallDeposit(Math.max(1, unit || f), Math.max(1, qty || 1), hours || 8);
+  return `Fair price ${coinLine(f)}. You can ask ${coinLine(lo)} to ${coinLine(hi)} each.<br>${bad ? '<b class="pk">That price is outside the range.</b>' : `Deposit ${coinLine(dep)}, back when it sells. The Hall keeps 5% of the sale.`}`;
+}
+function priceChart(h) {
+  const days = (h && h.days) || [];
+  const vals = days.flatMap(d => [d.avg, d.fair]).filter(v => v > 0);
+  if (!vals.length) return '';
+  const lo = Math.min(...vals) * 0.9, hi = Math.max(...vals) * 1.1 || 1;
+  const y = v => (100 - 90 * (v - lo) / Math.max(1, hi - lo)).toFixed(1);
+  const x = k => (k * 1000 / Math.max(1, days.length - 1)).toFixed(1);
+  const line = key => { const pts = days.map((d, k) => d[key] > 0 ? x(k) + ',' + y(d[key]) : null).filter(Boolean); return pts.length > 1 ? pts.join(' ') : ''; };
+  const sale = line('avg'), fair = line('fair');
+  return `<svg viewBox="0 0 1000 110" style="width:100%;height:70px" preserveAspectRatio="none" aria-hidden="true">${fair ? `<polyline fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-dasharray="8 6" points="${fair}"/>` : ''}${sale ? `<polyline fill="none" stroke="#36d6ff" stroke-width="3" points="${sale}"/>` : ''}</svg>
+<div class="row" style="font-size:11.5px;gap:14px;flex-wrap:wrap"><span><span style="display:inline-block;width:14px;height:3px;background:#36d6ff;vertical-align:middle"></span> Average sale</span><span class="mut"><span style="display:inline-block;width:14px;border-top:2px dashed rgba(255,255,255,.5);vertical-align:middle"></span> Fair price</span></div>`;
+}
 function marketView(s) {
-  const rows = (s.listings || []).map(l => {
-    const name = l.name || ITEMS[l.item]?.name || l.item;
-    const icon = l.item === 'card_pack' ? 'cards' : (ITEMS[l.item]?.icon || 'coin');
-    const src = icon.startsWith('items/') ? '/assets/' + icon + '.png' : '/assets/gen/' + icon + '.png';
-    const today = l.today || 0;
-    return `<div class="li"><img class="px" src="${src}" alt=""><b style="width:160px">${esc(name)}</b><span class="nums" style="width:80px">${num(l.price)}g</span><span class="nums ${today >= 0 ? 'lm' : 'pk'}" style="width:60px">${today >= 0 ? '+' : ''}${today}%</span><span class="mut nums" style="width:70px">${num(l.qty)}</span><span class="sp"></span><button class="btn sm c" type="button" data-act="buy" data-item="${l.item}">Buy</button><button class="btn sm g" type="button" data-act="sell" data-item="${l.item}">Sell</button></div>`;
+  const now = s.now || Date.now();
+  const rowsAll = traderRows(s).slice().sort((x, y) => ((s.bag[y.item] || 0) > 0) - ((s.bag[x.item] || 0) > 0) || x.fair - y.fair);
+  const showAll = !!s.mkAll || rowsAll.length <= 8;
+  const tr = (showAll ? rowsAll : rowsAll.slice(0, 8)).map(t => {
+    const have = s.bag[t.item] || 0, it = ITEMS[t.item]; if (!it) return '';
+    const today = Number(t.today) || 0;
+    return `<div class="li" style="flex-wrap:wrap;row-gap:6px"><img class="px" src="${itemSrc(t.item)}" alt=""><button type="button" class="lnk" data-act="hist" data-item="${t.item}" style="min-width:130px;text-align:left"><b>${esc(it.name)}</b><br><small class="mut">You have ${num(have)}</small></button>
+<span class="nums" style="min-width:92px"><small class="mut">Fair</small><br>${coinLine(t.fair)}</span><span class="nums" style="min-width:92px"><small class="mut">They pay</small><br>${coinLine(t.buys)}</span><span class="nums" style="min-width:92px"><small class="mut">They sell</small><br>${coinLine(t.sells)}</span>
+<span class="nums ${today >= 0 ? 'lm' : 'pk'}" style="min-width:48px">${today >= 0 ? '+' : ''}${today}%</span><span class="sp"></span>
+<button class="btn sm c" type="button" data-act="buy" data-item="${t.item}">Buy 1</button>${have && t.left ? `<button class="btn sm g" type="button" data-act="trader-sell" data-item="${t.item}" data-qty="${Math.min(have, t.left)}">Sell ${num(Math.min(have, t.left))}</button>` : `<span class="mut" style="font-size:11.5px">${t.left ? 'Nothing to sell' : 'Full for today'}</span>`}</div>`;
   }).join('');
+  const hall = (s.hall || []).map(h => `<div class="li" style="flex-wrap:wrap;row-gap:6px"><img class="px" src="${itemSrc(h.item)}" alt=""><button type="button" class="lnk" data-act="hist" data-item="${h.item}" style="min-width:130px;text-align:left"><b>${esc(ITEMS[h.item]?.name || h.item)}</b><br><small class="mut">by ${esc(h.seller)}</small></button><span class="nums" style="min-width:60px">x${num(h.qty)}</span><span class="nums" style="min-width:100px">${coinLine(h.unit)} each</span><span class="mut nums" style="min-width:60px">${timeLeft(h.until, now)}</span><span class="sp"></span>${h.mine ? '<span class="tag">Yours</span>' : `<button class="btn sm c" type="button" data-act="hall-buy" data-id="${h.id}">Buy all, ${coinLine(h.unit * h.qty)}</button>`}</div>`).join('');
+  const mine = (s.hallMine || []).map(m => `<div class="li" style="flex-wrap:wrap"><img class="px" src="${itemSrc(m.item)}" alt=""><span>${num(m.qty - m.left)} of ${num(m.qty)} ${esc(ITEMS[m.item]?.name || m.item)} sold<br><small class="mut">${coinLine(m.unit)} each · ${m.status === 'open' ? timeLeft(m.until, now) + ' left' : m.status === 'sold' ? 'All sold' : m.status === 'expired' ? 'Time ran out, goods came home' : 'Taken down'}</small></span><span class="sp"></span>${m.status === 'open' ? `<button class="btn sm g" type="button" data-act="hall-cancel" data-id="${m.id}">Take down</button>` : ''}</div>`).join('');
+  const goods = Object.keys(s.bag).filter(id => s.bag[id] > 0 && hallTradeable(id));
+  const pick = goods.includes(s.hallItem) ? s.hallItem : goods[0];
+  const t = s.trade || {ok: true};
+  const form = !t.ok ? `<div class="mut" style="font-size:12.5px">Trading with other players opens 3 days after you arrive, once any skill reaches Lv 10. Until then the traders and the shop floor buy everything you make.</div>`
+    : !pick ? `<div class="mut" style="font-size:12.5px">Gather or craft something and it can go up here.</div>`
+    : `<form data-act="hall-list" class="g" style="gap:8px">
+ <label class="mut" style="font-size:12px">Item<select name="item" style="width:100%">${goods.map(id => `<option value="${id}" ${id === pick ? 'selected' : ''}>${esc(ITEMS[id].name)} (${num(s.bag[id])})</option>`).join('')}</select></label>
+ <div class="row" style="gap:8px;flex-wrap:wrap"><label class="mut" style="font-size:12px;flex:1;min-width:80px">How many<input name="qty" type="number" min="1" max="${s.bag[pick]}" value="${s.bag[pick]}" style="width:100%"></label>
+ <label class="mut" style="font-size:12px;flex:1;min-width:100px">Gold each<input name="price" type="number" min="0" step="0.0001" value="${(fairCopper(s, pick) / 10000).toFixed(4).replace(/0+$/, '').replace(/\.$/, '')}" style="width:100%"></label>
+ <label class="mut" style="font-size:12px;flex:1;min-width:80px">For<select name="hours" style="width:100%">${HALL_HOURS.map(h => `<option value="${h}" ${h === 8 ? 'selected' : ''}>${h} hours</option>`).join('')}</select></label></div>
+ <div class="mut" style="font-size:12px" data-quote>${hallQuote(s, pick, s.bag[pick], fairCopper(s, pick), 8)}</div>
+ <button class="btn sm" type="submit">List it</button></form>`;
+  const hi = s.histItem && ITEMS[s.histItem] ? s.histItem : 'moonsilver_bar';
+  const h = (s.history || {})[hi];
   const cards = (s.cardListings || []).map(c => `<div class="li"><img class="px" src="${portraitSrc(c.hero)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt=""><div><b>${esc(HEROES[c.hero].name)}</b><br><small class="mut">${RARITY_NAME[HEROES[c.hero].rarity]} · Lv ${c.level} · by ${esc(c.seller)}</small></div><span class="sp"></span><b class="nums">${num(c.price)}g</b><button class="btn sm" type="button" data-act="buy-card" data-id="${c.id}">Buy</button></div>`).join('');
-  const orders = (s.orders || []).map(o => `<div class="li">${esc(o.text)}<span class="sp"></span><span class="${o.good ? 'lm' : 'mut'}">${esc(o.meta)}</span></div>`).join('');
-  return `<div style="display:grid;grid-template-columns:1fr 1fr 300px;gap:12px;align-content:start">
-<div class="panel" style="grid-column:span 2"><div class="row" style="margin-bottom:6px"><b class="h" style="font-size:20px">Market</b><span class="tag c">Prices move as players trade</span><div class="sp"></div>${btn('Sell something', 'list', 'sm')}</div>
- <div class="li dim" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase"><span style="width:26px"></span><span style="width:160px">Item</span><span style="width:80px">Price</span><span style="width:60px">Today</span><span style="width:70px">For sale</span></div>
- ${rows}</div>
-<div class="panel glow" style="grid-row:span 2"><div class="ph">${ico('portal','ico')}<div><h3>Waystone deals</h3><small>Buy cheap abroad, sell at home</small></div></div>
- <div class="list">${CITIES.filter(c => c.deal).map(c => `<div class="li"><b>${c.name}</b><span class="sp"></span><span class="lm">${c.deal}</span></div>`).join('')}</div>
- <div class="mut" style="font-size:12.5px;margin:8px 0">You can carry 30 items per trip. Bandits strike the Emberfall road at night.</div>
- ${btn('Plan a trip', 'go', 'c').replace('data-act="go"', 'data-go="travel"')}
- <div class="ph" style="margin-top:16px"><h3>Your orders</h3></div><div class="list">${orders || '<div class="li mut">No open orders.</div>'}</div></div>
-<div class="panel" style="grid-column:span 3"><div class="ph">${ico('moonsilver_bar','ico')}<div><h3>Moonsilver bar, last 7 days</h3><small>A crew is buying for the Bishop raid.</small></div><div class="sp"></div><b class="h lm" style="font-size:20px">${priceLabel(s, 'moonsilver_bar')}g</b></div>
-<svg viewBox="0 0 1000 110" style="width:100%;height:64px" preserveAspectRatio="none"><defs><linearGradient id="gg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#36d6ff" stop-opacity=".35"/><stop offset="1" stop-color="#36d6ff" stop-opacity="0"/></linearGradient></defs><polygon fill="url(#gg)" points="0,110 0,80 90,74 180,86 270,70 360,72 450,60 540,66 630,52 720,58 810,40 900,30 1000,12 1000,110"/><polyline fill="none" stroke="#36d6ff" stroke-width="3" points="0,80 90,74 180,86 270,70 360,72 450,60 540,66 630,52 720,58 810,40 900,30 1000,12"/></svg></div>
-<div class="panel" style="grid-column:span 2"><div class="ph">${ico('cards','ico')}<div><h3>Cards for sale</h3><small>Trade with real players</small></div></div><div class="list">${cards || '<div class="li mut">No cards on the table.</div>'}</div></div>
-</div>`;
+  return `<div style="display:grid;grid-template-columns:1fr 340px;gap:12px;align-content:start">
+<div class="g" style="align-content:start">
+ <div class="panel"><div class="row" style="margin-bottom:6px;flex-wrap:wrap"><b class="h" style="font-size:20px">Market</b><span class="tag c">Prices follow what players pay</span></div>
+  <div class="mut" style="font-size:12.5px;margin-bottom:8px">The shop floor in your Bank buys anything at half the fair price. City traders pay more, up to a daily amount. In the Trading Hall you set your own price.</div>
+  <div class="ph" style="margin-top:4px"><h3>City traders</h3><small>They pay 85% of fair and sell at 125%</small></div><div class="list">${tr}</div>${rowsAll.length > 8 ? `<div class="row" style="margin-top:8px">${btn(showAll ? 'Show fewer' : 'Show all ' + rowsAll.length + ' goods', 'mk-all', 'sm g')}</div>` : ''}</div>
+ <div class="panel"><div class="ph">${ico('coin','ico')}<div><h3>Trading Hall</h3><small>Goods listed by players</small></div></div><div class="list">${hall || '<div class="li mut">Nothing listed right now. Be the first.</div>'}</div></div>
+ <div class="panel"><div class="ph"><img class="px" src="${itemSrc(hi)}" style="width:32px" alt=""><div><h3>${esc(ITEMS[hi].name)}, last 7 days</h3><small>Tap any good above to see its prices</small></div><div class="sp"></div><b class="h lm" style="font-size:18px">${coinLine(h && h.fair || fairCopper(s, hi))}</b></div>
+  ${priceChart(h)}
+  <div class="row" style="font-size:12.5px;gap:18px;flex-wrap:wrap;margin-top:6px"><span><span class="mut">Lowest listing</span> <b class="nums">${h && h.low ? coinLine(h.low) : 'None'}</b></span><span><span class="mut">Average sale</span> <b class="nums">${h && h.avg ? coinLine(h.avg) : 'No sales yet'}</b></span><span><span class="mut">Sold this week</span> <b class="nums">${num((h && h.sold) || 0)}</b></span></div></div>
+ ${cards ? `<div class="panel"><div class="ph">${ico('cards','ico')}<div><h3>Cards for sale</h3><small>Trade with real players</small></div></div><div class="list">${cards}</div></div>` : ''}
+</div>
+<div class="g" style="align-content:start">
+ <div class="panel glow"><div class="ph"><h3>List in the Trading Hall</h3></div>${form}</div>
+ <div class="panel"><div class="ph"><h3>Your listings</h3></div><div class="list">${mine || '<div class="li mut">Nothing up yet.</div>'}</div></div>
+ <div class="panel"><div class="ph">${ico('portal','ico')}<div><h3>Waystone deals</h3><small>Buy cheap abroad, sell at home</small></div></div>
+  <div class="list">${CITIES.filter(c => c.deal).map(c => `<div class="li"><b>${c.name}</b><span class="sp"></span><span class="lm">${c.deal}</span></div>`).join('')}</div>
+  <div class="row" style="margin-top:8px">${btn('Plan a trip', 'go', 'c').replace('data-act="go"', 'data-go="travel"')}</div></div>
+</div></div>`;
 }
 function priceLabel(s, item) {
   const row = (s.listings || []).find(l => l.item === item);

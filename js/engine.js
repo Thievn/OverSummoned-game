@@ -169,23 +169,24 @@ export function bibleState() {
     {result:'Caught', detail:'A guard grabbed your collar', gold:'Stocks'},
     {result:'Won', detail:'Found a card shard in a purse', gold:'+1'}
   ];
-  s.listings = [
-    {id:'moon', item:'moonsilver_bar', price:41, qty:1204, today:12},
-    {id:'ember', item:'ember_ore', price:7, qty:310, today:4},
-    {id:'stew', item:'eel_stew', price:9, qty:8842, today:-3},
-    {id:'pink', item:'potion_pink', name:'Healing draught', price:64, qty:520, today:1},
-    {id:'pack', item:'card_pack', name:'Card pack', price:1250, qty:96, today:22},
-    {id:'gem', item:'gem_violet', price:150, qty:41, today:-8}
+  s.listings = [];
+  s.trade = {ok: true};
+  s.hall = [
+    {id:'h1', item:'moonsilver_bar', qty:20, unit:31500, seller:'Kaz_99', until: Date.now() + 5 * 3600e3},
+    {id:'h2', item:'moonsilver_bar', qty:6, unit:33000, seller:'moth', until: Date.now() + 19 * 3600e3},
+    {id:'h3', item:'ember_ore', qty:140, unit:27500, seller:'Brokk_fan', until: Date.now() + 90 * 60e3},
+    {id:'h4', item:'potion_pink', qty:12, unit:9200, seller:'moth', until: Date.now() + 7 * 3600e3},
+    {id:'h5', item:'gem_violet', qty:2, unit:640000, seller:'Kaz_99', until: Date.now() + 22 * 3600e3}
   ];
+  s.hallMine = [{id:'m1', item:'moonsilver_ore', qty:200, left:120, unit:9000, until: Date.now() + 6 * 3600e3, status:'open', deposit:36000}];
+  s.history = {moonsilver_bar: {item:'moonsilver_bar', fair:30000, low:31500, avg:31200, sold:412, days:[29000,29400,30100,29800,30600,31000,31200].map((v, k) => ({day:'d' + k, avg:v, sold:40 + k * 9, fair:Math.round(30000 + (v - 30000) * 0.4)}))}};
+  s.histItem = 'moonsilver_bar';
   s.cardListings = [
     {id:'c1', hero:'gangster', level:2, seller:'Kaz_99', price:18500},
     {id:'c2', hero:'plague_doctor', level:2, seller:'moth', price:9900},
     {id:'c3', hero:'hunter', level:4, seller:'Brokk_fan', price:4800}
   ];
-  s.orders = [
-    {text:'Selling 20 Moonsilver bars', meta:'14 sold', good:true},
-    {text:'Buying Gangster card', meta:'Waiting', good:false}
-  ];
+  s.orders = [];
   s.welcome = {
     away:'9h 40m',
     lines:[
@@ -432,7 +433,10 @@ export function dispatch(state, action) {
   if (a.type === 'claim') return claimDelve(state, out);
   if (a.type === 'sell') return sell(state, a.item, a.qty | 0 || 1, out);
   if (a.type === 'buy') return buy(state, a.item, a.qty | 0 || 1, out);
-  if (a.type === 'list') return listItem(state, a.item, a.qty | 0 || 1, a.price | 0, out);
+  if (a.type === 'trader-sell') return traderSell(state, a.item, a.qty | 0 || 1, out);
+  if (a.type === 'hall-list') return hallList(state, a.item, a.qty | 0, a.unit | 0, a.hours | 0, out);
+  if (a.type === 'hall-buy') return hallBuy(state, a.id, a.qty | 0, out);
+  if (a.type === 'hall-cancel') return hallCancel(state, a.id, out);
   if (a.type === 'forge') return forge(state, out);
   if (a.type === 'summon') return summon(state, out);
   if (a.type === 'pack') return openPack(state, out);
@@ -638,30 +642,78 @@ function priceOf(state, item) {
   return ITEMS[item]?.value || 5;
 }
 
-// What the city pays: each item's own sell value, in copper (10,000 copper is 1 gold). The stall's price is what it charges.
-export function sellCopper(item) {
+// Fair prices, in copper (10,000 copper is 1 gold). The server sends the live ones; these are the starting prices.
+export function fairCopper(state, item) {
+  const f = state && state.fair && state.fair[item];
+  if (f) return f;
+  const it = ITEMS[item];
+  if (!it) return 0;
+  if (it.sell != null) return it.sell;
+  if (GEAR[item] && GEAR[item].sell) return GEAR[item].sell;
+  return Math.round((it.value || 0) * 10000);
+}
+// The shop floor pays half the fair price, any amount, right away.
+export function sellCopper(item, state) {
   const it = ITEMS[item];
   if (!it || it.keep) return 0;
-  return it.sell != null ? it.sell : Math.round((it.value || 0) * 10000);
+  return Math.max(1, Math.floor(fairCopper(state, item) / 2));
 }
+// City traders buy at 85% of the fair price, up to a daily amount, and sell at 125%.
+export const TRADER_CAP = {copper_ore:3600, iron_ore:2770, moonsilver_ore:2400, ember_ore:1710, void_ore:1380, gem_violet:190,
+  ash_log:3270, ironbark_log:4800, moonwood_log:4000, emberroot_log:4900, voidtrunk_log:3930,
+  raw_eel:4500, eel_stew:3600, potion_pink:2120, potion_cyan:1900, iron_bar:2250, moonsilver_bar:1800};
+export function traderBuys(state, item) { return Math.max(1, Math.floor(fairCopper(state, item) * 85 / 100)); }
+export function traderSells(state, item) { return Math.ceil(fairCopper(state, item) * 125 / 100); }
+export function traderRows(state) {
+  if (state.traders && state.traders.length) return state.traders;
+  return Object.keys(TRADER_CAP).map(item => ({item, fair: fairCopper(state, item), buys: traderBuys(state, item), sells: traderSells(state, item), today: 0,
+    left: Math.max(0, TRADER_CAP[item] - ((state.traderDay && state.traderDay[item]) || 0))})).sort((x, y) => x.fair - y.fair);
+}
+// The Trading Hall: a deposit of 1%, 2% or 3% for 2, 8 or 24 hours, a 5% cut, prices from half to four times fair.
+export const HALL_HOURS = [2, 8, 24];
+export function hallDeposit(unit, qty, hours) { return Math.max(1, Math.ceil(unit * qty * ({2:1, 8:2, 24:3}[hours] || 2) / 100)); }
+export function hallBand(state, item) { const f = fairCopper(state, item); return [Math.max(1, Math.ceil(f / 2)), f * 4]; }
+export function hallCut(total) { return Math.round(total * 5 / 100); }
+export function hallTradeable(item) { const it = ITEMS[item]; return !!it && !it.keep && !it.own && !(GEAR[item] && (GEAR[item].bind === 'pickup' || GEAR[item].hero)) && fairCopper(null, item) > 0; }
+
+function purse(state) { return (state.gold || 0) * 10000 + (state.copper || 0); }
+function addCopper(state, d) {
+  const t = purse(state) + d;
+  if (t < 0) return false;
+  state.gold = Math.floor(t / 10000); state.copper = t % 10000;
+  return true;
+}
+function coinWords(c) { const g = Math.floor(c / 10000), si = Math.floor(c / 100) % 100, k = c % 100; return [g ? g.toLocaleString() + ' gold' : '', si ? si + ' silver' : '', k || (!g && !si) ? k + ' copper' : ''].filter(Boolean).join(' '); }
 
 function sell(state, item, qty, out) {
   const have = state.bag[item] || 0;
   qty = Math.max(1, Math.min(qty, have));
   if (!ITEMS[item] || qty < 1 || have < 1) { out.toast = 'Nothing to sell.'; return out; }
   if (ITEMS[item].keep) { out.toast = 'The circle keeps those. They cannot be sold.'; return out; }
-  const gross = sellCopper(item) * qty;
-  const fee = Math.round(gross * (state.config.marketFee || 0));
-  const total = Math.max(1, gross - fee) + (state.copper || 0);
-  const net = Math.floor(total / 10000);
-  state.copper = total % 10000;
+  const gross = Math.max(1, sellCopper(item, state) * qty);
+  addCopper(state, gross);
   state.bag[item] = have - qty;
   if (state.bag[item] <= 0) delete state.bag[item];
-  state.gold += net;
-  state.trades.push({item, price: sellCopper(item) / 10000, qty, at: state.now});
-  state.events.push({kind:'trade', ref:item, qty: net, at: state.now});
-  out.toast = net ? 'Sold for ' + net + ' gold.' : 'Sold for a few coppers.';
-  out.gold = net;
+  state.trades.push({item, price: sellCopper(item, state) / 10000, qty, at: state.now, source: 'shop'});
+  state.events.push({kind:'trade', ref:item, qty: Math.floor(gross / 10000), at: state.now});
+  out.toast = 'Sold for ' + coinWords(gross) + '.';
+  out.gold = Math.floor(gross / 10000);
+  return out;
+}
+
+function traderSell(state, item, qty, out) {
+  const have = state.bag[item] || 0;
+  if (!TRADER_CAP[item]) { out.toast = 'The traders do not deal in that.'; return out; }
+  state.traderDay = state.traderDay || {};
+  const left = Math.max(0, TRADER_CAP[item] - (state.traderDay[item] || 0));
+  if (left < 1) { out.toast = 'The traders have all they want from you today. The shop floor still buys.'; return out; }
+  qty = Math.min(Math.max(1, qty), have, left);
+  if (qty < 1) { out.toast = 'You do not have any.'; return out; }
+  const gross = traderBuys(state, item) * qty;
+  addCopper(state, gross);
+  state.bag[item] = have - qty; if (state.bag[item] <= 0) delete state.bag[item];
+  state.traderDay[item] = (state.traderDay[item] || 0) + qty;
+  out.toast = 'The traders paid ' + coinWords(gross) + '.';
   return out;
 }
 
@@ -674,22 +726,50 @@ function buy(state, item, qty, out) {
     for (let i = 0; i < qty; i++) out.hero = openPack(state, out).hero;
     return out;
   }
-  const cost = priceOf(state, item) * qty;
-  if (state.gold < cost) { out.toast = 'Not enough gold.'; return out; }
-  state.gold -= cost;
+  if (!TRADER_CAP[item]) { out.toast = 'The traders do not deal in that.'; return out; }
+  const cost = traderSells(state, item) * qty;
+  if (!addCopper(state, -cost)) { out.toast = 'Not enough gold.'; return out; }
   grantItem(state, item, qty, false);
-  state.events.push({kind:'trade', ref:item, qty: cost, at: state.now});
-  out.toast = 'Bought.';
+  state.events.push({kind:'trade', ref:item, qty: Math.floor(cost / 10000), at: state.now});
+  out.toast = 'Bought for ' + coinWords(cost) + '.';
   return out;
 }
 
-function listItem(state, item, qty, price, out) {
-  qty = Math.max(1, Math.min(qty, state.bag[item] || 0));
-  if (qty < 1 || price < 1) { out.toast = 'Set a price and an item you hold.'; return out; }
-  state.bag[item] -= qty;
-  if (state.bag[item] <= 0) delete state.bag[item];
-  state.orders.push({text:'Selling ' + qty + ' ' + (ITEMS[item]?.name || item), meta:'Listed', good:true, item, qty, price});
-  out.toast = 'Listed.';
+function hallList(state, item, qty, unit, hours, out) {
+  if (state.trade && !state.trade.ok) { out.toast = 'Trading with other players opens 3 days after you arrive, once any skill reaches Lv 10.'; return out; }
+  if (!hallTradeable(item)) { out.toast = 'The Hall does not take that.'; return out; }
+  if (!HALL_HOURS.includes(hours)) { out.toast = 'Pick 2, 8 or 24 hours.'; return out; }
+  if (qty < 1 || (state.bag[item] || 0) < qty) { out.toast = 'You do not have that many.'; return out; }
+  const [lo, hi] = hallBand(state, item);
+  if (unit < lo || unit > hi) { out.toast = 'Set a price between half and four times the fair price.'; return out; }
+  const dep = hallDeposit(unit, qty, hours);
+  if (!addCopper(state, -dep)) { out.toast = 'Not enough gold for the deposit.'; return out; }
+  state.bag[item] -= qty; if (state.bag[item] <= 0) delete state.bag[item];
+  state.hallMine = state.hallMine || [];
+  state.hallMine.unshift({id: 'l' + Date.now(), item, qty, left: qty, unit, until: state.now + hours * 3600e3, status: 'open', deposit: dep});
+  out.toast = 'Listed. Deposit ' + coinWords(dep) + '.';
+  return out;
+}
+
+function hallBuy(state, id, qty, out) {
+  const h = (state.hall || []).find(x => String(x.id) === String(id));
+  if (!h || h.qty < 1) { out.toast = 'Someone got there first.'; return out; }
+  if (h.mine) { out.toast = 'That is your own listing.'; return out; }
+  qty = Math.min(h.qty, Math.max(1, qty || h.qty));
+  if (!addCopper(state, -(h.unit * qty))) { out.toast = 'Not enough gold.'; return out; }
+  h.qty -= qty;
+  if (h.qty <= 0) state.hall = state.hall.filter(x => x !== h);
+  grantItem(state, h.item, qty, false);
+  out.toast = 'Bought ' + qty + ' ' + (ITEMS[h.item]?.name || h.item) + '.';
+  return out;
+}
+
+function hallCancel(state, id, out) {
+  const h = (state.hallMine || []).find(x => String(x.id) === String(id) && x.status === 'open');
+  if (!h) { out.toast = 'That listing is already gone.'; return out; }
+  h.status = 'cancelled';
+  state.bag[h.item] = (state.bag[h.item] || 0) + h.left;
+  out.toast = 'Taken down. The goods are back in your Bank.';
   return out;
 }
 

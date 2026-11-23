@@ -31,13 +31,17 @@ export const ITEMS = {
   ember_ore:{name:'Ember ore', rarity:'epic', icon:'ember_ore', kind:'mat', value:2.9, sell:29000},
   void_ore:{name:'Void ore', rarity:'epic', icon:'void_ore', kind:'mat', value:5.8, sell:58000},
   gem_violet:{name:'Violet gem', rarity:'epic', icon:'gem_violet', kind:'mat', value:60, sell:600000},
-  ash_log:{name:'Ash log', rarity:'common', icon:'ash_log', kind:'mat', value:3, sell:30000},
+  ash_log:{name:'Ash log', rarity:'common', icon:'ash_log', kind:'mat', value:0.18, sell:1800},
+  ironbark_log:{name:'Ironbark log', rarity:'common', icon:'ironbark_log', kind:'mat', value:0.2, sell:2000, blurb:'Heavy and grey. It rings when you drop it.'},
+  moonwood_log:{name:'Moonwood log', rarity:'uncommon', icon:'moonwood_log', kind:'mat', value:0.48, sell:4800, blurb:'The grain glows a soft blue in the dark.'},
+  emberroot_log:{name:'Ember root log', rarity:'rare', icon:'emberroot_log', kind:'mat', value:0.96, sell:9600, blurb:'Warm to the touch, even in winter.'},
+  voidtrunk_log:{name:'Void trunk log', rarity:'epic', icon:'voidtrunk_log', kind:'mat', value:1.94, sell:19400, blurb:'No bird has ever sat on it.'},
   raw_eel:{name:'Raw eel', rarity:'common', icon:'raw_eel', kind:'food', value:0.18, sell:1800},
-  eel_stew:{name:'Eel stew', rarity:'uncommon', icon:'eel_stew', kind:'food', value:9, sell:90000, heal:28},
-  potion_pink:{name:'Healing draught', rarity:'rare', icon:'potion_pink', kind:'food', value:64, sell:640000, heal:70},
+  eel_stew:{name:'Eel stew', rarity:'uncommon', icon:'eel_stew', kind:'food', value:0.5, sell:5000, heal:28},
+  potion_pink:{name:'Healing draught', rarity:'rare', icon:'potion_pink', kind:'food', value:0.8, sell:8000, heal:70},
   potion_cyan:{name:'Guard oil', rarity:'rare', icon:'potion_cyan', kind:'food', value:1, sell:10000},
   iron_bar:{name:'Iron bar', rarity:'uncommon', icon:'iron_bar', kind:'mat', value:0.9, sell:9000},
-  moonsilver_bar:{name:'Moonsilver bar', rarity:'rare', icon:'moonsilver_bar', kind:'mat', value:41, sell:410000, blurb:'Cold to the touch and glowing. Smiths turn it into blades that hurt ghosts.'},
+  moonsilver_bar:{name:'Moonsilver bar', rarity:'rare', icon:'moonsilver_bar', kind:'mat', value:3, sell:30000, blurb:'Cold to the touch and glowing. Smiths turn it into blades that hurt ghosts.'},
   card_shard:{name:'Card shard', rarity:'rare', icon:'cards', kind:'mat', value:0, keep:true, blurb:'A piece of a card, still warm. The circle keeps these; they cannot be sold.'},
   summon_sigil:{name:'Summoning sigil', rarity:'legendary', icon:'summon_sigil', kind:'mat', value:0, keep:true},
 };
@@ -80,10 +84,10 @@ export const NODES = {
   ],
   woodcutting: [
     {id:'ash', name:'Ash grove', lv:1, sec:2.2, xp:6, item:'ash_log', rock:'ash_log', line:'Pale wood, good for fires and hafts.'},
-    {id:'ironbark', name:'Ironbark stand', lv:15, sec:3.0, xp:16, item:'ash_log', qty:2, rock:'ash_log', line:'The axe rings like a bell.'},
-    {id:'moonwood', name:'Moonwood', lv:30, sec:3.6, xp:34, item:'ash_log', qty:2, rock:'ash_log', line:'The grain glows when it splits.'},
-    {id:'emberroot', name:'Ember root', lv:55, sec:4.4, xp:72, item:'ash_log', qty:3, rock:'ash_log', line:'Sap runs hot.'},
-    {id:'voidtrunk', name:'Void trunk', lv:75, sec:5.5, xp:120, item:'ash_log', qty:3, rock:'ash_log', line:'The tree has no birds.'}
+    {id:'ironbark', name:'Ironbark stand', lv:15, sec:3.0, xp:16, item:'ironbark_log', qty:2, rock:'ironbark_log', line:'The axe rings like a bell.'},
+    {id:'moonwood', name:'Moonwood', lv:30, sec:3.6, xp:34, item:'moonwood_log', qty:2, rock:'moonwood_log', line:'The grain glows when it splits.'},
+    {id:'emberroot', name:'Ember root', lv:55, sec:4.4, xp:72, item:'emberroot_log', qty:3, rock:'emberroot_log', line:'Sap runs hot.'},
+    {id:'voidtrunk', name:'Void trunk', lv:75, sec:5.5, xp:120, item:'voidtrunk_log', qty:3, rock:'voidtrunk_log', line:'The tree has no birds.'}
   ],
   fishing: [
     {id:'eel', name:'Eel run', lv:1, sec:2.4, xp:6, item:'raw_eel', rock:'raw_eel', line:'Silver backs in black water.'},
@@ -143,8 +147,8 @@ export const HUSTLES = [
 
 export const CITIES = [
   {id:'aldermere', name:'Aldermere', note:'Home prices'},
-  {id:'sable', name:'Port Sable', note:'Eels sell for double', deal:'Eel stew 4g'},
-  {id:'emberfall', name:'Emberfall', note:'Cheap ember ore', deal:'Ember ore 5g'},
+  {id:'sable', name:'Port Sable', note:'Eels sell for double', deal:'Eel stew 35s'},
+  {id:'emberfall', name:'Emberfall', note:'Cheap ember ore', deal:'Ember ore 2g'},
   {id:'frost', name:'The Frost Market', note:'Rare cards on sale', deal:'Ice Age cards'},
   {id:'rome', name:'Old Rome Gate', note:'Legion gear', deal:'Legion gear'}
 ];

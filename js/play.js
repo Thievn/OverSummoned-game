@@ -1,7 +1,7 @@
 import { SB_URL, SB_KEY, HEROES, ITEMS, GEAR_OF } from './catalog.js';
 import { registerArt } from './art.js';
 import { bibleState, freshState, tick, dispatch } from './engine.js';
-import { render, gate, NAME_WHY } from './ui.js';
+import { render, gate, NAME_WHY, hallQuote } from './ui.js';
 import { bindCards, setGearProvider, isOpen, hideTip, flipCard } from './gearui.js';
 import { GEAR, ERA_SETS, HERO_BASE } from './gear.js';
 import { coins } from './fight.js';
@@ -179,7 +179,9 @@ function act(type, data, form) {
     hustle: {type:'hustle', id: data.job || 'dice'},
     sell: {type:'sell', item: data.item || state.pick, qty: 1},
     buy: {type:'buy', item: data.item, qty: 1},
-    list: {type:'list', item: state.pick, qty: 1, price: (ITEMS[state.pick] && ITEMS[state.pick].value) || 10},
+    'trader-sell': {type:'trader-sell', item: data.item || state.pick, qty: +data.qty || 1},
+    'hall-buy': {type:'hall-buy', id: data.id, qty: +data.qty || 0},
+    'hall-cancel': {type:'hall-cancel', id: data.id},
     skill: {type:'skill', skill: data.skill, node: data.node},
     pick: null,
     rar: null,
@@ -191,6 +193,10 @@ function act(type, data, form) {
     flip: null
   };
   if (type === 'pick') { state.pick = data.item; paint(); return; }
+  if (type === 'list') { state.hallItem = data.item || state.pick; state.histItem = state.hallItem; location.hash = 'market'; loadHistory(state.histItem); paint(); return; }
+  if (type === 'mk-all') { state.mkAll = !state.mkAll; paint(); return; }
+  if (type === 'hist') { state.histItem = data.item; loadHistory(data.item); paint(); return; }
+  if (type === 'hall-item') { state.hallItem = data.item; state.histItem = state.hallItem; loadHistory(state.hallItem); paint(); return; }
   if (type === 'sel') { state.sel = data.hero; paint(); return; }
   if (type === 'flip') { state.showBack = state.showBack === false; paint(); return; }
   if (type === 'rar') { state.rar = state.rar === data.rar ? 'all' : data.rar; paint(); return; }
@@ -224,6 +230,14 @@ function act(type, data, form) {
       const r = dispatch(state, {type:'crew-create', name: new FormData(form).get('name')});
       toast(r.toast); save(); paint(); return;
     }
+    if (name === 'hall-list') {
+      const fd = new FormData(form);
+      const gold = parseFloat(String(fd.get('price') || '0').replace(/,/g, '')) || 0;
+      const a = {type:'hall-list', item: String(fd.get('item') || ''), qty: parseInt(fd.get('qty'), 10) || 0, unit: Math.round(gold * 10000), hours: parseInt(fd.get('hours'), 10) || 8};
+      state.hallItem = a.item;
+      if (remote) { remoteAct(a); return; }
+      const r = dispatch(state, a); toast(r.toast); save(); paint(); return;
+    }
     if (name === 'crew-join') { toast('Ask them for the code in person. The banner opens when the books do.'); return; }
   }
   const action = map[type];
@@ -247,7 +261,11 @@ async function remoteAct(action) {
     claim: ['claim', {}],
     'hero-skill': ['skill', {op:'hero', skill: action.skill, hero: action.hero || ''}],
     sell: ['market', {op:'sell', item: action.item, qty: action.qty || 1}],
-    buy: ['market', {op:'buy', item: action.item, qty: action.qty || 1}],
+    buy: ['trader', {op:'buy', item: action.item, qty: action.qty || 1}],
+    'trader-sell': ['trader', {op:'sell', item: action.item, qty: action.qty || 1}],
+    'hall-list': ['hall', {op:'list', item: action.item, qty: action.qty, unit: action.unit, hours: action.hours}],
+    'hall-buy': ['hall', {op:'buy', id: action.id, qty: action.qty || undefined}],
+    'hall-cancel': ['hall', {op:'cancel', id: action.id}],
     summon: ['summon', {}],
     pack: ['pack', {}],
     collect: ['collect', {}],
@@ -285,6 +303,14 @@ async function remoteAct(action) {
     if (error) { toast(human(error)); return; }
     await pull(); const k = coins(data); toast('Sold for ' + (k.g ? k.g.toLocaleString() + ' gold ' : '') + (k.s ? k.s + ' silver ' : '') + (k.c || (!k.g && !k.s) ? k.c + ' copper' : '').trim() + '.'); return;
   }
+  if (op[0] === 'trader' || op[0] === 'hall') {
+    const { data, error } = await sb.rpc(op[0] === 'trader' ? 'os_trader_act' : 'os_hall_act', {op: op[1].op, payload: op[1]});
+    if (error) { toast(human(error)); return; }
+    if (data) applyServer(data);
+    toast(marketToast(action)); paint();
+    if (state.histItem) loadHistory(state.histItem);
+    return;
+  }
   const { data, error } = await sb.rpc('os_act', {op: op[0], payload: op[1]});
   if (error) {
     if (/PGRST202|does not exist|404/i.test(error.message || '')) { remote = false; toast('The gates are stuck. Your work is saved on this device until they open.'); const r = dispatch(state, action); if (r.hero) heroModal = r.hero; toast(r.toast); save(); paint(); return; }
@@ -292,6 +318,24 @@ async function remoteAct(action) {
   }
   if (data) applyServer(data);
   paint();
+}
+
+function marketToast(a) {
+  const name = ITEMS[a.item]?.name || 'it';
+  if (a.type === 'buy') return 'Bought from the traders.';
+  if (a.type === 'trader-sell') return 'The traders bought your ' + name.toLowerCase() + '.';
+  if (a.type === 'hall-list') return 'Listed in the Trading Hall.';
+  if (a.type === 'hall-buy') return 'Bought. It is in your Bank.';
+  if (a.type === 'hall-cancel') return 'Taken down. The goods are back in your Bank.';
+  return 'Done.';
+}
+
+async function loadHistory(item) {
+  if (!item || !remote || !sb) return;
+  const { data, error } = await sb.rpc('os_price_history', {i: item});
+  if (error || !data) return;
+  state.history = Object.assign({}, state.history, {[item]: data});
+  if (state.view === 'market') paint();
 }
 
 function human(error) {
@@ -352,9 +396,15 @@ function applyServer(data) {
   if (Array.isArray(data.crier)) state.crier = data.crier;
   if (data.welcome) state.welcome = data.welcome;
   if (data.market) {
-    state.listings = data.market.listings || state.listings;
-    state.cardListings = data.market.cards || [];
-    state.orders = data.market.orders || [];
+    const m = data.market;
+    state.listings = m.listings || [];
+    state.cardListings = m.cards || [];
+    state.orders = m.orders || [];
+    state.fair = m.fair || state.fair || {};
+    state.traders = m.traders || [];
+    state.hall = m.hall || [];
+    state.hallMine = m.mine || [];
+    state.trade = m.trade || {ok: false};
   }
   if (data.crew) state.crew = data.crew;
   if (data.config) state.config = Object.assign(state.config, data.config);
@@ -376,6 +426,7 @@ async function pull() {
   if (error) throw error;
   applyServer(data);
   if (!isOpen()) paint();
+  if (location.hash === '#market' && !(state.history || {})[state.histItem || 'moonsilver_bar']) loadHistory(state.histItem || 'moonsilver_bar');
 }
 
 async function loadCollection() {
@@ -469,6 +520,8 @@ root.addEventListener('click', (e) => {
   act(t.dataset.act, t.dataset, t.closest('form'));
 });
 root.addEventListener('change', (e) => {
+  const hf = e.target.closest && e.target.closest('form[data-act="hall-list"]');
+  if (hf && e.target.name === 'item') { act('hall-item', {item: e.target.value}, null); return; }
   if (e.target.matches && e.target.matches('input[data-act="setting"]')) { act('setting', e.target.dataset, e.target); return; }
   const sel = e.target.closest('select[data-act="hero-skill"]');
   if (!sel) return;
@@ -476,13 +529,19 @@ root.addEventListener('change', (e) => {
   const r = dispatch(state, {type:'hero-skill', skill: sel.dataset.skill, hero: sel.value});
   toast(r.toast); save(); paint();
 });
+root.addEventListener('input', (e) => {
+  const hf = e.target.closest && e.target.closest('form[data-act="hall-list"]');
+  if (!hf) return;
+  const fd = new FormData(hf), q = hf.querySelector('[data-quote]');
+  if (q) q.innerHTML = hallQuote(state, String(fd.get('item')), parseInt(fd.get('qty'), 10) || 1, Math.round((parseFloat(fd.get('price')) || 0) * 10000), parseInt(fd.get('hours'), 10) || 8);
+});
 root.addEventListener('submit', (e) => {
   const form = e.target.closest('form[data-act]');
   if (!form) return;
   e.preventDefault();
   act('submit', {}, form);
 });
-addEventListener('hashchange', () => { paint(); if (location.hash === '#collections') loadCollection(); });
+addEventListener('hashchange', () => { paint(); if (location.hash === '#collections') loadCollection(); if (location.hash === '#market') loadHistory(state.histItem || 'moonsilver_bar'); });
 addEventListener('resize', () => { if (!state) return; const p = matchMedia('(max-width: 860px)').matches; if (p !== state.phone) paint(); });
 
 let lastDelvePaint = 0;

@@ -86,7 +86,7 @@ test('luck lifts the rare drops most', () => {
 
 test('coins and speed bonuses', () => {
   assert.deepEqual(coins(184210), {g: 18, s: 42, c: 10});
-  assert.equal(fasterMult(20), 0.8); assert.equal(fasterMult(500), 0.4);
+  assert.equal(fasterMult(20), 0.8); assert.equal(fasterMult(500), 0.7);
   assert.equal(heroOutFx('engineer', 1, {head: 'brass_goggles'}).mining, 20);
 });
 
