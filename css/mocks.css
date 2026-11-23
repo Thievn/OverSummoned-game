@@ -170,7 +170,7 @@ html,body{background:var(--bg);color:var(--ink);font:500 14px/1.4 'Space Grotesk
 .card.r-absurd,.cardback.r-absurd{background:linear-gradient(135deg,#ff2e5a,#e5262e 40%,#ff2e8a)}
 .cb-in{border-radius:calc(11px*var(--z));background:linear-gradient(180deg,#160c2a,#0b0616);padding:calc(8px*var(--z));display:flex;flex-direction:column;gap:calc(5px*var(--z))}
 .cb-scene{position:relative;aspect-ratio:4/5;border-radius:calc(8px*var(--z));overflow:hidden;background-size:cover;background-position:center;image-rendering:pixelated;border:1px solid rgba(255,255,255,.1)}
-.cb-scene::before{content:'';position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45))}
+.cb-scene::before{content:'';position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.22))}
 .cb-scene .shadow{position:absolute;height:8px;border-radius:50%;background:rgba(0,0,0,.45);filter:blur(1px)}
 .cb-era{position:absolute;left:6px;top:6px;font:700 calc(9px*var(--z)) 'Space Grotesk';letter-spacing:.1em;text-transform:uppercase;background:rgba(7,4,13,.7);padding:2px 6px;border-radius:6px;color:var(--ink)}
 .cb-skill{font:700 calc(14px*var(--z)) 'Pixelify Sans';color:var(--rc);line-height:1.05}

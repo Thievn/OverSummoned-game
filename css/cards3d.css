@@ -15,6 +15,12 @@
 .f3>.face.back{transform:rotateY(180deg)}
 .face.card>.card-in,.face.cardback>.cb-in{flex:1}
 .face .card-art{flex:1}
+/* the front of a card is a still picture */
+.face.card,.face.card *{animation:none!important}
+/* only the face you can see takes clicks and taps, so gear on the back always opens its tooltip */
+.flip3d.flipped .f3>.face.front,.flip3d:not(.flipped) .f3>.face.back{pointer-events:none}
+/* no hover tilt on the back: a tilted 3D back face cannot be clicked in Chrome, and the gear there must always open its tooltip */
+.flip3d.flipped .tilt{transform:none!important}
 .glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.22),transparent 45%);opacity:0;transition:opacity .3s;mix-blend-mode:screen;z-index:5}
 .flip3d.hovering .glare{opacity:1}
 .flip-hint{position:absolute;right:calc(10px*var(--z));bottom:calc(10px*var(--z));font:700 calc(9px*var(--z)) 'Space Grotesk';letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:4px;pointer-events:none}
@@ -32,11 +38,13 @@
 .cardback:not([data-view=bio]) .layer.bio{opacity:0;transform:translateY(.8em);filter:blur(3px);pointer-events:none}
 .layer.gear,.layer.set{opacity:0;transform:translateY(-.6em);pointer-events:none;padding-top:1.7em}
 .cardback[data-view=gear] .layer.gear,.cardback[data-view=set] .layer.set{opacity:1;transform:none;pointer-events:auto;transition-delay:.12s}
-.cardback:not([data-view=bio]) .cb-scene img.gif{filter:brightness(.5) saturate(.75)}
+/* the back art stays bright in every view so the character and details read clearly */
+.cb-scene img{filter:contrast(1.12) saturate(1.12) brightness(1.06)}
+.cardback:not([data-view=bio]) .cb-scene img.gif{filter:contrast(1.1) saturate(1.08) brightness(.98)}
 .cardback:not([data-view=bio]) .cb-era{opacity:0}
-.cb-scene .vig{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,4,13,.8),transparent 30%,transparent 70%,rgba(7,4,13,.8));opacity:0;transition:opacity .4s;pointer-events:none}
+.cb-scene .vig{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,4,13,.42),transparent 22%,transparent 78%,rgba(7,4,13,.42));opacity:0;transition:opacity .4s;pointer-events:none}
 .cardback[data-view=gear] .vig{opacity:1}
-.cardback[data-view=set] .vig{opacity:.6;background:rgba(7,4,13,.55)}
+.cardback[data-view=set] .vig{opacity:1;background:rgba(7,4,13,.18)}
 
 /* tabs pill straddling the scene edge */
 .cbtabs{position:absolute;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:.2em;padding:.22em;border-radius:999px;background:linear-gradient(180deg,#2a1a08,#120a04);border:1px solid #c99a3a;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 .3em 1em rgba(0,0,0,.6),inset 0 1px 0 rgba(255,220,140,.25)}
@@ -57,20 +65,14 @@
 .gs .q{position:absolute;right:.25em;bottom:.05em;font:700 .95em 'Space Grotesk';text-shadow:0 1px 0 #000,0 0 4px #000;z-index:2}
 .gs .pip{position:absolute;left:.3em;top:.3em;width:.5em;height:.5em;transform:rotate(45deg);background:var(--rc);box-shadow:0 0 .4em var(--rc);z-index:2}
 .gs.filled{border-color:var(--rc);box-shadow:inset 0 0 1.1em color-mix(in srgb,var(--rc) 35%,transparent),0 0 .5em -0.1em var(--rc)}
-.gs.filled::after{content:'';position:absolute;inset:-40%;z-index:3;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.38) 50%,transparent 60%);transform:translateX(-120%);animation:shine 4.2s ease-in-out infinite;animation-delay:var(--sd,0s)}
-@keyframes shine{0%,62%{transform:translateX(-120%)}86%,100%{transform:translateX(120%)}}
-.gs.filled.r-legendary,.gs.filled.r-absurd{animation:pulse 2.4s ease-in-out infinite}
-.gs.filled.r-unhinged{animation:pulse 2s ease-in-out infinite,hue 5s linear infinite}
-@keyframes pulse{50%{box-shadow:inset 0 0 1.4em color-mix(in srgb,var(--rc) 55%,transparent),0 0 1.1em .05em var(--rc)}}
-@keyframes hue{to{filter:hue-rotate(360deg)}}
+.gs.filled.r-legendary,.gs.filled.r-absurd,.gs.filled.r-unhinged{box-shadow:inset 0 0 1.3em color-mix(in srgb,var(--rc) 50%,transparent),0 0 .8em 0 var(--rc)}
 .gs:focus-visible,.gs.sel{outline:2px solid #ffe08a;outline-offset:1px}
 .gs.set-piece::before{content:'';position:absolute;right:.22em;top:.22em;width:.62em;height:.62em;border-radius:50%;background:radial-gradient(circle,#ffe7a0,#c58b22);box-shadow:0 0 .35em #ffcf5a;z-index:4}
-/* stagger in */
-.cardback .gcol .gs,.cardback .grow .gs,.cardback .belt .gs{opacity:0;transform:scale(.6);transition:opacity .28s ease,transform .42s cubic-bezier(.3,1.6,.5,1)}
-.cardback[data-view=gear] .gcol .gs,.cardback[data-view=gear] .grow .gs,.cardback[data-view=gear] .belt .gs{opacity:1;transform:none;transition-delay:calc(.1s + var(--i)*38ms)}
+/* gear icons are static: they only fade in with the gear view, no bounce, float or idle motion */
+.cardback .gcol .gs,.cardback .grow .gs,.cardback .belt .gs{opacity:0;transition:opacity .2s ease}
+.cardback[data-view=gear] .gcol .gs,.cardback[data-view=gear] .grow .gs,.cardback[data-view=gear] .belt .gs{opacity:1}
 .cardback:not([data-view=gear]) .gcol{pointer-events:none}
-.cardback[data-view=gear] .gs.filled img{animation:drop .55s cubic-bezier(.3,1.5,.5,1) backwards;animation-delay:calc(.18s + var(--i)*38ms)}
-@keyframes drop{0%{transform:translateY(-.9em) scale(1.3);filter:brightness(2.4) drop-shadow(0 0 .6em var(--rc))}60%{filter:brightness(1.4)}}
+.gs,.gs img,.gs::before,.gs::after,.ls,.ls .sock,.ls img{animation:none!important}
 
 .gsum{display:flex;justify-content:center;gap:.9em;font:700 .98em 'Space Grotesk';color:var(--mut);margin-bottom:.45em}
 .gsum b{color:var(--ink)}.gsum .m b{color:#ff7a8a}.gsum .g b{color:#6fb5ff}.gsum .k b{color:var(--lime)}
@@ -101,8 +103,7 @@
   background:radial-gradient(circle at 50% 40%,#5a3a1a,#2a1708 75%);box-shadow:inset 0 .25em .5em rgba(0,0,0,.8),0 1px 0 rgba(255,240,200,.6),0 0 0 .18em #b98a45}
 .ls img{width:72%;height:72%;image-rendering:pixelated;object-fit:contain}
 .ls.missing img{filter:brightness(0) drop-shadow(0 1px 0 rgba(255,230,180,.35));opacity:.55}
-.ls.found .sock{background:radial-gradient(circle at 50% 40%,#fff3c8,#e0a93a 60%,#7a4a12);box-shadow:inset 0 .1em .3em rgba(255,255,255,.6),0 0 0 .18em #ffd36b,0 0 1em .1em rgba(255,190,70,.85);animation:found 2.6s ease-in-out infinite}
-@keyframes found{50%{box-shadow:inset 0 .1em .3em rgba(255,255,255,.6),0 0 0 .18em #ffe39b,0 0 1.6em .3em rgba(255,200,90,.95)}}
+.ls.found .sock{background:radial-gradient(circle at 50% 40%,#fff3c8,#e0a93a 60%,#7a4a12);box-shadow:inset 0 .1em .3em rgba(255,255,255,.6),0 0 0 .18em #ffd36b,0 0 1em .1em rgba(255,190,70,.85)}
 .ls .nm{font:700 .8em/1.12 'Space Grotesk';color:#3b2410;min-height:2.24em}
 .ls.missing .nm{color:rgba(59,36,16,.55)}
 .ls .st{font:700 .66em 'Space Grotesk';letter-spacing:.12em;text-transform:uppercase;color:#8a5a22}
@@ -117,7 +118,6 @@
 .bonus .bt{font:500 1.02em/1.35 'Space Grotesk';color:var(--dim);margin-top:.2em}
 .bonus.on{border-color:#ffcf5a;background:linear-gradient(180deg,rgba(255,190,70,.16),rgba(255,120,40,.06));box-shadow:0 0 1.1em -0.2em rgba(255,190,70,.8),inset 0 0 1.2em rgba(255,190,70,.12)}
 .bonus.on .bh{color:#ffcf5a}.bonus.on .bn{color:#ffe3a1;text-shadow:0 0 .6em rgba(255,190,70,.6)}.bonus.on .bt{color:var(--ink)}
-.bonus.on::after{content:'';position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 42%,rgba(255,230,160,.25) 50%,transparent 58%);animation:shine 3.4s ease-in-out infinite;pointer-events:none}
 .bonus .wear{font:600 .9em 'Space Grotesk';color:var(--mut);margin-top:.35em}
 
 /* ---------- tooltip ---------- */
