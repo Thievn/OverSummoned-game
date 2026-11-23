@@ -220,8 +220,7 @@ async function boot() {
   try { sb = window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, detectSessionInUrl:true}}); } catch (e) { sb = null; }
   const session = sb && (await sb.auth.getSession()).data.session;
   if (!session) {
-    root.innerHTML = `<div class="land"><header class="land-top"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div><a class="btn gold sm" href="/story">The Story</a><a class="btn g sm" href="/">Log in</a></header><main class="land-main"><div class="panel" style="max-width:460px"><h2 class="h" style="font-size:28px">Sign in to open the books.</h2><p class="mut">Use the same sign-in as the city.</p><a class="btn" href="/?login=1">Log in</a></div></main></div>`;
-    document.getElementById('g').onclick = () => sb.auth.signInWithOAuth({provider:'google', options:{redirectTo: location.origin + '/ledger'}});
+    root.innerHTML = `<div class="land"><header class="land-top"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div><a class="btn gold sm" href="/story">The Story</a><a class="btn g sm" href="/?login=1">Log in</a></header><main class="land-main"><div class="panel" style="max-width:460px"><h2 class="h" style="font-size:28px">Sign in to open the books.</h2><p class="mut">Use the same sign-in as the city.</p><a class="btn" id="ledger-login" href="/?login=1">Log in</a></div></main></div>`;
     return;
   }
   await load();
