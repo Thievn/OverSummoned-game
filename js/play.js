@@ -65,13 +65,19 @@ function applySettings() {
     if (set.install === false) localStorage.setItem('os_install_off', '1'); else localStorage.removeItem('os_install_off');
   } catch (e) {}
   document.documentElement.classList.toggle('no-install', set.install === false);
+  // the dot on the profile picture goes away once the Get the app card has been seen
+  let seen = false;
+  try { if (state && state.view === 'account') localStorage.setItem('os_app_seen', '1'); seen = localStorage.getItem('os_app_seen') === '1'; } catch (e) {}
+  document.documentElement.classList.toggle('app-seen', seen);
 }
+// Phone keyboards type a curly apostrophe; the name keeps a straight one.
+const normName = (n) => String(n || '').replace(/[\u2018\u2019]/g, "'").trim();
 function localNameCheck(n) {
-  n = (n || '').trim();
+  n = normName(n);
   if (!n) return {ok: false, why: 'empty'};
   if (n.length < 3) return {ok: false, why: 'short'};
   if (n.length > 16) return {ok: false, why: 'long'};
-  if (!/^[A-Za-z0-9][A-Za-z0-9_ .-]*[A-Za-z0-9]$/.test(n) || /[ _.-]{2,}/.test(n)) return {ok: false, why: 'chars'};
+  if (!/^[A-Za-z0-9][A-Za-z0-9_ .'-]*[A-Za-z0-9]$/.test(n) || /[ _.'-]{2,}/.test(n) || (n.match(/'/g) || []).length > 2) return {ok: false, why: 'chars'};
   if (n.toLowerCase() === String(state.name || '').toLowerCase()) return {ok: false, why: 'same'};
   return null;
 }
@@ -80,13 +86,13 @@ function nameStatus(r, n) {
   const st = document.getElementById('acct-name-st'), go = document.getElementById('acct-name-go');
   if (!st || !go) return;
   const i = document.getElementById('acct-name');
-  if (!i || i.value.trim() !== n) return;
+  if (!i || normName(i.value) !== n) return;
   st.className = 'acct-st ' + (r === 'wait' ? 'wait' : r.ok ? 'ok' : 'no');
   st.innerHTML = r === 'wait' ? '<i></i>Checking…' : r.ok ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Available' : (NAME_WHY[r.why] || 'Pick a different name.');
   go.disabled = !(r !== 'wait' && r.ok);
 }
 function nameInput(i, now) {
-  const n = i.value.trim(), seq = ++nameSeq;
+  const n = normName(i.value), seq = ++nameSeq;
   clearTimeout(nameTimer);
   const st = document.getElementById('acct-name-st'), go = document.getElementById('acct-name-go');
   if (!n) { if (st) { st.className = 'acct-st'; st.textContent = ''; } if (go) go.disabled = true; return; }
@@ -103,7 +109,7 @@ function nameInput(i, now) {
 document.addEventListener('input', (e) => { if (e.target && e.target.id === 'acct-name') nameInput(e.target); });
 async function accountAct(type, data, form) {
   if (type === 'acct-name') {
-    const n = new FormData(form).get('name').trim();
+    const n = normName(new FormData(form).get('name'));
     if (remote) { const {data: d, error} = await sb.rpc('os_set_name', {p_name: n}); if (error) { toast(human(error)); return true; } applyServer(d); }
     else { state.name = n; state.nameChangedAt = new Date().toISOString(); }
     toast('You are ' + n + ' now.'); paint(); return true;

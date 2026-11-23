@@ -25,7 +25,7 @@ export function registerArt(id, a) {
 export const hasArt = (id) => !!OWN[id];
 export const portraitSrc = (id) => (OWN[id] && OWN[id].portrait) || `/assets/portrait/${id}.png`;
 // Profile pictures: pixel head shots made from each card's art.
-export const avatarSrc = (id) => (OWN[id] && (OWN[id].avatar || OWN[id].portrait)) || `/assets/avatar/${id}.png`;
+export const avatarSrc = (id) => (OWN[id] && (OWN[id].avatar || OWN[id].portrait)) || `/assets/avatar/${id}.png?v=2`;
 export const backSrc = (id, gif) => (OWN[id] && OWN[id].back) || `/card_backs/${gif || id}.gif`;
 export const sideSrc = (id) => (OWN[id] && OWN[id].side) || `/assets/sprites/${id}.png`;
 export const sideMeta = (id) => (OWN[id] && OWN[id].sideMeta) || null;

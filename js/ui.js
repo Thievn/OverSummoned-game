@@ -4,11 +4,11 @@ import {
 } from './catalog.js';
 import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.js';
 import { heroTotals, coins } from './fight.js';
-import { GEAR, STAT_NAMES, ERA_SETS } from './gear.js';
+import { GEAR, STAT_NAMES, ERA_SETS, HERO_BASE } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
 import { portraitSrc, backSrc, sideSrc, sideMeta, frontSrc, frontMeta, avatarSrc } from './art.js';
 
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ico = (n, cls='') => `<img class="px ${cls}" src="/assets/gen/${n}.png" alt="">`;
 const btn = (label, act, extra='') => `<button class="btn ${extra}" type="button" data-act="${act}">${label}</button>`;
 const bar = (pct, cls='') => `<div class="bar ${cls}"><i style="width:${Math.max(0, Math.min(100, pct))}%"></i></div>`;
@@ -28,7 +28,7 @@ function avatar(s, cls = '') {
   return `<span class="av av-letter ${cls}" aria-hidden="true">${esc((s.name || '?').trim().charAt(0).toUpperCase() || '?')}</span>`;
 }
 function meBtn(s) {
-  return `<a class="me-btn${s.view === 'account' ? ' on' : ''}" href="#account" data-go="account" aria-label="Your account" title="Your account">${avatar(s)}</a>`;
+  return `<a class="me-btn${s.view === 'account' ? ' on' : ''}" href="#account" data-go="account" aria-label="Your account" title="Your account">${avatar(s)}${APP_DOT}</a>`;
 }
 function cardFront(id, level, z) {
   const h = HEROES[id];
@@ -53,9 +53,10 @@ function cardBack(id, z) {
 </div></div>`;
 }
 
+const LOCK_MINI = `<div class="mini-card lock"><div class="in"><b>?</b></div><div class="nm" aria-hidden="true">&nbsp;<small>&nbsp;</small></div></div>`;
 function mini(id) {
   const h = HEROES[id];
-  return `<button type="button" class="mini-card r-${h.rarity}" data-act="sel" data-hero="${id}"><div class="in"><img class="px" src="${portraitSrc(id)}" alt=""></div><div class="nm">${esc(h.name.split(' ')[0] === h.name ? h.name : h.name)}<small>${RARITY_NAME[h.rarity]}</small></div></button>`;
+  return `<button type="button" class="mini-card r-${h.rarity}" data-act="sel" data-hero="${id}"><div class="in"><img class="px" src="${portraitSrc(id)}" alt=""></div><div class="nm" title="${esc(h.name)}">${esc((HERO_BASE[id] && HERO_BASE[id].short) || h.name.split(' ')[0])}<small>${RARITY_NAME[h.rarity]}</small></div></button>`;
 }
 
 function clock(ms) {
@@ -103,16 +104,18 @@ function rail(s) {
   const adv = NAV_ADV.map(n => link(n.id, n.name, n.icon, '<span></span>')).join('');
   const crew = s.crew ? s.crew.name : 'No crew yet';
   return `<aside class="rail"><img class="logo" src="/assets/logo.svg" alt="OverSummoned">${s.isAdmin ? sigilBtn() : ''}
-<a class="me" href="#account" data-go="account">${avatar(s)}<div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></a>
-<div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>${installBtn()}
+<a class="me" href="#account" data-go="account"><span class="me-av">${avatar(s)}${APP_DOT}</span><div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></a>
+<div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>
 <h6>The City</h6><nav class="nav">${city}</nav>
 <h6>Skills</h6><nav class="nav">${skills}</nav>
 <h6>Adventure</h6><nav class="nav">${adv}</nav></aside>`;
 }
 
 const DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>';
-function installBtn() {
-  return `<button class="install-btn" type="button" data-install aria-label="Install the app">${DL}<span>Install the app</span></button>`;
+// The app lives in the account page now. A small dot on the profile picture points there until it is seen.
+const APP_DOT = '<i class="app-dot" aria-hidden="true"></i>';
+function appCard() {
+  return `<div class="panel acct-app"><div class="acct-app-ic" aria-hidden="true">${DL}</div><div class="acct-app-t"><h3>Get the app</h3><small>Put OverSummoned on your home screen. It opens full screen, one tap away.</small></div><button class="btn c sm install-btn" type="button" data-install>${DL}<span>Install</span></button></div>`;
 }
 
 function sigilBtn(small) {
@@ -191,7 +194,11 @@ function featCard(s, z) {
     flipped: !!s.featBack, view: s.featView || 'bio', id: 'card-feat', mine: false});
 }
 
-function heroIds(s) { return HERO_ORDER.concat(Object.keys(HEROES).filter(id => !HERO_ORDER.includes(id) && s.heroes[id])); }
+// Every hero list starts with the ones you own, then the ones still out there, each in the usual order.
+function heroIds(s) {
+  const all = HERO_ORDER.concat(Object.keys(HEROES).filter(id => !HERO_ORDER.includes(id) && s.heroes[id]));
+  return all.filter(id => s.heroes[id]).concat(all.filter(id => !s.heroes[id]));
+}
 function foundSet(s) {
   const f = new Set(s.found || []);
   Object.keys(s.bag || {}).forEach(id => f.add(id));
@@ -317,8 +324,8 @@ function heroOptions(s, cur) {
 function cardsView(s) {
   const owned = Object.keys(s.heroes);
   const show = heroIds(s).filter(id => !s.rar || s.rar === 'all' || HEROES[id].rarity === s.rar);
-  const grid = show.map(id => s.heroes[id] ? mini(id) : `<div class="mini-card lock"><div class="in"><b>?</b></div></div>`).join('');
-  const locks = Array.from({length: Math.max(0, 16 - show.length)}).map(() => `<div class="mini-card lock"><div class="in"><b>?</b></div></div>`).join('');
+  const grid = show.map(id => s.heroes[id] ? mini(id) : LOCK_MINI).join('');
+  const locks = Array.from({length: Math.max(0, 16 - show.length)}).map(() => LOCK_MINI).join('');
   const sel = s.sel && HEROES[s.sel] ? s.sel : (owned[0] || 'will_slapton');
   const h = HEROES[sel];
   const ownedH = s.heroes[sel];
@@ -616,7 +623,7 @@ function tabs(s) {
   return `<nav class="tabs">${items.map(([id, icon, name]) => `<a class="${cur === id ? 'on' : ''}" href="#${id === 'skills' ? (s.active || 'mining') : id}" data-go="${id === 'skills' ? (s.active || 'mining') : id}">${ico(icon)}${name}${id === 'crew' && s.unread ? '<span class="dot"></span>' : ''}</a>`).join('')}</nav>`;
 }
 
-const NAME_WHY = {empty: 'Pick a name.', short: 'At least 3 characters.', long: 'Up to 16 characters.', chars: 'Letters, numbers, spaces, dots, dashes and underscores.', same: 'That is your name right now.', blocked: 'Pick a different name.', taken: 'Someone already has that one.'};
+const NAME_WHY = {empty: 'Pick a name.', short: 'At least 3 characters.', long: 'Up to 16 characters.', chars: 'Letters, numbers, spaces, dots, dashes, apostrophes and underscores.', same: 'That is your name right now.', blocked: 'Pick a different name.', taken: 'Someone already has that one.'};
 export { NAME_WHY };
 function accountView(s) {
   const ids = heroIds(s);
@@ -645,6 +652,7 @@ function accountView(s) {
   }).join('');
   return `<div class="acct">
 <div class="panel glow acct-head">${avatar(s, 'big')}<div class="acct-id"><div class="eb cy">Your account</div><div class="h acct-nm">${esc(s.name)}</div><div class="mut">${s.email ? esc(s.email) : 'Signed in'}${s.crew ? ' · Crew: ' + esc(s.crew.name) : ''}</div></div></div>
+${appCard()}
 <div class="panel"><div class="ph"><h3>Your name</h3><small>${wait ? 'You can pick a new name again on ' + esc(wait) + '.' : 'Other players see this name. You can change it once a week.'}</small></div>
  <form class="acct-name" data-act="acct-name" autocomplete="off"><label class="sr" for="acct-name">New name</label>
   <div class="acct-field"><input id="acct-name" name="name" maxlength="16" placeholder="${esc(s.name)}" ${wait ? 'disabled' : ''} spellcheck="false"><span id="acct-name-st" class="acct-st" role="status" aria-live="polite"></span></div>
@@ -668,7 +676,7 @@ function accountView(s) {
 <div class="panel"><div class="ph"><h3>Settings</h3><small>Saved to your account.</small></div>
  ${tog('motion', set.motion === 'reduced', 'Calmer screens', 'Stops the heroes and scenes from moving.')}
  ${tog('updates', set.updates !== false, 'Update notices', 'Shows the bar when something new lands.')}
- ${tog('install', set.install !== false, 'Install button', 'Shows the button that puts OverSummoned on your device.')}
+ ${tog('install', set.install !== false, 'Get the app card', 'Shows the card above that puts OverSummoned on your device.')}
  <div class="row acct-out">${btn('Sign out', 'signout', 'g')}<a class="mut" href="/updates" style="font-size:12px;margin-left:auto">Update log</a><a class="mut" href="/privacy" style="font-size:12px">Privacy</a><a class="mut" href="/terms" style="font-size:12px">Terms</a></div></div>
 </div>`;
 }
@@ -703,7 +711,7 @@ export function render(s) {
     else if (s.view === 'cards') body = phoneCard(s);
     else if (s.view === 'city') body = phoneHome(s);
     else body = `<div class="pdesk">${desktopBody(s)}</div>`;
-    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${installBtn()}${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span>${meBtn(s)}</header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
+    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span>${meBtn(s)}</header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
   }
   const crumb = CRUMB[s.view] || CRUMB.city;
   return `<div class="app">${rail(s)}<div class="main">${top(s, crumb[0], crumb[1])}<div class="content">${desktopBody(s)}</div></div></div>`;

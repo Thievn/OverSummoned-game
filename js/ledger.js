@@ -15,7 +15,7 @@ function toast(t) {
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(() => { toastEl.className = 'toast'; }, 2400);
 }
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function spark(points, color) {
   const vals = (points || []).map(p => +p.n || 0);

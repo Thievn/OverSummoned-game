@@ -1,5 +1,7 @@
 // The living city banner: hero-themed streets that drift and change, the player's own heroes
 // strolling on one shared ground line, and now and then two of them stopping for a quick chat.
+// Now and then a hero wanders off one side and someone (maybe a hero who was waiting) walks back in,
+// so the crowd keeps mixing. Chats come from the saved set the server hands over; nothing is written here.
 // Everything moves from one requestAnimationFrame loop, so a repaint of the page never restarts it.
 const WALKERS = ['office_worker', 'delivery_rider', 'paramedic', 'hunter', 'legionary', 'engineer', 'plague_doctor', 'gangster', 'will_slapton'];
 export const PLACES = [
@@ -20,7 +22,7 @@ const FR = 64, FRAMES = 4;
 let node = null, layers = [], placeEl = null, walkLayer = null;
 let raf = 0, last = 0, t0 = 0;
 let W = 0, H = 0, k = 1.5, ground = 0;
-let walkers = [], ids = '', chats = [], recent = [], talk = null, chatAt = 0;
+let walkers = [], bench = [], ids = '', chats = [], recent = [], talk = null, chatAt = 0;
 let place = 0, swapAt = 0, still = false, chatFrom = 0;
 
 const rnd = (a, b) => a + Math.random() * (b - a);
@@ -80,14 +82,17 @@ function setHeroes(list) {
   walkers = [];
   talk = null;
   const room = Math.max(1, Math.floor(((W || 600) * (1 - chatFrom * 0.5) - gap()) / (gap() * 1.2)));
-  const pick = want.slice().sort(() => Math.random() - 0.5).slice(0, Math.min(8, room));
+  const mixed = want.slice().sort(() => Math.random() - 0.5);
+  const pick = mixed.slice(0, Math.min(8, room));
+  bench = mixed.slice(pick.length);
   pick.forEach((id, i) => {
     const el = document.createElement('div');
     el.className = 'lc-w';
     el.innerHTML = `<div class="lc-s" style="background-image:url(/assets/walk/${id}.png)"></div><div class="lc-b"></div>`;
     walkLayer.appendChild(el);
     const span = (W || 600) / (pick.length + 1);
-    const w = {id, el, x: span * (i + 1) + rnd(-span * 0.2, span * 0.2), dir: Math.random() < 0.5 ? -1 : 1, v: rnd(26, 38), f: 0, ft: 0, stop: 0, say: null};
+    const w = {id, el, x: span * (i + 1) + rnd(-span * 0.2, span * 0.2), dir: Math.random() < 0.5 ? -1 : 1, v: rnd(26, 38), f: 0, ft: 0, stop: 0, say: null,
+      st: 'on', leaveAt: performance.now() + rnd(18000, 70000), backAt: 0};
     walkers.push(w);
     sizeWalker(w);
   });
@@ -129,7 +134,7 @@ function stepChat(now) {
 
 // Keep everyone at least one step apart, inside the banner. Anyone pushed from the front turns around.
 function separate(g, edge) {
-  const o = walkers.slice().sort((p, q) => p.x - q.x);
+  const o = onStage().sort((p, q) => p.x - q.x);
   for (let pass = 0; pass < 3; pass++) {
     for (let i = 0; i < o.length - 1; i++) {
       const a = o[i], b = o[i + 1], d = b.x - a.x;
@@ -143,6 +148,33 @@ function separate(g, edge) {
     if (o.length) { const lb = Math.max(edge, W * chatFrom * 0.5); if (o[0].x < lb) o[0].x = lb; if (o[o.length - 1].x > W - edge) o[o.length - 1].x = W - edge; }
     for (let i = 1; i < o.length; i++) if (o[i].x - o[i - 1].x < g) o[i].x = Math.min(W - edge, o[i - 1].x + g);
     for (let i = o.length - 2; i >= 0; i--) if (o[i + 1].x - o[i].x < g) o[i].x = Math.max(Math.max(edge, W * chatFrom * 0.5), o[i + 1].x - g);
+  }
+}
+
+const onStage = () => walkers.filter(w => w.st === 'on');
+
+// Comings and goings: one hero at a time (a few in a big crowd) heads off the nearest side,
+// waits a moment off screen, then a hero walks in from either side. If some of your heroes
+// were waiting for room, one of them may take the turn.
+function comings(now) {
+  const away = walkers.filter(w => w.st !== 'on').length;
+  const room = Math.max(1, Math.floor(walkers.length / 3));
+  for (const w of walkers) {
+    const busy = talk && (w === talk.a || w === talk.b);
+    if (w.st === 'on' && !busy && now > w.leaveAt && away < room && walkers.length > 1) {
+      w.st = 'out'; w.dir = w.x < W / 2 ? -1 : 1; w.v = rnd(30, 40);
+      return;
+    }
+    if (w.st === 'off' && now > w.backAt) {
+      if (bench.length && Math.random() < 0.7) {
+        const j = Math.floor(Math.random() * bench.length);
+        const next = bench[j]; bench[j] = w.id; w.id = next;
+        w.el.firstChild.style.backgroundImage = `url(/assets/walk/${next}.png)`;
+      }
+      const fromLeft = Math.random() < 0.5, half = FR * k / 2;
+      w.x = fromLeft ? -half : W + half; w.dir = fromLeft ? 1 : -1; w.v = rnd(26, 38);
+      w.st = 'in'; w.el.style.visibility = '';
+    }
   }
 }
 
@@ -162,14 +194,28 @@ function frame(now) {
   if (!still) {
     stepChat(now);
     // a quiet street for a while: the two nearest heroes on the right side turn to face each other
-    if (!talk && chats.length && walkers.length > 1 && now > chatAt + 9000) {
-      const o = walkers.slice().sort((p, q) => p.x - q.x);
+    comings(now);
+    if (!talk && chats.length && onStage().length > 1 && now > chatAt + 9000) {
+      const o = onStage().sort((p, q) => p.x - q.x);
       for (let i = o.length - 2; i >= 0; i--) if (chatFor(o[i], o[i + 1])) { o[i].dir = 1; o[i + 1].dir = -1; break; }
       chatAt = now;
     }
-    const order = walkers.slice().sort((p, q) => p.x - q.x);
+    const order = onStage().sort((p, q) => p.x - q.x);
     for (const w of walkers) {
       if (talk && (w === talk.a || w === talk.b)) { w.moving = false; continue; }
+      if (w.st === 'off') { w.moving = false; continue; }
+      if (w.st !== 'on') {
+        // on the way out or in: just keep walking, past the crowd
+        w.x += w.dir * w.v * dt * (k / 1.5); w.moving = true;
+        const half = FR * k / 2;
+        if (w.st === 'out' && (w.x < -half * 1.2 || w.x > W + half * 1.2)) {
+          w.st = 'off'; w.el.style.visibility = 'hidden'; w.backAt = now + rnd(2500, 9000);
+          w.el.querySelector('.lc-b').classList.remove('on');
+        } else if (w.st === 'in' && w.x > left + g * 0.2 && w.x < W - edge - g * 0.2) {
+          w.st = 'on'; w.leaveAt = now + rnd(25000, 80000);
+        }
+        continue;
+      }
       let v = w.v;
       for (const o of order) {
         if (o === w) continue;
@@ -194,7 +240,7 @@ function frame(now) {
     separate(g, edge);
   } else {
     const span = W / (walkers.length + 1);
-    walkers.forEach((w, i) => { w.x = span * (i + 1); w.moving = false; w.dir = i % 2 ? -1 : 1; });
+    walkers.forEach((w, i) => { w.x = span * (i + 1); w.moving = false; w.dir = i % 2 ? -1 : 1; w.st = 'on'; w.el.style.visibility = ''; });
   }
   node.classList.toggle('talking', !!talk);
   for (const w of walkers) {

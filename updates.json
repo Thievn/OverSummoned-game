@@ -2,6 +2,18 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.7",
+      "date": "2026-11-23",
+      "title": "Faces front and center",
+      "items": [
+        "Profile pictures are framed so every face sits right in the middle.",
+        "Your collection now shows the heroes you own first, with their names tucked under the picture.",
+        "Names can include an apostrophe now, like O'Brien.",
+        "Want OverSummoned on your home screen? Look for the Get the app card on your Account page.",
+        "Heroes in the city banner wander off and stroll back in, so your crowd keeps mixing."
+      ]
+    },
+    {
       "v": "2026.11.23.6",
       "date": "2026-11-23",
       "title": "The city comes alive",

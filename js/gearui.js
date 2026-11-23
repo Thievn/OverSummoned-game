@@ -6,7 +6,7 @@ import { portraitSrc, backSrc, iconFor } from './art.js';
 
 const RN = {common:'Common', uncommon:'Uncommon', rare:'Rare', epic:'Epic', legendary:'Legendary', absurd:'Absurd', unhinged:'Unhinged'};
 const SLOT_LABEL = {head:'Head', chest:'Chest', legs:'Legs', feet:'Boots', hands:'Gloves', neck:'Amulet', ring:'Ring', main:'Main hand', off:'Off hand', trinket:'Trinket', belt:'Belt'};
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n) => Number(n || 0).toLocaleString('en-US');
 export const itemIcon = (id) => { const it = GEAR[id]; if (!it) return iconFor(id, null); return iconFor(id, it.icon); };
 

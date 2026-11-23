@@ -163,3 +163,24 @@ html.no-install .install-btn{display:none!important}
 .phone .lc-b{max-width:150px;font-size:10px;padding:4px 7px}
 .phone .lc::after{background:linear-gradient(180deg,rgba(7,4,13,.6),rgba(7,4,13,0) 45%)}
 .phone .lc-scene>div:not(.lc-slot){transition:opacity .3s}.phone .lc-scene:has(.lc.talking)>div:not(.lc-slot){opacity:0}
+/* Small collection cards: the name sits under the picture on one line, so it never covers a face. */
+.mini-card{display:flex;flex-direction:column}
+.mini-card .nm{position:static;padding:4px 4px 3px;border-radius:0 0 8px 8px;background:#0b0614;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15}
+.mini-card .nm small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-card .in{border-radius:8px 8px 0 0}
+.mini-card.lock .nm{background:transparent}
+/* Get the app: a card in the account page, and a small dot on the profile picture until the page is seen. */
+.acct-app{display:none;align-items:center;gap:12px;padding:12px 14px;border-color:rgba(54,214,255,.35);background:linear-gradient(135deg,rgba(54,214,255,.08),rgba(155,92,255,.10))}
+html.can-install .acct-app{display:flex}
+.acct > .acct-app{grid-column:1/-1}
+html.no-install .acct-app{display:none}
+.acct-app-ic{width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;background:rgba(54,214,255,.14);color:#bff1ff}
+.acct-app-ic svg{width:20px;height:20px}
+.acct-app-t{flex:1;min-width:0}
+.acct-app-t h3{margin:0;font-size:15px}
+.acct-app-t small{display:block;color:var(--mut,#a99cc6);font-size:12px;margin-top:2px}
+.acct-app .install-btn{flex:none}
+.me-btn,.me-av{position:relative}
+.me-av{display:inline-grid;flex:none}
+.app-dot{display:none;position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#36d6ff;box-shadow:0 0 0 2px #0b0614,0 0 8px rgba(54,214,255,.8);pointer-events:none}
+html.can-install:not(.app-seen):not(.no-install) .app-dot{display:block}
