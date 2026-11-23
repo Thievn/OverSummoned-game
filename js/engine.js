@@ -158,6 +158,7 @@ export function bibleState() {
   };
   s.unread = 3;
   s.delve = makeDelve(s, 7, 60, s.now - 22 * 60e3, 924731);
+  s.found = ['copper_ore','iron_ore','moonsilver_ore','ash_log','raw_eel','eel_stew','iron_bar','potion_pink','potion_cyan','card_shard','gem_violet','stained_mug','delivery_bag','trench_lantern','group_chat'];
   s.delve.loot = {ash_log:18, iron_bar:6, gem_violet:1, card_shard:2};
   s.infirmary = [{id:'delivery_rider', name:'Marco', reason:'Healing after Floor 6', until: Date.now()+4*60e3+15e3}];
   s.stocksUntil = 0;
@@ -221,9 +222,9 @@ export function intervalMs(state, skill, node) {
   const h = hero && HEROES[hero];
   const lv = h ? (state.heroes[hero]?.level || 1) : 1;
   if (h) sec *= fasterMult(heroOutFx(hero, lv, state.gear && state.gear[hero])[skill] || 0);
+  if (state.serverAuth) return Math.max(400, Math.round(sec * 1000)); // the server's timer: hero and gear only
   const pool = poolPct(state, skill);
   if (pool >= 50) sec *= 0.95;
-  sec /= state.config.xpRate > 0 ? 1 : 1;
   if (state.burstUntil && state.burstUntil > state.now && state.burstSkill === skill) sec *= 0.5;
   return Math.max(400, Math.round(sec * 1000));
 }
@@ -240,6 +241,8 @@ export function poolPct(state, skill) {
 function grantItem(state, id, qty, hold) {
   if (!id || qty <= 0) return;
   if (id === 'summon_sigil') { state.sigils += qty; return; }
+  state.found = state.found || [];
+  if (!state.found.includes(id)) state.found.push(id);
   if (hold) {
     state.pending = state.pending || {items:{}, xp:{}, lines:[]};
     state.pending.items[id] = (state.pending.items[id] || 0) + qty;
@@ -404,6 +407,7 @@ export function dispatch(state, action) {
   }
   if (a.type === 'travel') {
     if (state.travel) { out.toast = 'You are already on the road.'; return out; }
+    if (a.dest === state.city) { out.toast = 'You are already there.'; return out; }
     state.travel = {to: a.dest, until: now + 25 * 60e3, from: state.city};
     out.toast = 'The waystone opens. Twenty-five minutes on the road.';
     if (a.dest === 'emberfall' && rng(state) < 0.25) {

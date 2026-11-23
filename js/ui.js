@@ -4,7 +4,7 @@ import {
 } from './catalog.js';
 import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.js';
 import { heroTotals, coins } from './fight.js';
-import { GEAR, STAT_NAMES } from './gear.js';
+import { GEAR, STAT_NAMES, ERA_SETS } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -93,12 +93,19 @@ function rail(s) {
   }).join('');
   const adv = NAV_ADV.map(n => link(n.id, n.name, n.icon, '<span></span>')).join('');
   const crew = s.crew ? s.crew.name : 'No crew yet';
-  return `<aside class="rail"><img class="logo" src="/assets/logo.svg" alt="OverSummoned">
+  return `<aside class="rail"><img class="logo" src="/assets/logo.svg" alt="OverSummoned">${s.isAdmin ? sigilBtn() : ''}
 <div class="me"><img class="px" src="/assets/portrait/engineer.png" alt=""><div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></div>
 <div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>
 <h6>The City</h6><nav class="nav">${city}</nav>
 <h6>Skills</h6><nav class="nav">${skills}</nav>
 <h6>Adventure</h6><nav class="nav">${adv}</nav></aside>`;
+}
+
+function sigilBtn(small) {
+  return `<a class="sigil-btn${small ? ' sm' : ''}" href="/ledger" aria-label="Open the books" title="The books"><svg viewBox="0 0 64 64" aria-hidden="true">
+<circle class="r1" cx="32" cy="32" r="29"/><circle class="r2" cx="32" cy="32" r="22"/>
+<g class="runes">${Array.from({length: 12}).map((_, i) => `<rect x="31" y="4.5" width="2" height="${i % 3 ? 3 : 5}" transform="rotate(${i * 30} 32 32)"/>`).join('')}</g>
+<path class="star" d="M32 12 L44 50 L12 26 L52 26 L20 50 Z"/><circle class="core" cx="32" cy="32" r="4"/></svg>${small ? '' : '<span>The books</span>'}</a>`;
 }
 
 function top(s, crumb, title) {
@@ -184,6 +191,46 @@ function cityDesk(s) {
 </div></div>`;
 }
 
+function heroIds(s) { return HERO_ORDER.concat(Object.keys(HEROES).filter(id => !HERO_ORDER.includes(id) && s.heroes[id])); }
+function foundSet(s) {
+  const f = new Set(s.found || []);
+  Object.keys(s.bag || {}).forEach(id => f.add(id));
+  Object.values(s.gear || {}).forEach(g => Object.values(g || {}).forEach(id => id && f.add(id)));
+  return f;
+}
+
+const SOON = 3;
+function collectionsView(s) {
+  const fs = foundSet(s);
+  const ids = heroIds(s);
+  const cell = (id) => {
+    const it = GEAR[id] || ITEMS[id]; if (!it) return '';
+    const on = fs.has(id);
+    return `<button type="button" class="col-item ${on ? 'on r-' + it.rarity : 'off'}" ${GEAR[id] && on ? `data-tip-item="${id}"` : ''} aria-label="${esc(it.name)}${on ? '' : ', not found yet'}"><span class="ci"><img class="px" src="${itemSrc(id)}" alt=""></span><span class="cn">${esc(it.name)}</span><span class="cs">${on ? RARITY_NAME[it.rarity] : 'Not found yet'}</span></button>`;
+  };
+  let setsDone = 0, piecesFound = 0;
+  const sets = ids.filter(id => ERA_SETS[id]).map(id => {
+    const S = ERA_SETS[id], h = HEROES[id]; const own = !!s.heroes[id];
+    const have = S.items.filter(x => fs.has(x)).length; piecesFound += have; if (have === 3) setsDone++;
+    return `<div class="col-set ${have === 3 ? 'done' : have ? 'some' : 'none'} ${own ? '' : 'nohero'}">
+  <div class="cs-head"><img class="px cs-face" src="/assets/portrait/${id}.png" alt=""><div><b class="h">${esc(S.name)}</b><small>${esc(h.name)}${own ? '' : ' · card not found yet'}</small></div><div class="sp"></div><span class="cs-pips">${[0,1,2].map(n => `<i class="${n < have ? 'on' : ''}"></i>`).join('')}</span></div>
+  <div class="cs-items">${S.items.map(cell).join('')}</div>
+  <div class="cs-bonus ${have === 3 ? 'on' : ''}"><b>${esc(S.bonus)}</b> ${have === 3 ? esc(S.text) : 'Wear all three on ' + esc(h.name.replace(/^Doctor /, '').split(' ')[0]) + ' to wake this up.'}</div></div>`;
+  }).join('');
+  const soon = Array.from({length: SOON}).map(() => `<div class="col-set soon"><div class="cs-head"><span class="cs-face q">?</span><div><b class="h">A new set</b><small>A new face is on the way</small></div></div><div class="cs-items">${[0,1,2].map(() => `<span class="col-item off ghost"><span class="ci">?</span><span class="cn">Coming soon</span></span>`).join('')}</div></div>`).join('');
+  const setIds = new Set(Object.values(ERA_SETS).flatMap(S => S.items));
+  const loose = Object.keys(GEAR).filter(id => !setIds.has(id) && !GEAR[id].hidden);
+  const mats = Object.keys(ITEMS).filter(id => !GEAR[id] && ITEMS[id].kind !== 'gear' && id !== 'summon_sigil');
+  const totalSets = ids.filter(id => ERA_SETS[id]).length;
+  return `<div class="g" style="align-content:start">
+<div class="panel"><div class="row" style="flex-wrap:wrap"><b class="h" style="font-size:20px">Collections</b><span class="tag l">${setsDone} of ${totalSets} sets complete</span><span class="tag c">${piecesFound} of ${totalSets * 3} set pieces</span><span class="tag">${[...fs].filter(id => GEAR[id] || ITEMS[id]).length} things found</span></div>
+ <p class="mut" style="margin:8px 0 0;font-size:13px">Everything you find lights up here. Gray means it is still out there.</p></div>
+<div class="col-grid">${sets}${soon}</div>
+<div class="panel"><div class="ph"><h3>Gear and potions</h3></div><div class="col-loose">${loose.map(cell).join('')}</div></div>
+<div class="panel"><div class="ph"><h3>Materials</h3></div><div class="col-loose">${mats.map(cell).join('')}</div></div>
+</div>`;
+}
+
 function delvePct(s) {
   if (!s.delve) return 0;
   const a = s.delve.started, b = s.delve.ends;
@@ -260,26 +307,27 @@ function heroOptions(s, cur) {
 
 function cardsView(s) {
   const owned = Object.keys(s.heroes);
-  const show = HERO_ORDER.filter(id => !s.rar || s.rar === 'all' || HEROES[id].rarity === s.rar);
+  const show = heroIds(s).filter(id => !s.rar || s.rar === 'all' || HEROES[id].rarity === s.rar);
   const grid = show.map(id => s.heroes[id] ? mini(id) : `<div class="mini-card lock"><div class="in"><b>?</b></div></div>`).join('');
   const locks = Array.from({length: Math.max(0, 16 - show.length)}).map(() => `<div class="mini-card lock"><div class="in"><b>?</b></div></div>`).join('');
   const sel = s.sel && HEROES[s.sel] ? s.sel : (owned[0] || 'will_slapton');
   const h = HEROES[sel];
   const ownedH = s.heroes[sel];
-  const sets = SETS.map(set => {
-    const have = set.have.filter(id => s.heroes[id]).length;
-    return `<div class="li"><b>${set.name}</b><span class="sp"></span><span class="mut nums">${have} / ${set.need}</span><div class="bar" style="width:90px"><i style="width:${Math.round(100 * have / set.need)}%"></i></div></div>`;
-  }).join('');
+  const fs = foundSet(s);
+  const sets = heroIds(s).filter(id => ERA_SETS[id] && s.heroes[id]).map(id => {
+    const S = ERA_SETS[id]; const have = S.items.filter(x => fs.has(x)).length;
+    return `<div class="li"><b>${esc(S.name)}</b><span class="sp"></span><span class="mut nums">${have} / 3</span><div class="bar" style="width:90px"><i style="width:${Math.round(100 * have / 3)}%"></i></div></div>`;
+  }).join('') || '<div class="li mut">Find a card to start its set.</div>';
   const T = ownedH ? heroTotals(sel, ownedH.level, (s.gear || {})[sel] || {}).total : null;
   const statRow = T ? `<div class="row" style="flex-wrap:wrap;gap:6px;font-size:12px;justify-content:center">${Object.keys(STAT_NAMES).map(k => `<span class="tag">${STAT_NAMES[k]} <b>${T[k]}${k === 'crit' ? '%' : ''}</b></span>`).join('')}</div>` : '';
-  const count = s.foundCount || owned.length;
+  const count = owned.length;
   return `<div style="display:grid;grid-template-columns:1fr 470px;gap:12px;height:100%">
 <div class="g" style="align-content:start;min-height:0">
- <div class="panel"><div class="row"><b class="h" style="font-size:20px">Your collection</b><span class="tag l">${count} / 1,200 found</span><div class="sp"></div>${btn('Open a pack', 'pack', 'sm')}</div>
+ <div class="panel"><div class="row"><b class="h" style="font-size:20px">Your collection</b><span class="tag l">${count} of ${heroIds(s).length} heroes</span><div class="sp"></div>${btn('Open a pack', 'pack', 'sm')}</div>
   <div class="row" style="margin-top:10px;flex-wrap:wrap"><span class="tag p">All eras</span><span class="tag">Ancient</span><span class="tag">Medieval</span><span class="tag">Victorian</span><span class="tag">1920s</span><span class="tag">Modern</span><span class="tag">Pop culture</span></div>
   <div class="row" style="margin-top:6px;flex-wrap:wrap">${['common','uncommon','rare','epic','legendary','absurd','unhinged'].map(r => `<button type="button" class="tag r-${r}" style="color:var(--rc);border-color:var(--rc)" data-act="rar" data-rar="${r}">${RARITY_NAME[r]}</button>`).join('')}</div></div>
  <div class="panel" style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;align-content:start">${grid}${locks}</div>
- <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px"><div class="panel"><div class="ph"><h3>Era sets</h3><small>Finish a set for a permanent bonus and a gold frame</small></div><div class="list">${sets}</div></div>
+ <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px"><div class="panel"><div class="ph"><h3>Era sets</h3><small>Three pieces from each hero's own time</small><div class="sp"></div>${btn('Collections', 'go', 'sm g').replace('data-act="go"', 'data-go="collections"')}</div><div class="list">${sets}</div></div>
   <div class="panel"><div class="ph"><h3>Copies become power</h3></div><div style="font-size:12.5px" class="mut">Every extra copy levels the card up, and every level adds 5% to Attack, Defense, Health and Speed. Better gear asks for a higher level. Level 10 turns the frame gold.</div><div class="row" style="margin-top:10px">${btn('Level this card', 'level', 'sm c')}</div></div></div>
 </div>
 <div class="panel glow" style="display:flex;flex-direction:column;gap:10px"><div class="row"><h3 class="h" style="font-size:16px">${esc(h.name)}</h3><span class="tag p">${RARITY_NAME[h.rarity]}</span><div class="sp"></div><span class="mut" style="font-size:12px">Tap a card to choose it</span></div>
@@ -547,7 +595,7 @@ function phoneCard(s) {
   return `<div class="row"><b class="h" style="font-size:20px">${esc(h.name)}</b><span class="tag p">${RARITY_NAME[h.rarity]}</span></div>
 <div class="row" style="flex-wrap:wrap;gap:6px">${Object.keys(s.heroes).map(x => `<button type="button" class="tag ${x === id ? 'p' : ''}" data-act="sel" data-hero="${x}">${esc(HEROES[x].name.split(' ')[0])}</button>`).join('')}</div>
 <div style="display:flex;justify-content:center;padding:8px 0 16px">${cardHTML(h, {level: own ? own.level : 1, gear: own ? ((s.gear || {})[id] || {}) : {}, stock: s.bag, z: 1.55, flipped: !!s.showBack, view: s.cardView || 'gear', id: 'card-' + id, mine: !!own && !s.preview})}</div>
-<div class="row" style="justify-content:center">${btn('Send on a delve', 'party-add')}</div>`;
+<div class="row" style="justify-content:center">${btn('Send on a delve', 'party-add')}${btn('Collections', 'go', 'g').replace('data-act="go"', 'data-go="collections"')}</div>`;
 }
 
 function nowbar(s) {
@@ -569,6 +617,7 @@ function desktopBody(s) {
   if (v === 'city') return cityDesk(s);
   if (SKILLS.some(sk => sk.id === v)) return skillView(s, v);
   if (v === 'cards') return cardsView(s);
+  if (v === 'collections') return collectionsView(s);
   if (v === 'delve') return delveView(s);
   if (v === 'bank') return bankView(s);
   if (v === 'market') return marketView(s);
@@ -581,7 +630,7 @@ function desktopBody(s) {
   return cityDesk(s);
 }
 
-const CRUMB = {city:['Aldermere','City Hub'], mining:['Skills','Mining'], woodcutting:['Skills','Woodcutting'], fishing:['Skills','Fishing'], cooking:['Skills','Cooking'], smithing:['Skills','Smithing'], alchemy:['Skills','Alchemy'], summoning:['Skills','Summoning'], cards:['Adventure','Cards'], delve:['Adventure','Delve'], bank:['Adventure','Bank'], market:['The City','Market'], hustles:['The City','Hustles'], crew:['The City','Crew'], travel:['The City','Travel'], infirmary:['The City','Infirmary'], crier:['The City','The Crier'], welcome:['Aldermere','Welcome back']};
+const CRUMB = {city:['Aldermere','City Hub'], mining:['Skills','Mining'], woodcutting:['Skills','Woodcutting'], fishing:['Skills','Fishing'], cooking:['Skills','Cooking'], smithing:['Skills','Smithing'], alchemy:['Skills','Alchemy'], summoning:['Skills','Summoning'], cards:['Adventure','Cards'], collections:['Adventure','Collections'], delve:['Adventure','Delve'], bank:['Adventure','Bank'], market:['The City','Market'], hustles:['The City','Hustles'], crew:['The City','Crew'], travel:['The City','Travel'], infirmary:['The City','Infirmary'], crier:['The City','The Crier'], welcome:['Aldermere','Welcome back']};
 
 export function render(s) {
   GEARS = s.gear || {};
@@ -592,7 +641,7 @@ export function render(s) {
     else if (s.view === 'cards') body = phoneCard(s);
     else if (s.view === 'city') body = phoneHome(s);
     else body = desktopBody(s);
-    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div><span class="chip">${ico('coin')}${num(s.gold)}</span><button class="bell" type="button" data-go="crew">${ico('banner')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
+    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span><button class="bell" type="button" data-go="crew">${ico('banner')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
   }
   const crumb = CRUMB[s.view] || CRUMB.city;
   return `<div class="app">${rail(s)}<div class="main">${top(s, crumb[0], crumb[1])}<div class="content">${desktopBody(s)}</div></div></div>`;

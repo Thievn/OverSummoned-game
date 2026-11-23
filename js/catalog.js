@@ -166,6 +166,7 @@ export const NAV_CITY = [
 export const NAV_ADV = [
   {id:'delve', name:'Delve', icon:'swords'},
   {id:'cards', name:'Cards', icon:'cards'},
+  {id:'collections', name:'Collections', icon:'tome'},
   {id:'bank', name:'Bank', icon:'chest'}
 ];
 

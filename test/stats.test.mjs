@@ -137,3 +137,47 @@ test('the preview delve log is the real fight, not a fixed script', () => {
   assert.ok(fightAt(s.delve, s.now).seen.length > 0);
   assert.ok(intervalMs(s, 'mining', 'moonsilver') < 3000);
 });
+
+test('every era set switches on its own bonus and it changes something real', async () => {
+  const { partyFx } = await import('../js/fight.js');
+  for (const [id, S] of Object.entries(ERA_SETS)) {
+    const g = {}; S.items.forEach(x => { const k = GEAR[x].slot; const slot = (k === 'ring' || k === 'trinket') ? (g[k + '1'] ? k + '2' : k + '1') : k; assert.ok(!g[slot], id + ': two set pieces want the same slot'); g[slot] = x; });
+    assert.equal(Object.keys(g).length, 3, id + ' set fits on one hero');
+    S.items.forEach(x => assert.ok(GEAR[x].req <= 10, x + ' can be worn by a max-level card'));
+    const on = heroTotals(id, 10, g), two = heroTotals(id, 10, Object.fromEntries(Object.entries(g).slice(0, 2)));
+    assert.equal(on.setOn, true, id); assert.equal(two.setOn, false, id);
+    for (const [k, v] of Object.entries(S.stats || {})) assert.ok(on.total[k] >= v, id + ' adds ' + k);
+    const keys = Object.keys(S.fx || {});
+    assert.ok(keys.length, id + ' has a bonus effect');
+    keys.forEach(k => assert.ok(on.fx[k] > 0, id + ' fx ' + k));
+    // The effect must show up somewhere: a fight, a skill timer, hustles or delve time.
+    const party = partyFor([{id, level: 10}], {[id]: g}), base = partyFor([{id, level: 10}], {[id]: Object.fromEntries(Object.entries(g).slice(0, 2))});
+    let differs = false;
+    for (let seed = 1; seed <= 12 && !differs; seed++) {
+      const a = simulate({party, floor: 5, minutes: 60, seed, rules: {heal: 40, retreat: 0}, stock: {}});
+      const b = simulate({party: base, floor: 5, minutes: 60, seed, rules: {heal: 40, retreat: 0}, stock: {}});
+      if (JSON.stringify(a.log) !== JSON.stringify(b.log)) differs = true;
+    }
+    const fx = partyFx(party);
+    if (!differs) differs = (fx.hustle_gold || 0) > 0 || (fx.delve_speed || 0) > 0 || (heroOutFx(id, 10, g).mining || 0) > (heroOutFx(id, 10, {}).mining || 0);
+    assert.ok(differs, id + ' set bonus changes the game');
+  }
+});
+
+test('finds are remembered for Collections', () => {
+  const s = freshState('Dean');
+  s.vigor = 100;
+  dispatch(s, {type: 'delve', floor: 1, minutes: 15});
+  s.now = s.delve.ends + 1;
+  const r = dispatch(s, {type: 'claim'});
+  for (const id of Object.keys(r.report.loot)) assert.ok(s.found.includes(id), id);
+});
+
+test('timers in the browser follow the server once it is in charge', () => {
+  const s = bibleState();
+  s.serverAuth = true;
+  s.skills.mining.hero = 'engineer';
+  const lv = s.heroes.engineer.level;
+  const want = Math.round(3.0 * fasterMult(heroOutFx('engineer', lv, s.gear.engineer).mining) * 1000);
+  assert.equal(intervalMs(s, 'mining', 'moonsilver'), Math.max(400, want));
+});

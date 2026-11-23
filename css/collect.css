@@ -1,0 +1,51 @@
+/* Collections and the books sigil */
+.col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.col-set{border:1px solid var(--line);border-radius:16px;padding:12px;background:linear-gradient(180deg,rgba(26,15,49,.9),rgba(13,7,24,.92));display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.col-set.done{border-color:rgba(244,196,80,.6);box-shadow:0 0 0 1px rgba(244,196,80,.25),0 0 28px -8px rgba(244,196,80,.55)}
+.col-set.done::before{content:"";position:absolute;inset:-40% -10%;background:radial-gradient(closest-side,rgba(244,196,80,.12),transparent);animation:colGlow 5s ease-in-out infinite;pointer-events:none}
+.col-set.soon{border-style:dashed;opacity:.55}
+.cs-head{display:flex;align-items:center;gap:10px}
+.cs-head b{display:block;font-size:15px}
+.cs-head small{color:var(--mut);font-size:12px}
+.cs-face{width:40px;height:40px;border-radius:10px;object-fit:cover;object-position:top;border:1px solid var(--line2);background:#0b0616}
+.col-set.nohero .cs-face{filter:grayscale(1) brightness(.5)}
+.cs-face.q{display:grid;place-items:center;font:700 20px 'Pixelify Sans';color:var(--dim)}
+.cs-pips{display:flex;gap:4px}.cs-pips i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+.cs-pips i.on{background:#f4c450;border-color:#ffe39a;box-shadow:0 0 8px rgba(244,196,80,.8)}
+.cs-items{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.col-loose{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.col-item{all:unset;box-sizing:border-box;cursor:default;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.025);text-align:center;min-width:0}
+.col-item .ci{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:#0b0616;border:1px solid rgba(255,255,255,.08);font:700 18px 'Pixelify Sans';color:var(--dim)}
+.col-item .ci img{width:40px;height:40px}
+.col-item .cn{font:600 11.5px/1.2 'Space Grotesk';color:var(--ink);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.col-item .cs{font:600 10px 'Space Grotesk';letter-spacing:.06em;text-transform:uppercase;color:var(--rc,var(--dim))}
+.col-item.off .ci img{filter:grayscale(1) brightness(.35) contrast(.9);opacity:.75}
+.col-item.off .cn{color:var(--dim)}
+.col-item.off .cs{color:var(--dim)}
+.col-item.on{border-color:color-mix(in srgb,var(--rc) 55%,transparent);background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--rc) 18%,transparent),rgba(255,255,255,.02));cursor:help}
+.col-item.on .ci{border-color:color-mix(in srgb,var(--rc) 60%,transparent);box-shadow:0 0 14px -2px color-mix(in srgb,var(--rc) 70%,transparent),inset 0 0 12px color-mix(in srgb,var(--rc) 25%,transparent);animation:colLit .7s ease-out both}
+.col-item.ghost{opacity:.6}
+.cs-bonus{font-size:12px;color:var(--mut);padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06)}
+.cs-bonus b{color:var(--dim);display:block;margin-bottom:2px}
+.cs-bonus.on{color:#ffe7ad;border-color:rgba(244,196,80,.35)}.cs-bonus.on b{color:#f4c450}
+@keyframes colLit{from{filter:brightness(2) saturate(1.6);transform:scale(.92)}to{filter:none;transform:none}}
+@keyframes colGlow{0%,100%{opacity:.5;transform:translateX(-6%)}50%{opacity:1;transform:translateX(6%)}}
+
+/* The books: a glowing summoning sigil, admins only */
+.sigil-btn{display:flex;align-items:center;gap:10px;margin:0 2px;padding:7px 10px 7px 7px;border-radius:14px;text-decoration:none;color:#ffd9f0;font:600 13px 'Space Grotesk';letter-spacing:.02em;
+  background:radial-gradient(120% 140% at 0% 50%,rgba(255,46,138,.28),rgba(155,92,255,.12) 55%,rgba(10,6,20,.6));border:1px solid rgba(255,46,138,.55);
+  box-shadow:0 0 0 1px rgba(155,92,255,.25),0 0 22px -4px rgba(255,46,138,.7),inset 0 0 18px rgba(155,92,255,.25);transition:transform .15s,box-shadow .2s}
+.sigil-btn svg{width:34px;height:34px;flex:none;overflow:visible;filter:drop-shadow(0 0 4px rgba(255,46,138,.9)) drop-shadow(0 0 10px rgba(155,92,255,.8))}
+.sigil-btn .r1{fill:none;stroke:#ff6fb5;stroke-width:2.5;stroke-dasharray:6 4;transform-origin:32px 32px;animation:sigSpin 9s linear infinite}
+.sigil-btn .r2{fill:none;stroke:#b58cff;stroke-width:1.6;transform-origin:32px 32px}
+.sigil-btn .runes{fill:#ffc2e2;transform-origin:32px 32px;animation:sigSpin 14s linear infinite reverse}
+.sigil-btn .star{fill:none;stroke:#fff0f8;stroke-width:2;stroke-linejoin:round;transform-origin:32px 32px;animation:sigPulse 2.4s ease-in-out infinite}
+.sigil-btn .core{fill:#fff;animation:sigCore 2.4s ease-in-out infinite}
+.sigil-btn:hover,.sigil-btn:focus-visible{transform:translateY(-1px);outline:none;box-shadow:0 0 0 1px rgba(255,46,138,.6),0 0 32px -2px rgba(255,46,138,.95),inset 0 0 22px rgba(155,92,255,.4)}
+.sigil-btn:hover .r1{animation-duration:2.5s}
+.sigil-btn.sm{padding:4px;border-radius:50%;margin:0 6px 0 0}
+.sigil-btn.sm svg{width:30px;height:30px}
+@keyframes sigSpin{to{transform:rotate(360deg)}}
+@keyframes sigPulse{0%,100%{opacity:.75;transform:scale(.94)}50%{opacity:1;transform:scale(1.04)}}
+@keyframes sigCore{0%,100%{opacity:.6;r:3}50%{opacity:1;r:5}}
+@media (prefers-reduced-motion:reduce){.sigil-btn *,.col-set.done::before,.col-item.on .ci{animation:none!important}}

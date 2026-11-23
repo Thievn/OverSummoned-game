@@ -30,6 +30,9 @@ const ICO = {
 const FLIP = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8a5 5 0 0 1 9-3M13 8a5 5 0 0 1-9 3"/><path d="M12 2v3H9M4 14v-3h3"/></svg>';
 
 let IDX = 0;
+let SHOW_SETS = true;
+// The public pages show gear but keep era sets for players to discover in the game.
+export function setShowSets(v) { SHOW_SETS = !!v; }
 function socket(id, slot, i, q, setIds) {
   const t = slotKind(slot);
   if (!id || !GEAR[id]) return `<button type="button" class="gs" data-slot="${slot}" style="--i:${i}" aria-label="Empty ${SLOT_LABEL[t]} slot"><svg class="ghost" viewBox="0 0 24 24" fill="currentColor">${GLY[t]}</svg></button>`;
@@ -39,7 +42,7 @@ function socket(id, slot, i, q, setIds) {
 
 // hero: {id, name, title, rarity, era, back, backText, foot}. opt: {level, gear, belt qty map, z, flipped, view, id, mine}
 export function cardHTML(hero, opt = {}) {
-  const hid = hero.id; const G = opt.gear || {}; const S = ERA_SETS[hid]; const uid = opt.id || ('k' + (IDX++));
+  const hid = hero.id; const G = opt.gear || {}; const S = opt.noSet ? null : ERA_SETS[hid]; const uid = opt.id || ('k' + (IDX++));
   const T = heroTotals(hid, opt.level || 1, G);
   const worn = Object.entries(G).filter(([k]) => !k.startsWith('belt')).map(([, v]) => v).filter(Boolean);
   const found = S ? S.items.filter(x => worn.includes(x)) : [];
@@ -69,18 +72,18 @@ export function cardHTML(hero, opt = {}) {
    <div class="face back cardback r-${r}" data-view="${opt.view || 'bio'}"><div class="cb-in">
     <div class="cb-scene"><img class="gif" alt="" src="/card_backs/${hero.gif || hid}.gif" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${esc(hero.era)}</span><div class="vig"></div>
       <div class="gcol l">${L}</div><div class="gcol r">${Rr}</div>
-      <div class="ledger"><div class="lt">Ledger of Belongings</div><div class="ln">${esc(S ? S.name : '')}</div><div class="row3">${ledger}</div></div>
+      ${S ? `<div class="ledger"><div class="lt">Ledger of Belongings</div><div class="ln">${esc(S.name)}</div><div class="row3">${ledger}</div></div>` : ''}
     </div>
     <div class="cbtabs" role="group" aria-label="Card back">
       <button type="button" class="tab" data-v="bio" aria-label="Story" aria-pressed="${(opt.view || 'bio') === 'bio'}">${ICO.bio}</button>
       <button type="button" class="tab" data-v="gear" aria-label="Gear" aria-pressed="${opt.view === 'gear'}">${ICO.gear}</button>
-      <button type="button" class="tab" data-v="set" aria-label="Era set" aria-pressed="${opt.view === 'set'}">${ICO.set}</button>
+      ${S ? `<button type="button" class="tab" data-v="set" aria-label="Era set" aria-pressed="${opt.view === 'set'}">${ICO.set}</button>` : ''}
     </div>
     <div class="cb-low">
       <div class="layer bio"><div class="cb-skill">${esc(hero.back)}</div><div class="cb-text">${esc(hero.backText)}</div><div class="cb-foot" style="margin-top:auto"><span>${esc(hero.foot || hero.perk || '')}</span><span>${RN[r]}</span></div></div>
       <div class="layer gear"><div class="gsum">${sum}</div><div class="grow">${row}</div><div class="belt"><span class="buckle"></span>${belt}<span class="lbl">Belt</span></div></div>
-      <div class="layer set"><div class="bonus ${on ? 'on' : ''}"><div class="bh">${on ? 'Set bonus active' : 'Wear all 3'}<span class="pips">${pips}</span></div><div class="bn">${esc(S ? S.bonus : '')}</div><div class="bt">${esc(S ? S.text : '')}</div></div>
-        <div class="bonus-wear" style="text-align:center;font:600 .95em 'Space Grotesk';color:var(--mut);margin-top:.55em">${on ? 'All three worn. The era remembers.' : found.length ? `${found.length} of 3 found. Keep delving.` : 'None found yet. They are out there.'}</div></div>
+      ${S ? `<div class="layer set"><div class="bonus ${on ? 'on' : ''}"><div class="bh">${on ? 'Set bonus active' : 'Wear all 3'}<span class="pips">${pips}</span></div><div class="bn">${esc(S ? S.bonus : '')}</div><div class="bt">${esc(S ? S.text : '')}</div></div>
+        <div class="bonus-wear" style="text-align:center;font:600 .95em 'Space Grotesk';color:var(--mut);margin-top:.55em">${on ? 'All three worn. The era remembers.' : found.length ? `${found.length} of 3 found. Keep delving.` : 'None found yet. They are out there.'}</div></div>` : ''}
     </div>
    </div><div class="glare"></div></div>
   </div></div></div></div>`;
@@ -121,7 +124,7 @@ export function tipBody(id, ctx = {}) {
   SECOND.forEach(k => { if (st[k]) o += `<div class="mt-g">${secLine(k, st[k])}</div>`; });
   (it.equip || []).forEach(e => { o += `<div class="mt-g">Equip: ${esc(e)}</div>`; });
   if (it.use) o += `<div class="mt-g">Use: ${esc(it.use.text)}${it.use.cd ? ` (${esc(it.use.cd)})` : ''}</div>`;
-  if (it.set && ERA_SETS[it.set]) {
+  if (SHOW_SETS && it.set && ERA_SETS[it.set]) {
     const S = ERA_SETS[it.set]; const worn = ctx.worn || []; const have = S.items.filter(x => worn.includes(x)); const on = have.length === S.items.length;
     o += `<div class="mt-set"><div class="mt-sn">${esc(S.name)} (${have.length}/${S.items.length})</div>`;
     S.items.forEach(x => { o += `<div class="mt-si ${have.includes(x) ? 'own' : ''}">${esc((GEAR[x] || {name:x}).name)}</div>`; });
@@ -231,7 +234,11 @@ export function bindCards() {
   if (bound) return; bound = true;
   document.addEventListener('click', (e) => {
     const c = e.target.closest('.flip3d');
-    if (!c) { if (!e.target.closest('.mt-wrap')) hideTip(); return; }
+    if (!c) {
+      const d = e.target.closest('[data-tip-item]');
+      if (d && !d.dataset.act && GEAR[d.dataset.tipItem] && !hoverable()) { if (d.classList.contains('sel') && isOpen()) { hideTip(); return; } d.classList.add('sel'); showTip(d, {id: d.dataset.tipItem, worn: []}); return; }
+      if (!e.target.closest('.mt-wrap')) hideTip(); return;
+    }
     if (c.closest('[data-dragged="1"]')) return;
     const back = c.querySelector('.back');
     const tab = e.target.closest('.tab'), slot = e.target.closest('.gs,.ls');

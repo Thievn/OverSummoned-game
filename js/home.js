@@ -1,21 +1,22 @@
 // Homepage: Will's 3D card, the nine-card row, and the screenshot lightbox.
 import { HEROES, HERO_ORDER } from './catalog.js';
 import { EXAMPLE_GEAR } from './gear.js';
-import { cardHTML, bindCards, onTipChange, isOpen, hideTip } from './gearui.js';
+import { cardHTML, bindCards, onTipChange, isOpen, hideTip, setShowSets } from './gearui.js';
 
 const LEVELS = {will_slapton:7, legionary:6, gangster:5, engineer:5, plague_doctor:4, paramedic:4, hunter:3, office_worker:3, delivery_rider:2};
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+setShowSets(false);
 bindCards();
 
 // Will, front and back, kitted out.
 const will = document.getElementById('home-will');
-if (will) will.innerHTML = cardHTML(HEROES.will_slapton, {level: 7, gear: EXAMPLE_GEAR.will_slapton, z: 1.05, view: 'gear', id: 'home-will-card'});
+if (will) will.innerHTML = cardHTML(HEROES.will_slapton, {level: 7, gear: EXAMPLE_GEAR.will_slapton, z: 1.05, view: 'gear', id: 'home-will-card', noSet: true});
 
 // ---------- the nine ----------
 const reel = document.getElementById('reel');
 if (reel) {
-  const item = (id, n) => `<div class="reel-item" ${n ? 'aria-hidden="true"' : ''}>${cardHTML(HEROES[id], {level: LEVELS[id] || 1, gear: EXAMPLE_GEAR[id] || {}, z: 1.12, flipped: true, view: 'gear', id: 'reel-' + id + (n ? '-' + n : '')})}<small>${HEROES[id].name} · ${HEROES[id].rarity[0].toUpperCase() + HEROES[id].rarity.slice(1)}</small></div>`;
+  const item = (id, n) => `<div class="reel-item" ${n ? 'aria-hidden="true"' : ''}>${cardHTML(HEROES[id], {level: LEVELS[id] || 1, gear: EXAMPLE_GEAR[id] || {}, z: 1.12, flipped: true, view: 'gear', noSet: true, id: 'reel-' + id + (n ? '-' + n : '')})}<small>${HEROES[id].name} · ${HEROES[id].rarity[0].toUpperCase() + HEROES[id].rarity.slice(1)}</small></div>`;
   const one = HERO_ORDER.map(id => item(id, 0)).join('');
   reel.innerHTML = `<div class="reel-track">${one}${HERO_ORDER.map(id => item(id, 1)).join('')}</div>`;
   reel.classList.add('auto');

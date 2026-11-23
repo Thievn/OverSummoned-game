@@ -171,7 +171,7 @@ async function remoteAct(action) {
     const { data, error } = await sb.rpc('os_claim');
     if (error) { toast(human(error)); return; }
     if (data && data.hero) heroModal = {id: data.hero.id, fresh: data.hero.new};
-    await pull();
+    await pull(); loadCollection();
     const res = data && data.result;
     toast(res === 'wiped' ? 'The squad was carried out. Half the gold made it home.' : res === 'retreat' ? 'The squad backed out with ' + (data.cleared || 0) + ' of ' + (data.rooms || 0) + ' rooms cleared.' : 'The party is back. +' + ((data && data.gold) || 0) + ' gold.');
     return;
@@ -270,6 +270,14 @@ async function pull() {
   if (!isOpen()) paint();
 }
 
+async function loadCollection() {
+  if (!sb || !remote) return;
+  const { data, error } = await sb.rpc('os_collection');
+  if (error || !data) return;
+  state.found = data.items || [];
+  if (!isOpen()) paint();
+}
+
 async function loadDefs() {
   const { data, error } = await sb.rpc('os_defs');
   if (error || !data) return;
@@ -331,7 +339,7 @@ root.addEventListener('submit', (e) => {
   e.preventDefault();
   act('submit', {}, form);
 });
-addEventListener('hashchange', paint);
+addEventListener('hashchange', () => { paint(); if (location.hash === '#collections') loadCollection(); });
 addEventListener('resize', () => { if (!state) return; const p = matchMedia('(max-width: 860px)').matches; if (p !== state.phone) paint(); });
 
 let lastDelvePaint = 0;
@@ -352,7 +360,11 @@ function loop() {
 async function boot() {
   if (preview) {
     state = bibleState();
+    if (params.get('new') === '1') { // preview of a brand-new account
+      const f = freshState('Dean'); f.preview = true; f.now = Date.now(); state = f;
+    }
     state.freeze = params.get('shot') === '1';
+    state.isAdmin = params.get('admin') === '1'; // preview only: shows the button, the books still check the server
     state.pickMin = 15;
     state.floor = state.floor || 7;
     paint();
@@ -376,6 +388,9 @@ async function boot() {
     await loadDefs().catch(() => {});
     await pull();
     remote = true;
+    state.serverAuth = true;
+    sb.rpc('os_is_admin').then(({data}) => { state.isAdmin = data === true; paint(); }).catch(() => {});
+    loadCollection();
     sb.channel('crier').on('postgres_changes', {event:'INSERT', schema:'public', table:'os_feed'}, payload => {
       const row = payload.new;
       if (!row || !row.msg) return;
