@@ -30,6 +30,12 @@ export const backSrc = (id, gif) => (OWN[id] && OWN[id].back) || `/card_backs/${
 // City banner walk strip: an account's own hero brings hers, everyone else uses the site's files.
 export const walkSrc = (id) => (OWN[id] && OWN[id].walk) || `/assets/walk/${id}.png`;
 export const hasWalk = (id) => !!(OWN[id] && OWN[id].walk);
+// One hero size for a given screen width, shared by the city and every skill scene.
+// Feet sit 2 pixels above the bottom of the 64-pixel walk box.
+export const FOOT_GAP = 2;
+export function heroScale(width) {
+  return width >= 500 ? 2 : 1;
+}
 export const sideSrc = (id) => (OWN[id] && OWN[id].side) || `/assets/sprites/${id}.png`;
 export const sideMeta = (id) => (OWN[id] && OWN[id].sideMeta) || null;
 export const frontSrc = (id, anim) => (OWN[id] && OWN[id].front[anim]) || `/assets/front/${id}_${anim}.png`;

@@ -46,5 +46,14 @@ test('signed-in players can read the update log', () => {
   assert.match(pub, /path === '\/updates'/);
   // A signed-in visit to /updates must not bounce into the game.
   const admit = pub.slice(pub.indexOf('function admit'), pub.indexOf('function admit') + 700);
-  assert.match(admit, /if \(path === '\/updates'\) return/);
+  assert.match(admit, /if \(path === '\/updates'\).*return/);
+});
+
+test('a signed-in visit to the update log shows Play, not Log in', () => {
+  const pub = readFileSync(R + 'js/public.js', 'utf8');
+  assert.match(pub, /function signedHeader/);
+  assert.match(pub, /id = 'openplay'/);
+  assert.match(pub, /textContent = 'Play'/);
+  const admit = pub.slice(pub.indexOf('function admit'), pub.indexOf('function admit') + 900);
+  assert.match(admit, /signedHeader\(\);\s*return/);
 });

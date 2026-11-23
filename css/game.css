@@ -192,9 +192,8 @@ html.can-install:not(.app-seen):not(.no-install) .app-dot{display:block}
 .sks-bg,.sks-floor{position:absolute;inset:0;background-repeat:repeat-x;image-rendering:pixelated;background-position:0 100%}
 .sks-floor{top:auto;height:24px}
 .sks-furn,.sks-props{position:absolute;inset:0;pointer-events:none}
-.sks-prop,.sks-furn-item{position:absolute;bottom:8%;height:auto;max-height:82%;image-rendering:pixelated;image-rendering:-moz-crisp-edges}
+.sks-prop,.sks-furn-item{position:absolute;bottom:auto;height:auto;image-rendering:pixelated;image-rendering:-moz-crisp-edges}
 .sks-furn-item{bottom:auto;transition:opacity .7s ease}
-.sks-hut{bottom:10%}
 .sks-w{position:absolute;left:0;bottom:16px;z-index:2}
 .sks-s{background-repeat:no-repeat;image-rendering:pixelated}
 .sks-fx{position:absolute;left:50%;bottom:42%;width:32px;height:32px;opacity:0;pointer-events:none;z-index:4;transform:translate(-50%,0) scale(.4)}

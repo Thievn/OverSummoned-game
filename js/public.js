@@ -88,12 +88,23 @@
     b.addEventListener('click', function () { show(b.getAttribute('data-tab')); });
   });
 
+  function signedHeader() {
+    var btn = document.getElementById('openlogin');
+    if (!btn || btn.getAttribute('data-signed') === '1') return;
+    btn.setAttribute('data-signed', '1');
+    var a = document.createElement('a');
+    a.className = btn.className || 'btn gold sm';
+    a.href = '/play';
+    a.id = 'openplay';
+    a.textContent = 'Play';
+    btn.replaceWith(a);
+  }
   function admit() {
     if (!client) return;
     return client.from('den_allow').select('email').maybeSingle().then(function (q) {
       if (q.data) {
         var path = (location.pathname || '').replace(/\/+$/, '').replace(/\.html$/, '') || '/';
-        if (path === '/updates') return;
+        if (path === '/updates') { signedHeader(); return; }
         location.replace('/play');
       } else if (!q.error) reject();
       else say('The city is busy. Try again in a moment.');

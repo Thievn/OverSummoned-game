@@ -8,7 +8,7 @@
 // never restarts it. Positions snap to whole pixels so the street never ripples.
 // A hero that belongs to one account walks here only for that account, using the
 // walk art it was sent.
-import {walkSrc, hasWalk} from './art.js';
+import {walkSrc, hasWalk, heroScale, FOOT_GAP} from './art.js';
 const WALKERS = ['office_worker', 'delivery_rider', 'paramedic', 'hunter', 'legionary', 'engineer', 'plague_doctor', 'gangster', 'will_slapton'];
 export const PLACES = [
   {id: 'aldermere', name: 'Aldermere Square'},
@@ -61,10 +61,11 @@ function measure() {
   if (!r.width || !r.height) return false;
   if (r.width === W && r.height === H) return true;
   W = r.width; H = r.height;
-  k = Math.max(1, Math.min(2.4, H * 0.4 / FR));
-  ground = Math.round(H * 0.07);
+  k = heroScale(W);
   // Same visual scale as before: a 400 px street fills at least 1.25 of the banner width.
   scale = Math.max(W * 1.25, H * 2) / 400;
+  // 19 is the cobble top in the 200 px panorama. Subtract the walk-sheet gap so feet sit on it.
+  ground = Math.max(0, Math.round(19 * scale - FOOT_GAP * k));
   for (const w of walkers) sizeWalker(w);
   return true;
 }

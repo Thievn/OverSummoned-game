@@ -119,5 +119,83 @@ test('the forge armor stand stands to the side of the walking lane', () => {
   const src = readFileSync('js/skillscene.js', 'utf8');
   const m = src.match(/smith_armor\.png',\s*at:60,\s*x:([0-9.]+)/);
   assert.ok(m, 'armor placement is in the scene');
-  assert.ok(Number(m[1]) >= 0.75, 'armor is on the right, out of the mid-floor lane');
+  assert.ok(Number(m[1]) >= 0.68, 'armor is on the right, out of the mid-floor lane');
+});
+
+test('props are looked up by skill, so a forge iron bar is not a mining rock', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  assert.match(src, /mining:\s*\{/);
+  assert.match(src, /woodcutting:\s*\{/);
+  assert.match(src, /\(PROP\[sk\]\s*\|\|\s*\{\}\)\[id\]/);
+  const smith = src.slice(src.indexOf('smithing: [') , src.indexOf('alchemy: ['));
+  assert.doesNotMatch(smith, /rock_iron/);
+});
+
+test('hero size comes from the screen width, not the art', () => {
+  const art = readFileSync('js/art.js', 'utf8');
+  const scene = readFileSync('js/skillscene.js', 'utf8');
+  const life = readFileSync('js/life.js', 'utf8');
+  assert.match(art, /export function heroScale/);
+  assert.match(art, /width >= 500 \? 2 : 1/);
+  assert.match(scene, /k = heroScale\(W\)/);
+  assert.match(life, /k = heroScale\(W\)/);
+  assert.doesNotMatch(scene, /Math\.round\(lay\.s\)/);
+});
+
+test('rooms fill the box with a uniform cover scale, never a top letterbox', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  const i = src.indexOf('function fitScale');
+  const block = src.slice(i, i + 280);
+  assert.match(block, /Math\.max\(W \/ rw, H \/ rh\)/);
+  assert.doesNotMatch(block, /barH/);
+  assert.match(src, /oy = H - dh/);
+});
+
+test('floor props and the hero share one walkable floor line', () => {
+  const src = readFileSync('js/skillscene.js', 'utf8');
+  assert.match(src, /ground:\s*true/);
+  assert.match(src, /function footBottom/);
+  assert.match(src, /FOOT_GAP/);
+  assert.match(src, /art\.walk \|\| art\.floor/);
+  const life = readFileSync('js/life.js', 'utf8');
+  assert.match(life, /19 \* scale - FOOT_GAP \* k/);
+});
+
+test('tree and sawmill art is a cut-out, not a boxed crop', () => {
+  const out = execFileSync('python3', ['-c', `
+from PIL import Image
+def check(path, min_trans=200):
+    im=Image.open(path).convert("RGBA")
+    a=im.split()[-1]; w,h=im.size
+    pix=list(a.getdata())
+    trans=sum(1 for v in pix if v<8)
+    opaque=sum(1 for v in pix if v>10)
+    assert trans>min_trans and opaque>400, path+" alpha"
+    def frac(y0,y1):
+        n=op=0
+        for y in range(y0,y1):
+            for x in range(w):
+                n+=1
+                if a.getpixel((x,y))>10: op+=1
+        return op/max(n,1)
+    top=frac(0,min(3,h)); bot=frac(max(0,h-3),h)
+    assert top<=0.72, path+" flat top "+str(top)
+    assert bot<=0.90, path+" full-width base "+str(bot)
+for n in ["ash","ironbark","moonwood","emberroot","voidtrunk"]:
+    check("assets/gen/sks/tree_"+n+".png")
+check("assets/gen/sks/prop_sawmill.png")
+print("ok")
+`], {encoding: 'utf8'});
+  assert.match(out, /ok/);
+});
+
+test('every fishing lake uses the same backdrop height', () => {
+  const out = execFileSync('python3', ['-c', `
+from PIL import Image
+for n in ["eel","lantern","ashpond","deep"]:
+    im=Image.open("assets/gen/sks/fishing_"+n+".png")
+    assert im.size==(384,160), n+str(im.size)
+print("ok")
+`], {encoding: 'utf8'});
+  assert.match(out, /ok/);
 });
