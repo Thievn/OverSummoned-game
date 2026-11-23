@@ -138,7 +138,7 @@ export const HUSTLES = [
   {id:'dice', name:'Rig the dice at the Gilded Rat', win:'40 to 120 gold, maybe a card shard', fail:'10 min in the Stocks', chance:72, daring:5, gold:[40,120], shard:0.25, jail:10, need:8, xp:80},
   {id:'smuggle', name:'Smuggle moonsilver past the guards', win:'200 to 400 gold', fail:'25 min in the Stocks', chance:54, daring:10, gold:[200,400], jail:25, need:20, xp:180},
   {id:'duke', name:"Rob the Duke's carriage", win:'800 to 1,500 gold and maybe a violet gem', fail:'1 hour in the Infirmary', chance:31, daring:15, gold:[800,1500], rare:0.4, infirmary:60, need:35, xp:300},
-  {id:'ledger', name:"Steal the Archmage's summoning ledger", win:'A guaranteed Epic card', fail:'Coming soon', chance:0, daring:25, need:50, locked:true}
+  {id:'ledger', name:"Steal the Archmage's summoning ledger", win:'A guaranteed Epic card', fail:'Nobody has tried it yet', chance:0, daring:25, need:50, locked:true}
 ];
 
 export const CITIES = [
