@@ -138,3 +138,35 @@
   .s-hunt { width: 124px; height: 122px; background-size: 1368px 122px; --sw: -1368px; }
   .s-gang { width: 99px; height: 134px; background-size: 793px 134px; --sw: -793px; }
 }
+
+/* Legal pages share the story book, with calmer document typography. */
+.legal .page h1 { max-width: none; margin-bottom: 8px; }
+.legal .updated {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: #cbb38a;
+  margin: 0 0 28px;
+}
+.legal-sec { margin: 0 0 26px; }
+.legal-sec h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(16px, 3.2vw, 20px);
+  letter-spacing: .04em;
+  color: #f0d48a;
+  margin: 0 0 10px;
+}
+.legal-sec p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(18px, 3.6vw, 22px);
+  line-height: 1.55;
+  color: #f3e4cc;
+  margin: 0 0 12px;
+}
+.legal-sec p:last-child { margin-bottom: 0; }
+.legal-sec a { color: #f0d48a; }
+.legal-sec a:hover, .legal-sec a:focus-visible { color: #fff1bf; }
+@media (min-width: 860px) {
+  .legal .page { padding: 56px 64px 48px; }
+}

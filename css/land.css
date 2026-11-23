@@ -162,6 +162,12 @@ dialog.authdlg {
   border-top: 1px solid var(--line); margin-top: 6px;
 }
 .land-foot .logo { height: 22px; }
+.land-foot a.logo, .land-foot a:has(.logo) { display: inline-flex; }
+.foot-links { display: flex; gap: 14px; margin-left: auto; }
+.foot-links a {
+  color: var(--dim); text-decoration: none;
+}
+.foot-links a:hover, .foot-links a:focus-visible { color: var(--ink, #f3e4cc); }
 
 @media (min-width: 720px) {
   .wl { flex-direction: row; align-items: center; }
