@@ -2,6 +2,18 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.5",
+      "date": "2026-11-23",
+      "title": "Your own corner of the city",
+      "items": [
+        "Tap your picture at the top right to open your new Account page.",
+        "Pick a new name and see right away if it's free.",
+        "Every hero you collect unlocks a new profile picture.",
+        "See everything you own at a glance, and turn motion, update notes and the install button on or off.",
+        "The featured card turns over to show its own back, and the city banner keeps every hero in view."
+      ]
+    },
+    {
       "v": "2026.11.23.4",
       "date": "2026-11-23",
       "title": "Take OverSummoned with you",

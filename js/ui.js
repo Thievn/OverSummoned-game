@@ -6,7 +6,7 @@ import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.
 import { heroTotals, coins } from './fight.js';
 import { GEAR, STAT_NAMES, ERA_SETS } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
-import { portraitSrc, backSrc, sideSrc, sideMeta, frontSrc, frontMeta } from './art.js';
+import { portraitSrc, backSrc, sideSrc, sideMeta, frontSrc, frontMeta, avatarSrc } from './art.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ico = (n, cls='') => `<img class="px ${cls}" src="/assets/gen/${n}.png" alt="">`;
@@ -22,6 +22,14 @@ function slot(id, q, on) {
 }
 
 let GEARS = {};
+
+function avatar(s, cls = '') {
+  if (s.avatar && HEROES[s.avatar]) return `<img class="px av ${cls}" src="${avatarSrc(s.avatar)}" alt="">`;
+  return `<span class="av av-letter ${cls}" aria-hidden="true">${esc((s.name || '?').trim().charAt(0).toUpperCase() || '?')}</span>`;
+}
+function meBtn(s) {
+  return `<a class="me-btn${s.view === 'account' ? ' on' : ''}" href="#account" data-go="account" aria-label="Your account" title="Your account">${avatar(s)}</a>`;
+}
 function cardFront(id, level, z) {
   const h = HEROES[id];
   if (!h) return '';
@@ -95,7 +103,7 @@ function rail(s) {
   const adv = NAV_ADV.map(n => link(n.id, n.name, n.icon, '<span></span>')).join('');
   const crew = s.crew ? s.crew.name : 'No crew yet';
   return `<aside class="rail"><img class="logo" src="/assets/logo.svg" alt="OverSummoned">${s.isAdmin ? sigilBtn() : ''}
-<div class="me"><img class="px" src="/assets/portrait/engineer.png" alt=""><div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></div>
+<a class="me" href="#account" data-go="account">${avatar(s)}<div><b>${esc(s.name)}</b><small>Crew: ${esc(crew)}</small></div></a>
 <div class="wallet"><span>${ico('coin')}${num(s.gold)}</span><span>${ico('summon_sigil')}${s.sigils}</span></div>${installBtn()}
 <h6>The City</h6><nav class="nav">${city}</nav>
 <h6>Skills</h6><nav class="nav">${skills}</nav>
@@ -117,7 +125,19 @@ function sigilBtn(small) {
 function top(s, crumb, title) {
   return `<header class="top"><div class="tt"><div class="crumb">${crumb}</div><div class="title">${title}</div></div>
 ${meters(s)}<div class="sp"></div>${chip(s)}
-<button class="bell" type="button" data-go="crew" aria-label="Crew">${ico('chat')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header>`;
+${meBtn(s)}</header>`;
+}
+
+// The squad standing in a banner: a bottom-aligned row that scales with the banner width,
+// feet on one line, never squashed (sizes come from CSS so a resize only changes --k).
+function crowd(heroes) {
+  const fr = {legionary:{w:41,h:50,ax:23,ay:48,n:8}, engineer:{w:53,h:51,ax:24,ay:49,n:8}, will_slapton:{w:63,h:57,ax:32,ay:55,n:11}, gangster:{w:37,h:50,ax:17,ay:48,n:8}, paramedic:{w:59,h:49,ax:30,ay:47,n:8}};
+  return `<div class="crowd">${heroes.map(h => {
+    const skill = h.anim === 'skill';
+    const meta = (h.id === 'will_slapton' && skill) ? fr.will_slapton : (frontMeta(h.id) || fr[h.id] || fr.engineer);
+    const n = skill ? 11 : 8;
+    return `<div class="cs" style="--w:${meta.w};--h:${meta.h};--n:${n};--fb:${meta.h - meta.ay};background-image:url(${frontSrc(h.id, h.anim)})"></div>`;
+  }).join('')}</div>`;
 }
 
 function frontRow(heroes) {
@@ -160,17 +180,12 @@ function cityDesk(s) {
    <div style="font-size:13px;margin-bottom:6px">Fill the crew vault with ${num(s.crew.goal)} Moonsilver</div>
    ${bar(Math.round(100 * s.crew.vaultOre / s.crew.goal), 'l')}<div class="row" style="margin-top:6px;font-size:12px"><span class="mut">${num(s.crew.vaultOre)} / ${num(s.crew.goal)}</span><div class="sp"></div><span class="lm">You gave ${num(s.crew.youGave)}</span></div></div>` : `<div class="panel"><div class="ph"><h3>Crew</h3></div><p class="mut">No banner yet.</p>${btn('Find a crew', 'go', 'sm').replace('data-act="go"', 'data-go="crew"')}</div>`;
   const will = HEROES.will_slapton;
-  return `<div style="display:grid;grid-template-columns:1fr 318px;gap:12px;height:100%">
+  return `<div class="city-grid">
 <div class="g" style="grid-template-rows:262px auto 1fr;min-height:0">
- <div class="scene" style="background-image:url(/assets/gen/city_bg.png)">
-  <div style="position:absolute;left:20px;top:22px;z-index:2;max-width:460px">${banner}</div>
-  <div style="position:absolute;inset:0;z-index:1">${frontRow([
-    {id:'engineer', anim:'idle', x:430, y:230, scale:2.7},
-    {id:'will_slapton', anim:'skill', x:560, y:228, scale:2.7},
-    {id:'legionary', anim:'idle', x:680, y:230, scale:2.7},
-    {id:'gangster', anim:'idle', x:790, y:230, scale:2.7}
-  ])}</div>
-  <div style="position:absolute;right:14px;top:14px;z-index:2" class="row"><span class="tag l">${s.preview ? '5 heroes on shift' : Object.keys(s.heroes).length + ' heroes in hand'}</span>${s.delve ? '<span class="tag p">1 delve running</span>' : ''}</div>
+ <div class="scene city-scene" style="background-image:url(/assets/gen/city_bg.png)">
+  <div class="scene-copy">${banner}</div>
+  ${crowd([{id:'engineer', anim:'idle'}, {id:'will_slapton', anim:'skill'}, {id:'legionary', anim:'idle'}, {id:'gangster', anim:'idle'}])}
+  <div style="position:absolute;right:14px;top:14px;z-index:2" class="row scene-tags"><span class="tag l">${s.preview ? '5 heroes on shift' : Object.keys(s.heroes).length + ' heroes in hand'}</span>${s.delve ? '<span class="tag p">1 delve running</span>' : ''}</div>
  </div>
  <div class="g" style="grid-template-columns:repeat(4,1fr)">${train}${delve}
   <div class="panel"><div class="ph">${ico('mask','ico')}<div><h3>Hustles</h3><small>${s.daring} Daring ready</small></div></div>
@@ -189,12 +204,19 @@ function cityDesk(s) {
    <div class="li">${btn('Step through, 25 min', 'travel', 'sm c')}</div></div></div>
  </div>
 </div>
-<div class="panel glow" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:radial-gradient(300px 260px at 50% 30%,rgba(229,38,46,.25),transparent 70%),linear-gradient(180deg,rgba(26,15,49,.9),rgba(16,9,31,.92))">
+<div class="panel glow city-feature" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:radial-gradient(300px 260px at 50% 30%,rgba(229,38,46,.25),transparent 70%),linear-gradient(180deg,rgba(26,15,49,.9),rgba(16,9,31,.92))">
  <div class="row" style="align-self:stretch"><span class="tag p">Featured this week</span><div class="sp"></div><span class="mut" style="font-size:12px">Ends in 3d 4h</span></div>
- ${cardFront('will_slapton', s.heroes.will_slapton?.level || 1, 1.15)}
+ ${featCard(s, 1.15)}
  <div style="text-align:center;font-size:13px;line-height:1.45">${esc(will.bio)}</div>
- <div class="row">${btn('Summon for 1 sigil', 'summon')}${btn('Flip card', 'go', 'g').replace('data-act="go"', 'data-go="cards"')}</div>
+ <div class="row">${btn('Summon for 1 sigil', 'summon')}${btn('Flip card', 'flip-feat', 'g')}</div>
 </div></div>`;
+}
+
+// The featured card on the city page: the real Will Slapton card, turned over right where it sits.
+function featCard(s, z) {
+  const own = s.heroes.will_slapton;
+  return cardHTML(HEROES.will_slapton, {level: own ? own.level : 1, gear: own ? ((s.gear || {}).will_slapton || {}) : {}, stock: s.bag, z,
+    flipped: !!s.featBack, view: s.featView || 'bio', id: 'card-feat', mine: false});
 }
 
 function heroIds(s) { return HERO_ORDER.concat(Object.keys(HEROES).filter(id => !HERO_ORDER.includes(id) && s.heroes[id])); }
@@ -579,7 +601,7 @@ function phoneHome(s) {
     {id:'paramedic', anim:'idle', x:320, y:155, scale:2.0}
   ])}</div><div style="position:absolute;left:12px;top:10px;z-index:2"><div class="eb cy">Aldermere</div><div class="h" style="font-size:20px">Your squad is on shift</div></div></div>
 <div class="row" style="gap:6px"><div class="meter m-c" style="flex:1">${ico('bolt')}<div><div class="mrow"><b>Vigor</b><span class="nums">${s.vigor}/${s.vigorMax}</span></div>${bar(Math.round(100*s.vigor/s.vigorMax))}<small>+5 in 4:12</small></div></div><div class="meter m-p" style="flex:1">${ico('flame')}<div><div class="mrow"><b>Daring</b><span class="nums">${s.daring}/${s.daringMax}</span></div>${bar(Math.round(100*s.daring/s.daringMax))}<small>+1 in 2:40</small></div></div></div>
-<div class="panel glow" style="display:flex;gap:12px;align-items:center">${cardFront('will_slapton', 1, 0.68)}<div><span class="tag p">Featured</span><div class="h" style="font-size:18px;margin:4px 0">Will Slapton</div><div class="mut" style="font-size:12px">One slap stuns any enemy. Double damage if they just told a joke.</div>${btn('Summon, 1 sigil', 'summon', 'sm')}</div></div>
+<div class="panel glow" style="display:flex;gap:12px;align-items:center"><button type="button" class="feat-open" data-act="feat-open" aria-label="Turn over the Will Slapton card">${cardFront('will_slapton', s.heroes.will_slapton?.level || 1, 0.68).replace(/ data-(act|go|hero)="[^"]*"/g, '')}</button><div><span class="tag p">Featured</span><div class="h" style="font-size:18px;margin:4px 0">Will Slapton</div><div class="mut" style="font-size:12px">One slap stuns any enemy. Double damage if they just told a joke.</div>${btn('Summon, 1 sigil', 'summon', 'sm')}</div></div>
 <div class="g" style="grid-template-columns:1fr 1fr;gap:8px">
 <div class="panel" style="padding:10px"><div class="row">${ico('swords','ico')}<b>Delve</b></div>${bar(s.delve ? 48 : 0, 'p')}<small class="mut">${s.delve ? 'Floor ' + s.delve.floor : 'Quiet'}</small></div>
 <div class="panel" style="padding:10px" data-go="hustles"><div class="row">${ico('mask','ico')}<b>Hustles</b></div><small class="lm">${s.daring >= 5 ? 'Jobs ready' : 'Low Daring'}</small></div>
@@ -627,7 +649,65 @@ function tabs(s) {
   return `<nav class="tabs">${items.map(([id, icon, name]) => `<a class="${cur === id ? 'on' : ''}" href="#${id === 'skills' ? (s.active || 'mining') : id}" data-go="${id === 'skills' ? (s.active || 'mining') : id}">${ico(icon)}${name}${id === 'crew' && s.unread ? '<span class="dot"></span>' : ''}</a>`).join('')}</nav>`;
 }
 
+const NAME_WHY = {empty: 'Pick a name.', short: 'At least 3 characters.', long: 'Up to 16 characters.', chars: 'Letters, numbers, spaces, dots, dashes and underscores.', same: 'That is your name right now.', blocked: 'Pick a different name.', taken: 'Someone already has that one.'};
+export { NAME_WHY };
+function accountView(s) {
+  const ids = heroIds(s);
+  const owned = ids.filter(id => s.heroes[id]);
+  const rar = ['common','uncommon','rare','epic','legendary','absurd','unhinged'].map(r => {
+    const all = ids.filter(id => HEROES[id].rarity === r); if (!all.length) return '';
+    const have = all.filter(id => s.heroes[id]).length;
+    return `<div class="acct-r r-${r}"><span>${RARITY_NAME[r]}</span><b class="nums">${have}<small> / ${all.length}</small></b>${bar(Math.round(100 * have / all.length))}</div>`;
+  }).join('');
+  const fs = foundSet(s);
+  const setsAll = Object.keys(ERA_SETS).filter(id => HEROES[id]);
+  const setsDone = setsAll.filter(id => ERA_SETS[id].items.every(x => fs.has(x))).length;
+  const bagIds = Object.keys(s.bag || {}).filter(id => (s.bag[id] || 0) > 0);
+  const gearN = bagIds.filter(id => GEAR[id] && GEAR[id].slot !== 'belt').reduce((a, id) => a + s.bag[id], 0)
+    + Object.values(s.gear || {}).reduce((a, g) => a + Object.entries(g || {}).filter(([k, v]) => v && !k.startsWith('belt')).length, 0);
+  const potN = bagIds.filter(id => GEAR[id] && GEAR[id].slot === 'belt').reduce((a, id) => a + s.bag[id], 0);
+  const matN = bagIds.filter(id => !GEAR[id]).reduce((a, id) => a + s.bag[id], 0);
+  const skillSum = SKILLS.reduce((a, sk) => a + skillLevel(s, sk.id), 0);
+  const wait = s.nameChangedAt && Date.parse(s.nameChangedAt) > Date.now() - 7 * 864e5 ? new Date(Date.parse(s.nameChangedAt) + 7 * 864e5).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}) : '';
+  const set = s.settings || {};
+  const tog = (key, on, label, sub) => `<label class="acct-tog"><span><b>${label}</b><small>${sub}</small></span><input type="checkbox" data-act="setting" data-key="${key}" ${on ? 'checked' : ''}><i aria-hidden="true"></i></label>`;
+  const pics = ids.map(id => {
+    const have = !!s.heroes[id], on = s.avatar === id;
+    return have ? `<button type="button" class="acct-pic${on ? ' on' : ''}" data-act="avatar" data-hero="${id}" aria-pressed="${on}" title="${esc(HEROES[id].name)}"><img class="px" src="${avatarSrc(id)}" alt="${esc(HEROES[id].name)}"></button>`
+      : `<div class="acct-pic lock" title="Collect ${esc(HEROES[id].name)} to unlock"><img class="px" src="${avatarSrc(id)}" alt=""><span aria-hidden="true">?</span></div>`;
+  }).join('');
+  return `<div class="acct">
+<div class="panel glow acct-head">${avatar(s, 'big')}<div class="acct-id"><div class="eb cy">Your account</div><div class="h acct-nm">${esc(s.name)}</div><div class="mut">${s.email ? esc(s.email) : 'Signed in'}${s.crew ? ' · Crew: ' + esc(s.crew.name) : ''}</div></div></div>
+<div class="panel"><div class="ph"><h3>Your name</h3><small>${wait ? 'You can pick a new name again on ' + esc(wait) + '.' : 'Other players see this name. You can change it once a week.'}</small></div>
+ <form class="acct-name" data-act="acct-name" autocomplete="off"><label class="sr" for="acct-name">New name</label>
+  <div class="acct-field"><input id="acct-name" name="name" maxlength="16" placeholder="${esc(s.name)}" ${wait ? 'disabled' : ''} spellcheck="false"><span id="acct-name-st" class="acct-st" role="status" aria-live="polite"></span></div>
+  <button class="btn" type="submit" id="acct-name-go" disabled>Save name</button></form></div>
+<div class="panel"><div class="ph"><h3>Profile picture</h3><small>Every card you collect unlocks its picture.</small></div><div class="acct-pics">${pics}</div>
+ ${s.avatar ? `<div class="row" style="margin-top:10px">${btn('Use my first letter instead', 'avatar', 'sm g').replace('data-act="avatar"', 'data-act="avatar" data-hero=""')}</div>` : ''}</div>
+<div class="panel"><div class="ph"><h3>What you own</h3><small>Everything on this account right now.</small></div>
+ <div class="acct-own">
+  <div class="acct-k"><img class="px" src="/assets/gen/coin.png" alt=""><b class="nums">${num(s.gold)}</b><small>Gold</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/summon_sigil.png" alt=""><b class="nums">${num(s.sigils)}</b><small>Sigils</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/cards.png" alt=""><b class="nums">${owned.length}<small> / ${ids.length}</small></b><small>Heroes</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/chest.png" alt=""><b class="nums">${num(gearN)}</b><small>Gear pieces</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/flask.png" alt=""><b class="nums">${num(potN)}</b><small>Potions</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/pickaxe.png" alt=""><b class="nums">${num(matN)}</b><small>Materials</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/banner.png" alt=""><b class="nums">${setsDone}<small> / ${setsAll.length}</small></b><small>Era sets done</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/swords.png" alt=""><b class="nums">${s.deepest || 1}</b><small>Deepest floor</small></div>
+  <div class="acct-k"><img class="px" src="/assets/gen/tower.png" alt=""><b class="nums">${skillSum}</b><small>Total skill level</small></div>
+ </div>
+ <div class="acct-rar">${rar}</div>
+ <div class="row" style="margin-top:10px">${btn('Open the bank', 'go', 'sm g').replace('data-act="go"', 'data-go="bank"')}${btn('See collections', 'go', 'sm g').replace('data-act="go"', 'data-go="collections"')}</div></div>
+<div class="panel"><div class="ph"><h3>Settings</h3><small>Saved to your account.</small></div>
+ ${tog('motion', set.motion === 'reduced', 'Calmer screens', 'Stops the heroes and scenes from moving.')}
+ ${tog('updates', set.updates !== false, 'Update notices', 'Shows the bar when something new lands.')}
+ ${tog('install', set.install !== false, 'Install button', 'Shows the button that puts OverSummoned on your device.')}
+ <div class="row acct-out">${btn('Sign out', 'signout', 'g')}<a class="mut" href="/updates" style="font-size:12px;margin-left:auto">Update log</a><a class="mut" href="/privacy" style="font-size:12px">Privacy</a><a class="mut" href="/terms" style="font-size:12px">Terms</a></div></div>
+</div>`;
+}
+
 function desktopBody(s) {
+  if (s.view === 'account') return accountView(s);
   const v = s.view;
   if (v === 'city') return cityDesk(s);
   if (SKILLS.some(sk => sk.id === v)) return skillView(s, v);
@@ -645,7 +725,7 @@ function desktopBody(s) {
   return cityDesk(s);
 }
 
-const CRUMB = {city:['Aldermere','City Hub'], mining:['Skills','Mining'], woodcutting:['Skills','Woodcutting'], fishing:['Skills','Fishing'], cooking:['Skills','Cooking'], smithing:['Skills','Smithing'], alchemy:['Skills','Alchemy'], summoning:['Skills','Summoning'], cards:['Adventure','Cards'], collections:['Adventure','Collections'], delve:['Adventure','Delve'], bank:['Adventure','Bank'], market:['The City','Market'], hustles:['The City','Hustles'], crew:['The City','Crew'], travel:['The City','Travel'], infirmary:['The City','Infirmary'], crier:['The City','The Crier'], welcome:['Aldermere','Welcome back']};
+const CRUMB = {city:['Aldermere','City Hub'], mining:['Skills','Mining'], woodcutting:['Skills','Woodcutting'], fishing:['Skills','Fishing'], cooking:['Skills','Cooking'], smithing:['Skills','Smithing'], alchemy:['Skills','Alchemy'], summoning:['Skills','Summoning'], cards:['Adventure','Cards'], collections:['Adventure','Collections'], delve:['Adventure','Delve'], bank:['Adventure','Bank'], market:['The City','Market'], hustles:['The City','Hustles'], crew:['The City','Crew'], travel:['The City','Travel'], infirmary:['The City','Infirmary'], crier:['The City','The Crier'], welcome:['Aldermere','Welcome back'], account:['You','Account']};
 
 export function render(s) {
   GEARS = s.gear || {};
@@ -656,7 +736,7 @@ export function render(s) {
     else if (s.view === 'cards') body = phoneCard(s);
     else if (s.view === 'city') body = phoneHome(s);
     else body = desktopBody(s);
-    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${installBtn()}${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span><button class="bell" type="button" data-go="crew">${ico('banner')}${s.unread ? `<b>${s.unread}</b>` : ''}</button></header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
+    return `<div class="phone"><header class="ptop"><img class="logo" src="/assets/logo.svg" alt="OverSummoned"><div class="sp"></div>${installBtn()}${s.isAdmin ? sigilBtn(true) : ''}<span class="chip">${ico('coin')}${num(s.gold)}</span>${meBtn(s)}</header><div class="pbody">${body}</div>${nowbar(s)}${tabs(s)}</div>`;
   }
   const crumb = CRUMB[s.view] || CRUMB.city;
   return `<div class="app">${rail(s)}<div class="main">${top(s, crumb[0], crumb[1])}<div class="content">${desktopBody(s)}</div></div></div>`;

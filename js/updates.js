@@ -54,6 +54,8 @@
       var latest = d.entries[0].v, last = seen();
       if (location.pathname === '/updates' || location.pathname === '/updates.html') { markSeen(latest); return; }
       if (!last) { markSeen(latest); return; }
+      var off = false; try { off = localStorage.getItem('os_updates_off') === '1'; } catch (e) {}
+      if (off && !reload) { markSeen(latest); return; }
       if (last === latest) return;
       var newer = [];
       for (var i = 0; i < d.entries.length && d.entries[i].v !== last && newer.length < 2; i++) newer.push(d.entries[i]);

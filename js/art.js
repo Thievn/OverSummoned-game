@@ -17,13 +17,15 @@ function toUrl(data) {
 export function registerArt(id, a) {
   if (!a || !id) return;
   const o = OWN[id] = {sideMeta: a.sideMeta || null, frontMeta: a.frontMeta || null, front: {}};
-  o.portrait = toUrl(a.portrait); o.back = toUrl(a.back); o.side = toUrl(a.side);
+  o.portrait = toUrl(a.portrait); o.back = toUrl(a.back); o.side = toUrl(a.side); o.avatar = toUrl(a.avatar);
   for (const [k, v] of Object.entries(a.front || {})) o.front[k] = toUrl(v);
   for (const [k, v] of Object.entries(a.icons || {})) ICONS[k] = toUrl(v);
 }
 
 export const hasArt = (id) => !!OWN[id];
 export const portraitSrc = (id) => (OWN[id] && OWN[id].portrait) || `/assets/portrait/${id}.png`;
+// Profile pictures: pixel head shots made from each card's art.
+export const avatarSrc = (id) => (OWN[id] && (OWN[id].avatar || OWN[id].portrait)) || `/assets/avatar/${id}.png`;
 export const backSrc = (id, gif) => (OWN[id] && OWN[id].back) || `/card_backs/${gif || id}.gif`;
 export const sideSrc = (id) => (OWN[id] && OWN[id].side) || `/assets/sprites/${id}.png`;
 export const sideMeta = (id) => (OWN[id] && OWN[id].sideMeta) || null;

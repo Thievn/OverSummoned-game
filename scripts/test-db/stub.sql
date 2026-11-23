@@ -77,4 +77,4 @@ insert into os_hero_def values ('legionary','Gaius Marcellus','t','common','e',f
 insert into os_hero_def values ('office_worker','Kevin Latham','t','common','e',false,array['group_chat','inflatable_tube_man','stained_mug']::text[]);
 insert into os_hero_def values ('paramedic','Maya Washington','t','common','e',false,array['defib_paddles','trauma_shears','medic_bag']::text[]);
 insert into os_hero_def values ('plague_doctor','Doctor Albrecht','t','common','e',false,array['beak_mask','waxed_coat','herb_pomander']::text[]);
-insert into os_hero_def values ('will_slapton','Will Slapton','t','common','e',false,array['item_red_carpet_tux','item_golden_statuette']::text[]);
+insert into os_hero_def values ('will_slapton','Will Slapton','t','common','e',false,array['item_red_carpet_tux','item_golden_statuette']::text[]);create table if not exists public.blocked_terms(term text primary key, note text, created_at timestamptz default now());

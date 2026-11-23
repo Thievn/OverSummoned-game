@@ -1,8 +1,8 @@
 import { SB_URL, SB_KEY, HEROES, ITEMS, GEAR_OF } from './catalog.js';
 import { registerArt } from './art.js';
 import { bibleState, freshState, tick, dispatch } from './engine.js';
-import { render, gate } from './ui.js';
-import { bindCards, setGearProvider, isOpen, hideTip } from './gearui.js';
+import { render, gate, NAME_WHY } from './ui.js';
+import { bindCards, setGearProvider, isOpen, hideTip, flipCard } from './gearui.js';
 import { GEAR, ERA_SETS, HERO_BASE } from './gear.js';
 import { coins } from './fight.js';
 
@@ -32,9 +32,89 @@ function paint() {
   state.phone = matchMedia('(max-width: 860px)').matches;
   state.view = (location.hash || '#city').slice(1) || 'city';
   if (state.view === 'skills') state.view = state.active || 'mining';
+  const keep = document.activeElement && document.activeElement.id === 'acct-name' ? {v: document.activeElement.value, st: (document.getElementById('acct-name-st') || {}).outerHTML} : null;
   root.innerHTML = render(state);
+  if (keep) { const i = document.getElementById('acct-name'); if (i) { i.value = keep.v; i.focus(); nameInput(i, true); } }
+  applySettings();
   if (params.get('shot') === '1') document.body.classList.add('still');
   if (heroModal) showHero(heroModal);
+}
+
+// ---------- account ----------
+const LOCAL_SET = 'os_settings';
+function applySettings() {
+  const set = (state && state.settings) || {};
+  document.body.classList.toggle('still', set.motion === 'reduced' || params.get('shot') === '1');
+  try {
+    localStorage.setItem(LOCAL_SET, JSON.stringify(set));
+    if (set.updates === false) localStorage.setItem('os_updates_off', '1'); else localStorage.removeItem('os_updates_off');
+    if (set.install === false) localStorage.setItem('os_install_off', '1'); else localStorage.removeItem('os_install_off');
+  } catch (e) {}
+  document.documentElement.classList.toggle('no-install', set.install === false);
+}
+function localNameCheck(n) {
+  n = (n || '').trim();
+  if (!n) return {ok: false, why: 'empty'};
+  if (n.length < 3) return {ok: false, why: 'short'};
+  if (n.length > 16) return {ok: false, why: 'long'};
+  if (!/^[A-Za-z0-9][A-Za-z0-9_ .-]*[A-Za-z0-9]$/.test(n) || /[ _.-]{2,}/.test(n)) return {ok: false, why: 'chars'};
+  if (n.toLowerCase() === String(state.name || '').toLowerCase()) return {ok: false, why: 'same'};
+  return null;
+}
+let nameSeq = 0, nameTimer = 0;
+function nameStatus(r, n) {
+  const st = document.getElementById('acct-name-st'), go = document.getElementById('acct-name-go');
+  if (!st || !go) return;
+  const i = document.getElementById('acct-name');
+  if (!i || i.value.trim() !== n) return;
+  st.className = 'acct-st ' + (r === 'wait' ? 'wait' : r.ok ? 'ok' : 'no');
+  st.innerHTML = r === 'wait' ? '<i></i>Checking…' : r.ok ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Available' : (NAME_WHY[r.why] || 'Pick a different name.');
+  go.disabled = !(r !== 'wait' && r.ok);
+}
+function nameInput(i, now) {
+  const n = i.value.trim(), seq = ++nameSeq;
+  clearTimeout(nameTimer);
+  const st = document.getElementById('acct-name-st'), go = document.getElementById('acct-name-go');
+  if (!n) { if (st) { st.className = 'acct-st'; st.textContent = ''; } if (go) go.disabled = true; return; }
+  const quick = localNameCheck(n);
+  if (quick) { nameStatus(quick, n); return; }
+  nameStatus('wait', n);
+  nameTimer = setTimeout(async () => {
+    let r;
+    if (remote && sb) { const {data, error} = await sb.rpc('os_name_check', {p_name: n}); r = error ? {ok: false, why: 'chars'} : data; }
+    else r = ['dean', 'admin', 'aldermere', 'tobias'].includes(n.toLowerCase()) ? {ok: false, why: 'taken'} : {ok: true};
+    if (seq === nameSeq) nameStatus(r, n);
+  }, now ? 0 : 320);
+}
+document.addEventListener('input', (e) => { if (e.target && e.target.id === 'acct-name') nameInput(e.target); });
+async function accountAct(type, data, form) {
+  if (type === 'acct-name') {
+    const n = new FormData(form).get('name').trim();
+    if (remote) { const {data: d, error} = await sb.rpc('os_set_name', {p_name: n}); if (error) { toast(human(error)); return true; } applyServer(d); }
+    else { state.name = n; state.nameChangedAt = new Date().toISOString(); }
+    toast('You are ' + n + ' now.'); paint(); return true;
+  }
+  if (type === 'avatar') {
+    const h = data.hero || '';
+    if (remote) { const {data: d, error} = await sb.rpc('os_set_avatar', {p_hero: h}); if (error) { toast(human(error)); return true; } applyServer(d); }
+    else { if (h && !state.heroes[h]) { toast('Collect that card first.'); return true; } state.avatar = h || null; }
+    toast(h ? 'New profile picture.' : 'Back to your first letter.'); paint(); return true;
+  }
+  if (type === 'setting') {
+    const on = !!(form && form.checked);
+    const v = data.key === 'motion' ? (on ? 'reduced' : 'full') : on;
+    state.settings = Object.assign({}, state.settings, {[data.key]: v});
+    applySettings(); if (window.osPwa) window.osPwa.sync();
+    if (remote) { const {data: d, error} = await sb.rpc('os_save_settings', {p: {[data.key]: v}}); if (error) toast(human(error)); else state.settings = d; }
+    paint(); return true;
+  }
+  if (type === 'signout') {
+    if (sb) await sb.auth.signOut().catch(() => {});
+    location.replace('/'); return true;
+  }
+  if (type === 'feat-open') { state.sel = 'will_slapton'; state.showBack = true; state.cardView = 'bio'; location.hash = 'cards'; return true; }
+  if (type === 'flip-feat') { const c = document.getElementById('card-feat'); if (c) flipCard(c); return true; }
+  return false;
 }
 
 function showHero(hero) {
@@ -52,6 +132,9 @@ function showHero(hero) {
 
 function act(type, data, form) {
   if (type === 'go') return;
+  if (['acct-name', 'avatar', 'setting', 'signout', 'flip-feat', 'feat-open'].includes(type) || (type === 'submit' && form && form.getAttribute('data-act') === 'acct-name')) {
+    accountAct(type === 'submit' ? 'acct-name' : type, data, form); return;
+  }
   const map = {
     stop: {type:'stop'},
     collect: {type:'collect'},
@@ -208,6 +291,9 @@ function applyServer(data) {
   state.vigor = p.vigor ?? state.vigor;
   state.daring = p.daring ?? state.daring;
   state.name = p.name || state.name;
+  state.avatar = p.avatar || null;
+  state.nameChangedAt = p.name_changed_at || null;
+  if (p.settings) state.settings = p.settings;
   state.deepest = p.deepest || 1;
   state.party = p.party || [];
   state.rules = p.rules || state.rules;
@@ -331,8 +417,8 @@ setGearProvider((card) => {
   return {gear: (state.gear || {})[id] || {}, level: state.heroes[id].level || 1, bag: state.bag, mine: card.dataset.mine === '1'};
 });
 bindCards();
-document.addEventListener('os-flip', (e) => { if (state) state.showBack = e.detail.flipped; });
-document.addEventListener('os-view', (e) => { if (state) state.cardView = e.detail.view; });
+document.addEventListener('os-flip', (e) => { if (!state) return; if (e.target && e.target.id === 'card-feat') state.featBack = e.detail.flipped; else state.showBack = e.detail.flipped; });
+document.addEventListener('os-view', (e) => { if (!state) return; if (e.target && e.target.closest && e.target.closest('#card-feat')) state.featView = e.detail.view; else state.cardView = e.detail.view; });
 document.addEventListener('os-equip', async (e) => {
   const {hero, slot, item} = e.detail;
   if (!state) return;
@@ -357,11 +443,12 @@ root.addEventListener('click', (e) => {
     return;
   }
   const t = e.target.closest('[data-act]');
-  if (!t) return;
+  if (!t || t.tagName === 'FORM' || t.matches('input')) return;
   e.preventDefault();
   act(t.dataset.act, t.dataset, t.closest('form'));
 });
 root.addEventListener('change', (e) => {
+  if (e.target.matches && e.target.matches('input[data-act="setting"]')) { act('setting', e.target.dataset, e.target); return; }
   const sel = e.target.closest('select[data-act="hero-skill"]');
   if (!sel) return;
   if (remote) { remoteAct({type:'hero-skill', skill: sel.dataset.skill, hero: sel.value}); return; }
@@ -428,6 +515,8 @@ async function boot() {
     return;
   }
   state = freshState((session.user.email || 'Summoned').split('@')[0]);
+  state.email = session.user.email || '';
+  try { state.settings = JSON.parse(localStorage.getItem(LOCAL_SET) || '{}'); } catch (e) { state.settings = {}; }
   state.freeze = false;
   state.pickMin = 15;
   try {

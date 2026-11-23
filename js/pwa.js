@@ -7,7 +7,8 @@
   var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   function installed() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
   function track(name) { try { if (window.gtag) gtag('event', name); } catch (e) {} }
-  function sync() { root.classList.toggle('can-install', !installed() && (!!deferred || ios)); }
+  function hidden() { try { return localStorage.getItem('os_install_off') === '1'; } catch (e) { return false; } }
+  function sync() { root.classList.toggle('can-install', !installed() && !hidden() && (!!deferred || ios)); }
   if (installed()) root.classList.add('is-app');
 
   addEventListener('beforeinstallprompt', function (ev) { ev.preventDefault(); deferred = ev; sync(); });

@@ -2,7 +2,7 @@
 // and never stores sign-in, account or game-server answers: only same-site pages, styles,
 // scripts and art, plus the one pinned client library from jsDelivr.
 // VERSION is stamped by scripts/build-updates.mjs from the newest updates.json entry.
-const VERSION = '2026.11.23.4';
+const VERSION = '2026.11.23.5';
 const SHELL = 'os-shell-' + VERSION;
 const ART = 'os-art-v1';
 const ART_MAX = 400;
