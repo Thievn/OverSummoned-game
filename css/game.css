@@ -1,0 +1,43 @@
+button.btn, a.btn { font-family: 'Space Grotesk', sans-serif; cursor: pointer; text-decoration: none; }
+button.slot, button.panel, button.mini-card, button.bell, button.tag {
+  font: inherit; color: inherit; cursor: pointer; background: none;
+}
+button.slot { padding: 0; }
+button.panel { width: 100%; }
+button.mini-card { border: 0; }
+button.bell { padding: 0; }
+button.tag { background: rgba(255,255,255,.06); }
+.face-r { transform: scaleX(-1); }
+.rail { overflow: auto; }
+.content { overflow: auto; }
+.pbody { overflow: auto; }
+.phone { height: 100vh; height: 100dvh; }
+select, input, textarea {
+  font: inherit; color: var(--ink); background: #100818; border: 1px solid var(--line2); border-radius: 10px; padding: 8px 10px;
+}
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: #160c28; border: 1px solid var(--line2); color: var(--ink);
+  padding: 10px 16px; border-radius: 12px; opacity: 0; pointer-events: none; z-index: 80;
+  box-shadow: 0 10px 40px rgba(0,0,0,.45);
+}
+.toast.on { opacity: 1; }
+.pop { position: fixed; inset: 0; background: rgba(0,0,0,.62); display: grid; place-items: center; z-index: 70; padding: 16px; }
+.land { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+.land-top { height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+.land-top .logo { height: 28px; }
+.land-main { width: min(1120px, 100%); margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 14px; }
+.land h1 { font-family: 'Pixelify Sans', sans-serif; font-size: clamp(32px, 6vw, 54px); line-height: 1.02; }
+.land .pitch { color: var(--mut); font-size: 16px; max-width: 46ch; }
+.wl { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.wl input[type=email] { flex: 1 1 220px; min-width: 0; }
+.fine { color: var(--dim); font-size: 13px; margin-top: 8px; }
+dialog { background: #130a24; color: var(--ink); border: 1px solid var(--line2); border-radius: 16px; width: min(420px, 92vw); }
+dialog::backdrop { background: rgba(0,0,0,.7); }
+.dl { padding: 18px; display: grid; gap: 10px; }
+@media (min-width: 980px) {
+  .land-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; align-items: start; }
+}
+.ledger-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ledger-table th, .ledger-table td { text-align: left; padding: 8px 6px; border-top: 1px solid var(--line); }
+.ledger-table th { color: var(--dim); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }

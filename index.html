@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07040d">
+<title>OverSummoned</title>
+<meta name="description" content="OverSummoned. Heroes from every era keep working while you are away. Aldermere is not open yet.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TCB64F0VEP"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TCB64F0VEP');</script>
+<link rel="stylesheet" href="/css/mocks.css">
+<link rel="stylesheet" href="/css/game.css">
+</head>
+<body>
+<div class="land">
+<header class="land-top">
+  <img class="logo" src="/assets/logo.svg" alt="OverSummoned">
+  <div class="sp"></div>
+  <button class="btn g sm" id="openlogin" type="button">Log in</button>
+</header>
+<main class="land-main">
+  <div class="scene" style="height:min(42vw,280px);min-height:200px;background-image:url(/assets/gen/city_bg.png)">
+    <div style="position:absolute;inset:0;z-index:1;overflow:hidden" id="parade"></div>
+    <div style="position:absolute;left:16px;top:16px;z-index:2;max-width:640px">
+      <div class="eb cy">Aldermere</div>
+      <h1>Your heroes never stop working.</h1>
+    </div>
+  </div>
+  <div class="land-grid">
+    <div class="panel glow">
+      <p class="pitch">Aldermere pulls people out of every era, puts a craft in their hands, and sends them under the city. Close the door. Come back to what they carried home.</p>
+      <p class="pitch" style="margin-top:8px">The gates are still shut. Leave your name.</p>
+      <form class="wl" id="wl" novalidate>
+        <label class="hp" for="em">Email</label>
+        <input id="em" type="email" autocomplete="email" placeholder="you@email.com" required>
+        <label class="hp" for="co">Company</label>
+        <input class="hp" id="co" name="company" tabindex="-1" autocomplete="off">
+        <button class="btn" id="wlbtn" type="submit">Put me on the list</button>
+      </form>
+      <div id="wlmsg" role="status"></div>
+      <p class="fine">We don't spam.</p>
+    </div>
+    <div class="panel glow" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:radial-gradient(240px 180px at 50% 20%,rgba(229,38,46,.28),transparent 70%)">
+      <span class="tag p">Featured</span>
+      <div class="card r-absurd" style="--z:1.05"><div class="card-in">
+        <div class="card-top"><span class="gem"></span><span class="rar">Absurd</span><span class="lvl">Lv 1</span></div>
+        <div class="card-art"><img class="px" src="/assets/portrait/will_slapton.png" alt="Will Slapton"></div>
+        <div class="card-name h">Will Slapton</div>
+        <div class="card-title">Leading Man</div>
+        <div class="card-stats"><span class="s-str"><small>Might</small><b>16</b></span><span class="s-def"><small>Guard</small><b>9</b></span><span class="s-wit"><small>Knack</small><b>13</b></span></div>
+        <div class="card-era">Hollywood, 2022</div>
+      </div></div>
+      <p style="font-size:13px;text-align:center">One slap stuns any enemy. Double damage if they just told a joke.</p>
+    </div>
+  </div>
+  <div class="g" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/pickaxe.png" alt=""><h3>Train</h3></div><p class="mut">Mining, cooking, smithing. The work keeps going for a day while you are gone.</p></div>
+    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/swords.png" alt=""><h3>Delve</h3></div><p class="mut">Send three heroes down. Watch the fight. Bring the pack home.</p></div>
+    <div class="panel"><div class="ph"><img class="ico px" src="/assets/gen/cards.png" alt=""><h3>Collect</h3></div><p class="mut">Every hero is a card. Flip it. The back moves. Sets and copies make them stronger.</p></div>
+  </div>
+  <footer class="dim" style="font-size:13px;padding:8px 0 24px">OverSummoned. 18+. Free. The city is not open yet.</footer>
+</main>
+</div>
+<dialog id="login"><div class="dl">
+  <h3 class="h" style="font-size:26px">The door is shut.</h3>
+  <p class="mut">Only one guest gets in for now. Everyone else, leave a name and wait for the lights.</p>
+  <button class="btn" id="gbtn" type="button">Continue with Google</button>
+  <button class="btn g" id="lclose" type="button">Never mind</button>
+  <div id="lmsg" role="alert" class="pk"></div>
+</div></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  var SB='https://eresamyqxarlrdgudgrw.supabase.co', KEY='sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
+  var parade=document.getElementById('parade');
+  parade.innerHTML='<div class="sprite fsp" style="width:127px;height:122px;left:40px;top:70px;background-image:url(/assets/front/engineer_idle.png);background-size:1016px 122px;animation:fs 880ms steps(8) infinite;--sw:-1016px"></div><div class="sprite fsp" style="width:151px;height:137px;left:150px;top:58px;background-image:url(/assets/front/will_slapton_skill.png);background-size:1661px 137px;animation:fs 1210ms steps(11) infinite;--sw:-1661px"></div><div class="sprite fsp" style="width:112px;height:100px;left:300px;top:88px;background-image:url(/assets/front/legionary_idle.png);background-size:896px 100px;animation:fs 880ms steps(8) infinite;--sw:-896px"></div>';
+  var wl=document.getElementById('wl'), msg=document.getElementById('wlmsg'), btn=document.getElementById('wlbtn');
+  wl.addEventListener('submit', function(e){
+    e.preventDefault();
+    var em=document.getElementById('em').value.trim();
+    msg.textContent='';
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ msg.style.color='var(--pink)'; msg.textContent="That's not an email. Try again."; return; }
+    btn.disabled=true;
+    fetch(SB+'/functions/v1/waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,company:wl.elements.company.value})})
+      .then(function(r){return r.json().catch(function(){return{}})})
+      .then(function(j){
+        if(j&&j.ok){ msg.style.color='var(--lime)'; msg.textContent=j.dupe?"You're already on the list.":"You're on the list."; if(!j.dupe){try{gtag('event','waitlist_join')}catch(e){}} wl.reset(); }
+        else { msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; }
+      })
+      .catch(function(){ msg.style.color='var(--pink)'; msg.textContent="That did not go through. Try again in a minute."; })
+      .then(function(){ btn.disabled=false; });
+  });
+  var dlg=document.getElementById('login'), lm=document.getElementById('lmsg'), client=null;
+  try{ client=window.supabase.createClient(SB,KEY,{auth:{persistSession:true,detectSessionInUrl:true}});}catch(e){}
+  function say(t){ lm.textContent=t||''; }
+  document.getElementById('openlogin').onclick=function(){ say(''); dlg.showModal&&dlg.showModal(); };
+  document.getElementById('lclose').onclick=function(){ dlg.close(); };
+  function deny(){ say("You're not on the guest list yet. Leave your name and wait for the lights."); if(client) client.auth.signOut(); }
+  function check(){ if(!client) return; return client.auth.getSession().then(function(r){ var s=r.data&&r.data.session; if(!s) return;
+    return client.from('den_allow').select('email').maybeSingle().then(function(q){ if(q.data) location.replace('/play'); else if(!q.error){ deny(); dlg.showModal&&dlg.showModal(); } }); }); }
+  document.getElementById('gbtn').onclick=function(){ if(!client) return say('The door is warming up. Try again in a second.');
+    client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/'}}).then(function(r){ if(r.error) say('Google did not open. Try again.'); }); };
+  if(/[?&]login=1/.test(location.search)||/[?&]denied/.test(location.search)) setTimeout(function(){ if(/denied/.test(location.search)) deny(); dlg.showModal&&dlg.showModal(); }, 200);
+  check();
+})();
+</script>
+</body>
+</html>
