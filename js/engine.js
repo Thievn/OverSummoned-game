@@ -1,6 +1,6 @@
 import {
   HEROES, ITEMS, NODES, SKILLS, HUSTLES, DELVE_LENGTHS, DEFAULT_CONFIG,
-  levelFromXp, xpForLevel, mentionsHero, GEAR_OF
+  levelFromXp, xpForLevel, hustleFromXp, hustleXpFor, mentionsHero, GEAR_OF
 } from './catalog.js';
 import { heroTotals, partyFor, partyFx, simulate, roomsFor, canEquip, heroOutFx, fasterMult, luckWeights, makeRng } from './fight.js';
 import { GEAR, ALL_SLOTS, slotKind, EXAMPLE_GEAR } from './gear.js';
@@ -84,7 +84,7 @@ export function bibleState() {
   s.lifeMax = 340;
   s.deepest = 10;
   s.floor = 7;
-  s.hustleXp = xpForLevel(23) + 40;
+  s.hustleXp = hustleXpFor(23) + 40;
   const levels = {mining:42, woodcutting:31, fishing:28, cooking:35, smithing:39, alchemy:22, summoning:18};
   const mastery = {mining:{copper:99, iron:87, moonsilver:41}, woodcutting:{ash:40}, fishing:{eel:30}, cooking:{stew:50}, smithing:{iron:60, moon:20}, alchemy:{draught:10}, summoning:{whisper:20}};
   SKILLS.forEach(sk => {
@@ -171,11 +171,11 @@ export function bibleState() {
   ];
   s.listings = [
     {id:'moon', item:'moonsilver_bar', price:41, qty:1204, today:12},
-    {id:'ember', item:'ember_ore', price:88, qty:310, today:4},
+    {id:'ember', item:'ember_ore', price:7, qty:310, today:4},
     {id:'stew', item:'eel_stew', price:9, qty:8842, today:-3},
     {id:'pink', item:'potion_pink', name:'Healing draught', price:64, qty:520, today:1},
     {id:'pack', item:'card_pack', name:'Card pack', price:1250, qty:96, today:22},
-    {id:'gem', item:'gem_violet', price:2400, qty:41, today:-8}
+    {id:'gem', item:'gem_violet', price:150, qty:41, today:-8}
   ];
   s.cardListings = [
     {id:'c1', hero:'gangster', level:2, seller:'Kaz_99', price:18500},
@@ -204,7 +204,7 @@ export function bibleState() {
   return s;
 }
 
-function xpNeedSafe(lv){ return Math.round(40 * Math.pow(lv, 1.55) + 20 * lv); }
+function xpNeedSafe(lv){ return Math.round(8 * Math.pow(lv, 2.6) + 80 * lv); }
 
 export function skillLevel(state, id) {
   return levelFromXp(state.skills[id].xp).level;
@@ -517,11 +517,8 @@ function grantHero(state, id, announce) {
 function doHustle(state, id, out) {
   const job = HUSTLES.find(j => j.id === id);
   if (!job) return out;
-  if (job.locked || (job.need && skillLevel(state, 'summoning') < 0 && hustleLevel(state) < job.need)) {
-    out.toast = 'That job is still locked.';
-    return out;
-  }
-  if (hustleLevel(state) < (job.need || 1) && job.locked) { out.toast = 'That job is still locked.'; return out; }
+  if (job.locked) { out.toast = 'That job is still locked.'; return out; }
+  if (hustleLevel(state) < (job.need || 1)) { out.toast = 'That job opens at Hustle Lv ' + job.need + '.'; return out; }
   if (state.stocksUntil > state.now) { out.toast = 'You are in the Stocks.'; return out; }
   if (state.daring < job.daring) { out.toast = 'Not enough Daring.'; return out; }
   state.daring -= job.daring;
@@ -529,7 +526,7 @@ function doHustle(state, id, out) {
   const g = state.heroes.gangster;
   if (g) chance = Math.min(95, chance + 15);
   const ok = rng(state) * 100 < chance;
-  state.hustleXp += 20;
+  state.hustleXp += ok ? (job.xp || 0) : Math.floor((job.xp || 0) / 2);
   if (ok) {
     const hg = partyFx(partyFor(state.party.map(pid => ({id: pid, level: state.heroes[pid]?.level || 1})), state.gear)).hustle_gold || 0;
     const gold = Math.floor((job.gold[0] + Math.floor(rng(state) * (job.gold[1] - job.gold[0] + 1))) * (1 + Math.min(100, hg) / 100));
@@ -554,7 +551,7 @@ function doHustle(state, id, out) {
 }
 
 export function hustleLevel(state) {
-  return levelFromXp(state.hustleXp).level;
+  return hustleFromXp(state.hustleXp).level;
 }
 
 function vigorCost(minutes, floor) {
@@ -641,19 +638,29 @@ function priceOf(state, item) {
   return ITEMS[item]?.value || 5;
 }
 
+// What the city pays: each item's own sell value, in copper (10,000 copper is 1 gold). The stall's price is what it charges.
+export function sellCopper(item) {
+  const it = ITEMS[item];
+  if (!it || it.keep) return 0;
+  return it.sell != null ? it.sell : Math.round((it.value || 0) * 10000);
+}
+
 function sell(state, item, qty, out) {
   const have = state.bag[item] || 0;
   qty = Math.max(1, Math.min(qty, have));
   if (!ITEMS[item] || qty < 1 || have < 1) { out.toast = 'Nothing to sell.'; return out; }
-  const gross = priceOf(state, item) * qty;
+  if (ITEMS[item].keep) { out.toast = 'The circle keeps those. They cannot be sold.'; return out; }
+  const gross = sellCopper(item) * qty;
   const fee = Math.round(gross * (state.config.marketFee || 0));
-  const net = Math.max(1, gross - fee);
+  const total = Math.max(1, gross - fee) + (state.copper || 0);
+  const net = Math.floor(total / 10000);
+  state.copper = total % 10000;
   state.bag[item] = have - qty;
   if (state.bag[item] <= 0) delete state.bag[item];
   state.gold += net;
-  state.trades.push({item, price: priceOf(state, item), qty, at: state.now});
+  state.trades.push({item, price: sellCopper(item) / 10000, qty, at: state.now});
   state.events.push({kind:'trade', ref:item, qty: net, at: state.now});
-  out.toast = 'Sold for ' + net + ' gold.';
+  out.toast = net ? 'Sold for ' + net + ' gold.' : 'Sold for a few coppers.';
   out.gold = net;
   return out;
 }

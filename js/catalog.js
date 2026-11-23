@@ -25,21 +25,21 @@ export const HERO_ORDER = ['will_slapton','legionary','gangster','engineer','pla
 export const FIND_NAMES = Object.values(HEROES).flatMap(h => [h.name, h.name.split(' ')[0], h.id.replaceAll('_',' ')]);
 
 export const ITEMS = {
-  copper_ore:{name:'Copper ore', rarity:'common', icon:'copper_ore', kind:'mat', value:2},
-  iron_ore:{name:'Iron ore', rarity:'common', icon:'iron_ore', kind:'mat', value:4},
-  moonsilver_ore:{name:'Moonsilver ore', rarity:'rare', icon:'moonsilver_ore', kind:'mat', value:18},
-  ember_ore:{name:'Ember ore', rarity:'epic', icon:'ember_ore', kind:'mat', value:40},
-  void_ore:{name:'Void ore', rarity:'epic', icon:'void_ore', kind:'mat', value:70},
-  gem_violet:{name:'Violet gem', rarity:'epic', icon:'gem_violet', kind:'mat', value:2400},
-  ash_log:{name:'Ash log', rarity:'common', icon:'ash_log', kind:'mat', value:2},
-  raw_eel:{name:'Raw eel', rarity:'common', icon:'raw_eel', kind:'food', value:3},
-  eel_stew:{name:'Eel stew', rarity:'uncommon', icon:'eel_stew', kind:'food', value:9, heal:28},
-  potion_pink:{name:'Healing draught', rarity:'rare', icon:'potion_pink', kind:'food', value:64, heal:70},
-  potion_cyan:{name:'Guard oil', rarity:'rare', icon:'potion_cyan', kind:'food', value:64},
-  iron_bar:{name:'Iron bar', rarity:'uncommon', icon:'iron_bar', kind:'mat', value:14},
-  moonsilver_bar:{name:'Moonsilver bar', rarity:'rare', icon:'moonsilver_bar', kind:'mat', value:41, blurb:'Cold to the touch and glowing. Smiths turn it into blades that hurt ghosts.'},
-  card_shard:{name:'Card shard', rarity:'rare', icon:'cards', kind:'mat', value:80},
-  summon_sigil:{name:'Summoning sigil', rarity:'legendary', icon:'summon_sigil', kind:'mat', value:500},
+  copper_ore:{name:'Copper ore', rarity:'common', icon:'copper_ore', kind:'mat', value:0.17, sell:1700},
+  iron_ore:{name:'Iron ore', rarity:'common', icon:'iron_ore', kind:'mat', value:0.36, sell:3600},
+  moonsilver_ore:{name:'Moonsilver ore', rarity:'rare', icon:'moonsilver_ore', kind:'mat', value:0.85, sell:8500},
+  ember_ore:{name:'Ember ore', rarity:'epic', icon:'ember_ore', kind:'mat', value:2.9, sell:29000},
+  void_ore:{name:'Void ore', rarity:'epic', icon:'void_ore', kind:'mat', value:5.8, sell:58000},
+  gem_violet:{name:'Violet gem', rarity:'epic', icon:'gem_violet', kind:'mat', value:60, sell:600000},
+  ash_log:{name:'Ash log', rarity:'common', icon:'ash_log', kind:'mat', value:3, sell:30000},
+  raw_eel:{name:'Raw eel', rarity:'common', icon:'raw_eel', kind:'food', value:0.18, sell:1800},
+  eel_stew:{name:'Eel stew', rarity:'uncommon', icon:'eel_stew', kind:'food', value:9, sell:90000, heal:28},
+  potion_pink:{name:'Healing draught', rarity:'rare', icon:'potion_pink', kind:'food', value:64, sell:640000, heal:70},
+  potion_cyan:{name:'Guard oil', rarity:'rare', icon:'potion_cyan', kind:'food', value:1, sell:10000},
+  iron_bar:{name:'Iron bar', rarity:'uncommon', icon:'iron_bar', kind:'mat', value:0.9, sell:9000},
+  moonsilver_bar:{name:'Moonsilver bar', rarity:'rare', icon:'moonsilver_bar', kind:'mat', value:41, sell:410000, blurb:'Cold to the touch and glowing. Smiths turn it into blades that hurt ghosts.'},
+  card_shard:{name:'Card shard', rarity:'rare', icon:'cards', kind:'mat', value:0, keep:true, blurb:'A piece of a card, still warm. The circle keeps these; they cannot be sold.'},
+  summon_sigil:{name:'Summoning sigil', rarity:'legendary', icon:'summon_sigil', kind:'mat', value:0, keep:true},
 };
 
 // Gear joins the item list from gear.js. Each hero's own things enter the world with them.
@@ -76,7 +76,7 @@ export const NODES = {
     {id:'moonsilver', name:'Moonsilver vein', lv:25, sec:3.0, xp:38, item:'moonsilver_ore', rock:'rock_moon', line:'Edith swings. The rock cracks. Glowing ore spills out.'},
     {id:'ember', name:'Ember vein', lv:55, sec:4.2, xp:70, item:'ember_ore', rock:'rock_ember', line:'Ember ore makes the blades that cut ghouls.'},
     {id:'void', name:'Void vein', lv:70, sec:5.2, xp:110, item:'void_ore', rock:'rock_void', line:'The rock drinks the lamplight.'},
-    {id:'starfall', name:'Starfall crater', lv:85, sec:6.4, xp:180, item:'gem_violet', rock:'rock_ember', line:'A violet heart in the crater.'}
+    {id:'starfall', name:'Starfall crater', lv:85, sec:6.4, xp:180, item:'gem_violet', every:6, rock:'rock_ember', line:'Mostly scorched rock. Now and then, a violet heart.'}
   ],
   woodcutting: [
     {id:'ash', name:'Ash grove', lv:1, sec:2.2, xp:6, item:'ash_log', rock:'ash_log', line:'Pale wood, good for fires and hafts.'},
@@ -102,9 +102,9 @@ export const NODES = {
     {id:'gladius', name:'Moonsilver Gladius', lv:35, sec:4.0, xp:120, item:'moonsilver_gladius', use:{moonsilver_bar:4, ash_log:2}, rock:'items/rusty_gladius', line:'Might +6. Hurts ghosts.', gear:true}
   ],
   alchemy: [
-    {id:'draught', name:'Healing draught', lv:1, sec:3.4, xp:20, item:'potion_pink', rock:'potion_pink', line:'Sweet, then it burns clean.'},
-    {id:'oil', name:'Guard oil', lv:18, sec:3.8, xp:28, item:'potion_cyan', rock:'potion_cyan', line:'Smears on a shield and stays.'},
-    {id:'violet', name:'Violet distill', lv:50, sec:6.0, xp:140, item:'gem_violet', use:{potion_pink:1, potion_cyan:1}, rock:'gem_violet', line:'Two draughts become one hard gem.'}
+    {id:'draught', name:'Healing draught', lv:1, sec:3.4, xp:20, item:'potion_pink', use:{raw_eel:1, ash_log:1}, rock:'potion_pink', line:'Sweet, then it burns clean.'},
+    {id:'oil', name:'Guard oil', lv:18, sec:3.8, xp:28, item:'potion_cyan', use:{ash_log:2, copper_ore:1}, rock:'potion_cyan', line:'Smears on a shield and stays.'},
+    {id:'violet', name:'Violet distill', lv:50, sec:6.0, xp:140, item:'gem_violet', use:{potion_pink:1, potion_cyan:1}, every:10, rock:'gem_violet', line:'Most brews fizzle. Now and then two draughts set into one hard gem.'}
   ],
   summoning: [
     {id:'whisper', name:'Whisper circle', lv:1, sec:4.0, xp:22, item:'card_shard', rock:'cards', line:'A shard of a card, still warm.'},
@@ -134,17 +134,17 @@ export const FLOORS = [
 ];
 
 export const HUSTLES = [
-  {id:'pockets', name:'Pick pockets at the Night Market', win:'12 to 40 gold', fail:'A slap on the wrist', chance:92, daring:2, gold:[12,40], jail:0},
-  {id:'dice', name:'Rig the dice at the Gilded Rat', win:'150 gold, maybe a card shard', fail:'10 min in the Stocks', chance:72, daring:5, gold:[150,150], shard:0.25, jail:10},
-  {id:'smuggle', name:'Smuggle moonsilver past the guards', win:'600 gold', fail:'25 min in the Stocks', chance:54, daring:10, gold:[600,600], jail:25},
-  {id:'duke', name:"Rob the Duke's carriage", win:'2,500 gold and a rare drop', fail:'1 hour in the Infirmary', chance:31, daring:15, gold:[2500,2500], rare:0.4, infirmary:60},
-  {id:'ledger', name:"Steal the Archmage's summoning ledger", win:'A guaranteed Epic card', fail:'Needs Hustle Lv 40', chance:0, daring:25, need:40, locked:true}
+  {id:'pockets', name:'Pick pockets at the Night Market', win:'8 to 20 gold', fail:'A slap on the wrist', chance:92, daring:2, gold:[8,20], jail:0, need:1, xp:30},
+  {id:'dice', name:'Rig the dice at the Gilded Rat', win:'40 to 120 gold, maybe a card shard', fail:'10 min in the Stocks', chance:72, daring:5, gold:[40,120], shard:0.25, jail:10, need:8, xp:80},
+  {id:'smuggle', name:'Smuggle moonsilver past the guards', win:'200 to 400 gold', fail:'25 min in the Stocks', chance:54, daring:10, gold:[200,400], jail:25, need:20, xp:180},
+  {id:'duke', name:"Rob the Duke's carriage", win:'800 to 1,500 gold and maybe a violet gem', fail:'1 hour in the Infirmary', chance:31, daring:15, gold:[800,1500], rare:0.4, infirmary:60, need:35, xp:300},
+  {id:'ledger', name:"Steal the Archmage's summoning ledger", win:'A guaranteed Epic card', fail:'Coming soon', chance:0, daring:25, need:50, locked:true}
 ];
 
 export const CITIES = [
   {id:'aldermere', name:'Aldermere', note:'Home prices'},
   {id:'sable', name:'Port Sable', note:'Eels sell for double', deal:'Eel stew 4g'},
-  {id:'emberfall', name:'Emberfall', note:'Cheap ember ore', deal:'Ember ore 51g'},
+  {id:'emberfall', name:'Emberfall', note:'Cheap ember ore', deal:'Ember ore 5g'},
   {id:'frost', name:'The Frost Market', note:'Rare cards on sale', deal:'Ice Age cards'},
   {id:'rome', name:'Old Rome Gate', note:'Legion gear', deal:'Legion gear'}
 ];
@@ -190,21 +190,33 @@ export function mentionsHero(text) {
   return FIND_NAMES.some(n => n && s.includes(String(n).toLowerCase()) && /found|pulled|summoned|arrived|joins/.test(s));
 }
 
+// Skills: a long road. About an hour to Lv 10, three days of steady work to Lv 50, and a real goal at Lv 99.
 export function xpNeed(level) {
-  return Math.round(40 * Math.pow(level, 1.55) + 20 * level);
+  return Math.round(8 * Math.pow(level, 2.6) + 80 * level);
 }
-export function levelFromXp(xp) {
+function ladder(need, xp) {
   let lv = 1, rest = Math.max(0, xp | 0);
   while (lv < 99) {
-    const need = xpNeed(lv);
-    if (rest < need) return {level: lv, into: rest, need};
-    rest -= need;
+    const n = need(lv);
+    if (rest < n) return {level: lv, into: rest, need: n};
+    rest -= n;
     lv++;
   }
-  return {level: 99, into: rest, need: xpNeed(99)};
+  return {level: 99, into: rest, need: need(99)};
 }
+export function levelFromXp(xp) { return ladder(xpNeed, xp); }
 export function xpForLevel(level) {
   let t = 0;
   for (let i = 1; i < level; i++) t += xpNeed(i);
+  return t;
+}
+// Hustles climb their own, lighter ladder. Daring sets the pace.
+export function hustleNeed(level) {
+  return Math.round(23 * Math.pow(level, 1.13));
+}
+export function hustleFromXp(xp) { return ladder(hustleNeed, xp); }
+export function hustleXpFor(level) {
+  let t = 0;
+  for (let i = 1; i < level; i++) t += hustleNeed(i);
   return t;
 }

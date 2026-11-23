@@ -2,6 +2,18 @@
   "note": "Newest first. Add one entry for every deploy players can notice. See CHANGELOG.md.",
   "entries": [
     {
+      "v": "2026.11.23.9",
+      "date": "2026-11-23",
+      "title": "The long road",
+      "items": [
+        "Skills take much longer to master now. Every level you already earned stays yours.",
+        "Hustles open up as your Hustle level grows. Bigger jobs pay more and teach you more.",
+        "Healing draughts and guard oil now need ingredients from other skills.",
+        "Violet gems are a rare find in the Starfall crater now.",
+        "Card shards stay with you for the circle instead of going to the stall."
+      ]
+    },
+    {
       "v": "2026.11.23.8",
       "date": "2026-11-23",
       "title": "Little touches around the city",

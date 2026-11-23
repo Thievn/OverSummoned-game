@@ -328,6 +328,7 @@ function applyServer(data) {
   if (data.gear) state.gear = data.gear;
   if (data.stats) state.stats = data.stats;
   if (p.copper != null) state.copper = p.copper;
+  if (p.hustle_xp != null) state.hustleXp = p.hustle_xp;
   if (p.life_max) { state.lifeMax = p.life_max; state.life = p.life ?? p.life_max; }
   if (Array.isArray(data.infirmary)) state.infirmary = data.infirmary.map(i => ({id: i.id, name: (HEROES[i.id] ? HEROES[i.id].name.split(' ')[0] : i.id), reason: i.reason, until: Date.parse(i.until), face: i.id}));
   if (Array.isArray(data.bag)) {

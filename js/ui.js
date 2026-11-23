@@ -1,8 +1,8 @@
 import {
   HEROES, HERO_ORDER, ITEMS, SKILLS, NODES, NAV_CITY, NAV_ADV, MASTERY, DELVE_LENGTHS,
-  FLOORS, HUSTLES, CITIES, SETS, RARITY_NAME, itemSrc, levelFromXp
+  FLOORS, HUSTLES, CITIES, SETS, RARITY_NAME, itemSrc, levelFromXp, hustleFromXp
 } from './catalog.js';
-import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt } from './engine.js';
+import { skillLevel, poolPct, intervalMs, hustleLevel, fightAt, sellCopper } from './engine.js';
 import { heroTotals, coins } from './fight.js';
 import { GEAR, STAT_NAMES, ERA_SETS, HERO_BASE } from './gear.js';
 import { cardHTML, itemIcon } from './gearui.js';
@@ -443,7 +443,7 @@ function bankView(s) {
   const blanks = Array.from({length: Math.max(12, 48 - ids.length)}).map(() => slot(null)).join('');
   const pick = s.pick && ITEMS[s.pick] ? s.pick : ids[0];
   const it = pick ? ITEMS[pick] : null;
-  const worth = Object.keys(s.bag).reduce((a, id) => a + (ITEMS[id]?.value || 0) * s.bag[id], 0);
+  const worth = Math.floor(Object.keys(s.bag).reduce((a, id) => a + (GEAR[id] && GEAR[id].sell ? GEAR[id].sell : sellCopper(id)) * s.bag[id], 0) / 10000);
   return `<div style="display:grid;grid-template-columns:1fr 330px;gap:12px;height:100%">
 <div class="panel" style="min-height:0;overflow:auto"><div class="row" style="margin-bottom:10px"><b class="h" style="font-size:20px">Bank</b><span class="tag">${ids.length} / 200 slots</span><div class="sp"></div>
  ${['all','ores','bars','food','gear','cards'].map(f => `<button type="button" class="tag ${filter === f ? 'p' : ''}" data-act="bank" data-filter="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}
@@ -453,7 +453,7 @@ function bankView(s) {
  ${it ? `<div class="panel glowc"><div class="row"><div class="slot r-${it.rarity}" style="width:64px;height:64px"><img class="px" src="${itemSrc(pick)}" style="width:52px;height:52px" alt=""></div><div><b class="h" style="font-size:17px">${esc(it.name)}</b><br><span class="tag c">${RARITY_NAME[it.rarity]}</span> <span class="mut" style="font-size:12px">x${s.bag[pick] || 0}</span></div></div>
   <div class="mut" style="font-size:12.5px;margin:8px 0">${esc(statLine(pick) || it.blurb || 'It sits in the Bank until you use it or sell it.')}</div>
   ${GEAR[pick] && GEAR[pick].req ? `<div class="mut" style="font-size:12px;margin-bottom:8px">Needs card level ${GEAR[pick].req}. Wear it from the back of a card.</div>` : ''}
-  <div class="row">${btn('Sell for ' + (GEAR[pick] && GEAR[pick].sell ? coinLine(GEAR[pick].sell) : (it.value || 1) + 'g') + ' each', 'sell', 'sm c')}${btn('List on Market', 'list', 'sm g')}</div></div>` : ''}
+  <div class="row">${it.keep ? '<span class="tag">Kept for the circle</span>' : btn('Sell for ' + coinLine(GEAR[pick] && GEAR[pick].sell ? GEAR[pick].sell : sellCopper(pick)) + ' each', 'sell', 'sm c')}${btn('List on Market', 'list', 'sm g')}</div></div>` : ''}
  <div class="panel"><div class="ph">${ico('anvil','ico')}<div><h3>Smithing</h3><small>Lv ${skillLevel(s, 'smithing')}</small></div></div>
   <div class="row" style="margin-bottom:8px"><img class="px" src="/assets/items/rusty_gladius.png" style="width:40px" alt=""><div><b>Moonsilver Gladius</b><br><small class="mut">+8 Attack · Hurts the undead</small></div></div>
   <div class="row" style="font-size:12px;margin-bottom:8px">${slot('moonsilver_bar', 4)}${slot('ash_log', 2)}<span class="mut">→</span>${slot('moonsilver_gladius', 1)}</div>
@@ -494,16 +494,17 @@ function priceLabel(s, item) {
 function hustlesView(s) {
   const lv = hustleLevel(s);
   const rows = HUSTLES.map(j => {
-    const locked = j.locked && lv < (j.need || 99);
-    return `<div class="panel" style="padding:10px;${locked ? 'opacity:.5' : ''}"><div class="row">${ico(locked ? 'shackle' : 'mask', 'ico')}<div style="flex:1"><b>${esc(j.name)}</b><div style="font-size:12px"><span class="lm">Win: ${esc(j.win)}</span> · <span class="pk">Fail: ${esc(j.fail)}</span></div></div>
+    const locked = j.locked || lv < (j.need || 1);
+    const why = j.locked ? 'Coming soon' : 'Opens at Hustle Lv ' + j.need;
+    return `<div class="panel" style="padding:10px;${locked ? 'opacity:.5' : ''}"><div class="row">${ico(locked ? 'shackle' : 'mask', 'ico')}<div style="flex:1"><b>${esc(j.name)}</b><div style="font-size:12px"><span class="lm">Win: ${esc(j.win)}</span> · <span class="pk">Fail: ${esc(j.fail)}</span></div>${locked ? `<div class="mut" style="font-size:11.5px;margin-top:2px">${esc(why)}</div>` : `<div class="mut" style="font-size:11.5px;margin-top:2px">+${j.xp} Hustle XP</div>`}</div>
 <div style="width:120px"><div class="row" style="font-size:11.5px"><span class="mut">Chance</span><div class="sp"></div><b class="nums">${locked ? 0 : j.chance}%</b></div>${bar(locked ? 0 : j.chance, 'l')}</div>
-<span class="tag p">Daring ${j.daring}</span>${locked ? '<span class="btn sm g">Locked</span>' : `<button class="btn sm" type="button" data-act="hustle" data-job="${j.id}">Do it</button>`}</div></div>`;
+<span class="tag p">Daring ${j.daring}</span>${locked ? `<span class="btn sm g">Lv ${j.need}</span>` : `<button class="btn sm" type="button" data-act="hustle" data-job="${j.id}">Do it</button>`}</div></div>`;
   }).join('');
   const log = (s.hustleLog || []).map(h => `<div class="li"><span class="${h.result === 'Won' ? 'lm' : 'pk'}">${esc(h.result)}</span> ${esc(h.detail)}<span class="sp"></span><b class="nums">${esc(h.gold)}</b></div>`).join('');
   const who = s.stocksWho;
   return `<div style="display:grid;grid-template-columns:1fr 320px;gap:12px;height:100%">
 <div class="g" style="align-content:start;overflow:auto">
- <div class="panel"><div class="row" style="gap:14px">${ico('mask')}<div style="flex:1"><div class="row"><b class="h" style="font-size:20px">Hustles</b><span class="tag l">Hustle Lv ${lv}</span><div class="sp"></div><span class="mut nums" style="font-size:12px">Daring ${s.daring} / ${s.daringMax}, +1 every 4 min</span></div>${bar(Math.round(100 * s.daring / s.daringMax), 'p thick')}</div></div>
+ <div class="panel"><div class="row" style="gap:14px">${ico('mask')}<div style="flex:1"><div class="row"><b class="h" style="font-size:20px">Hustles</b><span class="tag l">Hustle Lv ${lv}</span><span class="mut nums" style="font-size:11.5px">${num(hustleFromXp(s.hustleXp).into)} / ${num(hustleFromXp(s.hustleXp).need)} XP</span><div class="sp"></div><span class="mut nums" style="font-size:12px">Daring ${s.daring} / ${s.daringMax}, +1 every 4 min</span></div>${bar(Math.round(100 * s.daring / s.daringMax), 'p thick')}</div></div>
  <div class="mut" style="font-size:12.5px;margin-top:8px">Quick jobs on the wrong side of the law. Spend Daring, take your chances, and grab gold the fast way. Get caught and you sit in the Stocks.</div></div>
  ${rows}
  ${s.crew ? `<div class="panel glow"><div class="ph">${ico('dice','ico')}<div><h3>Crew heist: The Royal Mint</h3><small>Plan it with 4 crewmates. Takes 2 hours to pull off.</small></div><div class="sp"></div><span class="tag l">Huge payout</span></div>

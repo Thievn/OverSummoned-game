@@ -110,7 +110,8 @@ test('hustles: Daring, the Stocks, bail and payouts', {skip}, () => {
   for (let i = 0; i < 10; i++) { as(u, `select os_act('hustle', '{"job":"pockets"}') \\g /dev/null`); }
   const g = Number(P(u, 'gold')); assert.equal(Number(P(u, 'daring')), 5);
   const wins = Number(psql(`select count(*) from os_hustle_log where uid = '${u.uid}' and result = 'Won'`));
-  assert.ok(g >= wins * 12 && g <= wins * 40 * 2, 'pockets pay 12 to 40, gear can add more');
+  assert.ok(g >= wins * 8 && g <= wins * 20 * 2, 'pockets pay 8 to 20, gear can add more');
+  psql(`update os_player set hustle_xp = 100000 where uid = '${u.uid}'`);
   fails(u, `select os_act('hustle', '{"job":"smuggle"}')`, /Not enough Daring/);
   psql(`update os_player set stocks_until = now() + interval '5 minutes', gold = 1000, daring = 25 where uid = '${u.uid}'`);
   fails(u, `select os_act('hustle', '{"job":"pockets"}')`, /Stocks/);
@@ -122,7 +123,7 @@ test('hustles: Daring, the Stocks, bail and payouts', {skip}, () => {
 test('a failed carriage job sends the lead hero to the Infirmary', {skip}, () => {
   const u = newPlayer();
   for (let i = 0; i < 40; i++) {
-    psql(`update os_player set daring = 25 where uid = '${u.uid}'`);
+    psql(`update os_player set daring = 25, hustle_xp = 100000 where uid = '${u.uid}'`);
     as(u, `select os_act('hustle', '{"job":"duke"}') \\g /dev/null`);
     if (Number(psql(`select count(*) from os_hustle_log where uid = '${u.uid}' and result = 'Caught'`))) break;
   }
@@ -317,4 +318,65 @@ test('the owned card and its gear can never reach another account', {skip: ownSk
   psql(`select os_give('${OWNER.uid}', '${ownItems[0]}', 1)`);
   fails(OWNER, `select os_sell('${ownItems[0]}', 1)`, /stays with you/);
   assert.throws(() => psql(`insert into os_listing(seller, kind, item_id, qty, price) values ('${OWNER.uid}', 'item', '${ownItems[0]}', 1, 5)`), /stays with you/);
+});
+
+test('phase 2a: hustle jobs open with Hustle level and pay their new ranges', {skip}, () => {
+  const u = newPlayer();
+  psql(`update os_player set daring = 25, hustle_xp = 0 where uid = '${u.uid}'`);
+  fails(u, `select os_act('hustle', '{"job":"dice"}')`, /opens at Hustle Lv 8/);
+  fails(u, `select os_act('hustle', '{"job":"duke"}')`, /opens at Hustle Lv 35/);
+  fails(u, `select os_act('hustle', '{"job":"ledger"}')`, /No such job/);
+  as(u, `select os_act('hustle', '{"job":"pockets"}') \\g /dev/null`);
+  const xp = Number(P(u, 'hustle_xp')); assert.ok(xp === 30 || xp === 15, 'pockets teach 30 XP, half when caught: ' + xp);
+  const need = (lv) => Math.round(23 * Math.pow(lv, 1.13));
+  let t = 0; for (let l = 1; l < 35; l++) t += need(l);
+  psql(`update os_player set hustle_xp = ${t - 1}, daring = 25, stocks_until = null where uid = '${u.uid}'`);
+  fails(u, `select os_act('hustle', '{"job":"duke"}')`, /opens at Hustle Lv 35/);
+  psql(`update os_player set hustle_xp = ${t}, gold = 0 where uid = '${u.uid}'`);
+  as(u, `select os_act('hustle', '{"job":"duke"}') \\g /dev/null`);
+  const g = Number(P(u, 'gold'));
+  assert.ok(g === 0 || (g >= 800 && g <= 3000), 'the Duke pays 800 to 1,500, gear can add more: ' + g);
+  assert.equal(Number(psql(`select os_hustle_level(${t})`)), 35);
+});
+
+test('phase 2a: hustle levels match the browser', {skip}, async () => {
+  const { hustleFromXp } = await import('../js/catalog.js');
+  const xs = [0, 22, 23, 24, 785, 786, 6038, 20362, 43934, 190267, 1e7];
+  const got = psql(`select string_agg(os_hustle_level(x)::text, ',' order by o) from unnest(array[${xs.join(',')}]::int[]) with ordinality t(x, o)`).split(',').map(Number);
+  assert.deepEqual(got, xs.map(x => hustleFromXp(x).level));
+});
+
+test('phase 2a: brewing needs ingredients and violet gems are a rare find', {skip}, () => {
+  const u = newPlayer();
+  as(u, `select os_act('skill', '{"skill":"alchemy","node":"draught"}') \\g /dev/null`);
+  psql(`update os_player set last_tick = now() - interval '60 seconds' where uid = '${u.uid}'`);
+  as(u, 'select os_state() \\g /dev/null');
+  assert.equal(bag(u, 'potion_pink'), 0, 'no ingredients, no draughts');
+  psql(`insert into os_bag(uid, item_id, qty) values ('${u.uid}', 'raw_eel', 3), ('${u.uid}', 'ash_log', 3) on conflict (uid, item_id) do update set qty = excluded.qty`);
+  psql(`update os_player set last_tick = now() - interval '60 seconds' where uid = '${u.uid}'`);
+  as(u, 'select os_state() \\g /dev/null');
+  assert.equal(bag(u, 'potion_pink'), 3); assert.equal(bag(u, 'raw_eel'), 0); assert.equal(bag(u, 'ash_log'), 0);
+  const spec = JSON.parse(psql(`select os_node('mining', 'starfall')`));
+  assert.equal(spec.every, 6);
+});
+
+test('phase 2a: selling pays the item value, not the stall price, and shards stay', {skip}, () => {
+  const u = newPlayer();
+  psql(`update os_player set gold = 0, copper = 0 where uid = '${u.uid}'`);
+  psql(`insert into os_bag(uid, item_id, qty) values ('${u.uid}', 'gem_violet', 1), ('${u.uid}', 'copper_ore', 100), ('${u.uid}', 'card_shard', 2) on conflict (uid, item_id) do update set qty = excluded.qty`);
+  as(u, `select os_sell('gem_violet', 1) \\g /dev/null`);
+  assert.equal(Number(P(u, 'gold')), 57, 'a violet gem pays 60 gold less the 5% fee');
+  as(u, `select os_sell('copper_ore', 100) \\g /dev/null`);
+  assert.equal(Number(P(u, 'gold')) * 10000 + Number(P(u, 'copper')), 570000 + 161500);
+  fails(u, `select os_sell('card_shard', 1)`, /cannot be sold/);
+  assert.equal(bag(u, 'card_shard'), 2);
+});
+
+test('phase 2a: moving to the new XP ladder keeps every level', {skip}, () => {
+  const oldNeed = (lv) => Math.floor(40 * Math.pow(lv, 1.55) + 20 * lv + 0.5);
+  for (const xp of [0, 59, 60, 12366, 15948, 99999, 1e6, 1997111, 3e6]) {
+    let lv = 1, r = xp; while (lv < 99 && r >= oldNeed(lv)) { r -= oldNeed(lv); lv++; }
+    const conv = Number(psql(`select os__xp_convert(${xp})`));
+    assert.equal(levelFromXp(conv).level, lv, 'xp ' + xp + ' stays Lv ' + lv);
+  }
 });
