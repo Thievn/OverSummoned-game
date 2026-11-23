@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /ledger
+
+Sitemap: https://oversummoned.com/sitemap.xml
