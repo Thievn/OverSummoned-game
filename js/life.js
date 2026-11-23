@@ -162,7 +162,7 @@ function frame(now) {
   if (!still) {
     stepChat(now);
     // a quiet street for a while: the two nearest heroes on the right side turn to face each other
-    if (!talk && chats.length && walkers.length > 1 && now > chatAt + 14000) {
+    if (!talk && chats.length && walkers.length > 1 && now > chatAt + 9000) {
       const o = walkers.slice().sort((p, q) => p.x - q.x);
       for (let i = o.length - 2; i >= 0; i--) if (chatFor(o[i], o[i + 1])) { o[i].dir = 1; o[i + 1].dir = -1; break; }
       chatAt = now;
@@ -178,7 +178,7 @@ function frame(now) {
         const busy = talk && (o === talk.a || o === talk.b);
         if (!busy && o.dir === -w.dir && !talk && now > chatAt && (w.x + o.x) / 2 > Math.max(g, W * chatFrom * 0.85) && Math.max(w.x, o.x) < W - g) {
           const c = chatFor(w, o);
-          if (c && Math.random() < 0.7) { startChat(w, o, c, now); break; }
+          if (c && Math.random() < 0.85) { startChat(w, o, c, now); break; }
           chatAt = now + 2500;
         }
         if (o.dir === w.dir && !busy) v = Math.min(v, o.v * 0.98);
