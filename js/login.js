@@ -49,6 +49,7 @@
   $('f-name').onsubmit = async e => { e.preventDefault(); const { error } = await sb.from('os2_profile').insert({ id: Cloud.user.id, username: $('nm-name').value.trim() }); if (error) { $('nm-err').textContent = /duplicate|unique/i.test(error.message) ? 'Somebody took that a second ago. Try another.' : 'That did not work. Try again.'; return; } location.replace('/play'); };
   $('go-google').onclick = () => sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + '/login' } });
   $('closed-out').onclick = () => Cloud.signOut();
+  if (!sb) { show('main'); return; }   // only when the sign-in library is unreachable
   sb.auth.onAuthStateChange(ev => { if (ev === 'SIGNED_IN') route(); });
   Cloud.track(); route();
 })();

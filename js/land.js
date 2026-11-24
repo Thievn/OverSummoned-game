@@ -52,7 +52,13 @@
   const show = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin'];
   show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id])));
   setTimeout(() => { const c = $('cards').children[2]; if (c) { c.classList.add('flip'); setTimeout(() => c.classList.remove('flip'), 2600); } }, 1800);
-  R.heroes.filter(h => !show.includes(h.id)).forEach(h => { const i = new Image(); i.src = OS.img('heroes', h.id); i.alt = 'A hero not yet summoned'; $('shadows').appendChild(i); });
+  const WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'], TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  const word = n => { const w = n < 20 ? WORDS[n] : n < 100 ? TENS[Math.floor(n / 10)] + (n % 10 ? '-' + WORDS[n % 10] : '') : String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
+  $('hero-count').textContent = word(R.heroes.length); $('hero-rest').textContent = word(R.heroes.length - show.length);
+  document.querySelector('#city h2').textContent = 'Somebody has to keep ' + word(R.heroes.length).toLowerCase() + ' strangers busy.';
+  const tot = Object.values(R.summon.weights).reduce((a, b) => a + b, 0);
+  $('rarbar').innerHTML = R.rarities.map(r => `<span class="r-${r}"><b>${OS.cap(r)}</b>${(R.summon.weights[r] / tot * 100).toFixed(R.summon.weights[r] < 1 ? 2 : 1)}%</span>`).join('');
+  R.heroes.filter(h => !show.includes(h.id)).sort((a, b) => R.rarities.indexOf(a.rarity) - R.rarities.indexOf(b.rarity)).forEach(h => { const i = new Image(); i.src = OS.img('heroes', h.id); i.alt = 'A hero not yet summoned'; i.className = 'r-' + h.rarity; i.title = OS.cap(h.rarity); $('shadows').appendChild(i); });
 
   // ---------------------------------------------------------------- items
   ['napoleon_trinket', 'chad_trinket', 'emu_weapon', 'morwenna_trinket', 'closet_8', 'lola_weapon', 'kenji_weapon', 'blackforest_5'].forEach(id => {
@@ -83,4 +89,5 @@
     mode = b.dataset.v; [...$('voicepick').children].forEach(x => x.classList.toggle('on', x === b)); qi = -1; quote();
   });
   quote();
+  setTimeout(() => { if (window.Cloud) Cloud.track(); else if (window.supabase) { const s = document.createElement('script'); s.src = '/js/cloud.js'; s.onload = () => Cloud.track(); document.body.appendChild(s); } }, 1500);
 })();

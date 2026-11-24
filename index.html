@@ -58,20 +58,31 @@
 </div></section>
 
 <section id="arrivals"><div class="wrap">
-  <div class="sec-head rv"><p class="kicker">The arrivals</p><h2>Twenty-four strangers. None of them asked to be here.</h2><p class="lede">Each one is a card. Turn it over for the story, the numbers, and the three things they lost on the way. Here are five. The rest you will have to meet yourself.</p></div>
+  <div class="sec-head rv"><p class="kicker">The arrivals</p><h2><span id="hero-count">Twenty-six</span> strangers and counting. None of them asked to be here.</h2><p class="lede">Each one is a card. Turn it over for the story, the numbers, and the three things they lost on the way. Here are five. The rest you will have to meet yourself, and the book is nowhere near finished: every time Smudge sneezes near the ledger, somebody new falls out.</p></div>
   <div class="cards rv" id="cards"></div>
   <div class="shadows rv" id="shadows"></div>
-  <p class="mut rv" style="text-align:center;margin-top:1rem">Nineteen more are waiting in the margins.</p>
+  <p class="mut rv" style="text-align:center;margin-top:1rem"><span id="hero-rest">Twenty-one</span> more are waiting in the margins. More are on the way.</p>
+  <div class="rarbar rv" id="rarbar"></div>
 </div></section>
 
 <section id="lost" class="band"><div class="wrap">
-  <div class="sec-head rv"><p class="kicker">Lost property</p><h2>Every item has a past. Most of them are embarrassing.</h2><p class="lede">Gear makes whoever holds it stronger, faster or luckier, and it works half again as well in the paws it was made for. Every label tells you where it turns up, so you always know what you are hunting.</p></div>
+  <div class="sec-head rv"><p class="kicker">Lost property</p><h2>Every item has a past. Most of them are embarrassing.</h2><p class="lede">Gear makes whoever holds it stronger, faster or luckier, and it works half again as well in the paws it was made for. Every label tells you where it turns up, so you always know what you are hunting. This is not the whole list. It is not even close. The otter keeps summoning, and every new arrival drops three more things somewhere in time.</p></div>
   <div class="itemwall rv" id="items"></div>
 </div></section>
 
 <section id="places"><div class="wrap">
   <div class="sec-head rv"><p class="kicker">Where he works</p><h2>Eight corners of history, and one cellar he calls home.</h2><p class="lede">A Roman pier. A Viking ice hole. A Venetian vault. An office supply closet that has defeated better thieves. Each place has its own trade and its own tide of lost things.</p></div>
   <div class="places" id="placelist"></div>
+</div></section>
+
+<section class="band" id="city"><div class="wrap">
+  <div class="sec-head rv"><p class="kicker">What you do with them</p><h2>Somebody has to keep twenty-six strangers busy.</h2><p class="lede">Set it up in a minute on your phone, then leave them to it. They keep working while you sleep, and they are always a little better at it when you come back.</p></div>
+  <div class="beats four">
+    <div class="beat rv"><img src="/assets/v2/loot/outback_4.webp" alt=""><h3>Jobs</h3><p>Send a Viking fishing and a fox safecracking. Speed sets the pace, Luck picks the haul, and practice turns into mastery.</p></div>
+    <div class="beat rv"><img src="/assets/v2/loot/x_anvil.webp" alt=""><h3>Workshop</h3><p>Boil spare treasure into tonics. Melt duplicate gear into something sharper.</p></div>
+    <div class="beat rv"><img src="/assets/v2/loot/x_dumbbell.webp" alt=""><h3>Training</h3><p>Energy trickles back all day. Spend it turning an office sloth into a slightly tougher office sloth.</p></div>
+    <div class="beat rv"><img src="/assets/v2/loot/x_sword.webp" alt=""><h3>Raids</h3><p>Three arrivals against the Tiber Thing, the Doge's Nephew, or Brenda, back from leave. Winners take the best loot there is.</p></div>
+  </div>
 </div></section>
 
 <section class="parch"><div class="wrap">
@@ -91,7 +102,7 @@
   <div class="two">
     <div class="half rv"><h3>On your desk</h3><p class="mut">A small window above your taskbar. He works while you work, dozes off when you stop, and wakes up annoyed about it.</p>
       <ul><li>Every key is one swing of the stamp, one tug on the line, one turn of the pick</li><li>Half an hour of typing and a crate drops out of a hole in time</li><li>Blinks, mutters, sulks and celebrates like something alive</li></ul>
-      <span class="btn ghost" aria-disabled="true">Coming to Steam</span></div>
+      <div class="cta" style="margin:0"><span class="btn ghost" aria-disabled="true">Download: almost ready</span><span class="btn ghost" aria-disabled="true">Coming to Steam</span></div></div>
     <div class="half rv"><h3>In your browser</h3><p class="mut">The city keeps moving when the keyboard goes quiet. Put your arrivals to work, dress them in what you have found, and come back to see what the tide brought in.</p>
       <ul><li>Crews that keep fishing, digging and safecracking while you are away</li><li>Expeditions that pay out for the brave and the well equipped</li><li>Every card, front and back, with room for its three lost things</li></ul>
       <a class="btn" href="/play">Play now</a></div>
@@ -103,6 +114,7 @@
   <span>OverSummoned. Made by one human and one very patient otter.</span>
   <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
 </div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js" defer></script>
 <script src="/js/os.js"></script>
 <script src="/js/land.js"></script>
 </body>

@@ -4,117 +4,129 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Play · OverSummoned</title>
-<meta name="theme-color" content="#080c1a">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#080c1a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/css/os.css">
 </head>
 <body class="game">
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp" alt=""><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
   <a class="brand" href="/">Over<b>Summoned</b></a>
   <div class="res">
-    <span title="Ink. Fill the ledger to summon."><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
+    <span title="Energy. Spend it on training."><img src="/assets/v2/loot/x_energy.webp" alt="Energy"><b id="r-energy">0</b></span>
+    <span title="Ink. Smudge spends it to summon."><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
     <span title="Gold"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">0</b></span>
+    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp" alt=""></button>
   </div>
 </div></header>
 
 <main class="wrap">
-  <!-- WORK -->
-  <section class="view on" id="v-work">
+  <section class="view on" id="v-home">
+    <div class="hello"><div><div class="tag" id="h-day"></div><h2 id="h-hi"></h2><p class="mut" id="h-sub"></p></div><a class="adminbtn" id="adminbtn" href="/admin" hidden><span>Owner's office</span></a></div>
+    <div class="panel guide" id="guide" hidden></div>
+    <div class="statrow" id="h-stats"></div>
     <div class="grid2">
+      <div class="panel"><div class="spread"><h3>On the job</h3><button class="btn small ghost" data-go="jobs">Manage</button></div><div id="h-jobs"></div></div>
       <div>
-        <div class="stage" id="stage">
-          <img class="scene" id="scene" alt="">
-          <div class="bubble" id="bubble"></div>
-        </div>
-        <div class="panel" style="margin-top:.9rem">
-          <div class="spread"><div><div class="tag" id="w-era"></div><h3 id="w-name" style="margin:0"></h3></div><div style="text-align:right"><div class="tag" id="w-skill"></div><b id="w-next" class="mut"></b></div></div>
-          <div class="bar" style="margin:.6rem 0 .35rem"><i id="w-bar"></i></div>
-          <div class="bar xp"><i id="w-xp"></i></div>
-          <div class="spread mut" style="font-size:.85rem;margin-top:.3rem"><span id="w-xptext"></span><span id="w-rate"></span></div>
-          <div class="perks" id="w-perks"></div>
-        </div>
+        <div class="panel"><div class="spread"><h3>Smudge</h3><span class="mut" id="h-inkpct"></span></div><div class="bar"><i id="h-inkbar"></i></div><p class="mut" style="font-size:.9rem;margin:.5rem 0 .6rem" id="h-inktext"></p><button class="btn small" data-go="summon">Go to the Archive</button></div>
+        <div class="panel" style="margin-top:.9rem"><div class="spread"><h3>Active tonics</h3></div><div id="h-tonics" class="mut" style="font-size:.9rem"></div></div>
       </div>
-      <div>
-        <div class="panel">
-          <div class="spread"><h3>The crew</h3><span class="mut" id="crew-bonus" style="font-size:.85rem"></span></div>
-          <p class="mut" style="font-size:.9rem;margin:.1rem 0 .7rem">Up to three arrivals lend a paw. Speed makes the work faster. Luck brings up better things.</p>
-          <div class="crew" id="crew"></div>
-        </div>
-        <div class="panel" style="margin-top:.9rem">
-          <div class="spread"><h3>Expeditions</h3><span class="mut" id="ex-slots" style="font-size:.85rem"></span></div>
-          <p class="mut" style="font-size:.9rem;margin:.1rem 0 .7rem">Send one arrival off alone. Attack, Defense and Health decide whether they come back with their pockets full.</p>
-          <div id="exlist"></div>
-          <button class="btn small teal" id="ex-new">Plan an expedition</button>
-        </div>
-        <div class="panel" style="margin-top:.9rem">
-          <div class="spread"><h3>The rift crate</h3><b id="crate-time" class="mut"></b></div>
-          <div class="bar"><i id="crate-bar"></i></div>
-          <p class="mut" style="font-size:.85rem;margin:.4rem 0 0">Every thirty minutes Smudge is at work, something falls out of a hole in time.</p>
-        </div>
-      </div>
+    </div>
+    <div class="tiles">
+      <button class="tile" data-go="workshop"><img src="/assets/v2/loot/x_anvil.webp" alt=""><b>Workshop</b><span>Brew tonics. Upgrade gear.</span></button>
+      <button class="tile" data-go="training"><img src="/assets/v2/loot/x_dumbbell.webp" alt=""><b>Training</b><span>Spend energy on stats.</span></button>
+      <button class="tile" data-go="raids"><img src="/assets/v2/loot/x_sword.webp" alt=""><b>Raids</b><span id="t-raids">Three against one boss.</span></button>
+      <button class="tile" data-go="board"><img src="/assets/v2/loot/x_trophy.webp" alt=""><b>The city</b><span>Who is ahead.</span></button>
+      <button class="tile" data-go="shop"><img src="/assets/v2/loot/x_gold.webp" alt=""><b>Shop</b><span>Opening soon.</span></button>
+      <button class="tile" data-go="account"><img src="/assets/v2/loot/x_key.webp" alt=""><b>Account</b><span>Name, logins, settings.</span></button>
     </div>
   </section>
 
-  <!-- PLACES -->
-  <section class="view" id="v-places">
-    <h2 style="margin-bottom:1rem">Where to?</h2>
-    <div class="plist" id="plist"></div>
+  <section class="view" id="v-jobs">
+    <div class="spread" style="margin-bottom:.4rem"><h2>Jobs</h2><span class="mut" id="j-slots"></span></div>
+    <p class="mut" style="margin-bottom:1rem">Put an arrival somewhere and they get on with it, whether you are here or not. Speed makes them faster, Luck brings up better things, and the longer they do one trade the better they get at it.</p>
+    <div class="jobs" id="joblist"></div>
   </section>
 
-  <!-- SUMMON -->
   <section class="view" id="v-summon">
     <div class="grid2">
-      <div>
-        <div class="stage" id="sstage">
-          <img class="scene" src="/assets/v2/scenes/archive.webp" alt="The Archive">
-          <svg class="glowring" viewBox="0 0 910 540" aria-hidden="true">
-            <ellipse id="s-glow" cx="453" cy="390" rx="150" ry="62" fill="#3fe0c5" opacity="0"/>
-            <ellipse cx="453" cy="390" rx="182" ry="76" fill="none" stroke="rgba(8,16,24,.6)" stroke-width="9"/>
-            <ellipse id="s-prog" cx="453" cy="390" rx="182" ry="76" fill="none" stroke="#9ffff0" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/>
-          </svg>
-          <div class="bubble" id="sbubble"></div>
-        </div>
-      </div>
+      <div><div class="stage" id="sstage">
+        <img class="scene" src="/assets/v2/scenes/archive.webp" alt="The Archive">
+        <svg class="glowring" viewBox="0 0 910 540" aria-hidden="true">
+          <ellipse id="s-glow" cx="453" cy="390" rx="150" ry="62" fill="#3fe0c5" opacity="0"/>
+          <ellipse cx="453" cy="390" rx="182" ry="76" fill="none" stroke="rgba(8,16,24,.6)" stroke-width="9"/>
+          <ellipse id="s-prog" cx="453" cy="390" rx="182" ry="76" fill="none" stroke="#9ffff0" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/>
+          <ellipse id="s-flash" cx="453" cy="390" rx="182" ry="76" fill="none" stroke="#fff" stroke-width="10" opacity="0"/>
+        </svg>
+        <div class="bubble" id="sbubble"></div>
+      </div></div>
       <div class="panel">
         <div class="tag">Aldermere, home · Summoning <span id="s-lvl"></span></div>
         <h3>The Archive</h3>
-        <p class="mut">Every stamp of the ledger is a drop of ink. Fill the circle and the book gives up one of its strangers. The more of them you have met, the more ink the next one costs.</p>
+        <p class="mut">Only Smudge can do this part. Every stamp is a drop of ink. Fill the circle and the book gives up one of its strangers. The more of them you have met, the more ink the next one costs.</p>
         <div class="bar"><i id="s-bar"></i></div>
         <div class="spread" style="margin:.4rem 0 .9rem"><b id="s-ink"></b><span class="mut" id="s-met"></span></div>
-        <div class="row">
-          <button class="btn" id="s-go">Summon</button>
-          <button class="btn ghost small" id="s-stamp">Stamp the ledger (or type)</button>
-        </div>
-        <p class="mut" style="font-size:.85rem;margin-top:.9rem">Ink comes from everything the crew does, from crates, and from every key you press on this page. <button class="btn small ghost" id="s-buy" style="margin-left:.3rem"></button></p>
-        <div class="bar xp" style="margin-top:.6rem"><i id="s-xp"></i></div>
-        <div class="mut" style="font-size:.85rem;margin-top:.3rem" id="s-odds"></div>
+        <div class="row"><button class="btn" id="s-go">Summon</button><button class="btn ghost small" id="s-stamp">Stamp the ledger (or type)</button></div>
+        <h3 style="margin-top:1.2rem;font-size:1.05rem">The odds, in plain sight</h3>
+        <div class="odds" id="s-odds"></div>
+        <p class="mut" style="font-size:.8rem;margin-top:.6rem">These never change. No streaks, no pity, no tricks. Within a rarity every stranger is equally likely.</p>
       </div>
     </div>
   </section>
 
-  <!-- HEROES -->
   <section class="view" id="v-heroes">
     <div class="spread" style="margin-bottom:1rem"><h2>The arrivals</h2><b class="mut" id="h-count"></b></div>
     <div class="heroes" id="hgrid"></div>
   </section>
 
-  <!-- BAG -->
   <section class="view" id="v-bag">
     <div class="spread" style="margin-bottom:.6rem"><h2>The bag</h2><div class="row"><span class="mut" id="b-cap" style="font-size:.85rem"></span><button class="btn small" id="b-sell">Sell spare treasure</button></div></div>
-    <p class="mut" style="margin-bottom:1rem">Hover or tap anything to read its label. Gear is worn from an arrival's card. Treasure is for selling.</p>
+    <p class="mut" style="margin-bottom:1rem">Tap anything to read its label. Crates open, tonics get drunk, gear is worn from an arrival's card, treasure is for selling or brewing.</p>
     <div class="panel"><div class="itemrow" id="bgrid"></div></div>
-    <div class="panel" style="margin-top:.9rem">
-      <h3>Your ledger</h3>
-      <div id="profile" class="mut" style="font-size:.95rem"></div>
-      <div class="row" style="margin-top:.8rem"><button class="btn small ghost" id="p-export">Copy save code</button><button class="btn small ghost" id="p-import">Load save code</button><button class="btn small ghost" id="p-mode"></button><button class="btn small ghost" id="p-reset">Start over</button></div>
+  </section>
+
+  <section class="view" id="v-workshop"><button class="back" data-go="home">← Home</button><h2>Workshop</h2>
+    <p class="mut" style="margin-bottom:1rem">Treasure that is no use to anyone can be boiled down into something that is.</p>
+    <div class="panel"><h3>Tonics</h3><div id="w-tonics"></div></div>
+    <div class="panel" style="margin-top:.9rem"><h3>Gear upgrades</h3><p class="mut" style="font-size:.9rem">Melt a spare copy into the original. Each level adds 15% to its numbers, up to level 5.</p><div id="w-gear"></div></div>
+  </section>
+
+  <section class="view" id="v-training"><button class="back" data-go="home">← Home</button><h2>Training</h2>
+    <p class="mut" style="margin-bottom:1rem">Energy comes back on its own, one point every three minutes. Ten of it buys one point in whatever you pick. Higher card levels can be trained further.</p>
+    <div class="panel"><div class="spread"><b id="tr-energy"></b><span class="mut" id="tr-next"></span></div><div class="bar" style="margin-top:.4rem"><i id="tr-bar" style="background:linear-gradient(90deg,#d9731a,#ffb14a)"></i></div></div>
+    <div id="tr-list" style="margin-top:.9rem"></div>
+  </section>
+
+  <section class="view" id="v-raids"><button class="back" data-go="home">← Home</button><div class="spread"><h2>Raids</h2><b id="rd-tix"></b></div>
+    <p class="mut" style="margin-bottom:1rem">Three arrivals against something that should have been left alone. Attack does the damage, Defense and Health keep them standing, Speed strikes first and Luck lands the big hits. Winning brings home the best things a place has.</p>
+    <div class="plist" id="rd-list"></div>
+  </section>
+
+  <section class="view" id="v-board"><button class="back" data-go="home">← Home</button><h2>The city</h2>
+    <p class="mut" style="margin-bottom:1rem">Everyone with a ledger, ranked by how much they have learned.</p>
+    <div class="panel"><div id="bd-list"></div></div>
+    <div class="panel" style="margin-top:.9rem"><h3>Coming to the city</h3><p class="mut" style="margin:0">Friends, visiting other ledgers, gifts, crews and a market stall are on the way.</p></div>
+  </section>
+
+  <section class="view" id="v-shop"><button class="back" data-go="home">← Home</button><h2>The shop</h2>
+    <p class="mut" style="margin-bottom:1rem">Smudge is still arranging the shelves. When it opens it will sell looks, not luck: outfits for him, frames for your cards, new scenery. Nothing here will ever make a rare stranger more likely.</p>
+    <div class="tiles" id="shoplist"></div>
+  </section>
+
+  <section class="view" id="v-account"><button class="back" data-go="home">← Home</button><h2>Your account</h2>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="panel"><h3>You</h3><div id="ac-you"></div>
+        <h3 style="margin-top:1.1rem">Ways to sign in</h3><div id="ac-logins"></div></div>
+      <div><div class="panel"><h3>Settings</h3><div id="ac-settings"></div></div>
+        <div class="panel" style="margin-top:.9rem"><h3>Your ledger so far</h3><div id="ac-stats" class="mut"></div><div class="row" style="margin-top:.8rem"><button class="btn small ghost" id="ac-out">Sign out</button><button class="btn small ghost" id="ac-reset">Start over</button></div></div></div>
     </div>
   </section>
 </main>
 
 <nav class="gnav" id="gnav">
-  <button data-v="work" class="on"><img src="/assets/v2/loot/x_stamp.webp" alt="">Work</button>
-  <button data-v="places"><img src="/assets/v2/loot/vault_6.webp" alt="">Places</button>
+  <button data-v="home" class="on"><img src="/assets/v2/loot/x_map.webp" alt="">Home</button>
+  <button data-v="jobs"><img src="/assets/v2/loot/outback_4.webp" alt="">Jobs</button>
   <button data-v="summon"><img src="/assets/v2/loot/x_ink.webp" alt="">Summon</button>
   <button data-v="heroes"><img src="/assets/v2/loot/x_shard.webp" alt="">Arrivals</button>
   <button data-v="bag"><img src="/assets/v2/loot/x_crate.webp" alt="">Bag</button>
@@ -122,6 +134,8 @@
 
 <div class="modal" id="modal"><div class="sheet"><button class="x" id="modal-x" aria-label="Close">X</button><div id="modal-body"></div></div></div>
 <div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="/js/cloud.js"></script>
 <script src="/js/os.js"></script>
 <script src="/js/game.js"></script>
 </body>
