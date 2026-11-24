@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#FFC83D">
+<title>Signing in · OverSummoned</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/css/mocks.css">
+<link rel="stylesheet" href="/css/game.css">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<main class="steam-return">
+  <div class="panel">
+    <img class="logo" src="/assets/logo.svg" alt="OverSummoned" width="606" height="100">
+    <img class="steam-smudge spin" id="sr-smudge" src="/assets/smudge.svg" alt="">
+    <h1 class="h" id="sr-title">Checking with Steam…</h1>
+    <p class="mut" id="sr-text">Smudge is looking for your name in the ledger.</p>
+    <div class="row" id="sr-acts" hidden><a class="btn" href="/">Back to the front gate</a></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="/js/steam-return.js"></script>
+</body>
+</html>

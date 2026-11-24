@@ -37,10 +37,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://oversummoned.com/#org","name":"OverSummoned","url":"https://oversummoned.com/","logo":{"@type":"ImageObject","url":"https://oversummoned.com/icon-512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://oversummoned.com/#website","name":"OverSummoned","url":"https://oversummoned.com/","inLanguage":"en","description":"OverSummoned is a free pixel idle RPG you play in your browser. Summon heroes from every era, find loot and gear, and let your crew mine, cook and fight while you are away.","publisher":{"@id":"https://oversummoned.com/#org"}},{"@type":"WebPage","@id":"https://oversummoned.com/updates#webpage","url":"https://oversummoned.com/updates","name":"Update Log · OverSummoned","description":"Everything new in OverSummoned, newest first: new loot, new gear sets, new places and the fixes that make the game play better.","inLanguage":"en","isPartOf":{"@id":"https://oversummoned.com/#website"},"breadcrumb":{"@id":"https://oversummoned.com/updates#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://oversummoned.com/assets/og-share.jpg","width":1200,"height":630}},{"@type":"BreadcrumbList","@id":"https://oversummoned.com/updates#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://oversummoned.com/"},{"@type":"ListItem","position":2,"name":"Update Log","item":"https://oversummoned.com/updates"}]}]}</script>
 <!-- seo:end -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="preload" href="/assets/logo.svg" as="image" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="/assets/fonts/lilita-one.woff" as="font" type="font/woff" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pixelify+Sans:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -237,6 +235,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <dialog class="authdlg" id="login"><div class="dl auth">
   <button class="x" id="lclose" type="button" aria-label="Close">×</button>
+  <div class="steam-auth">
+    <img class="steam-smudge" src="/assets/smudge.svg" alt="" aria-hidden="true">
+    <h3 class="h">Step into Aldermere</h3>
+    <p class="mut">One account for the desktop app and the City. Your Steam password never touches this site.</p>
+    <button class="steam-btn" type="button" data-steam-login><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15.5" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="15.5" r="2.2" fill="currentColor"/><path d="M10.4 14.4l3-3.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sign in with Steam</button>
+    <p class="fine">The city is closed while we build. Only invited players can get in for now.</p>
+  </div>
+  <div id="owner-login" hidden>
   <div class="auth-tabs">
     <button type="button" data-tab="in" class="on">Sign In</button>
     <button type="button" data-tab="up">Create Account</button>
@@ -270,9 +276,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <button class="g-auth" id="g-up" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
     <button class="switch" type="button" data-tab="in">Already have an account? Sign in</button>
   </div>
+  </div>
   <div id="lmsg" role="alert"></div>
 </div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/public.js"></script>
+<script src="/js/steam.js"></script>
 </body>
 </html>

@@ -169,7 +169,7 @@ dialog::backdrop{background:rgba(30,42,71,.55)!important}
 
 /* ------------------------------------------------------------ small joys */
 @keyframes os-pop{0%{transform:scale(.96);opacity:0}100%{transform:none;opacity:1}}
-.content>*,.pbody>*{animation:os-pop .22s ease-out both}
+/* entry animation removed: the game re-renders panels on a timer */
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ------------------------------------------------------------ fixes after first look */
@@ -186,3 +186,22 @@ dialog::backdrop{background:rgba(30,42,71,.55)!important}
 .me-btn:hover,.me-btn.on{border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--sun),var(--lift-sm)!important}
 .me img{border:2px solid var(--edge)!important}
 .nav a .mini{opacity:.55}
+
+/* ------------------------------------------------------------ Steam sign-in */
+.steam-auth{display:grid;justify-items:center;text-align:center;gap:10px;padding:6px 4px 4px}
+.steam-auth h3{font-size:26px!important}
+.steam-auth .mut{font-weight:700;max-width:32ch}
+.steam-smudge{width:96px;filter:drop-shadow(0 4px 0 rgba(30,42,71,.15))}
+.steam-btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:16px;cursor:pointer;
+  font:400 19px var(--fd);letter-spacing:.02em;color:#fff;background:linear-gradient(180deg,#2A475E,#171A21);border:var(--bw) solid var(--edge);box-shadow:var(--lift);transition:transform .08s,box-shadow .08s}
+.steam-btn svg{width:26px;height:26px;color:#66C0F4}
+.steam-btn:hover{transform:translateY(-1px);box-shadow:0 5px 0 var(--edge)}
+.steam-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.steam-auth .fine{font-size:12.5px;color:var(--dim)}
+#owner-login{border-top:2px dashed var(--line2);margin-top:12px;padding-top:12px}
+.steam-return{min-height:100dvh;display:grid;place-items:center;padding:20px}
+.steam-return .panel{max-width:440px;text-align:center;display:grid;justify-items:center;gap:10px;padding:28px!important}
+.steam-return .logo{height:34px;width:auto}
+.steam-return h1{font-size:30px!important}
+.spin{animation:sr-bob 1s ease-in-out infinite}
+@keyframes sr-bob{50%{transform:translateY(-8px) rotate(-4deg)}}

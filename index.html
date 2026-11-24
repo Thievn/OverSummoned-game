@@ -37,11 +37,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://oversummoned.com/#org","name":"OverSummoned","url":"https://oversummoned.com/","logo":{"@type":"ImageObject","url":"https://oversummoned.com/icon-512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://oversummoned.com/#website","name":"OverSummoned","url":"https://oversummoned.com/","inLanguage":"en","description":"OverSummoned is a free idle RPG you play in your browser. Summon heroes from every era, find loot and gear, and let your crew mine, cook and fight while you are away.","publisher":{"@id":"https://oversummoned.com/#org"}},{"@type":"WebPage","@id":"https://oversummoned.com/#webpage","url":"https://oversummoned.com/","name":"OverSummoned · The Idle Game Where History Falls Out of a Book","description":"A clumsy otter on your taskbar summons people from every era while you type. Put them to work in the City on your phone. Free, with no paid loot boxes.","inLanguage":"en","isPartOf":{"@id":"https://oversummoned.com/#website"},"breadcrumb":{"@id":"https://oversummoned.com/#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://oversummoned.com/assets/og-share.jpg","width":1200,"height":630},"about":{"@id":"https://oversummoned.com/#game"}},{"@type":"BreadcrumbList","@id":"https://oversummoned.com/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://oversummoned.com/"}]},{"@type":"VideoGame","@id":"https://oversummoned.com/#game","name":"OverSummoned","url":"https://oversummoned.com/","description":"OverSummoned is a free idle RPG you play in your browser. Summon heroes from every era, find loot and gear, and let your crew mine, cook and fight while you are away.","image":"https://oversummoned.com/assets/og-share.jpg","genre":["Idle RPG","Role-playing game","Pixel art","Hero collector"],"gamePlatform":["Web browser","PC","Mobile"],"applicationCategory":"Game","operatingSystem":"Any","playMode":["SinglePlayer","MultiPlayer"],"isAccessibleForFree":true,"inLanguage":"en","keywords":"idle RPG, desktop companion, browser RPG, free online RPG, hero collector, summoning game, loot, gear","gameLocation":{"@type":"Place","name":"Aldermere"},"publisher":{"@id":"https://oversummoned.com/#org"},"author":{"@id":"https://oversummoned.com/#org"},"screenshot":["https://oversummoned.com/assets/preview/city.webp","https://oversummoned.com/assets/preview/mining.webp","https://oversummoned.com/assets/preview/delve.webp","https://oversummoned.com/assets/preview/cards.webp","https://oversummoned.com/assets/preview/market.webp","https://oversummoned.com/assets/preview/crew.webp"]},{"@type":"FAQPage","@id":"https://oversummoned.com/#faq","mainEntity":[{"@type":"Question","name":"What is OverSummoned?","acceptedAnswer":{"@type":"Answer","text":"An idle game in two halves. A desktop companion on Steam, where Smudge the otter summons people from history while you type, and the City of Aldermere in your browser, where you put them to work."}},{"@type":"Question","name":"Does it read what I type?","acceptedAnswer":{"@type":"Answer","text":"No. The desktop app counts key presses, the same way a step counter counts steps. It never sees which keys, words or passwords."}},{"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The game is free. Optional cosmetics are sold through Steam, and nothing you can buy is random or makes you stronger."}},{"@type":"Question","name":"Do I need the Steam app to play on my phone?","acceptedAnswer":{"@type":"Answer","text":"No. Open oversummoned.com on your phone and sign in with Steam. It installs like an app from your browser."}},{"@type":"Question","name":"Who are the heroes?","acceptedAnswer":{"@type":"Answer","text":"Parody heroes pulled out of their own time: a Roman legionary, a plague doctor from 1348, an Ice Age hunter, a Chicago gangster, a Victorian engineer, a Hollywood leading man, and some very confused folks from today."}},{"@type":"Question","name":"Can I play with friends?","acceptedAnswer":{"@type":"Answer","text":"Yes. Join a crew for a shared chat, a shared vault and a weekly goal that everyone's typing fills."}},{"@type":"Question","name":"When does it launch?","acceptedAnswer":{"@type":"Answer","text":"The City is being rebuilt now and the desktop app is next. Leave your email and you'll hear the moment the doors open."}}]}]}</script>
 <!-- seo:end -->
-<link rel="preload" href="/assets/gen/city_bg.png" as="image" fetchpriority="high">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="preload" href="/assets/logo.svg" as="image" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="/assets/fonts/lilita-one.woff" as="font" type="font/woff" crossorigin>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -282,6 +279,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <dialog class="authdlg" id="login"><div class="dl auth">
   <button class="x" id="lclose" type="button" aria-label="Close">×</button>
+  <div class="steam-auth">
+    <img class="steam-smudge" src="/assets/smudge.svg" alt="" aria-hidden="true">
+    <h3 class="h">Step into Aldermere</h3>
+    <p class="mut">One account for the desktop app and the City. Your Steam password never touches this site.</p>
+    <button class="steam-btn" type="button" data-steam-login><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15.5" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="15.5" r="2.2" fill="currentColor"/><path d="M10.4 14.4l3-3.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sign in with Steam</button>
+    <p class="fine">The city is closed while we build. Only invited players can get in for now.</p>
+  </div>
+  <div id="owner-login" hidden>
   <div class="auth-tabs">
     <button type="button" data-tab="in" class="on">Sign In</button>
     <button type="button" data-tab="up">Create Account</button>
@@ -315,10 +320,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <button class="g-auth" id="g-up" type="button"><span class="gmark" aria-hidden="true">G</span> Continue with Google</button>
     <button class="switch" type="button" data-tab="in">Already have an account? Sign in</button>
   </div>
+  </div>
   <div id="lmsg" role="alert"></div>
 </div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/public.js"></script>
+<script src="/js/steam.js"></script>
 <script type="module" src="/js/home.js"></script>
 </body>
 </html>
