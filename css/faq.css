@@ -2,11 +2,11 @@
 img.logo { width: auto; }
 .faq { max-width: 760px; }
 .faq > h2 { font-size: clamp(24px, 4.6vw, 36px); margin: 4px 0 14px; }
-.faq-item { border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 14px; background: rgba(16, 9, 31, .72); margin: 0 0 10px; overflow: hidden; }
+.faq-item { border: 1px solid var(--line, rgba(30,42,71,0.138)); border-radius: 14px; background: rgba(255,251,242,0.77); margin: 0 0 10px; overflow: hidden; }
 .faq-item > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
 .faq-item > summary::-webkit-details-marker { display: none; }
-.faq-item > summary::after { content: "+"; margin-left: auto; font: 700 20px 'Pixelify Sans', monospace; color: var(--cyan, #36d6ff); transition: transform .2s ease; }
+.faq-item > summary::after { content: "+"; margin-left: auto; font: 700 20px 'Lilita One', monospace; color: var(--cyan, #2FA8FF); transition: transform .2s ease; }
 .faq-item[open] > summary::after { transform: rotate(45deg); }
-.faq-item > summary h3 { margin: 0; font: 600 16px/1.35 'Space Grotesk', system-ui, sans-serif; color: inherit; }
-.faq-item > p { margin: 0; padding: 0 16px 16px; line-height: 1.55; color: var(--mut, #b9b0cc); max-width: 64ch; }
-.faq-item > summary:focus-visible { outline: 2px solid var(--cyan, #36d6ff); outline-offset: -2px; border-radius: 14px; }
+.faq-item > summary h3 { margin: 0; font: 600 16px/1.35 'Nunito', system-ui, sans-serif; color: inherit; }
+.faq-item > p { margin: 0; padding: 0 16px 16px; line-height: 1.55; color: var(--mut, #8E6BFF); max-width: 64ch; }
+.faq-item > summary:focus-visible { outline: 2px solid var(--cyan, #2FA8FF); outline-offset: -2px; border-radius: 14px; }

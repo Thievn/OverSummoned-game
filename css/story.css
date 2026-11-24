@@ -1,32 +1,32 @@
-.story-body { background: #100c08; }
+.story-body { background: #FFFBF2; }
 .book {
   width: min(920px, 100%);
   margin: 8px auto 28px;
   padding: 10px;
   background:
-    linear-gradient(135deg, rgba(243,222,154,.55), rgba(120,82,28,.2) 18%, rgba(243,222,154,.35) 50%, rgba(90,60,20,.25));
+    linear-gradient(135deg, rgba(255,200,61,0.55), rgba(255,236,214,0.9) 18%, rgba(255,200,61,0.35) 50%, rgba(255,236,214,0.9));
   border-radius: 18px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  box-shadow: 0 30px 80px rgba(30,42,71,0.248);
 }
 .page {
   position: relative;
   padding: 34px 20px 26px;
   border-radius: 12px;
-  color: #f4e6cf;
+  color: #FF9A1F;
   background:
-    radial-gradient(500px 180px at 50% 0%, rgba(255,214,140,.16), transparent 70%),
-    repeating-linear-gradient(0deg, rgba(40,24,8,.05) 0 1px, transparent 1px 8px),
-    linear-gradient(180deg, #4a3824 0%, #3a2c1c 18%, #2c2116 100%);
+    radial-gradient(500px 180px at 50% 0%, rgba(255,154,31,0.16), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(255,251,242,0.1) 0 1px, transparent 1px 8px),
+    linear-gradient(180deg, #FFECD6 0%, #FFFFFF 18%, #FFFFFF 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(243,222,154,.55),
-    inset 0 0 0 7px rgba(22,14,8,.45),
-    inset 0 0 0 8px rgba(201,161,90,.4),
-    inset 0 0 90px rgba(0,0,0,.38);
+    inset 0 0 0 1px rgba(255,200,61,0.55),
+    inset 0 0 0 7px rgba(30,42,71,0.248),
+    inset 0 0 0 8px rgba(255,154,31,0.4),
+    inset 0 0 90px rgba(30,42,71,0.209);
 }
 .page::before, .page::after {
   content: '';
   position: absolute; width: 18px; height: 18px;
-  border: 1px solid rgba(243,222,154,.7);
+  border: 1px solid rgba(255,200,61,0.7);
   pointer-events: none;
 }
 .page::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
@@ -36,8 +36,8 @@
   font-weight: 600;
   font-size: clamp(40px, 9vw, 64px);
   line-height: 1.02;
-  color: #f8e7b8;
-  text-shadow: 0 2px 0 rgba(80,50,10,.45);
+  color: #FFC83D;
+  text-shadow: 0 2px 0 rgba(255,255,255,0.5);
   margin: 0 0 18px;
   max-width: 16ch;
 }
@@ -46,7 +46,7 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(19px, 4.4vw, 23px);
   line-height: 1.55;
-  color: #f3e4cc;
+  color: #1E2A47;
   margin: 0;
 }
 .leaf.lead p::first-letter {
@@ -55,7 +55,7 @@
   font-size: 58px;
   line-height: .8;
   padding: 8px 8px 0 0;
-  color: #f0d48a;
+  color: #FFC83D;
 }
 .js .leaf { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
 .js .leaf.in { opacity: 1; transform: none; }
@@ -63,7 +63,7 @@
 .glow {
   position: absolute; inset: 10px 18px 28px;
   background:
-    radial-gradient(circle at 50% 55%, rgba(255,236,180,.85), rgba(120,190,255,.28) 36%, rgba(80,40,160,.05) 62%, transparent 72%);
+    radial-gradient(circle at 50% 55%, rgba(255,200,61,0.85), rgba(47,168,255,0.28) 36%, rgba(142,107,255,0.05) 62%, transparent 72%);
   filter: blur(0.2px);
   animation: portal 2.8s ease-in-out infinite;
 }
@@ -71,14 +71,14 @@
   content: '';
   position: absolute; inset: 18% 22%;
   border-radius: 50%;
-  border: 2px solid rgba(255,236,190,.55);
-  box-shadow: 0 0 24px rgba(255,220,140,.45), inset 0 0 18px rgba(180,220,255,.35);
+  border: 2px solid rgba(255,200,61,0.55);
+  box-shadow: 0 0 24px rgba(255,154,31,0.45), inset 0 0 18px rgba(47,168,255,0.35);
 }
 @keyframes portal { 50% { transform: scale(1.05); opacity: .85; } }
 .step .sprite {
   position: absolute; left: 50%; bottom: 8px;
   transform: translate(-50%, 0);
-  filter: drop-shadow(0 10px 8px rgba(0,0,0,.45));
+  filter: drop-shadow(0 10px 8px rgba(30,42,71,0.248));
 }
 .js .step .sprite {
   transform: translate(-50%, 18px);
@@ -88,13 +88,13 @@
 .js .leaf.in .step .sprite { opacity: 1; transform: translate(-50%, 0); }
 .desk {
   position: absolute; left: 12%; right: 12%; bottom: 0; height: 16px;
-  background: linear-gradient(180deg, #8a5a32, #4a2c16);
+  background: linear-gradient(180deg, #FF9A1F, #FFFFFF);
   border-radius: 3px 3px 2px 2px;
-  box-shadow: 0 6px 0 #2a160c;
+  box-shadow: 0 6px 0 #FFFBF2;
 }
 .desk i {
   position: absolute; left: 42%; top: -10px; width: 18px; height: 22px;
-  background: linear-gradient(180deg, #c9a15a, #6a4318);
+  background: linear-gradient(180deg, #FF9A1F, #FFECD6);
   transform: rotate(18deg);
   border-radius: 2px;
 }
@@ -106,10 +106,10 @@
   min-height: 56px; padding: 0 28px; width: min(420px, 100%);
   border-radius: 14px; text-decoration: none;
   font: 700 26px 'Cormorant Garamond', Georgia, serif; letter-spacing: 0;
-  color: #2a1700;
-  background: linear-gradient(180deg, #fff1bf, #e9c26a 42%, #b9822f);
-  border: 1px solid #f3de9a;
-  box-shadow: 0 12px 30px -12px rgba(233,194,106,.9), inset 0 1px 0 rgba(255,255,255,.6);
+  color: #FFFBF2;
+  background: linear-gradient(180deg, #FFC83D, #FF9A1F 42%, #FF9A1F);
+  border: 1px solid #FFC83D;
+  box-shadow: 0 12px 30px -12px rgba(255,154,31,0.9), inset 0 1px 0 rgba(30,42,71,0.69);
 }
 .s-legion { width: 92px; height: 112px; background-size: 1012px 112px; --sw: -1012px; }
 .s-legion-idle { width: 92px; height: 112px; background-size: 736px 112px; --sw: -736px; }
@@ -142,10 +142,10 @@
 /* Legal pages share the story book, with calmer document typography. */
 .legal .page h1 { max-width: none; margin-bottom: 8px; }
 .legal .updated {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 13px;
   letter-spacing: .02em;
-  color: #cbb38a;
+  color: #FF9A1F;
   margin: 0 0 28px;
 }
 .legal-sec { margin: 0 0 26px; }
@@ -154,19 +154,19 @@
   font-weight: 700;
   font-size: clamp(16px, 3.2vw, 20px);
   letter-spacing: .04em;
-  color: #f0d48a;
+  color: #FFC83D;
   margin: 0 0 10px;
 }
 .legal-sec p {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(18px, 3.6vw, 22px);
   line-height: 1.55;
-  color: #f3e4cc;
+  color: #1E2A47;
   margin: 0 0 12px;
 }
 .legal-sec p:last-child { margin-bottom: 0; }
-.legal-sec a { color: #f0d48a; }
-.legal-sec a:hover, .legal-sec a:focus-visible { color: #fff1bf; }
+.legal-sec a { color: #FFC83D; }
+.legal-sec a:hover, .legal-sec a:focus-visible { color: #FFC83D; }
 @media (min-width: 860px) {
   .legal .page { padding: 56px 64px 48px; }
 }

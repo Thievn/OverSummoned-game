@@ -1,0 +1,24 @@
+/* Story, update log and legal pages · Daylight Ledger */
+.story-body{background:var(--bg)!important}
+.story-body .land-top{position:sticky;top:0;z-index:30;height:70px;padding:0 clamp(14px,3vw,32px);background:rgba(255,243,220,.88)!important;backdrop-filter:blur(10px);border-bottom:var(--bw) solid var(--edge)!important}
+.story-body .land-top .logo{height:32px!important;width:auto}
+.story-body .land-acts{display:flex;gap:10px}
+.book{padding:0!important;margin:clamp(20px,4vw,44px) auto!important}
+.page{background:#FFFDF7!important;border:var(--bw) solid var(--edge)!important;border-radius:26px!important;box-shadow:0 8px 0 var(--edge)!important;padding:clamp(28px,5vw,56px) clamp(20px,5vw,64px)!important;
+  background-image:repeating-linear-gradient(180deg,transparent 0 33px,rgba(47,168,255,.10) 33px 34.5px)!important;outline:none!important}
+.page::before,.page::after{display:none!important}
+.page h1{font:400 clamp(38px,6vw,64px)/1 var(--fd)!important;color:var(--ink)!important;text-shadow:none!important;-webkit-text-fill-color:currentColor!important;background:none!important;margin-bottom:18px}
+.page h2,.legal-sec h2,.updates-log .upd-page-entry h2{font:400 clamp(20px,2.4vw,26px)/1.1 var(--fd)!important;color:var(--ink)!important;-webkit-text-fill-color:currentColor!important;background:none!important;text-transform:none!important;letter-spacing:.01em!important}
+.page h3{font:400 19px var(--fd)!important;color:var(--ink)!important}
+.leaf p,.page p,.page li{font:600 clamp(16px,1.6vw,18px)/1.65 var(--fb)!important;color:var(--ink2)!important}
+.leaf.lead p::first-letter{font-family:var(--fd)!important;color:var(--tomato)!important;font-size:64px!important;line-height:.9!important;padding:4px 10px 0 0}
+.page a{color:#1679D0!important;font-weight:900;text-decoration-thickness:2px;text-underline-offset:3px}
+.updates-log .upd-page-when,.page .eff,.page time{color:var(--tomato)!important;font:900 12px var(--fb)!important;letter-spacing:.12em;text-transform:uppercase}
+.updates-log .upd-page-entry{border-top:2px dashed var(--line2)!important}
+.updates-log ul li::marker,.page li::marker{color:var(--tomato)}
+.page .fine,.page small{color:var(--mut)!important}
+.glow{background:radial-gradient(circle at 50% 55%,rgba(255,200,61,.9),rgba(18,181,162,.35) 40%,transparent 70%)!important}
+.desk,.desk i{background:#C0503B!important;border:2px solid var(--edge)}
+.story-body .land-foot{border-top:var(--bw) solid var(--edge)!important;font-weight:800;color:var(--mut)!important;max-width:1180px;margin:0 auto;width:100%}
+.story-body .foot-links a{color:var(--ink2)!important;font-weight:900}
+.page *{-webkit-text-fill-color:initial}

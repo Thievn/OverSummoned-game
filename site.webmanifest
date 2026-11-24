@@ -12,8 +12,8 @@
   "orientation": "any",
   "lang": "en",
   "dir": "ltr",
-  "background_color": "#07040d",
-  "theme_color": "#07040d",
+  "background_color": "#FFF3DC",
+  "theme_color": "#FFC83D",
   "icons": [
     {
       "src": "/icon-192.png",

@@ -13,13 +13,13 @@
   el.className = 'os-splash';
   el.setAttribute('role', 'presentation');
   el.innerHTML = '<canvas width="' + N + '" height="' + N + '" aria-hidden="true"></canvas>' +
-    '<img class="lg" src="/assets/logo.svg" alt="OverSummoned" width="2439" height="360">' +
+    '<img class="lg" src="/assets/logo.svg" alt="OverSummoned" width="606" height="100">' +
     '<button class="skip" type="button">Tap to skip</button>';
   (document.body || document.documentElement).appendChild(el);
   var cv = el.querySelector('canvas'), x = cv.getContext('2d');
   var t0 = performance.now(), gone = false, raf = 0;
 
-  var V = '#9b5cff', CY = '#36d6ff', PK = '#ff2e8a', GD = '#ffe08a', W = '#f3ecff';
+  var V = '#1E2A47', CY = '#12B5A2', PK = '#FF5B47', GD = '#FFC83D', W = '#FFFBF2';
   function px(a, b, c) { x.fillStyle = c; x.fillRect(Math.round(a), Math.round(b), 1, 1); }
   function ring(r, upto, c, rot) {
     var n = Math.ceil(2 * Math.PI * r * 1.3);
@@ -40,7 +40,7 @@
     var glow = ease((t - 0.45) / 0.45);
     if (glow > 0) {
       var g = x.createRadialGradient(C, C, 0, C, C, 44);
-      g.addColorStop(0, 'rgba(155,92,255,' + (0.55 * glow) + ')'); g.addColorStop(1, 'rgba(155,92,255,0)');
+      g.addColorStop(0, 'rgba(255,200,61,' + (0.55 * glow) + ')'); g.addColorStop(1, 'rgba(255,200,61,0)');
       x.fillStyle = g; x.fillRect(0, 0, N, N);
     }
     var rot = t * 1.4;
@@ -64,7 +64,7 @@
       var u = t - 0.6 - sp.d; if (u <= 0) return;
       px(C + Math.cos(sp.a) * sp.r, C + Math.sin(sp.a) * sp.r * 0.5 - u * sp.v * 3, sp.c);
     });
-    if (t > 0.82) { x.fillStyle = 'rgba(243,236,255,' + Math.min(0.9, (t - 0.82) / 0.12) * (t > 0.94 ? Math.max(0, 1 - (t - 0.94) / 0.06) : 1) + ')'; x.fillRect(0, 0, N, N); }
+    if (t > 0.82) { x.fillStyle = 'rgba(255,251,242,' + Math.min(0.9, (t - 0.82) / 0.12) * (t > 0.94 ? Math.max(0, 1 - (t - 0.94) / 0.06) : 1) + ')'; x.fillRect(0, 0, N, N); }
     if (t >= 1) { close(); return; }
     raf = requestAnimationFrame(frame);
   }
