@@ -1,0 +1,156 @@
+{
+ "gear_kevin_marco_maya": [
+  "kevin_weapon",
+  "kevin_armor",
+  "kevin_trinket",
+  "marco_weapon",
+  "marco_armor",
+  "marco_trinket",
+  "maya_weapon",
+  "maya_armor",
+  "maya_trinket"
+ ],
+ "gear_brokk_gaius_edith": [
+  "brokk_weapon",
+  "brokk_armor",
+  "brokk_trinket",
+  "gaius_weapon",
+  "gaius_armor",
+  "gaius_trinket",
+  "edith_weapon",
+  "edith_armor",
+  "edith_trinket"
+ ],
+ "gear_albrecht_vincenzo_slapton": [
+  "albrecht_weapon",
+  "albrecht_armor",
+  "albrecht_trinket",
+  "vincenzo_weapon",
+  "vincenzo_armor",
+  "vincenzo_trinket",
+  "slapton_weapon",
+  "slapton_armor",
+  "slapton_trinket"
+ ],
+ "gear_napoleon_cleocatra_blackbear": [
+  "napoleon_weapon",
+  "napoleon_armor",
+  "napoleon_trinket",
+  "cleocatra_weapon",
+  "cleocatra_armor",
+  "cleocatra_trinket",
+  "blackbear_weapon",
+  "blackbear_armor",
+  "blackbear_trinket"
+ ],
+ "gear_astrid_kenji_emu": [
+  "astrid_weapon",
+  "astrid_armor",
+  "astrid_trinket",
+  "kenji_weapon",
+  "kenji_armor",
+  "kenji_trinket",
+  "emu_weapon",
+  "emu_armor",
+  "emu_trinket"
+ ],
+ "gear_troffea_joost_chad": [
+  "troffea_weapon",
+  "troffea_armor",
+  "troffea_trinket",
+  "joost_weapon",
+  "joost_armor",
+  "joost_trinket",
+  "chad_weapon",
+  "chad_armor",
+  "chad_trinket"
+ ],
+ "gear_bella_florida_lola": [
+  "bella_weapon",
+  "bella_armor",
+  "bella_trinket",
+  "florida_weapon",
+  "florida_armor",
+  "florida_trinket",
+  "lola_weapon",
+  "lola_armor",
+  "lola_trinket"
+ ],
+ "gear_morwenna_sable_jacko": [
+  "morwenna_weapon",
+  "morwenna_armor",
+  "morwenna_trinket",
+  "sable_weapon",
+  "sable_armor",
+  "sable_trinket",
+  "jacko_weapon",
+  "jacko_armor",
+  "jacko_trinket"
+ ],
+ "loot_1": [
+  "bondi_1",
+  "bondi_2",
+  "bondi_3",
+  "bondi_4",
+  "bondi_5",
+  "bondi_6",
+  "bondi_7",
+  "bondi_8",
+  "fjord_1"
+ ],
+ "loot_2": [
+  "fjord_2",
+  "fjord_3",
+  "fjord_4",
+  "fjord_5",
+  "fjord_6",
+  "fjord_7",
+  "fjord_8",
+  "vault_1",
+  "vault_2"
+ ],
+ "loot_3": [
+  "vault_3",
+  "vault_4",
+  "vault_5",
+  "vault_6",
+  "vault_7",
+  "vault_8",
+  "closet_1",
+  "closet_2",
+  "closet_3"
+ ],
+ "loot_4": [
+  "closet_4",
+  "closet_5",
+  "closet_6",
+  "closet_7",
+  "closet_8",
+  "outback_1",
+  "outback_2",
+  "outback_3",
+  "outback_4"
+ ],
+ "loot_5": [
+  "outback_5",
+  "outback_6",
+  "outback_7",
+  "outback_8",
+  "blackforest_1",
+  "blackforest_2",
+  "blackforest_3",
+  "blackforest_4",
+  "blackforest_5"
+ ],
+ "loot_6": [
+  "blackforest_6",
+  "blackforest_7",
+  "blackforest_8",
+  "x_crate",
+  "x_crate_open",
+  "x_gold",
+  "x_ink",
+  "x_shard",
+  "x_stamp"
+ ]
+}
