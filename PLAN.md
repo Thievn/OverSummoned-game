@@ -18,8 +18,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Silhouettes keep their rarity frame
 - [x] Morwenna redone as a proper moth, Chad as a proper lemming
 - [x] Head no longer leaves a still copy behind when Smudge tilts it
-- [ ] Every hero cut into a puppet (head, arms, tail or cape, blink, idle, working)
-- [ ] Every new character goes through the same puppet step
+- [~] Every hero cut into a puppet: all 26 have a moving head and blink; 7 also have a moving tail. Arms, props and capes are still one piece with the body. Albrecht, Blackbear and Chad have no blink (goggles, dark fur, sunglasses)
+- [x] Every new character goes through the same puppet step (rules/heropup.py: add a head outline and a neck joint)
 - [ ] Smudge: moving pupils, more mouth shapes
 
 ## Rarities and summoning

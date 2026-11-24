@@ -28,7 +28,7 @@ window.OS = (function () {
     }
     setPose(pose) {
       if (pose === this.pose) return;
-      this.pose = pose; this.springs = {}; this.parts = {}; this.root.innerHTML = '';
+      this.pose = pose; this.hero = pose.indexOf('h_') === 0; this.springs = {}; this.parts = {}; this.root.innerHTML = '';
       const e = OS.rig[pose], foot = e.foot;
       const add = p => {
         const d = OS.el('div', 'part'); d.style.left = (p.pivot[0] - foot[0]) + 'px'; d.style.top = (p.pivot[1] - foot[1]) + 'px';
@@ -46,7 +46,7 @@ window.OS = (function () {
           Object.assign(l.style, { left: (cx - head.pivot[0] - w / 2) + 'px', top: (cy - head.pivot[1] - h / 2) + 'px', width: w + 'px', height: h + 'px', background: fur });
           head.el.appendChild(l); this.lids.push(l);
         });
-        const [mx, my, mw, mh] = e.face.mouth;
+        const [mx, my, mw, mh] = e.face.mouth; if (!mw) { this.place(); return; }
         const m = OS.el('div', 'mouth'); Object.assign(m.style, { left: (mx - head.pivot[0] - mw) + 'px', top: (my - head.pivot[1] - mh) + 'px', width: mw * 2 + 'px', height: mh * 2 + 'px' });
         head.el.appendChild(m); this.mouthEl = m;
       }
@@ -72,7 +72,7 @@ window.OS = (function () {
       const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
       for (const name in this.parts) {
         const p = this.parts[name]; let a = (this.springs[name] || [0])[0], tr = '';
-        if (name === 'head') { this.lookCur += (this.look * (1 - this.busy) - this.lookCur) * (1 - Math.exp(-4 * dt)); a = clamp(a + this.lookCur, -0.22, 0.22); }
+        if (name === 'head') { const lim = this.hero ? 0.085 : 0.22; this.lookCur += (this.look * (this.hero ? 0.6 : 1) * (1 - this.busy) - this.lookCur) * (1 - Math.exp(-4 * dt)); a = clamp(a + this.lookCur, -lim, lim); }
         else if (name === 'tail') a = clamp(a + Math.sin(t * 1.3) * 0.06 + Math.sin(t * 2.9) * 0.025 + (this.happy > 0 ? Math.sin(t * 14) * 0.12 : 0), -0.5, 0.5);
         else if (name === 'feet') a += Math.sin(t * 1.5) * 0.09;
         else if (name === 'rod') a = clamp(a + Math.sin(t * 0.9) * 0.012, -0.3, 0.2);
@@ -89,6 +89,8 @@ window.OS = (function () {
   };
 
   // ------------------------------------------------------------------ items
+  // a hero as a living puppet inside `host`, standing on the bottom middle, `h` pixels tall
+  OS.heroPuppet = function (host, id, h) { const e = OS.rig['h_' + id]; if (!e) return null; const p = new OS.Puppet(host, 'h_' + id, h / e.size[1]); p.place(host.clientWidth / 2, host.clientHeight * 0.94); return p; };
   OS.statWord = { attack: 'Attack', defense: 'Defense', health: 'Health', speed: 'Speed', luck: 'Luck' };
   OS.tipHTML = function (id, opt) {
     opt = opt || {}; const it = OS.items[id], R = OS.R; if (!it) return '';

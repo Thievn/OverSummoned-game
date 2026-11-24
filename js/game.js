@@ -116,21 +116,23 @@
 
   // ------------------------------------------------------------------ jobs
   function renderJobs() {
-    const n = jobSlots(), box = $('joblist'); box.innerHTML = ''; $('j-slots').textContent = `${S.jobs.filter(j => j).length} of ${n} slots working`;
+    const n = jobSlots(), box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; const pending = []; box.innerHTML = ''; $('j-slots').textContent = `${S.jobs.filter(j => j).length} of ${n} slots working`;
     for (let i = 0; i < R.jobs.slots.length; i++) {
       const j = S.jobs[i], card = el('div', 'job');
       if (i >= n) { card.classList.add('lock'); card.innerHTML = `<div class="jl"><b>Locked slot</b><span class="mut">Opens at total level ${R.jobs.slots[i]}. You are at ${totalLevel()}.</span></div>`; }
       else if (!j) { card.classList.add('empty'); card.innerHTML = `<div class="jl"><b>Empty slot</b><span class="mut">Tap to send somebody to work.</span></div>`; card.onclick = () => jobSheet(i); }
       else {
         const p = places[j.place], h = OS.heroes[j.hero], t = jobTime(j);
-        card.innerHTML = `<div class="jscene"><img class="sc" src="${OS.img('scenes', p.id)}" alt=""><img class="who" src="${OS.img('heroes', j.hero)}" alt="${h.name}" data-who="${i}"><div class="jpop" data-pop="${i}"></div></div>
+        card.innerHTML = `<div class="jscene"><img class="sc" src="${OS.img('scenes', p.id)}" alt=""><div class="who" data-who="${i}" role="img" aria-label="${h.name}"></div><div class="jpop" data-pop="${i}"></div></div>
           <div class="jl"><div class="tag">${p.era} · ${p.skill}</div><b>${h.name} at ${p.name}</b><div class="bar"><i data-job="${i}"></i></div>
           <div class="spread mut"><span>one haul every ${t.toFixed(1)}s · mastery ${mastery(j.hero, p.skill)}</span><span data-next="${i}"></span></div></div>`;
-        card.onclick = () => jobSheet(i);
+        card.onclick = () => jobSheet(i); pending.push([i, j.hero]);
       }
       box.appendChild(card);
     }
+    pending.forEach(([i, id]) => { const host = box.querySelector(`[data-who="${i}"]`); jobPups[i] = OS.heroPuppet(host, id, host.clientHeight); });
   }
+  let jobPups = [];
   function jobSheet(i) {
     const j = S.jobs[i] || { hero: null, place: null, prog: 0 }, d = el('div', '', `<h3 style="font-size:1.5rem">${S.jobs[i] ? 'Change this job' : 'Send somebody to work'}</h3>`);
     d.appendChild(el('div', 'tag', 'Who'));
@@ -323,7 +325,7 @@
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; const got = advance(dt, false);
-    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; if (who) { who.classList.remove('hop'); void who.offsetWidth; who.classList.add('hop'); }
+    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[i]; if (pp) { pp.kick('head', 1.6); pp.kick('tail', 6); pp.cheer(1.2); }
       if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } if (rr(it.rarity) >= 2) toast(`${OS.heroes[S.jobs[i].hero].name} found: ${it.name}`); });
     uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
       if (current === 'summon') renderSummon(); slow -= .1; if (slow <= 0) { slow = 1; if (['training', 'raids', 'home'].includes(current) && !$('modal').classList.contains('on')) renderers[current](); if (got.length && current === 'bag') renderBag(); } }

@@ -1,0 +1,72 @@
+"""Cuts every hero into puppet parts (head, and a tail where there is one), like Smudge.
+New characters: add an entry to HEADS (polygon round the head, then the neck joint) and run this."""
+import json, os, shutil, sys
+sys.path.insert(0, "/home/claude/tools")
+import puppet
+ROOT = "/home/claude/oversummoned-game"
+HEADS = {  # id: (head polygon, neck pivot)
+ "kevin": ([(35,0),(195,0),(200,90),(160,118),(85,118),(35,90)], (120,112)),
+ "marco": ([(200,0),(325,0),(330,95),(290,112),(245,120),(210,95),(205,55)], (240,105)),
+ "maya": ([(100,0),(225,0),(228,90),(195,115),(140,115),(100,85)], (165,108)),
+ "brokk": ([(70,15),(215,15),(222,95),(190,118),(105,118),(70,90)], (145,110)),
+ "gaius": ([(55,0),(205,0),(210,130),(175,155),(95,155),(55,125)], (135,148)),
+ "edith": ([(105,0),(235,0),(238,85),(205,105),(135,105),(105,85)], (170,100)),
+ "albrecht": ([(55,0),(215,0),(215,60),(200,110),(150,120),(90,115),(60,70)], (125,108)),
+ "vincenzo": ([(35,0),(155,0),(158,90),(125,112),(75,112),(38,88)], (100,106)),
+ "slapton": ([(140,0),(210,0),(215,80),(195,105),(160,105),(140,80)], (175,100)),
+ "napoleon": ([(25,0),(310,0),(312,150),(290,235),(240,262),(160,262),(110,235),(60,160),(25,130)], (200,250)),
+ "cleocatra": ([(105,0),(275,0),(278,190),(230,212),(150,212),(105,190)], (190,200)),
+ "blackbear": ([(125,5),(335,5),(335,110),(310,200),(270,250),(200,250),(165,200),(140,110)], (235,225)),
+ "astrid": ([(95,5),(220,5),(232,90),(215,150),(180,170),(130,165),(100,120)], (165,155)),
+ "kenji": ([(25,0),(300,0),(300,150),(265,215),(215,232),(150,228),(100,190),(30,150)], (185,212)),
+ "emu": ([(50,0),(265,0),(268,125),(200,140),(190,265),(110,265),(105,140),(50,120)], (150,262)),
+ "troffea": ([(10,20),(150,15),(195,60),(200,150),(180,185),(130,190),(80,235),(50,235),(60,150),(10,110)], (160,178)),
+ "joost": ([(75,0),(300,0),(322,60),(325,190),(300,215),(120,215),(80,190)], (210,208)),
+ "chad": ([(40,0),(295,0),(300,150),(280,215),(220,235),(120,235),(70,200),(40,130)], (175,215)),
+ "bella": ([(35,5),(150,5),(165,60),(175,150),(180,205),(125,210),(110,160),(60,160),(35,100)], (150,205)),
+ "florida": ([(130,5),(250,5),(330,80),(335,150),(290,180),(200,185),(140,150),(125,80)], (215,175)),
+ "lola": ([(165,10),(320,10),(335,100),(325,180),(290,200),(230,200),(180,215),(160,130)], (258,188)),
+ "morwenna": ([(160,0),(410,0),(410,60),(375,130),(350,185),(320,205),(280,205),(250,180),(165,135)], (300,195)),
+ "sable": ([(110,0),(295,0),(300,130),(265,175),(150,175),(110,130)], (205,168)),
+ "jacko": ([(145,0),(305,0),(305,110),(265,155),(175,155),(148,110)], (215,148)),
+ "raspawtin": ([(80,0),(245,0),(250,90),(215,130),(190,190),(140,190),(110,150),(80,100)], (150,150)),
+ "madjack": ([(145,0),(385,0),(388,120),(330,165),(215,170),(150,120)], (270,162)),
+}
+TAILS = {  # id: (tail polygon, joint)
+ "lola": ([(80,400),(215,400),(225,470),(180,560),(80,560)], (215,430)),
+ "sable": ([(360,420),(501,420),(501,610),(380,610),(350,520)], (370,440)),
+ "cleocatra": ([(0,490),(110,490),(120,560),(100,610),(0,610)], (115,575)),
+ "kenji": ([(5,330),(100,330),(105,400),(95,465),(5,465)], (100,400)),
+ "madjack": ([(415,430),(530,430),(530,610),(430,610),(400,540)], (425,540)),
+ "napoleon": ([(5,475),(120,475),(125,560),(110,610),(5,610)], (118,540)),
+ "brokk": ([(262,290),(335,290),(335,395),(262,395)], (265,350)),
+}
+FACES = {}
+if os.path.exists(ROOT + "/rules/hero_faces.json"): FACES = json.load(open(ROOT + "/rules/hero_faces.json"))
+
+def build():
+    from PIL import Image
+    tmp = "/tmp/heropup_src"; out = ROOT + "/art2/hpuppet"
+    shutil.rmtree(tmp, ignore_errors=True); os.makedirs(tmp); shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+    poses = {}
+    for hid, (poly, pivot) in HEADS.items():
+        im = Image.open(f"{ROOT}/art2/heroes/{hid}.png"); im.save(f"{tmp}/h_{hid}.png")
+        parts = []
+        if hid in TAILS: parts.append(("tail", "behind", TAILS[hid][1], TAILS[hid][0]))
+        parts.append(("head", "front", pivot, poly))
+        f = FACES.get(hid)
+        face = dict(eyes=f["eyes"], mouth=(0, 0, 0, 0), fur=f["fur"]) if f else dict(eyes=[], mouth=(0, 0, 0, 0), fur=(0, 0))
+        poses["h_" + hid] = dict(foot=(im.width // 2, im.height), bag=(im.width // 2, im.height // 2), parts=parts, face=face)
+    puppet.SRC, puppet.OUT, puppet.POSES = tmp, out, poses
+    puppet.KEEP = dict(puppet.KEEP, head=44)
+    rig = puppet.run()
+    for hid, f in FACES.items(): rig['h_' + hid]['face']['fur'] = f['furc']
+    json.dump(rig, open(out + '/rig.json', 'w'))
+    return rig
+
+if __name__ == "__main__":
+    rig = build()
+    puppet.preview({k: rig[k] for k in list(rig)[:9]}, {"head": 9, "tail": 14}, "/home/claude/shots/hpv0.png")
+    puppet.preview({k: rig[k] for k in list(rig)[9:18]}, {"head": -9, "tail": 14}, "/home/claude/shots/hpv1.png")
+    puppet.preview({k: rig[k] for k in list(rig)[18:]}, {"head": 9, "tail": -14}, "/home/claude/shots/hpv2.png")
+    print(len(rig))

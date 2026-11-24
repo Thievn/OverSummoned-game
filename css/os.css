@@ -362,3 +362,6 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .heroes.big{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.4rem}.acard{display:grid;gap:.5rem;justify-items:center;text-align:center;font-size:.82rem}.acard .card{width:214px}
 .seg.three{grid-template-columns:repeat(3,1fr);margin:.3rem 0 0}.mout{white-space:pre-wrap;font:600 .95rem/1.5 Nunito;color:#e9eefb;margin:.4rem 0 0;min-height:6em}
 [hidden]{display:none!important}
+
+.jscene div.who{position:absolute;left:0;right:0;top:34%;bottom:6%;height:auto;transform:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.6))}
+.puppet .lid{border-bottom-width:2px}
