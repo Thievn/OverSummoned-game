@@ -12,8 +12,8 @@
   "orientation": "any",
   "lang": "en",
   "dir": "ltr",
-  "background_color": "#FFF3DC",
-  "theme_color": "#FFC83D",
+  "background_color": "#080c1a",
+  "theme_color": "#080c1a",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -40,36 +40,7 @@
       "purpose": "maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/assets/pwa/shot-phone-city.png",
-      "sizes": "824x1830",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Your squad on shift in Aldermere"
-    },
-    {
-      "src": "/assets/pwa/shot-phone-cards.png",
-      "sizes": "824x1830",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Hero cards from every era"
-    },
-    {
-      "src": "/assets/preview/city.png",
-      "sizes": "1440x900",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "The city of Aldermere"
-    },
-    {
-      "src": "/assets/preview/delve.png",
-      "sizes": "1440x900",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "A delve with your squad"
-    }
-  ],
+  "screenshots": [],
   "categories": [
     "games",
     "entertainment"

@@ -133,5 +133,22 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/story",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/updates",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/ledger",
+      "destination": "/play",
+      "permanent": false
+    }
   ]
 }

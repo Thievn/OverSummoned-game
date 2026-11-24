@@ -3,41 +3,126 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#FFC83D">
-<title>OverSummoned</title>
+<title>Play · OverSummoned</title>
+<meta name="theme-color" content="#080c1a">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="OverSummoned">
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NN244PNK');</script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R4C4V95HD5"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-R4C4V95HD5');</script>
-<script defer src="/js/analytics.js"></script>
-<script defer src="/js/updates.js"></script>
-<script defer src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/mocks.css">
-<link rel="stylesheet" href="/css/game.css">
-<link rel="stylesheet" href="/css/cards3d.css">
-<link rel="stylesheet" href="/css/collect.css">
-<link rel="stylesheet" href="/css/updates.css">
-<link rel="stylesheet" href="/css/pwa.css">
-<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/os.css">
 </head>
-<body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NN244PNK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script src="/js/splash.js"></script>
-<div id="root"></div>
-<div id="toast" class="toast" role="status"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
-<script type="module" src="/js/play.js"></script>
+<body class="game">
+<header class="gbar"><div class="wrap">
+  <a class="brand" href="/">Over<b>Summoned</b></a>
+  <div class="res">
+    <span title="Ink. Fill the ledger to summon."><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
+    <span title="Gold"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">0</b></span>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <!-- WORK -->
+  <section class="view on" id="v-work">
+    <div class="grid2">
+      <div>
+        <div class="stage" id="stage">
+          <img class="scene" id="scene" alt="">
+          <div class="bubble" id="bubble"></div>
+        </div>
+        <div class="panel" style="margin-top:.9rem">
+          <div class="spread"><div><div class="tag" id="w-era"></div><h3 id="w-name" style="margin:0"></h3></div><div style="text-align:right"><div class="tag" id="w-skill"></div><b id="w-next" class="mut"></b></div></div>
+          <div class="bar" style="margin:.6rem 0 .35rem"><i id="w-bar"></i></div>
+          <div class="bar xp"><i id="w-xp"></i></div>
+          <div class="spread mut" style="font-size:.85rem;margin-top:.3rem"><span id="w-xptext"></span><span id="w-rate"></span></div>
+          <div class="perks" id="w-perks"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="spread"><h3>The crew</h3><span class="mut" id="crew-bonus" style="font-size:.85rem"></span></div>
+          <p class="mut" style="font-size:.9rem;margin:.1rem 0 .7rem">Up to three arrivals lend a paw. Speed makes the work faster. Luck brings up better things.</p>
+          <div class="crew" id="crew"></div>
+        </div>
+        <div class="panel" style="margin-top:.9rem">
+          <div class="spread"><h3>Expeditions</h3><span class="mut" id="ex-slots" style="font-size:.85rem"></span></div>
+          <p class="mut" style="font-size:.9rem;margin:.1rem 0 .7rem">Send one arrival off alone. Attack, Defense and Health decide whether they come back with their pockets full.</p>
+          <div id="exlist"></div>
+          <button class="btn small teal" id="ex-new">Plan an expedition</button>
+        </div>
+        <div class="panel" style="margin-top:.9rem">
+          <div class="spread"><h3>The rift crate</h3><b id="crate-time" class="mut"></b></div>
+          <div class="bar"><i id="crate-bar"></i></div>
+          <p class="mut" style="font-size:.85rem;margin:.4rem 0 0">Every thirty minutes Smudge is at work, something falls out of a hole in time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLACES -->
+  <section class="view" id="v-places">
+    <h2 style="margin-bottom:1rem">Where to?</h2>
+    <div class="plist" id="plist"></div>
+  </section>
+
+  <!-- SUMMON -->
+  <section class="view" id="v-summon">
+    <div class="grid2">
+      <div>
+        <div class="stage" id="sstage">
+          <img class="scene" src="/assets/v2/scenes/archive.webp" alt="The Archive">
+          <svg class="glowring" viewBox="0 0 910 540" aria-hidden="true">
+            <ellipse id="s-glow" cx="453" cy="390" rx="150" ry="62" fill="#3fe0c5" opacity="0"/>
+            <ellipse cx="453" cy="390" rx="182" ry="76" fill="none" stroke="rgba(8,16,24,.6)" stroke-width="9"/>
+            <ellipse id="s-prog" cx="453" cy="390" rx="182" ry="76" fill="none" stroke="#9ffff0" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 453 390)"/>
+          </svg>
+          <div class="bubble" id="sbubble"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="tag">Aldermere, home · Summoning <span id="s-lvl"></span></div>
+        <h3>The Archive</h3>
+        <p class="mut">Every stamp of the ledger is a drop of ink. Fill the circle and the book gives up one of its strangers. The more of them you have met, the more ink the next one costs.</p>
+        <div class="bar"><i id="s-bar"></i></div>
+        <div class="spread" style="margin:.4rem 0 .9rem"><b id="s-ink"></b><span class="mut" id="s-met"></span></div>
+        <div class="row">
+          <button class="btn" id="s-go">Summon</button>
+          <button class="btn ghost small" id="s-stamp">Stamp the ledger (or type)</button>
+        </div>
+        <p class="mut" style="font-size:.85rem;margin-top:.9rem">Ink comes from everything the crew does, from crates, and from every key you press on this page. <button class="btn small ghost" id="s-buy" style="margin-left:.3rem"></button></p>
+        <div class="bar xp" style="margin-top:.6rem"><i id="s-xp"></i></div>
+        <div class="mut" style="font-size:.85rem;margin-top:.3rem" id="s-odds"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEROES -->
+  <section class="view" id="v-heroes">
+    <div class="spread" style="margin-bottom:1rem"><h2>The arrivals</h2><b class="mut" id="h-count"></b></div>
+    <div class="heroes" id="hgrid"></div>
+  </section>
+
+  <!-- BAG -->
+  <section class="view" id="v-bag">
+    <div class="spread" style="margin-bottom:.6rem"><h2>The bag</h2><div class="row"><span class="mut" id="b-cap" style="font-size:.85rem"></span><button class="btn small" id="b-sell">Sell spare treasure</button></div></div>
+    <p class="mut" style="margin-bottom:1rem">Hover or tap anything to read its label. Gear is worn from an arrival's card. Treasure is for selling.</p>
+    <div class="panel"><div class="itemrow" id="bgrid"></div></div>
+    <div class="panel" style="margin-top:.9rem">
+      <h3>Your ledger</h3>
+      <div id="profile" class="mut" style="font-size:.95rem"></div>
+      <div class="row" style="margin-top:.8rem"><button class="btn small ghost" id="p-export">Copy save code</button><button class="btn small ghost" id="p-import">Load save code</button><button class="btn small ghost" id="p-mode"></button><button class="btn small ghost" id="p-reset">Start over</button></div>
+    </div>
+  </section>
+</main>
+
+<nav class="gnav" id="gnav">
+  <button data-v="work" class="on"><img src="/assets/v2/loot/x_stamp.webp" alt="">Work</button>
+  <button data-v="places"><img src="/assets/v2/loot/vault_6.webp" alt="">Places</button>
+  <button data-v="summon"><img src="/assets/v2/loot/x_ink.webp" alt="">Summon</button>
+  <button data-v="heroes"><img src="/assets/v2/loot/x_shard.webp" alt="">Arrivals</button>
+  <button data-v="bag"><img src="/assets/v2/loot/x_crate.webp" alt="">Bag</button>
+</nav>
+
+<div class="modal" id="modal"><div class="sheet"><button class="x" id="modal-x" aria-label="Close">X</button><div id="modal-body"></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="/js/os.js"></script>
+<script src="/js/game.js"></script>
 </body>
 </html>

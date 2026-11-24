@@ -28,18 +28,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://oversummoned.com/story</loc>
-    <lastmod>2026-11-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://oversummoned.com/updates</loc>
-    <lastmod>2026-11-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://oversummoned.com/privacy</loc>
     <lastmod>2026-11-23</lastmod>
     <changefreq>yearly</changefreq>
