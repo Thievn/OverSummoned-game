@@ -76,6 +76,16 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Count keys in other apps (Windows add-on)
 - [ ] Sounds for the new places
 
+## DragonBones (bone rigs)
+- [x] DragonBones runtime (open source) pulled in; plays in the browser on the site
+- [x] `rules/dbexport.py` writes real DragonBones files from the cut parts and joints
+- [x] Smudge stamp pose as a test: shared bone names, three-bone tail with a bending mesh, idle / stamp / cheer / blink / talk; test page at `/dbtest.html`
+- [ ] Dean to compare the test page and say go or no-go
+- [ ] If go: shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
+- [ ] If go: swap the game and landing puppets over to the DragonBones player; shrink the player download (about 2 MB unminified now)
+- [ ] If go: DragonBones player for the Godot desktop pet (needs a compiled plugin; not tried yet)
+- [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
+
 ## Waiting on Dean
 - [x] Approve the database change (accounts, saves, page views, admin numbers)
 - [ ] Later: add the preview address to Supabase's sign-in redirect list (Authentication, URL Configuration), then test Google sign-in
