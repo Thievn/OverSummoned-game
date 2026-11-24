@@ -1,0 +1,119 @@
+{
+ "legionary": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "gangster": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "paramedic": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "office_worker": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "hunter": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "engineer": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "plague_doctor": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "delivery_rider": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "skill": 8
+  },
+  "kind": "hero"
+ },
+ "slime": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "death": 5
+  },
+  "kind": "enemy"
+ },
+ "goblin": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "death": 5
+  },
+  "kind": "enemy"
+ },
+ "skeleton": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "death": 5
+  },
+  "kind": "enemy"
+ },
+ "ghoul": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "death": 5
+  },
+  "kind": "enemy"
+ },
+ "brute": {
+  "frames": {
+   "idle": 4,
+   "attack": 6,
+   "hit": 3,
+   "death": 5
+  },
+  "kind": "enemy"
+ }
+}

@@ -1,0 +1,3 @@
+engineer ok {'type': 'generations', 'generations': 1.0}
+plague_doctor ok {'type': 'generations', 'generations': 1.0}
+delivery_rider ok {'type': 'generations', 'generations': 1.0}

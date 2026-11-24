@@ -1,0 +1,72 @@
+[
+ {
+  "id": "rusty_gladius",
+  "rarity": "Common",
+  "name": "Rusty Gladius"
+ },
+ {
+  "id": "hobnailed_caligae",
+  "rarity": "Uncommon",
+  "name": "Hobnailed Caligae"
+ },
+ {
+  "id": "hi_vis_vest",
+  "rarity": "Uncommon",
+  "name": "Hi-Vis Vest"
+ },
+ {
+  "id": "beak_mask",
+  "rarity": "Rare",
+  "name": "Beak Mask of Doctor Albrecht"
+ },
+ {
+  "id": "trench_lantern",
+  "rarity": "Rare",
+  "name": "Trench Lantern"
+ },
+ {
+  "id": "duelling_rapier",
+  "rarity": "Rare",
+  "name": "Duelling Rapier, Far Too Fancy"
+ },
+ {
+  "id": "violin_case",
+  "rarity": "Epic",
+  "name": "The Violin Case"
+ },
+ {
+  "id": "defib_paddles",
+  "rarity": "Epic",
+  "name": "Defibrillator Paddles"
+ },
+ {
+  "id": "shield_lost_ninth",
+  "rarity": "Legendary",
+  "name": "Shield of the Lost Ninth"
+ },
+ {
+  "id": "black_ledger",
+  "rarity": "Legendary",
+  "name": "The Black Ledger's Ledger"
+ },
+ {
+  "id": "pocket_trebuchet",
+  "rarity": "Absurd",
+  "name": "Pocket Trebuchet"
+ },
+ {
+  "id": "inflatable_tube_man",
+  "rarity": "Absurd",
+  "name": "Inflatable Tube Man"
+ },
+ {
+  "id": "second_moon",
+  "rarity": "Unhinged",
+  "name": "A Second Moon (Small)"
+ },
+ {
+  "id": "group_chat",
+  "rarity": "Unhinged",
+  "name": "The Group Chat"
+ }
+]

@@ -1,0 +1,9 @@
+LOCKED STYLE PROMPT (do not edit per character)
+Painted semi-realistic character portrait, oil painting with visible brushwork, dark fantasy card art. Chest-up, three-quarter view, looking just past the viewer. Warm torchlight key from upper left, faint cool rim light on the right, deep shadows. Muted palette of soot, stone and dried blood with gold and ember highlights. Background: a blurred scene from the subject's home era fading into dark candlelit stone. No text, no frame, no border, no logos.
+
+FRAMING (locked): vertical 3:4 portrait. Top of head about 10 percent from the top edge, eyes on the 38 percent line, shoulders fill the full width. Match the brushwork, lighting, color grade and crop of the attached reference portraits exactly. Hands, if visible, have five clean fingers. No letters, numbers, signatures, badges with writing, or watermarks anywhere.
+
+PER-CHARACTER SLOT (the only part that changes)
+Subject: {age} {build} {origin} from {era}. Wearing {clothing}. Holding {prop}. Expression: {expression}. One detail: {detail}.
+
+REFERENCES: the 5 approved mockup portraits (Gaius, Vincenzo, Maya, Kevin, Brokk), ref/portrait_ref_0..4_x4.png, attached every time.

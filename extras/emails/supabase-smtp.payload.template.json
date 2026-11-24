@@ -1,0 +1,9 @@
+{
+  "external_email_enabled": true,
+  "smtp_host": "smtp.resend.com",
+  "smtp_port": "465",
+  "smtp_user": "resend",
+  "smtp_pass": "<READ FROM /workspace/secrets/oversummoned_resend_smtp.key \u2014 do not commit>",
+  "smtp_admin_email": "hello@oversummoned.com",
+  "smtp_sender_name": "OverSummoned"
+}

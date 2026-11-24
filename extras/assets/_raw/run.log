@@ -1,0 +1,26 @@
+{"id": "legionary", "usage": 2.0, "errors": []}
+[11:15:57 ET]   animate submit HTTP 429, retry in 4s (attempt 1)
+[11:15:57 ET]   animate submit HTTP 429, retry in 4s (attempt 1)
+[11:16:02 ET]   animate submit HTTP 429, retry in 8s (attempt 2)
+[11:16:02 ET]   animate submit HTTP 429, retry in 8s (attempt 2)
+{"id": "paramedic", "usage": 5.0, "errors": []}
+{"id": "hunter", "usage": 5.0, "errors": []}
+{"id": "gangster", "usage": 5.0, "errors": []}
+{"id": "engineer", "usage": 5.0, "errors": []}
+[11:16:58 ET]   animate submit HTTP 429, retry in 4s (attempt 1)
+[11:16:58 ET]   animate submit HTTP 429, retry in 4s (attempt 1)
+[11:17:02 ET]   animate submit HTTP 429, retry in 8s (attempt 2)
+[11:17:02 ET]   animate submit HTTP 429, retry in 8s (attempt 2)
+{"id": "office_worker", "usage": 5.0, "errors": []}
+[11:17:09 ET]   animate submit HTTP 429, retry in 4s (attempt 1)
+[11:17:11 ET]   animate submit HTTP 429, retry in 12s (attempt 3)
+[11:17:11 ET]   animate submit HTTP 429, retry in 12s (attempt 3)
+[11:17:14 ET]   animate submit HTTP 429, retry in 8s (attempt 2)
+[11:17:22 ET]   animate submit HTTP 429, retry in 12s (attempt 3)
+[11:17:23 ET]   animate submit HTTP 429, retry in 16s (attempt 4)
+[11:17:23 ET]   animate submit HTTP 429, retry in 16s (attempt 4)
+{"id": "cellar_rat", "usage": 7.0, "errors": []}
+{"id": "clerk_pell", "usage": 1.0, "errors": ["idle: animate submit failed after retries: (429, {'detail': 'Maximum 8 concurrent background jobs allowed (Tier 1). You have 8 active jobs.'})", "attack: animate submit failed after retries: (429, {'detail': 'Maximum 8 concurrent background jobs allowed (Tier 1). You have 8 active jobs.'})"]}
+{"id": "ghoul", "usage": 7.0, "errors": []}
+{"id": "boiler_boss", "usage": 13.0, "errors": []}
+TOTAL 55.0

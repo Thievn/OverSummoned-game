@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1126 0 188 150" width="188" height="150">
+  <title>OverSummoned crown</title>
+  <defs>
+    <linearGradient id="goldc" x1="0" y1="3.75" x2="0" y2="143.25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF1BF"/>
+      <stop offset=".35" stop-color="#E2B65C"/>
+      <stop offset=".7" stop-color="#B07A2C"/>
+      <stop offset="1" stop-color="#6E4413"/>
+    </linearGradient>
+    <linearGradient id="hi" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <path id="c" d="M1173.5,96 L1167.5,52 L1189.5,72 L1205.5,40 L1219.5,64 L1233.5,40 L1249.5,72 L1271.5,52 L1265.5,96 Z M1171.5,100 L1267.5,100 L1267.5,110 L1171.5,110 Z" transform="translate(-670.72,-31.90) scale(1.55)"/>
+    <g id="pearls" transform="translate(-670.72,-31.90) scale(1.55)">
+      <circle cx="1167.5" cy="48" r="5"/>
+      <circle cx="1205.5" cy="36" r="5"/>
+      <circle cx="1233.5" cy="36" r="5"/>
+      <circle cx="1271.5" cy="48" r="5"/>
+      <circle cx="1219.5" cy="28" r="5"/>
+    </g>
+  </defs>
+  <g fill="none" stroke="#1E1208" stroke-width="7" stroke-linejoin="round">
+    <use href="#c"/>
+  </g>
+  <g fill="#5A360F" transform="translate(1.6,2.2)">
+    <use href="#c"/>
+  </g>
+  <path fill="url(#goldc)" d="M1173.5,96 L1167.5,52 L1189.5,72 L1205.5,40 L1219.5,64 L1233.5,40 L1249.5,72 L1271.5,52 L1265.5,96 Z M1171.5,100 L1267.5,100 L1267.5,110 L1171.5,110 Z" transform="translate(-670.72,-31.90) scale(1.55)"/>
+  <g fill="#F4E6C8" stroke="#3A260E" transform="translate(-670.72,-31.90) scale(1.55)">
+    <circle cx="1167.5" cy="48" r="5"/>
+    <circle cx="1205.5" cy="36" r="5"/>
+    <circle cx="1233.5" cy="36" r="5"/>
+    <circle cx="1271.5" cy="48" r="5"/>
+    <circle cx="1219.5" cy="28" r="5"/>
+  </g>
+  <g fill="url(#hi)" transform="translate(-1,-1.4)">
+    <use href="#c"/>
+  </g>
+  <circle cx="1219.5" cy="106.05" r="9.3" fill="#9E1B1B" stroke="#2A0A0A" stroke-width="1.5"/>
+</svg>

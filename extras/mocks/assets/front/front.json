@@ -1,0 +1,74 @@
+{
+ "legionary": {
+  "w": 41,
+  "h": 50,
+  "ax": 23,
+  "ay": 48,
+  "idle": 8,
+  "skill": 11
+ },
+ "gangster": {
+  "w": 37,
+  "h": 50,
+  "ax": 17,
+  "ay": 48,
+  "idle": 8,
+  "skill": 11
+ },
+ "paramedic": {
+  "w": 59,
+  "h": 49,
+  "ax": 30,
+  "ay": 47,
+  "idle": 8,
+  "skill": 11
+ },
+ "office_worker": {
+  "w": 61,
+  "h": 49,
+  "ax": 31,
+  "ay": 47,
+  "idle": 8,
+  "skill": 11
+ },
+ "hunter": {
+  "w": 52,
+  "h": 51,
+  "ax": 30,
+  "ay": 49,
+  "idle": 8,
+  "skill": 11
+ },
+ "engineer": {
+  "w": 53,
+  "h": 51,
+  "ax": 24,
+  "ay": 49,
+  "idle": 8,
+  "skill": 11
+ },
+ "plague_doctor": {
+  "w": 55,
+  "h": 51,
+  "ax": 28,
+  "ay": 48,
+  "idle": 8,
+  "skill": 11
+ },
+ "delivery_rider": {
+  "w": 47,
+  "h": 51,
+  "ax": 23,
+  "ay": 49,
+  "idle": 8,
+  "skill": 11
+ },
+ "will_slapton": {
+  "w": 63,
+  "h": 57,
+  "ax": 32,
+  "ay": 55,
+  "idle": 8,
+  "skill": 11
+ }
+}

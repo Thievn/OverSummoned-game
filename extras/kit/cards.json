@@ -1,0 +1,10 @@
+[
+ {"id":"legionary","portrait":"portraits/legionary.jpg","name":"Gaius Marcellus","title":"Roman Legionary","rarity":"Rare","guard":15,"might":12,"knack":8,"era":"Rome, 1st century","knowhow":"Formation"},
+ {"id":"gangster","portrait":"portraits/gangster.jpg","name":"Vincenzo Moretti","title":"Prohibition Gangster","rarity":"Epic","guard":9,"might":13,"knack":15,"era":"Chicago, 1927","knowhow":"Shakedown"},
+ {"id":"paramedic","portrait":"portraits/paramedic.jpg","name":"Maya Washington","title":"Paramedic","rarity":"Uncommon","guard":10,"might":7,"knack":14,"era":"Modern","knowhow":"Triage"},
+ {"id":"office_worker","portrait":"portraits/office_worker.jpg","name":"Kevin Latham","title":"Office Worker","rarity":"Common","guard":8,"might":7,"knack":12,"era":"Modern","knowhow":"Reply All"},
+ {"id":"hunter","portrait":"portraits/hunter.jpg","name":"Brokk","title":"Stone Age Hunter","rarity":"Uncommon","guard":11,"might":16,"knack":6,"era":"Ice Age steppe","knowhow":"Fire-craft"},
+ {"id":"engineer","portrait":"portraits/engineer.jpg","name":"Edith Crane","title":"Victorian Engineer","rarity":"Rare","guard":9,"might":8,"knack":16,"era":"London, 1880s","knowhow":"Contraptions"},
+ {"id":"plague_doctor","portrait":"portraits/plague_doctor.jpg","name":"Doctor Albrecht","title":"Plague Doctor","rarity":"Rare","guard":10,"might":8,"knack":15,"era":"Medieval, 1348","knowhow":"Miasma Theory"},
+ {"id":"delivery_rider","portrait":"portraits/delivery_rider.jpg","name":"Marco Reyes","title":"Delivery Rider","rarity":"Common","guard":8,"might":9,"knack":11,"era":"Modern","knowhow":"Last Mile"}
+]

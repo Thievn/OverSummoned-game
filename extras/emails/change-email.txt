@@ -1,0 +1,21 @@
+OverSummoned
+The city keeps its lights on
+
+New address, same city.
+
+You asked to change your OverSummoned email from {{ .Email }} to {{ .NewEmail }}. Confirm the new one and we'll start writing there.
+
+Confirm this email:
+{{ .ConfirmationURL }}
+
+If you did not ask to change this, you can ignore this email. Your current address stays as it is.
+
+You're getting this because a change was requested from {{ .Email }} to {{ .NewEmail }}.
+
+The story: https://oversummoned.com/story
+Privacy: https://oversummoned.com/privacy
+Terms: https://oversummoned.com/terms
+Questions? hello@oversummoned.com
+
+© 2026 OverSummoned · oversummoned.com
+Your heroes never stop working.

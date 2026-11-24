@@ -1,0 +1,651 @@
+{
+ "characters": [
+  {
+   "id": "hunter",
+   "title": "Stone Age Hunter",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/hunter/hunter.png",
+   "frame_width": 126,
+   "frame_height": 121,
+   "baseline": {
+    "feet_y": 120,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 61,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/hunter/hunter_idle_sheet.png",
+     "frames": [
+      "characters/hunter/frames/hunter_idle_00.png",
+      "characters/hunter/frames/hunter_idle_01.png",
+      "characters/hunter/frames/hunter_idle_02.png",
+      "characters/hunter/frames/hunter_idle_03.png",
+      "characters/hunter/frames/hunter_idle_04.png",
+      "characters/hunter/frames/hunter_idle_05.png",
+      "characters/hunter/frames/hunter_idle_06.png",
+      "characters/hunter/frames/hunter_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 126,
+     "frame_height": 121
+    },
+    "attack": {
+     "sheet": "characters/hunter/hunter_attack_sheet.png",
+     "frames": [
+      "characters/hunter/frames/hunter_attack_00.png",
+      "characters/hunter/frames/hunter_attack_01.png",
+      "characters/hunter/frames/hunter_attack_02.png",
+      "characters/hunter/frames/hunter_attack_03.png",
+      "characters/hunter/frames/hunter_attack_04.png",
+      "characters/hunter/frames/hunter_attack_05.png",
+      "characters/hunter/frames/hunter_attack_06.png",
+      "characters/hunter/frames/hunter_attack_07.png",
+      "characters/hunter/frames/hunter_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 126,
+     "frame_height": 121
+    }
+   },
+   "know_how": "Fire-craft"
+  },
+  {
+   "id": "legionary",
+   "title": "Roman Legionary",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/legionary/legionary.png",
+   "frame_width": 89,
+   "frame_height": 121,
+   "baseline": {
+    "feet_y": 120,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 38,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/legionary/legionary_idle_sheet.png",
+     "frames": [
+      "characters/legionary/frames/legionary_idle_00.png",
+      "characters/legionary/frames/legionary_idle_01.png",
+      "characters/legionary/frames/legionary_idle_02.png",
+      "characters/legionary/frames/legionary_idle_03.png",
+      "characters/legionary/frames/legionary_idle_04.png",
+      "characters/legionary/frames/legionary_idle_05.png",
+      "characters/legionary/frames/legionary_idle_06.png",
+      "characters/legionary/frames/legionary_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 89,
+     "frame_height": 121
+    },
+    "attack": {
+     "sheet": "characters/legionary/legionary_attack_sheet.png",
+     "frames": [
+      "characters/legionary/frames/legionary_attack_00.png",
+      "characters/legionary/frames/legionary_attack_01.png",
+      "characters/legionary/frames/legionary_attack_02.png",
+      "characters/legionary/frames/legionary_attack_03.png",
+      "characters/legionary/frames/legionary_attack_04.png",
+      "characters/legionary/frames/legionary_attack_05.png",
+      "characters/legionary/frames/legionary_attack_06.png",
+      "characters/legionary/frames/legionary_attack_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 89,
+     "frame_height": 121
+    }
+   },
+   "know_how": "Formation"
+  },
+  {
+   "id": "engineer",
+   "title": "Victorian Engineer",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/engineer/engineer.png",
+   "frame_width": 95,
+   "frame_height": 120,
+   "baseline": {
+    "feet_y": 119,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 20,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/engineer/engineer_idle_sheet.png",
+     "frames": [
+      "characters/engineer/frames/engineer_idle_00.png",
+      "characters/engineer/frames/engineer_idle_01.png",
+      "characters/engineer/frames/engineer_idle_02.png",
+      "characters/engineer/frames/engineer_idle_03.png",
+      "characters/engineer/frames/engineer_idle_04.png",
+      "characters/engineer/frames/engineer_idle_05.png",
+      "characters/engineer/frames/engineer_idle_06.png",
+      "characters/engineer/frames/engineer_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 95,
+     "frame_height": 120
+    },
+    "attack": {
+     "sheet": "characters/engineer/engineer_attack_sheet.png",
+     "frames": [
+      "characters/engineer/frames/engineer_attack_00.png",
+      "characters/engineer/frames/engineer_attack_01.png",
+      "characters/engineer/frames/engineer_attack_02.png",
+      "characters/engineer/frames/engineer_attack_03.png",
+      "characters/engineer/frames/engineer_attack_04.png",
+      "characters/engineer/frames/engineer_attack_05.png",
+      "characters/engineer/frames/engineer_attack_06.png",
+      "characters/engineer/frames/engineer_attack_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 95,
+     "frame_height": 120
+    }
+   },
+   "know_how": "Contraptions"
+  },
+  {
+   "id": "gangster",
+   "title": "Prohibition Gangster",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/gangster/gangster.png",
+   "frame_width": 109,
+   "frame_height": 116,
+   "baseline": {
+    "feet_y": 115,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 50,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/gangster/gangster_idle_sheet.png",
+     "frames": [
+      "characters/gangster/frames/gangster_idle_00.png",
+      "characters/gangster/frames/gangster_idle_01.png",
+      "characters/gangster/frames/gangster_idle_02.png",
+      "characters/gangster/frames/gangster_idle_03.png",
+      "characters/gangster/frames/gangster_idle_04.png",
+      "characters/gangster/frames/gangster_idle_05.png",
+      "characters/gangster/frames/gangster_idle_06.png",
+      "characters/gangster/frames/gangster_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 109,
+     "frame_height": 116
+    },
+    "attack": {
+     "sheet": "characters/gangster/gangster_attack_sheet.png",
+     "frames": [
+      "characters/gangster/frames/gangster_attack_00.png",
+      "characters/gangster/frames/gangster_attack_01.png",
+      "characters/gangster/frames/gangster_attack_02.png",
+      "characters/gangster/frames/gangster_attack_03.png",
+      "characters/gangster/frames/gangster_attack_04.png",
+      "characters/gangster/frames/gangster_attack_05.png",
+      "characters/gangster/frames/gangster_attack_06.png",
+      "characters/gangster/frames/gangster_attack_07.png",
+      "characters/gangster/frames/gangster_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 109,
+     "frame_height": 116
+    }
+   },
+   "know_how": "Shakedown"
+  },
+  {
+   "id": "paramedic",
+   "title": "Modern Paramedic",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/paramedic/paramedic.png",
+   "frame_width": 112,
+   "frame_height": 123,
+   "baseline": {
+    "feet_y": 122,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 40,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/paramedic/paramedic_idle_sheet.png",
+     "frames": [
+      "characters/paramedic/frames/paramedic_idle_00.png",
+      "characters/paramedic/frames/paramedic_idle_01.png",
+      "characters/paramedic/frames/paramedic_idle_02.png",
+      "characters/paramedic/frames/paramedic_idle_03.png",
+      "characters/paramedic/frames/paramedic_idle_04.png",
+      "characters/paramedic/frames/paramedic_idle_05.png",
+      "characters/paramedic/frames/paramedic_idle_06.png",
+      "characters/paramedic/frames/paramedic_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 112,
+     "frame_height": 123
+    },
+    "attack": {
+     "sheet": "characters/paramedic/paramedic_attack_sheet.png",
+     "frames": [
+      "characters/paramedic/frames/paramedic_attack_00.png",
+      "characters/paramedic/frames/paramedic_attack_01.png",
+      "characters/paramedic/frames/paramedic_attack_02.png",
+      "characters/paramedic/frames/paramedic_attack_03.png",
+      "characters/paramedic/frames/paramedic_attack_04.png",
+      "characters/paramedic/frames/paramedic_attack_05.png",
+      "characters/paramedic/frames/paramedic_attack_06.png",
+      "characters/paramedic/frames/paramedic_attack_07.png",
+      "characters/paramedic/frames/paramedic_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 112,
+     "frame_height": 123
+    }
+   },
+   "know_how": "Triage"
+  },
+  {
+   "id": "office_worker",
+   "title": "Office Worker",
+   "kind": "origin",
+   "section": "Origins carousel + Descent demo (player)",
+   "facing": "right",
+   "still": "characters/office_worker/office_worker.png",
+   "frame_width": 87,
+   "frame_height": 122,
+   "baseline": {
+    "feet_y": 121,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 24,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/office_worker/office_worker_idle_sheet.png",
+     "frames": [
+      "characters/office_worker/frames/office_worker_idle_00.png",
+      "characters/office_worker/frames/office_worker_idle_01.png",
+      "characters/office_worker/frames/office_worker_idle_02.png",
+      "characters/office_worker/frames/office_worker_idle_03.png",
+      "characters/office_worker/frames/office_worker_idle_04.png",
+      "characters/office_worker/frames/office_worker_idle_05.png",
+      "characters/office_worker/frames/office_worker_idle_06.png",
+      "characters/office_worker/frames/office_worker_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 87,
+     "frame_height": 122
+    },
+    "attack": {
+     "sheet": "characters/office_worker/office_worker_attack_sheet.png",
+     "frames": [
+      "characters/office_worker/frames/office_worker_attack_00.png",
+      "characters/office_worker/frames/office_worker_attack_01.png",
+      "characters/office_worker/frames/office_worker_attack_02.png",
+      "characters/office_worker/frames/office_worker_attack_03.png",
+      "characters/office_worker/frames/office_worker_attack_04.png",
+      "characters/office_worker/frames/office_worker_attack_05.png",
+      "characters/office_worker/frames/office_worker_attack_06.png",
+      "characters/office_worker/frames/office_worker_attack_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 87,
+     "frame_height": 122
+    }
+   },
+   "know_how": "Paperwork"
+  },
+  {
+   "id": "cellar_rat",
+   "title": "Cellar Rat (The Old Cellars)",
+   "kind": "enemy",
+   "section": "Descent demo enemy, floor 1",
+   "facing": "left",
+   "still": "characters/cellar_rat/cellar_rat.png",
+   "frame_width": 96,
+   "frame_height": 88,
+   "baseline": {
+    "feet_y": 87,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 52,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 96,
+   "animations": {
+    "idle": {
+     "sheet": "characters/cellar_rat/cellar_rat_idle_sheet.png",
+     "frames": [
+      "characters/cellar_rat/frames/cellar_rat_idle_00.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_01.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_02.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_03.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_04.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_05.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_06.png",
+      "characters/cellar_rat/frames/cellar_rat_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 96,
+     "frame_height": 88
+    },
+    "attack": {
+     "sheet": "characters/cellar_rat/cellar_rat_attack_sheet.png",
+     "frames": [
+      "characters/cellar_rat/frames/cellar_rat_attack_00.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_01.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_02.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_03.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_04.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_05.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_06.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_07.png",
+      "characters/cellar_rat/frames/cellar_rat_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 96,
+     "frame_height": 88
+    },
+    "hurt": {
+     "sheet": "characters/cellar_rat/cellar_rat_hurt_sheet.png",
+     "frames": [
+      "characters/cellar_rat/frames/cellar_rat_hurt_00.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_01.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_02.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_03.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_04.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_05.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_06.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_07.png",
+      "characters/cellar_rat/frames/cellar_rat_hurt_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 96,
+     "frame_height": 88
+    }
+   }
+  },
+  {
+   "id": "ghoul",
+   "title": "Ghoul (The Bone Orchard)",
+   "kind": "enemy",
+   "section": "Descent demo enemy, elite",
+   "facing": "left",
+   "still": "characters/ghoul/ghoul.png",
+   "frame_width": 104,
+   "frame_height": 113,
+   "baseline": {
+    "feet_y": 112,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 60,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/ghoul/ghoul_idle_sheet.png",
+     "frames": [
+      "characters/ghoul/frames/ghoul_idle_00.png",
+      "characters/ghoul/frames/ghoul_idle_01.png",
+      "characters/ghoul/frames/ghoul_idle_02.png",
+      "characters/ghoul/frames/ghoul_idle_03.png",
+      "characters/ghoul/frames/ghoul_idle_04.png",
+      "characters/ghoul/frames/ghoul_idle_05.png",
+      "characters/ghoul/frames/ghoul_idle_06.png",
+      "characters/ghoul/frames/ghoul_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 104,
+     "frame_height": 113
+    },
+    "attack": {
+     "sheet": "characters/ghoul/ghoul_attack_sheet.png",
+     "frames": [
+      "characters/ghoul/frames/ghoul_attack_00.png",
+      "characters/ghoul/frames/ghoul_attack_01.png",
+      "characters/ghoul/frames/ghoul_attack_02.png",
+      "characters/ghoul/frames/ghoul_attack_03.png",
+      "characters/ghoul/frames/ghoul_attack_04.png",
+      "characters/ghoul/frames/ghoul_attack_05.png",
+      "characters/ghoul/frames/ghoul_attack_06.png",
+      "characters/ghoul/frames/ghoul_attack_07.png",
+      "characters/ghoul/frames/ghoul_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 104,
+     "frame_height": 113
+    },
+    "hurt": {
+     "sheet": "characters/ghoul/ghoul_hurt_sheet.png",
+     "frames": [
+      "characters/ghoul/frames/ghoul_hurt_00.png",
+      "characters/ghoul/frames/ghoul_hurt_01.png",
+      "characters/ghoul/frames/ghoul_hurt_02.png",
+      "characters/ghoul/frames/ghoul_hurt_03.png",
+      "characters/ghoul/frames/ghoul_hurt_04.png",
+      "characters/ghoul/frames/ghoul_hurt_05.png",
+      "characters/ghoul/frames/ghoul_hurt_06.png",
+      "characters/ghoul/frames/ghoul_hurt_07.png",
+      "characters/ghoul/frames/ghoul_hurt_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 104,
+     "frame_height": 113
+    }
+   }
+  },
+  {
+   "id": "boiler_boss",
+   "title": "The Angry Boiler (Old Cellars boss)",
+   "kind": "enemy",
+   "section": "Descent demo boss",
+   "facing": "left",
+   "still": "characters/boiler_boss/boiler_boss.png",
+   "frame_width": 156,
+   "frame_height": 140,
+   "baseline": {
+    "feet_y": 139,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 80,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 160,
+   "animations": {
+    "idle": {
+     "sheet": "characters/boiler_boss/boiler_boss_idle_sheet.png",
+     "frames": [
+      "characters/boiler_boss/frames/boiler_boss_idle_00.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_01.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_02.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_03.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_04.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_05.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_06.png",
+      "characters/boiler_boss/frames/boiler_boss_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 156,
+     "frame_height": 140
+    },
+    "attack": {
+     "sheet": "characters/boiler_boss/boiler_boss_attack_sheet.png",
+     "frames": [
+      "characters/boiler_boss/frames/boiler_boss_attack_00.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_01.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_02.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_03.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_04.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_05.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_06.png",
+      "characters/boiler_boss/frames/boiler_boss_attack_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 156,
+     "frame_height": 140
+    },
+    "hurt": {
+     "sheet": "characters/boiler_boss/boiler_boss_hurt_sheet.png",
+     "frames": [
+      "characters/boiler_boss/frames/boiler_boss_hurt_00.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_01.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_02.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_03.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_04.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_05.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_06.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_07.png",
+      "characters/boiler_boss/frames/boiler_boss_hurt_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 156,
+     "frame_height": 140
+    }
+   }
+  },
+  {
+   "id": "clerk_pell",
+   "title": "Mr. Pell, Hero Office clerk",
+   "kind": "npc",
+   "section": "City section / Hero Office NPC",
+   "facing": "right",
+   "still": "characters/clerk_pell/clerk_pell.png",
+   "frame_width": 103,
+   "frame_height": 117,
+   "baseline": {
+    "feet_y": 116,
+    "feet_offset_from_bottom_px": 0,
+    "feet_anchor_x": 43,
+    "note": "Lowest opaque row of the idle loop is the last row of every frame. Place the frame's bottom edge on the ground line; no extra offset needed."
+   },
+   "source_canvas_px": 128,
+   "animations": {
+    "idle": {
+     "sheet": "characters/clerk_pell/clerk_pell_idle_sheet.png",
+     "frames": [
+      "characters/clerk_pell/frames/clerk_pell_idle_00.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_01.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_02.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_03.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_04.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_05.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_06.png",
+      "characters/clerk_pell/frames/clerk_pell_idle_07.png"
+     ],
+     "frame_count": 8,
+     "fps": 7,
+     "loop": true,
+     "layout": "horizontal",
+     "frame_width": 103,
+     "frame_height": 117
+    },
+    "attack": {
+     "sheet": "characters/clerk_pell/clerk_pell_attack_sheet.png",
+     "frames": [
+      "characters/clerk_pell/frames/clerk_pell_attack_00.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_01.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_02.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_03.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_04.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_05.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_06.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_07.png",
+      "characters/clerk_pell/frames/clerk_pell_attack_08.png"
+     ],
+     "frame_count": 9,
+     "fps": 12,
+     "loop": false,
+     "layout": "horizontal",
+     "frame_width": 103,
+     "frame_height": 117
+    }
+   }
+  }
+ ],
+ "issues": [
+  "boiler_boss hurt[6]: generator drifted 14px down, re-seated onto feet line",
+  "boiler_boss hurt[7]: generator drifted 15px down, re-seated onto feet line",
+  "boiler_boss hurt[8]: generator drifted 15px down, re-seated onto feet line"
+ ]
+}

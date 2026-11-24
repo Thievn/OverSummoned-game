@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OverSummoned · Card back with gear (mockup)</title>
+<link rel="stylesheet" href="assets/mocks.css">
+<link rel="stylesheet" href="gear.css">
+<link rel="stylesheet" href="mmo.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><img src="assets/logo.svg" alt="OverSummoned"><span class="tagm">Mockup</span></header>
+
+  <section>
+    <div class="eb">Cards</div>
+    <h2 class="h">Turn it over. Then look closer.</h2>
+    <p class="lede">Tap a card to flip it. On the back, the helmet lays out everything your hero is wearing, and the scroll shows the set from their own time.</p>
+    <div class="stage two">
+      <figure><div id="c-will"></div><figcaption class="cap">Will Slapton, kitted out</figcaption>
+        <div class="drops"><div class="dl">Fresh from the delve</div><div class="row" id="drops"></div></div></figure>
+      <figure><div id="c-kevin"></div><figcaption class="cap">A brand-new hero, nothing found yet</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="eb">The nine</div>
+    <h2 class="h">Every hero, every era.</h2>
+    <p class="lede">The homepage row, at its real size. Each one carries something different.</p>
+    <div class="reel" id="reel"></div>
+  </section>
+</div>
+
+<script src="items.js"></script>
+<script src="mmo.js"></script>
+<script>
+const R={common:'Common',uncommon:'Uncommon',rare:'Rare',epic:'Epic',legendary:'Legendary',absurd:'Absurd',unhinged:'Unhinged'};
+const SLOT={head:'Head',chest:'Chest',legs:'Legs',feet:'Boots',hands:'Gloves',neck:'Amulet',ring:'Ring',main:'Main hand',off:'Off hand',trinket:'Trinket',belt:'Belt'};
+const IT={};for(const id in ITEMS)IT[id]={n:ITEMS[id].name,r:ITEMS[id].rarity,src:ITEMS[id].icon};
+const H=HEROES_M;
+// worn gear per card. belt = [[id,qty],...]
+const GEAR={
+ will_slapton:{head:'pinstripe_fedora',chest:'item_red_carpet_tux',legs:null,feet:'hobnailed_caligae',neck:'bone_necklace',ring1:'second_moon',ring2:null,hands:'open_palm',main:'duelling_rapier',off:'trench_lantern',t1:'item_golden_statuette',t2:'stained_mug',belt:[['potion_pink',3],['potion_cyan',2],['flask',1],null]},
+ office_worker:{belt:[null,null,null,null]},
+ legionary:{main:'rusty_gladius',feet:'hobnailed_caligae',chest:'mammoth_cloak',belt:[['potion_pink',2],['eel_stew',4],null,null]},
+ gangster:{head:'pinstripe_fedora',main:'violin_case',chest:'pinstripe_vest',t1:'black_ledger',ring1:'second_moon',belt:[['potion_cyan',3],null,null,null]},
+ engineer:{head:'brass_goggles',hands:'steam_gauntlet',main:'pocket_trebuchet',t1:'trench_lantern',neck:'bone_necklace',belt:[['potion_pink',1],['flask',2],null,null]},
+ paramedic:{main:'defib_paddles',off:'medic_bag',chest:'hi_vis_vest',t1:'stained_mug',belt:[['potion_pink',4],['potion_pink',4],['eel_stew',2],null]},
+};
+const GLY={
+ head:'<path d="M5 13c0-4 3-7 7-7s7 3 7 7v3h-3v-3h-8v3H5z"/><path d="M11 3h2v3h-2z"/>',
+ chest:'<path d="M8 4l4 2 4-2 4 3-2 4h-1v9H7v-9H6L4 7z"/>',
+ legs:'<path d="M7 4h10l1 16h-4l-2-10-2 10H6z"/>',
+ feet:'<path d="M8 4h5v9l6 2v4H6v-4l2-1z"/>',
+ hands:'<path d="M8 20v-6L6 10l1-1 2 2V4h1.5v6h1V3h1.5v7h1V4H15v7h1V6h1.5v9l-2 5z"/>',
+ neck:'<path d="M6 4c0 5 3 8 6 8s6-3 6-8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 12l3 4-3 4-3-4z"/>',
+ ring:'<circle cx="12" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 6h4l1 3h-6z"/>',
+ main:'<path d="M18 3h3v3L10 17l-3-3z"/><path d="M5 15l4 4-2 1-3-3zM4 19l1 1-2 1z"/>',
+ off:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>',
+ trinket:'<path d="M12 3l2.5 6 6 .5-4.6 4 1.5 6.5-5.4-3.4L6.6 20l1.5-6.5L3.5 9.5l6-.5z"/>',
+ belt:'<path d="M10 3h4v3l3 4v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-9l3-4z"/>',
+};
+const ICO={
+ bio:'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h8l2 2v10H3z" opacity=".25"/><path d="M3 2h8l2 2v10H3zM4 3v10h8V5h-2V3z"/><path d="M5 6h6v1H5zM5 8h6v1H5zM5 10h4v1H5z"/></svg>',
+ gear:'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M7 1h2v2h2v1h1v1h1v4h-1v4h-2v-3H6v3H4V9H3V5h1V4h1V3h2z"/><path d="M5 6h6v2H5z" fill="#000" opacity=".55"/><path d="M7 3h2v3H7z" opacity=".5"/></svg>',
+ set:'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h9v1h1v9H4v-1H3V4H2z"/><path d="M4 4h7v8H5V5H4z" opacity=".35"/><path d="M12 3h2v2h-2zM2 12h2v2H2z"/><path d="M6 6h4v1H6zM6 8h4v1H6zM6 10h2v1H6z"/></svg>',
+};
+const FLIP='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8a5 5 0 0 1 9-3M13 8a5 5 0 0 1-9 3"/><path d="M12 2v3H9M4 14v-3h3"/></svg>';
+const src=id=>'assets/'+IT[id].src+'.png';
+let IDX=0;
+function gs(id,slot,i,q,setIds){
+  const t=slot==='ring1'||slot==='ring2'?'ring':(slot==='t1'||slot==='t2'?'trinket':slot);
+  if(!id) return `<button type="button" class="gs" data-slot="${t}" style="--i:${i}" aria-label="Empty ${SLOT[t]} slot"><svg class="ghost" viewBox="0 0 24 24" fill="currentColor">${GLY[t]}</svg></button>`;
+  const it=IT[id];const setp=setIds&&setIds.includes(id)?' set-piece':'';
+  return `<button type="button" class="gs filled r-${it.r}${setp}" data-id="${id}" data-slot="${t}" style="--i:${i};--sd:${(i*0.37)%4}s" aria-label="${it.n}"><span class="pip"></span><img src="${src(id)}" alt="">${q?`<span class="q">${q}</span>`:''}</button>`;
+}
+function card(hid,opt={}){
+  const h=H[hid],G=GEAR[hid],S=SETS[hid],uid='k'+(IDX++);
+  const worn=Object.values(G).flat();
+  const found=S.items.filter(x=>worn.includes(x));
+  const on=found.length===3;
+  const T=heroTotals(hid,G),gg=T.gear;
+  let i=0;
+  const col=a=>a.map(s=>gs(G[s],s,i++,0,S.items)).join('');
+  const L=col(['head','chest','legs','feet']), Rr=col(['neck','ring1','ring2','hands']);
+  const row=col(['main','off','t1','t2']);
+  const belt=G.belt.map(b=>gs(b?b[0]:null,'belt',i++,b?b[1]:0)).join('');
+  const sum=(gg.atk+gg.def+gg.hp)?`<span class="sm">Attack <b>+${gg.atk}</b></span><span class="sg">Defense <b>+${gg.def}</b></span><span class="sk">Health <b>+${gg.hp}</b></span>`:`<span>Nothing worn yet</span>`;
+  const ledger=S.items.map(x=>{const f=found.includes(x);return `<button type="button" class="ls ${f?'found':'missing'}" data-id="${x}" data-set="1"><span class="sock"><img src="${src(x)}" alt=""></span><span class="nm">${IT[x].n}</span><span class="st">${f?'Found':'Not found'}</span></button>`}).join('');
+  const pips=[0,1,2].map(n=>`<i class="${n<found.length?'on':''}"></i>`).join('');
+  return `<div data-hero="${hid}" class="flip3d ${opt.flipped?'flipped':''}" id="${opt.id||uid}" style="--z:${opt.z||1}" tabindex="0" role="button" aria-label="${h.name} card, tap to flip">
+  <div class="floor"></div>
+  <div class="lift"><div class="tilt"><div class="f3">
+   <div class="face front card r-${h.r}"><div class="card-in">
+    <div class="card-top"><span class="gem"></span><span class="rar">${R[h.r]}</span><span class="lvl">Lv ${h.lv}</span></div>
+    <div class="card-art"><img class="px" src="assets/portrait/${hid}.png" alt="${h.name}"></div>
+    <div class="card-name h">${h.name}</div><div class="card-title">${h.title}</div>
+    <div class="card-stats"><span class="s-str"><small>Attack</small><b>${T.total.atk}</b></span><span class="s-def"><small>Defense</small><b>${T.total.def}</b></span><span class="s-wit"><small>Health</small><b>${T.total.hp}</b></span></div>
+    <div class="card-sub"><span>Speed <b>${T.total.spd}</b></span><span>Crit <b>${T.total.crit}%</b></span><span>Luck <b>${T.total.luck}</b></span></div>
+    <div class="card-era">${h.era}</div>
+   </div><div class="glare"></div><span class="flip-hint">${FLIP}Flip</span></div>
+   <div class="face back cardback r-${h.r}" data-view="${opt.view||'bio'}"><div class="cb-in">
+    <div class="cb-scene"><img class="gif" alt="" src="assets/card_backs/${hid}.gif" style="width:100%;height:100%;object-fit:cover;display:block"><span class="cb-era">${h.era}</span><div class="vig"></div>
+      <div class="gcol l">${L}</div><div class="gcol r">${Rr}</div>
+      <div class="ledger"><div class="lt">Ledger of Belongings</div><div class="ln">${S.name}</div><div class="row3">${ledger}</div></div>
+    </div>
+    <div class="cbtabs" role="group" aria-label="Card back">
+      <button type="button" class="tab" data-v="bio" aria-label="Story">${ICO.bio}</button>
+      <button type="button" class="tab" data-v="gear" aria-label="Gear">${ICO.gear}</button>
+      <button type="button" class="tab" data-v="set" aria-label="Era set">${ICO.set}</button>
+    </div>
+    <div class="cb-low">
+      <div class="layer bio"><div class="cb-skill">${h.back}</div><div class="cb-text">${h.bt}</div><div class="cb-foot" style="margin-top:auto"><span>${h.foot}</span><span>${R[h.r]}</span></div></div>
+      <div class="layer gear"><div class="gsum">${sum}</div><div class="grow">${row}</div><div class="belt"><span class="buckle"></span>${belt}<span class="lbl">Belt</span></div></div>
+      <div class="layer set"><div class="bonus ${on?'on':''}"><div class="bh">${on?'Set bonus active':'Wear all 3'}<span class="pips">${pips}</span></div><div class="bn">${S.bonus}</div><div class="bt">${S.text}</div></div>
+        <div class="bonus-wear" style="text-align:center;font:600 .95em 'Space Grotesk';color:var(--mut);margin-top:.55em">${on?'All three worn. The era remembers.':found.length?`${found.length} of 3 found. Keep delving.`:'None found yet. They are out there.'}</div></div>
+    </div>
+   </div><div class="glare"></div><div class="tip"></div></div>
+  </div></div></div></div>`;
+}
+document.getElementById('c-will').outerHTML=card('will_slapton',{id:'will',z:1.62,flipped:false});
+document.getElementById('drops').innerHTML=[['brass_goggles','pinstripe_fedora'],['flint_spear','duelling_rapier'],['mammoth_cloak','item_red_carpet_tux']].map(([n,o],i)=>{const it=ITEMS[n];return `<button type="button" class="gs filled r-${it.rarity}" data-id="${n}" data-cmp="${o}" data-hero="will_slapton" style="--i:${i}"><span class="pip"></span><img src="assets/${it.icon}.png" alt=""></button>`}).join('');
+document.getElementById('c-kevin').outerHTML=card('office_worker',{id:'kevin',z:1.62});
+document.getElementById('reel').innerHTML=['will_slapton','legionary','gangster','engineer','paramedic','office_worker'].map(h=>`<div class="reel-item">${card(h,{id:'r-'+h,z:1.12,flipped:true})}<small>${H[h].name} · ${R[H[h].r]}</small></div>`).join('');
+
+// behaviour
+function setTabs(back){back.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-pressed',t.dataset.v===back.dataset.view))}
+document.querySelectorAll('.cardback').forEach(setTabs);
+function wornOf(hid){return Object.entries(GEAR[hid]).filter(([k])=>k!=='belt').map(([,v])=>v).filter(Boolean)}
+function hideTip(c){return MMO.hide()}
+function showTip(c,btn){
+  document.querySelectorAll('.sel').forEach(s=>s.classList.remove('sel'));btn.classList.add('sel');
+  const hid=c?c.dataset.hero:btn.dataset.hero;
+  MMO.show(btn,{id:btn.dataset.id,slot:btn.dataset.slot==='belt'?'belt':btn.dataset.slot,hero:hid,worn:wornOf(hid),compare:btn.dataset.cmp||null});
+}
+document.querySelectorAll('.flip3d').forEach(c=>{
+  const back=c.querySelector('.back');
+  c.addEventListener('click',e=>{
+    const tab=e.target.closest('.tab'),slot=e.target.closest('.gs,.ls');
+    if(tab){e.stopPropagation();hideTip(c);back.dataset.view=back.dataset.view===tab.dataset.v&&tab.dataset.v!=='bio'?'bio':tab.dataset.v;setTabs(back);return}
+    if(slot){e.stopPropagation();if(slot.classList.contains('sel')){if(!matchMedia('(hover:hover)').matches)hideTip(c);return}showTip(c,slot);return}
+    if(hideTip(c)) return;
+    flip(c);
+  });
+  c.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target===c){e.preventDefault();flip(c)}});
+  const tilt=c.querySelector('.tilt');
+  c.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const r=c.getBoundingClientRect();const px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+    c.classList.add('hovering');tilt.style.setProperty('--ry',((px-.5)*20)+'deg');tilt.style.setProperty('--rx',((.5-py)*16)+'deg');c.style.setProperty('--gx',px*100+'%');c.style.setProperty('--gy',py*100+'%')});
+  c.addEventListener('pointerleave',()=>{c.classList.remove('hovering');tilt.style.setProperty('--ry','0deg');tilt.style.setProperty('--rx','0deg')});
+});
+function flip(c){c.classList.remove('lifting');void c.offsetWidth;c.classList.add('lifting');c.classList.toggle('flipped');hideTip(c);setTimeout(()=>c.classList.remove('lifting'),800)}
+document.addEventListener('click',e=>{const d=e.target.closest('.drops .gs');if(d){e.stopPropagation();if(d.classList.contains('sel')){if(!matchMedia('(hover:hover)').matches)MMO.hide();return}showTip(null,d);return}
+  if(!e.target.closest('.flip3d')&&!e.target.closest('.mt-wrap'))MMO.hide()});
+document.querySelectorAll('.drops .gs').forEach(d=>{d.addEventListener('mouseenter',()=>{if(!matchMedia('(hover:hover)').matches)return;showTip(null,d)});d.addEventListener('mouseleave',()=>{if(matchMedia('(hover:hover)').matches)MMO.hide()})});
+document.querySelectorAll('.flip3d .gs,.flip3d .ls').forEach(d=>{d.addEventListener('mouseenter',()=>{if(!matchMedia('(hover:hover)').matches)return;const c=d.closest('.flip3d');if(!c.classList.contains('flipped'))return;showTip(c,d)});d.addEventListener('mouseleave',()=>{if(matchMedia('(hover:hover)').matches)MMO.hide()})});
+window.mock={flip:id=>flip(document.getElementById(id)),view:(id,v)=>{const b=document.querySelector('#'+id+' .back');b.dataset.view=v;setTabs(b)},
+  tip:(id,sel)=>{const c=document.getElementById(id);showTip(c,c.querySelector(sel))},
+  drop:sel=>showTip(null,document.querySelector('.drops '+sel)),hide:()=>MMO.hide(),
+  freeze:t=>{document.getAnimations().forEach(a=>{a.pause();a.currentTime=t})}};
+</script>
+</body>
+</html>

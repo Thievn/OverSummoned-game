@@ -1,0 +1,24 @@
+OverSummoned
+The city keeps its lights on
+
+Come back in.
+
+Here is a one-time door back into OverSummoned for {{ .Email }}. It only works once, and it will not last long.
+
+Step back in:
+{{ .ConfirmationURL }}
+
+Or enter this code in the game:
+{{ .Token }}
+
+If you did not ask for this, you can ignore it. Nobody gets in without you.
+
+You're getting this because a sign-in was requested for {{ .Email }} on OverSummoned.
+
+The story: https://oversummoned.com/story
+Privacy: https://oversummoned.com/privacy
+Terms: https://oversummoned.com/terms
+Questions? hello@oversummoned.com
+
+© 2026 OverSummoned · oversummoned.com
+Your heroes never stop working.

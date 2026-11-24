@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="165 133 230 190" width="460" height="380">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="110" x2="0" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF1BF"/>
+      <stop offset=".3" stop-color="#E9C26A"/>
+      <stop offset=".52" stop-color="#B9822F"/>
+      <stop offset=".56" stop-color="#F3D589"/>
+      <stop offset=".78" stop-color="#C08A35"/>
+      <stop offset="1" stop-color="#6E4413"/>
+    </linearGradient>
+    <linearGradient id="hi" x1="0" y1="110" x2="0" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <path id="t" d="M256.61 207.81Q249.29 195.54 249.29 181.85Q249.29 162.97 263.45 151.17Q271.95 143.85 284.46 141.49Q292.01 140.31 296.61 140.31Q301.21 140.31 306.40 140.43Q311.6 140.55 321.63 143.62Q331.65 146.68 341.09 151.05Q350.53 155.42 358.91 162.97Q367.29 170.52 373.66 179.49Q387.35 198.84 387.35 226.22Q387.35 265.86 357.97 289.58Q328.59 313.30 280.21 313.30Q231.83 313.30 202.09 289.46Q172.36 265.63 172.36 226.69Q172.36 194.59 192.30 171.58Q212.24 148.57 244.33 143.14L245.75 145.50Q236.07 155.65 230.29 175.59Q224.51 195.54 224.51 218.66Q224.51 256.19 239.62 278.84Q254.72 301.50 279.85 301.50Q304.99 301.50 320.09 280.97Q335.2 260.44 335.2 226.22Q335.2 204.50 329.18 187.28Q323.16 170.05 312.54 161.55Q301.92 153.06 290.12 153.06Q274.78 153.06 266.52 162.26Q256.84 172.88 256.84 188.69Q256.84 197.66 259.44 207.81Z"/>
+  </defs>
+  <g fill="none" stroke="#1E1208" stroke-width="7" stroke-linejoin="round"><use href="#t"/></g>
+  <g fill="#5A360F" transform="translate(1.6,2.2)"><use href="#t"/></g>
+  <g fill="url(#gold)"><use href="#t"/></g>
+  <g fill="url(#hi)" transform="translate(-1,-1.4)"><use href="#t"/></g>
+</svg>

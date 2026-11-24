@@ -1,0 +1,43 @@
+:root{--mt-common:#e6e6e6;--mt-uncommon:#1eff00;--mt-rare:#3d9bff;--mt-epic:#b955ff;--mt-legendary:#ff8000;--mt-absurd:#ff4040;--mt-unhinged:#ff4fd8}
+.mt-wrap{position:fixed;z-index:1000;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .14s,transform .18s}
+.mt-wrap.on{opacity:1;transform:none;pointer-events:auto}
+.mt-panels{display:flex;gap:8px;align-items:flex-start}
+.mt{width:292px;padding:9px 11px 10px;border-radius:6px;background:rgba(8,6,20,.93);
+  border:1px solid #6a5a3a;box-shadow:0 0 0 1px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.05),0 10px 30px rgba(0,0,0,.7);
+  font:500 13px/1.38 'Space Grotesk',system-ui,sans-serif;color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.mt.r-common{border-color:#8f8f8f}.mt.r-uncommon{border-color:#1a9c0a}.mt.r-rare{border-color:#2a6fc0}.mt.r-epic{border-color:#7f3bb8}.mt.r-legendary{border-color:#c8781e}.mt.r-absurd{border-color:#c02a2a}.mt.r-unhinged{border-color:#c03aa4}
+.mt.eq{opacity:.96}
+.mt-tag{font:700 10.5px 'Space Grotesk';letter-spacing:.12em;text-transform:uppercase;color:#9a8f70;margin-bottom:3px}
+.mt-name{font:700 15.5px/1.2 'Space Grotesk';margin-bottom:1px}
+.mt-ilvl{color:#ffd100}
+.mt-row{display:flex;justify-content:space-between;gap:10px}
+.mt-g{color:#1eff00}
+.mt-red{color:#ff3b3b}
+.mt-dim{color:#9d9d9d}
+.mt-set{margin-top:7px}
+.mt-sn{color:#ffd100}
+.mt-si{color:#7d7d7d;padding-left:12px}.mt-si.own{color:#fff3a0}
+.mt-sb{color:#7d7d7d;margin-top:4px}.mt-sb.on{color:#1eff00}
+.mt-sell{margin-top:4px;display:flex;align-items:center;gap:2px}
+.coin{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 5px 0 2px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.5)}
+.coin.g{background:radial-gradient(circle at 35% 35%,#fff2a8,#e2b012 60%,#8a6200)}
+.coin.s{background:radial-gradient(circle at 35% 35%,#ffffff,#b8c0c8 60%,#68707a)}
+.coin.c{background:radial-gradient(circle at 35% 35%,#ffc49a,#c0652a 60%,#6a3210)}
+.mt-flav{color:#ffd100;font-style:italic;margin-top:6px}
+.mt-cmp{margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.1);color:#d9d9d9}
+.mt-up{color:#1eff00}.mt-down{color:#ff3b3b}
+/* phone bottom sheet */
+.mt-back{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s}
+.mt-back.on{opacity:1;pointer-events:auto}
+.mt-wrap.sheet{left:0;right:0;bottom:0;top:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.9,.2,1),opacity .2s;
+  max-height:78vh;overflow:auto;padding:8px 10px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#140c24,#07040d);border-top:1px solid #c99a3a;border-radius:16px 16px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.6)}
+.mt-wrap.sheet.on{transform:none}
+.mt-grip{width:44px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);margin:2px auto 9px}
+.mt-wrap.sheet .mt-panels{flex-direction:column;gap:8px}
+.mt-wrap.sheet .mt{width:auto;font-size:14px}
+.mt-wrap.sheet .mt-name{font-size:17px}
+/* loot drop strip */
+.drops{margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.drops .dl{font:700 11px 'Space Grotesk';letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.drops .row{display:flex;gap:10px;font-size:16px}
+.drops .gs{opacity:1;transform:none}

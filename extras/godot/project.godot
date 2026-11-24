@@ -1,0 +1,44 @@
+; Engine configuration file.
+; Godot 4.3+  ·  GL Compatibility  ·  unzip, Import project.godot, press F5 / Play.
+
+config_version=5
+
+[application]
+
+config/name="OverSummoned Desktop"
+config/description="Transparent desktop summoning clicker. Type or click to charge the rift. Press F8 or Test Summon Now to preview a drop."
+config/version="0.1.0-desktop"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://icon.png"
+
+[autoload]
+
+Catalog="*res://scripts/autoload/catalog.gd"
+SaveManager="*res://scripts/autoload/save_manager.gd"
+GameState="*res://scripts/autoload/game_state.gd"
+InputTracker="*res://scripts/autoload/input_tracker.gd"
+Chatter="*res://scripts/autoload/chatter.gd"
+
+[display]
+
+window/size/viewport_width=888
+window/size/viewport_height=658
+window/size/borderless=true
+window/size/always_on_top=true
+window/size/transparent=true
+window/size/window_width_override=888
+window/size/window_height_override=658
+window/per_pixel_transparency/allowed=true
+window/stretch/mode="disabled"
+window/stretch/aspect="ignore"
+window/vsync/vsync_mode=1
+
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=1
+viewport/transparent_background=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 0)

@@ -1,0 +1,207 @@
+{
+  "nice": {
+    "idle": [
+      "The rift is purring. That's... probably fine.",
+      "I labeled every rune this time. I still don't know what they do.",
+      "Bureau tip: hydration helps with cosmic horror.",
+      "If I squint, the circle looks like a very fancy cookie.",
+      "Your keyboard has a nice rhythm. The rift likes it.",
+      "I brought snacks for the summons. They do not eat snacks. I know that now.",
+      "Standing on a glowing circle all day is a career, apparently.",
+      "The ledger says we're ahead of quota. The ledger also hums lullabies.",
+      "Little spark, little spark, make a rare appear...",
+      "I polished the runes. You're welcome, ancient magic.",
+      "If anything crawls out that's polite, I'm offering tea.",
+      "We're doing great. I have a chart. The chart is on fire, but in a supportive way.",
+      "Take your time. The circle isn't going anywhere. I checked.",
+      "I named the glow. Its name is Kevin. Kevin is trying his best.",
+      "Whenever you're ready, champion of clicking."
+    ],
+    "streak": [
+      "Yes! That's the stuff! The runes are actually blushing!",
+      "Keep going — I can see the next drop warming up!",
+      "You're on a tear! I'm doing a little official Bureau dance!",
+      "Okay okay okay this is fun. Don't stop, the circle will get shy.",
+      "That tempo is chef's-kiss summoning. More, please!",
+      "Wooo! If I had a hat on, it would be flying off. Wait—"
+    ],
+    "insult": [
+      "You're doing fine. Truly. I believe in you, even when the circle yawns.",
+      "A gentle nudge: the rift responds to enthusiasm. Maybe a little more jazz?",
+      "I still like you. The circle is just a little... unimpressed right now."
+    ],
+    "warning": [
+      "Hold on — something's pushing from the other side!",
+      "The ring just hiccuped. That's usually a good sign? Usually.",
+      "Okay, get excited. The Bureau stamp is hovering. Drop incoming!",
+      "I feel a summon coming on. Please do not sneeze on the runes.",
+      "It's close. I can hear the inventory licking its chops."
+    ],
+    "summon_common": [
+      "A classic! Humble, useful, and it didn't bite me. I'll take it.",
+      "Not every pull can be a legend. This one is... sincerely trying.",
+      "Common, sure, but I like its energy. Into the pack it goes!",
+      "A tidy little find. The ledger will allow it."
+    ],
+    "summon_rare": [
+      "Ooh! That's a rare! I'm doing the professional happy-hop!",
+      "Rare enough to brag about in the break room. I will be bragging.",
+      "Look at that glow. That's a 'show your friends' glow."
+    ],
+    "summon_absurd": [
+      "ABSURD! The paperwork is going to need a bigger stamp!",
+      "That's illegal in three eras and I love it.",
+      "The Bureau said 'don't get weird.' We got weird. Beautifully."
+    ],
+    "summon_unhinged": [
+      "UNHINGED! Don't make eye contact and also definitely make eye contact!",
+      "I am professionally unprepared for how cool that is!",
+      "Hot-pink destiny just crawled out of the floor. I'm so proud of us."
+    ],
+    "equip": [
+      "Ooh, new look! You wear it like you meant to all along.",
+      "Gear on. Confidence up. The rift just wolf-whistled, I swear.",
+      "Fitted and filed. We look official and a little dangerous."
+    ],
+    "era": [
+      "New era, new vibe. I'll retune the runes — don't step in the glow.",
+      "Circle colors incoming! Try not to get mesmerized, I need you clicking.",
+      "Era swap complete. The pedestal is doing a little fashion walk."
+    ]
+  },
+  "vulgar": {
+    "idle": [
+      "The rift just burped. I am choosing not to investigate.",
+      "If this circle tries to eat my boots again I swear I'll file a complaint in blood.",
+      "Yeah, I'm talking to a hole in reality. It's a living.",
+      "Something in there just called me a coward. Rude, and maybe accurate.",
+      "I can feel a cursed thing breathing on my ankles. Cute.",
+      "Don't mind me, just babysitting an unlicensed apocalypse.",
+      "The runes are itchy today. That's never been a good sentence.",
+      "If I start screaming, it's occupational. Keep clicking.",
+      "I've seen worse crawl out of a filing cabinet. Barely.",
+      "The Bureau insurance does not cover 'eaten by vibes.' I checked."
+    ],
+    "streak": [
+      "FINALLY. That's a pace. The rift is sweating.",
+      "Yes, punish that keyboard. The circle respects violence.",
+      "Okay you feral typist, NOW we're cooking with cursed oil.",
+      "Keep hammering. Something ugly and expensive is waking up.",
+      "That's it, you beautiful maniac. Don't you dare slow down."
+    ],
+    "insult": [
+      "That's the most timid clicking I've heard since the intern fainted.",
+      "Are your fingers on vacation? The rift just checked its watch.",
+      "I've seen ghosts type faster, and they don't even have tendons.",
+      "If you click any slower the circle's going to unionize.",
+      "Pathetic tempo. My grandma summons faster and she's a rumor.",
+      "Did you fall asleep on the spacebar or is this a lifestyle?",
+      "The rift yawned so hard it opened a second rift. That's on you."
+    ],
+    "warning": [
+      "It's coming. If it's got teeth, I'm blaming your click rate.",
+      "Something sloppy is crawling up. Don't look down. Do NOT look down.",
+      "The circle just swore. That's how I know a drop is close.",
+      "Brace yourself. Whatever's coming does not have an HR form.",
+      "Hot mess inbound. Hold your hat and maybe a lawyer."
+    ],
+    "summon_common": [
+      "A common. Cool. Love that for us. The trash can is also a storage solution.",
+      "Wow. Garbage with a name tag. Into the pile, pal.",
+      "That's so mid it hurt my feelings. Still counts, I guess.",
+      "If this is the best the universe can do, the universe needs a raise."
+    ],
+    "summon_rare": [
+      "Finally a rare that doesn't look like expired soup.",
+      "Rare! I take back half the mean things I said. Half.",
+      "Okay that's actually good. Don't get used to me being nice."
+    ],
+    "summon_absurd": [
+      "ABSURD. That's the stuff. That's the illegal, glittering nonsense I live for.",
+      "Oh we're so going to get written up for this and I do not care.",
+      "Absurd drop. My blood pressure just filed a formal complaint."
+    ],
+    "summon_unhinged": [
+      "UNHINGED. I am screaming. Professionally. Into a bag.",
+      "That thing just crawled out and winked at me. I'm not okay and I'm thrilled.",
+      "Hot-pink catastrophe acquired. If it starts whispering, that's a YOU problem.",
+      "The circle is smoking. I am smoking. We need a minute and also ten more of those."
+    ],
+    "equip": [
+      "Yeah, put that on. You look like trouble. The good kind. Mostly.",
+      "New gear, new attitude, same cursed employment. I like it.",
+      "Strapped. If anyone asks, we found it 'ethically' in a hole."
+    ],
+    "era": [
+      "New era. Great. Fresh colors, same poor life choices.",
+      "Era swap. If this one smells like ozone and bad decisions, that's on-brand.",
+      "Fine, retune the nightmare. I didn't like the old nightmare anyway."
+    ]
+  },
+  "sarcastic": {
+    "idle": [
+      "Ah yes. A glowing floor and a five-year plan. Very normal job.",
+      "The Bureau said 'just stand on the circle.' They did not mention the whispering.",
+      "I'm not bored. I'm conserving my personality for a better drop.",
+      "Another peaceful moment of not being eaten. We love a streak.",
+      "If anyone asks, this is 'asset generation.' Put that on the form.",
+      "I rate this circle four out of five ominous hums.",
+      "Please continue working. I'll be here, dramatically holding a staff.",
+      "The runes have opinions. Unfortunately, none of them are helpful.",
+      "Fascinating. The void, but make it administrative.",
+      "I filled out the timesheet as 'light heresy.' Pending approval."
+    ],
+    "streak": [
+      "Look at you. Employable. The circle is almost impressed.",
+      "A genuine burst of effort. I'll alert the historians.",
+      "That's a decent clip. Don't let it go to your head, or the rift.",
+      "Wow, consistent clicking. I'd clap, but I'm holding reality together.",
+      "Keep that up and I might have to take you seriously. Terrifying."
+    ],
+    "insult": [
+      "I've seen more urgency at a three-hour lunch.",
+      "If this is your 'focused' mode, I'd hate to see your weekend.",
+      "The circle just sent a calendar invite titled 'when you feel like it.'",
+      "Remarkable restraint. Or lethargy. Hard to tell from this angle.",
+      "Please, don't rush on my account. The unspeakable can wait."
+    ],
+    "warning": [
+      "Incoming. Try to look like we meant to summon it.",
+      "The drop timer has opinions and they're about to become your problem.",
+      "Something's arriving. Smile for the ledger. It remembers faces.",
+      "Oh good, a surprise. I love those. I love them so much I filed a form.",
+      "Circle's getting theatrical. That's either a drop or a lawsuit."
+    ],
+    "summon_common": [
+      "A common. Stunning. I'll just... add it to the pile of lessons.",
+      "We've done it. We've summoned the exact middle of the bell curve.",
+      "Treasure, if you squint and lower your standards in a kind way.",
+      "The universe shrugged and handed us this. Charming."
+    ],
+    "summon_rare": [
+      "A rare. I'll allow a single fist pump. One.",
+      "Well, well. Competence. Let's not make it weird.",
+      "Rare drop. I'd congratulate you, but the Bureau taxes joy."
+    ],
+    "summon_absurd": [
+      "Absurd. Of course. Why wouldn't a blood-red legend fall out of the floor.",
+      "That's... not in the handbook. I'm putting it in the handbook.",
+      "Absurd rarity. My sarcasm is taking a short, respectful break."
+    ],
+    "summon_unhinged": [
+      "Unhinged. Perfect. I'll just update my will and also my outfit.",
+      "Hot pink and legally concerning. We are so in over our heads and I love the aesthetic.",
+      "The Bureau is going to ask questions. I will be answering them sarcastically."
+    ],
+    "equip": [
+      "New gear. Very 'I meant to look this powerful.' I support the bit.",
+      "Equipped. If anyone stares, tell them it's vintage heresy.",
+      "A bold choice. The circle is pretending not to be jealous."
+    ],
+    "era": [
+      "New era, new color palette, same existential paperwork.",
+      "Era swapped. I'll miss the old glow the way I miss a stubborn paper cut.",
+      "Fresh runes. Try not to get attached; they bite when they're loved."
+    ]
+  }
+}

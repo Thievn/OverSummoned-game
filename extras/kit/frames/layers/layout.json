@@ -1,0 +1,59 @@
+{
+ "card_size": [
+  1200,
+  1880
+ ],
+ "scale_note": "2x master. compose_card.py --scale 0.5 gives 600x940.",
+ "frame_box": [
+  0,
+  80,
+  1200,
+  1880
+ ],
+ "portrait_window": [
+  131,
+  224,
+  1069,
+  1743
+ ],
+ "gem_center": [
+  600,
+  156
+ ],
+ "letter_center": [
+  600,
+  264
+ ],
+ "nameplate_top": 1313,
+ "statplate_top": 1568,
+ "name_center_y": 1405,
+ "title_center_y": 1481,
+ "stat_center_y": 1659,
+ "rarity_colors": {
+  "Common": "#B8B2A7",
+  "Uncommon": "#3FAE4F",
+  "Rare": "#3A86FF",
+  "Epic": "#A35BF0",
+  "Legendary": "#F28C1B",
+  "Absurd": "#F04FC8",
+  "Unhinged": "#E5262E"
+ },
+ "rarity_letters": {
+  "Common": "C",
+  "Uncommon": "U",
+  "Rare": "R",
+  "Epic": "E",
+  "Legendary": "L",
+  "Absurd": "A",
+  "Unhinged": "X"
+ },
+ "gem_shapes": {
+  "Common": "circle",
+  "Uncommon": "diamond",
+  "Rare": "hexagon",
+  "Epic": "shield",
+  "Legendary": "pentagon",
+  "Absurd": "heart",
+  "Unhinged": "shard"
+ }
+}

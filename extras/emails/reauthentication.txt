@@ -1,0 +1,20 @@
+OverSummoned
+The city keeps its lights on
+
+Just to be sure it's you.
+
+Use this code in OverSummoned to keep going. It only lasts a little while, and you shouldn't share it with anyone.
+
+Your code: {{ .Token }}
+
+If you did not ask for this, you can ignore it.
+
+You're getting this because OverSummoned needed to make sure it was you.
+
+The story: https://oversummoned.com/story
+Privacy: https://oversummoned.com/privacy
+Terms: https://oversummoned.com/terms
+Questions? hello@oversummoned.com
+
+© 2026 OverSummoned · oversummoned.com
+Your heroes never stop working.

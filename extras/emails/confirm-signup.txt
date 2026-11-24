@@ -1,0 +1,21 @@
+OverSummoned
+The city keeps its lights on
+
+The city is waiting for you.
+
+Someone used {{ .Email }} to join OverSummoned. If that was you, confirm your email and we'll open the gate to Aldermere.
+
+Confirm your email:
+{{ .ConfirmationURL }}
+
+If this wasn't you, you can ignore this. Nothing will change.
+
+You're getting this because {{ .Email }} was used to join OverSummoned.
+
+The story: https://oversummoned.com/story
+Privacy: https://oversummoned.com/privacy
+Terms: https://oversummoned.com/terms
+Questions? hello@oversummoned.com
+
+© 2026 OverSummoned · oversummoned.com
+Your heroes never stop working.
