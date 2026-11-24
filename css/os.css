@@ -124,7 +124,7 @@ section{padding:clamp(3.2rem,8vw,6.5rem) 0;position:relative}
 
 /* ---------- item slots and tooltips */
 .slot{--rc:var(--line);width:58px;height:58px;border-radius:10px;border:2px solid var(--rc);background:#0d1430;display:grid;place-items:center;position:relative;flex:none}
-.slot img{width:84%;height:84%;object-fit:contain}
+.slot img{position:absolute;left:8%;top:8%;width:84%;height:84%;object-fit:contain}
 .slot.has{background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--rc) 30%,#18224a),#0d1430 80%);cursor:pointer}
 .slot.dim img{filter:brightness(0) opacity(.6)}
 .slot .ct{position:absolute;right:3px;bottom:0;font:400 .85rem "Lilita One";color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}

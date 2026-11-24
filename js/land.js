@@ -9,7 +9,7 @@
   // ---------------------------------------------------------------- the desk
   const desk = $('desk-demo'), bubble = $('bubble'), prog = $('prog'), glow = $('glow');
   let smudge, k = 1, ink = 0, busy = false, taps = 0, lastTap = 0;
-  const NEED = 28, SAMPLE = ['kevin', 'emu', 'napoleon', 'lola', 'blackbear', 'chad', 'cleocatra', 'florida', 'sable', 'bella'];
+  const NEED = 28, SAMPLE = ['kevin', 'emu', 'lola', 'cleocatra', 'florida']   // only the five shown below; the rest stay secret;
   function layout() {
     k = desk.clientWidth / 910;
     if (!smudge) smudge = new OS.Puppet(desk, 'stamp', 0.45 * k);
