@@ -90,7 +90,7 @@ HEROES = [
   gear=[("Katana 'Good Boy'", "weapon", "a katana in a red lacquered scabbard with a paw-print tsuba guard", "The blade's true name is known only to him. It's 'Good Boy'."),
         ("Straw Travel Hat", "armor", "a wide conical Japanese straw kasa hat", "Hides his eyes. And his ears going flat."),
         ("Honorable Rice Ball", "trinket", "an onigiri rice ball with a strip of nori, on a bamboo leaf", "He would never eat it. He is going to eat it.")]),
- dict(id="emu", name="General Emu", title="Undefeated Commander", era="Australia, 1932", species="Emu", rarity="epic", arch="fast", place="outback",
+ dict(id="emu", name="General Emu", title="Undefeated Commander", era="Australia, 1932", species="Emu", rarity="absurd", arch="fast", place="outback",
   bio="In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
   lines=["A big bird general! He looks so proud!", "General Emu. Beat an actual army. With his legs.", "This bird beat the Australian fucking army. Machine guns and all. Salute him."],
   gear=[("Captured Lewis Gun", "weapon", "a 1930s Lewis machine gun with pan magazine, bent barrel", "Taken as a trophy. He has no idea how it works. Neither did they."),
@@ -120,7 +120,7 @@ HEROES = [
   gear=[("Ring Light", "weapon", "a glowing circular ring light on a short stand", "Blinds enemies. Flatters everyone else."),
         ("Sponsored Bikini", "armor", "a hot pink bikini on a hanger with a small price tag", "Hashtag ad. Hashtag blessed. Hashtag armor, apparently."),
         ("Verified Checkmark", "trinket", "a blue circular verified badge with a white checkmark, shiny", "Proof that she is who she says she is. She isn't sure either.")]),
- dict(id="florida", name="Florida Man", title="Local Legend", era="Florida, today", species="Alligator", rarity="epic", arch="bruiser", place="bondi",
+ dict(id="florida", name="Florida Man", title="Local Legend", era="Florida, today", species="Alligator", rarity="absurd", arch="bruiser", place="bondi",
   bio="Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
   lines=["A big smiley alligator! With muscles!", "Florida Man. Yes, that one. All of them, actually.", "Florida Man. Shirtless, lawless, and one bad idea away from the fucking evening news."],
   gear=[("Gas Station Machete", "weapon", "a rusty machete with duct tape on the handle", "Purchased legally. Alarmingly."),
@@ -150,6 +150,19 @@ HEROES = [
   gear=[("Rescue Board", "weapon", "a yellow and red surf rescue board", "Saves lives. Also a pretty decent bat."),
         ("Red-and-Yellow Cap", "armor", "an Australian surf lifesaver cap, red and yellow quartered with chin strap", "Swim between the flags. He's serious."),
         ("Zinc Stripe", "trinket", "a small pot of bright white zinc sunscreen with a finger swipe in it", "SPF one million. Smells like summer.")]),
+ # ---------------------------------------------------------------- the chasers
+ dict(id="raspawtin", name="Raspawtin", title="Unkillable Mystic", era="St Petersburg, 1916", species="Borzoi", rarity="unhinged", arch="mystic", place="fjord",
+  bio="They poisoned his cakes. He asked for seconds. They shot him, twice. He complimented the aim. They threw him in a frozen river and he was seen the next morning ordering brunch. Nobody has tried since. It seems rude.",
+  lines=["A very tall dog with very intense eyes! Hello!", "Raspawtin. Poisoned, shot, drowned. Still here. Deeply annoying.", "They poisoned him, shot him and drowned him and the creepy fucker STILL showed up. Hide."],
+  gear=[("Suspicious Tea Cake", "weapon", "a small frosted tea cake on a saucer with a faint green skull-shaped wisp rising from it", "Laced with enough poison to stop an ox. He has eaten nine."),
+        ("Mystic's Black Robe", "armor", "a long black Russian monk robe with a rope belt and a heavy silver cross", "Three bullet holes. No complaints."),
+        ("The Stare", "trinket", "a pair of piercing pale blue glowing eyes floating in a dark swirl of mist", "You blinked first. Everyone blinks first.")]),
+ dict(id="madjack", name="Mad Jack Ramsbottom", title="Officer and Lunatic", era="Normandy, 1944", species="Ram", rarity="unhinged", arch="bruiser", place="outback",
+  bio="Went to the Second World War carrying a longbow, a broadsword and a set of bagpipes, and used all three. When the war ended he was reportedly furious. Says any officer who goes into action without his sword is improperly dressed.",
+  lines=["A soldier with bagpipes! And a sword! And a bow!", "Mad Jack. Brought a sword to a tank fight. Won.", "This lunatic charged a fucking beach playing the bagpipes. With a SWORD. And it WORKED."],
+  gear=[("Basket-Hilted Broadsword", "weapon", "a Scottish basket-hilted broadsword with a red-lined steel basket guard", "The last sword drawn in anger in a modern war. He drew it a lot."),
+        ("Battle Bagpipes", "armor", "a set of tartan Scottish bagpipes with dark wooden drones", "Enemy morale drops forty percent. So does everyone else's."),
+        ("War Longbow", "trinket", "an English yew longbow with a quiver of arrows", "The only confirmed longbow kill of 1940. He would like that on record.")]),
 ]
 
 # id, name, era, skill, level needed, tier, art prompt, blurb, general loot (name, art prompt, rarity, flavor)

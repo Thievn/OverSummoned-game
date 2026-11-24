@@ -1,0 +1,200 @@
+{
+ "g01": [
+  "kevin_weapon",
+  "kevin_armor",
+  "kevin_trinket",
+  "marco_weapon",
+  "marco_armor",
+  "marco_trinket",
+  "maya_weapon",
+  "maya_armor",
+  "maya_trinket"
+ ],
+ "g02": [
+  "brokk_weapon",
+  "brokk_armor",
+  "brokk_trinket",
+  "gaius_weapon",
+  "gaius_armor",
+  "gaius_trinket",
+  "edith_weapon",
+  "edith_armor",
+  "edith_trinket"
+ ],
+ "g03": [
+  "albrecht_weapon",
+  "albrecht_armor",
+  "albrecht_trinket",
+  "vincenzo_weapon",
+  "vincenzo_armor",
+  "vincenzo_trinket",
+  "slapton_weapon",
+  "slapton_armor",
+  "slapton_trinket"
+ ],
+ "g04": [
+  "napoleon_weapon",
+  "napoleon_armor",
+  "napoleon_trinket",
+  "cleocatra_weapon",
+  "cleocatra_armor",
+  "cleocatra_trinket",
+  "blackbear_weapon",
+  "blackbear_armor",
+  "blackbear_trinket"
+ ],
+ "g05": [
+  "astrid_weapon",
+  "astrid_armor",
+  "astrid_trinket",
+  "kenji_weapon",
+  "kenji_armor",
+  "kenji_trinket",
+  "emu_weapon",
+  "emu_armor",
+  "emu_trinket"
+ ],
+ "g06": [
+  "troffea_weapon",
+  "troffea_armor",
+  "troffea_trinket",
+  "joost_weapon",
+  "joost_armor",
+  "joost_trinket",
+  "chad_weapon",
+  "chad_armor",
+  "chad_trinket"
+ ],
+ "g07": [
+  "bella_weapon",
+  "bella_armor",
+  "bella_trinket",
+  "florida_weapon",
+  "florida_armor",
+  "florida_trinket",
+  "lola_weapon",
+  "lola_armor",
+  "lola_trinket"
+ ],
+ "g08": [
+  "morwenna_weapon",
+  "morwenna_armor",
+  "morwenna_trinket",
+  "sable_weapon",
+  "sable_armor",
+  "sable_trinket",
+  "jacko_weapon",
+  "jacko_armor",
+  "jacko_trinket"
+ ],
+ "g09": [
+  "raspawtin_weapon",
+  "raspawtin_armor",
+  "raspawtin_trinket",
+  "madjack_weapon",
+  "madjack_armor",
+  "madjack_trinket",
+  "bondi_1",
+  "bondi_2",
+  "bondi_3"
+ ],
+ "g10": [
+  "bondi_4",
+  "bondi_5",
+  "bondi_6",
+  "bondi_7",
+  "bondi_8",
+  "fjord_1",
+  "fjord_2",
+  "fjord_3",
+  "fjord_4"
+ ],
+ "g11": [
+  "fjord_5",
+  "fjord_6",
+  "fjord_7",
+  "fjord_8",
+  "vault_1",
+  "vault_2",
+  "vault_3",
+  "vault_4",
+  "vault_5"
+ ],
+ "g12": [
+  "vault_6",
+  "vault_7",
+  "vault_8",
+  "closet_1",
+  "closet_2",
+  "closet_3",
+  "closet_4",
+  "closet_5",
+  "closet_6"
+ ],
+ "g13": [
+  "closet_7",
+  "closet_8",
+  "outback_1",
+  "outback_2",
+  "outback_3",
+  "outback_4",
+  "outback_5",
+  "outback_6",
+  "outback_7"
+ ],
+ "g14": [
+  "outback_8",
+  "blackforest_1",
+  "blackforest_2",
+  "blackforest_3",
+  "blackforest_4",
+  "blackforest_5",
+  "blackforest_6",
+  "blackforest_7",
+  "blackforest_8"
+ ],
+ "g15": [
+  "bath_carp",
+  "bath_eel",
+  "bath_coin",
+  "bath_scroll",
+  "bath_strigil",
+  "bath_lamp",
+  "bath_vial",
+  "bath_wreath",
+  "bath_nose"
+ ],
+ "g16": [
+  "easy_chips",
+  "easy_moonshine",
+  "easy_bills",
+  "easy_envelope",
+  "easy_knuckles",
+  "easy_fedora",
+  "easy_watch",
+  "easy_pearls",
+  "easy_ring"
+ ],
+ "g17": [
+  "x_crate",
+  "x_crate_open",
+  "x_gold",
+  "x_ink",
+  "x_shard",
+  "x_stamp",
+  "x_tonic_speed",
+  "x_tonic_luck",
+  "x_tonic_xp"
+ ],
+ "g18": [
+  "x_energy",
+  "x_ticket",
+  "x_key",
+  "x_sword",
+  "x_anvil",
+  "x_dumbbell",
+  "x_map",
+  "x_friends",
+  "x_trophy"
+ ]
+}

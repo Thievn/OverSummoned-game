@@ -5,14 +5,18 @@
   "uncommon",
   "rare",
   "epic",
-  "legendary"
+  "legendary",
+  "absurd",
+  "unhinged"
  ],
  "rarity_color": {
   "common": "#9aa3b8",
   "uncommon": "#3ecf6b",
   "rare": "#4a8dff",
   "epic": "#b06bff",
-  "legendary": "#ff9a2e"
+  "legendary": "#ff9a2e",
+  "absurd": "#ff4fb4",
+  "unhinged": "#ff3b30"
  },
  "stats": [
   "attack",
@@ -63,13 +67,15 @@
   "per_unique": 400,
   "xp_per_ink": 0.25,
   "weights": {
-   "common": 44,
+   "common": 50,
    "uncommon": 28,
-   "rare": 18,
-   "epic": 8,
-   "legendary": 2
+   "rare": 14,
+   "epic": 6,
+   "legendary": 1.6,
+   "absurd": 0.35,
+   "unhinged": 0.05
   },
-  "luck_per_level": 0.15
+  "luck_per_level": 0.0
  },
  "card": {
   "max_level": 10,
@@ -80,7 +86,9 @@
    "uncommon": 62,
    "rare": 76,
    "epic": 92,
-   "legendary": 110
+   "legendary": 110,
+   "absurd": 130,
+   "unhinged": 155
   }
  },
  "gear": {
@@ -89,7 +97,9 @@
    "uncommon": 8,
    "rare": 14,
    "epic": 22,
-   "legendary": 32
+   "legendary": 32,
+   "absurd": 42,
+   "unhinged": 55
   },
   "signature_bonus": 0.5,
   "skill_speed": {
@@ -97,21 +107,27 @@
    "uncommon": 2,
    "rare": 4,
    "epic": 6,
-   "legendary": 10
+   "legendary": 10,
+   "absurd": 13,
+   "unhinged": 16
   },
   "drop_weight": {
    "common": 1.2,
    "uncommon": 0.75,
    "rare": 0.375,
    "epic": 0.15,
-   "legendary": 0.06
+   "legendary": 0.06,
+   "absurd": 0.03,
+   "unhinged": 0.012
   },
   "sell": {
    "common": 15,
    "uncommon": 30,
    "rare": 80,
    "epic": 220,
-   "legendary": 600
+   "legendary": 600,
+   "absurd": 1500,
+   "unhinged": 4000
   }
  },
  "loot": {
@@ -717,7 +733,7 @@
    "title": "Undefeated Commander",
    "era": "Australia, 1932",
    "species": "Emu",
-   "rarity": "epic",
+   "rarity": "absurd",
    "bio": "In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
    "lines": [
     "A big bird general! He looks so proud!",
@@ -725,11 +741,11 @@
     "This bird beat the Australian fucking army. Machine guns and all. Salute him."
    ],
    "stats": {
-    "attack": 20,
-    "defense": 9,
-    "health": 15,
-    "speed": 35,
-    "luck": 13
+    "attack": 29,
+    "defense": 13,
+    "health": 21,
+    "speed": 49,
+    "luck": 18
    },
    "gear": [
     "emu_weapon",
@@ -852,7 +868,7 @@
    "title": "Local Legend",
    "era": "Florida, today",
    "species": "Alligator",
-   "rarity": "epic",
+   "rarity": "absurd",
    "bio": "Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
    "lines": [
     "A big smiley alligator! With muscles!",
@@ -860,11 +876,11 @@
     "Florida Man. Shirtless, lawless, and one bad idea away from the fucking evening news."
    ],
    "stats": {
-    "attack": 31,
-    "defense": 15,
-    "health": 24,
-    "speed": 13,
-    "luck": 9
+    "attack": 44,
+    "defense": 21,
+    "health": 34,
+    "speed": 18,
+    "luck": 13
    },
    "gear": [
     "florida_weapon",
@@ -980,6 +996,60 @@
     "jacko_trinket"
    ],
    "place": "bondi"
+  },
+  {
+   "id": "raspawtin",
+   "name": "Raspawtin",
+   "title": "Unkillable Mystic",
+   "era": "St Petersburg, 1916",
+   "species": "Borzoi",
+   "rarity": "unhinged",
+   "bio": "They poisoned his cakes. He asked for seconds. They shot him, twice. He complimented the aim. They threw him in a frozen river and he was seen the next morning ordering brunch. Nobody has tried since. It seems rude.",
+   "lines": [
+    "A very tall dog with very intense eyes! Hello!",
+    "Raspawtin. Poisoned, shot, drowned. Still here. Deeply annoying.",
+    "They poisoned him, shot him and drowned him and the creepy fucker STILL showed up. Hide."
+   ],
+   "stats": {
+    "attack": 46,
+    "defense": 19,
+    "health": 25,
+    "speed": 25,
+    "luck": 40
+   },
+   "gear": [
+    "raspawtin_weapon",
+    "raspawtin_armor",
+    "raspawtin_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "madjack",
+   "name": "Mad Jack Ramsbottom",
+   "title": "Officer and Lunatic",
+   "era": "Normandy, 1944",
+   "species": "Ram",
+   "rarity": "unhinged",
+   "bio": "Went to the Second World War carrying a longbow, a broadsword and a set of bagpipes, and used all three. When the war ended he was reportedly furious. Says any officer who goes into action without his sword is improperly dressed.",
+   "lines": [
+    "A soldier with bagpipes! And a sword! And a bow!",
+    "Mad Jack. Brought a sword to a tank fight. Won.",
+    "This lunatic charged a fucking beach playing the bagpipes. With a SWORD. And it WORKED."
+   ],
+   "stats": {
+    "attack": 52,
+    "defense": 25,
+    "health": 40,
+    "speed": 22,
+    "luck": 16
+   },
+   "gear": [
+    "madjack_weapon",
+    "madjack_armor",
+    "madjack_trinket"
+   ],
+   "place": "outback"
   }
  ],
  "places": [
@@ -1131,15 +1201,15 @@
     ],
     [
      "florida_weapon",
-     0.15
+     0.03
     ],
     [
      "florida_armor",
-     0.15
+     0.03
     ],
     [
      "florida_trinket",
-     0.15
+     0.03
     ],
     [
      "jacko_weapon",
@@ -1231,6 +1301,18 @@
     [
      "kenji_trinket",
      0.375
+    ],
+    [
+     "raspawtin_weapon",
+     0.012
+    ],
+    [
+     "raspawtin_armor",
+     0.012
+    ],
+    [
+     "raspawtin_trinket",
+     0.012
     ]
    ]
   },
@@ -1542,15 +1624,27 @@
     ],
     [
      "emu_weapon",
-     0.15
+     0.03
     ],
     [
      "emu_armor",
-     0.15
+     0.03
     ],
     [
      "emu_trinket",
-     0.15
+     0.03
+    ],
+    [
+     "madjack_weapon",
+     0.012
+    ],
+    [
+     "madjack_armor",
+     0.012
+    ],
+    [
+     "madjack_trinket",
+     0.012
     ]
    ]
   },
@@ -2368,51 +2462,51 @@
    "name": "Captured Lewis Gun",
    "kind": "gear",
    "slot": "weapon",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_weapon",
    "flavor": "Taken as a trophy. He has no idea how it works. Neither did they.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 29,
+    "speed": 13
    },
-   "sell": 220
+   "sell": 1500
   },
   "emu_armor": {
    "id": "emu_armor",
    "name": "Outback Slouch Hat",
    "kind": "gear",
    "slot": "armor",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_armor",
    "flavor": "The feather is his own. A power move.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 21,
+    "health": 21
    },
-   "sell": 220
+   "sell": 1500
   },
   "emu_trinket": {
    "id": "emu_trinket",
    "name": "Medal of Total Victory",
    "kind": "gear",
    "slot": "trinket",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_trinket",
    "flavor": "Self-awarded. Fully deserved.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 17,
+    "luck": 25
    },
-   "sell": 220,
+   "sell": 1500,
    "equip": {
     "skill": "Digging",
-    "speed": 6
+    "speed": 13
    }
   },
   "troffea_weapon": {
@@ -2628,51 +2722,51 @@
    "name": "Gas Station Machete",
    "kind": "gear",
    "slot": "weapon",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_weapon",
    "flavor": "Purchased legally. Alarmingly.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 29,
+    "speed": 13
    },
-   "sell": 220
+   "sell": 1500
   },
   "florida_armor": {
    "id": "florida_armor",
    "name": "Jorts of Power",
    "kind": "gear",
    "slot": "armor",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_armor",
    "flavor": "No shirt. No shoes. No problem. No service.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 21,
+    "health": 21
    },
-   "sell": 220
+   "sell": 1500
   },
   "florida_trinket": {
    "id": "florida_trinket",
    "name": "Lucky Scratch-Off",
    "kind": "gear",
    "slot": "trinket",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_trinket",
    "flavor": "Won forty dollars. Spent sixty celebrating.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 17,
+    "luck": 25
    },
-   "sell": 220,
+   "sell": 1500,
    "equip": {
     "skill": "Fishing",
-    "speed": 6
+    "speed": 13
    }
   },
   "lola_weapon": {
@@ -2881,6 +2975,112 @@
    "equip": {
     "skill": "Fishing",
     "speed": 2
+   }
+  },
+  "raspawtin_weapon": {
+   "id": "raspawtin_weapon",
+   "name": "Suspicious Tea Cake",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "unhinged",
+   "icon": "raspawtin_weapon",
+   "flavor": "Laced with enough poison to stop an ox. He has eaten nine.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "attack": 39,
+    "speed": 16
+   },
+   "sell": 4000
+  },
+  "raspawtin_armor": {
+   "id": "raspawtin_armor",
+   "name": "Mystic's Black Robe",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "unhinged",
+   "icon": "raspawtin_armor",
+   "flavor": "Three bullet holes. No complaints.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "attack": -1,
+    "defense": 28,
+    "health": 28
+   },
+   "sell": 4000
+  },
+  "raspawtin_trinket": {
+   "id": "raspawtin_trinket",
+   "name": "The Stare",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "unhinged",
+   "icon": "raspawtin_trinket",
+   "flavor": "You blinked first. Everyone blinks first.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "speed": 22,
+    "luck": 33
+   },
+   "sell": 4000,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 16
+   }
+  },
+  "madjack_weapon": {
+   "id": "madjack_weapon",
+   "name": "Basket-Hilted Broadsword",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "unhinged",
+   "icon": "madjack_weapon",
+   "flavor": "The last sword drawn in anger in a modern war. He drew it a lot.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "attack": 39,
+    "speed": 16
+   },
+   "sell": 4000
+  },
+  "madjack_armor": {
+   "id": "madjack_armor",
+   "name": "Battle Bagpipes",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "unhinged",
+   "icon": "madjack_armor",
+   "flavor": "Enemy morale drops forty percent. So does everyone else's.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "attack": -1,
+    "defense": 28,
+    "health": 28
+   },
+   "sell": 4000
+  },
+  "madjack_trinket": {
+   "id": "madjack_trinket",
+   "name": "War Longbow",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "unhinged",
+   "icon": "madjack_trinket",
+   "flavor": "The only confirmed longbow kill of 1940. He would like that on record.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "speed": 22,
+    "luck": 33
+   },
+   "sell": 4000,
+   "equip": {
+    "skill": "Digging",
+    "speed": 16
    }
   },
   "bath_carp": {

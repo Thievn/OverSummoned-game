@@ -4,11 +4,11 @@ import json, math, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from content import HEROES, PLACES, ARCH
 
-RARITIES = ["common", "uncommon", "rare", "epic", "legendary"]
+RARITIES = ["common", "uncommon", "rare", "epic", "legendary", "absurd", "unhinged"]
 C = dict(
     version=3,
     rarities=RARITIES,
-    rarity_color={"common": "#9aa3b8", "uncommon": "#3ecf6b", "rare": "#4a8dff", "epic": "#b06bff", "legendary": "#ff9a2e"},
+    rarity_color={"common": "#9aa3b8", "uncommon": "#3ecf6b", "rare": "#4a8dff", "epic": "#b06bff", "legendary": "#ff9a2e", "absurd": "#ff4fb4", "unhinged": "#ff3b30"},
     stats=["attack", "defense", "health", "speed", "luck"],
     skills=["Summoning", "Fishing", "Lockpicking", "Digging"],
     # ---- pacing
@@ -23,17 +23,17 @@ C = dict(
     web={"xp_mult": 0.5, "loot_chance": 0.5, "ink_mult": 0.5},
     # ---- summoning
     summon={"base_ink": 3000, "per_unique": 400, "xp_per_ink": 0.25,
-            "weights": {"common": 44, "uncommon": 28, "rare": 18, "epic": 8, "legendary": 2},
-            "luck_per_level": 0.15},
+            "weights": {"common": 50, "uncommon": 28, "rare": 14, "epic": 6, "legendary": 1.6, "absurd": 0.35, "unhinged": 0.05},
+            "luck_per_level": 0.0},   # the odds are the odds: published, and they never move
     # ---- cards
     card={"max_level": 10, "stat_per_level": 0.08, "shard_gold": 25,
-          "hero_total": {"common": 50, "uncommon": 62, "rare": 76, "epic": 92, "legendary": 110}},
+          "hero_total": {"common": 50, "uncommon": 62, "rare": 76, "epic": 92, "legendary": 110, "absurd": 130, "unhinged": 155}},
     # ---- gear
-    gear={"budget": {"common": 5, "uncommon": 8, "rare": 14, "epic": 22, "legendary": 32},
+    gear={"budget": {"common": 5, "uncommon": 8, "rare": 14, "epic": 22, "legendary": 32, "absurd": 42, "unhinged": 55},
           "signature_bonus": 0.5,
-          "skill_speed": {"common": 1, "uncommon": 2, "rare": 4, "epic": 6, "legendary": 10},
-          "drop_weight": {"common": 1.2, "uncommon": 0.75, "rare": 0.375, "epic": 0.15, "legendary": 0.06},
-          "sell": {"common": 15, "uncommon": 30, "rare": 80, "epic": 220, "legendary": 600}},
+          "skill_speed": {"common": 1, "uncommon": 2, "rare": 4, "epic": 6, "legendary": 10, "absurd": 13, "unhinged": 16},
+          "drop_weight": {"common": 1.2, "uncommon": 0.75, "rare": 0.375, "epic": 0.15, "legendary": 0.06, "absurd": 0.03, "unhinged": 0.012},
+          "sell": {"common": 15, "uncommon": 30, "rare": 80, "epic": 220, "legendary": 600, "absurd": 1500, "unhinged": 4000}},
     loot={"weight": {"common": 20, "uncommon": 9, "rare": 4, "epic": 1},
           "sell": {"common": 5, "uncommon": 18, "rare": 45, "epic": 150},
           "luck_per_level": 0.01},   # each skill level: +1% weight on everything above common
