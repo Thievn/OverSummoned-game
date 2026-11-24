@@ -65,11 +65,16 @@ def build(pose='stamp', name='smudge'):
 
     # ---- face shapes (drawn here so they ride in the same atlas)
     fur = tuple(rig['face']['fur']); eyes = rig['face']['eyes']; mouth = rig['face']['mouth']
-    def ellipse(w, h, col):
-        s = 4; e = Image.new('RGBA', (w * s, h * s), (0, 0, 0, 0)); ImageDraw.Draw(e).ellipse([0, 0, w * s - 1, h * s - 1], fill=col + (255,))
+    INK = (28, 20, 32, 255)
+    def ellipse(w, h, col, lash=False):
+        s = 4; e = Image.new('RGBA', (w * s, h * s), (0, 0, 0, 0)); d = ImageDraw.Draw(e)
+        if lash:        # closed eye: fur-coloured lid with a dark lash line along the bottom
+            d.ellipse([0, 0, w * s - 1, h * s - 1], fill=col + (255,))
+            d.arc([s, -h * s, w * s - 1 - s, h * s - 1 - s], 20, 160, fill=INK, width=3 * s)
+        else: d.ellipse([0, 0, w * s - 1, h * s - 1], fill=col + (255,), outline=INK, width=2 * s)
         return e.resize((w, h), Image.LANCZOS)
-    for i, (cx, cy, rx, ry) in enumerate(eyes): img[f'lid{i}'] = ellipse(int(rx * 2.5), int(ry * 2.6), fur)
-    img['mouth'] = ellipse(mouth[2] * 2, mouth[3] * 2, (43, 18, 22))
+    for i, (cx, cy, rx, ry) in enumerate(eyes): img[f'lid{i}'] = ellipse(int(rx * 2.5), int(ry * 2.6), fur, True)
+    img['mouth'] = ellipse(mouth[2] * 2 + 4, mouth[3] * 2 + 6, (90, 31, 44))
 
     # ---- atlas (simple shelves, 2px gutters)
     order = sorted(img, key=lambda n: -img[n].size[1]); W = 1024; x = y = 2; rowh = 0; sub = []

@@ -36,42 +36,45 @@
   </div>
 </div>
 <script src="js/os.js"></script>
-<script src="js/vendor/pixi.js"></script>
-<script src="js/vendor/dragonBones.min.js"></script>
+<script src="js/vendor/dragonBones.core.js"></script>
+<script src="js/dbcanvas.js"></script>
 <script>
 (async function () {
-  const H = 420, S = 0.62;
+  const H = 420, S = 0.62, $ = id => document.getElementById(id);
+  const note = (host, msg) => { const d = document.createElement('p'); d.textContent = msg; d.style.cssText = 'position:absolute;left:12px;right:12px;top:40px;color:#ffb4a8'; host.appendChild(d); };
   // ---- current rig
   let old = null;
   try {
     OS.rig = await (await fetch('data/rig.json')).json();
-    const host = document.getElementById('old');
-    old = new OS.Puppet(host, 'stamp', S); old.place(host.clientWidth / 2 + 10, H * 0.9);
-  } catch (e) { console.error('old rig', e); }
+    const host = $('old'); old = new OS.Puppet(host, 'stamp', S); old.place(host.clientWidth / 2 + 10, H * 0.9);
+  } catch (e) { console.error(e); note($('old'), 'Could not load the current rig: ' + e.message); }
 
   // ---- DragonBones
-  const host = document.getElementById('new');
-  const app = new PIXI.Application();
-  await app.init({ width: host.clientWidth, height: H, backgroundAlpha: 0, antialias: true, resolution: Math.min(2, devicePixelRatio || 1), autoDensity: true });
-  host.appendChild(app.canvas);
-  const [ske, tex, png] = await Promise.all([
-    fetch('assets/v2/db/smudge_ske.json').then(r => r.json()),
-    fetch('assets/v2/db/smudge_tex.json').then(r => r.json()),
-    PIXI.Assets.load('assets/v2/db/smudge_tex.webp')]);
-  const f = dragonBones.PixiFactory.factory;
-  f.parseDragonBonesData(ske); f.parseTextureAtlasData(tex, png);
-  const a = f.buildArmatureDisplay('stamp', 'smudge');
-  a.scale.set(S); a.x = host.clientWidth / 2 + 10; a.y = H * 0.9; app.stage.addChild(a);
-  const an = a.animation;
-  an.play('idle', 0);
-  const over = (name, times, layer) => { const s = an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s; };
-  (function blink() { over('blink', 1, 3); setTimeout(blink, 2200 + Math.random() * 3300); })();
-  window.DB = { a, an, app, over };
+  let over = () => null, bones = false;
+  try {
+    const host = $('new'), cv = document.createElement('canvas'), ctx = cv.getContext('2d'); host.appendChild(cv);
+    const img = new Image(); img.src = 'assets/v2/db/smudge_tex.webp';
+    const [ske, tex] = await Promise.all([fetch('assets/v2/db/smudge_ske.json').then(r => r.json()), fetch('assets/v2/db/smudge_tex.json').then(r => r.json()), img.decode()]);
+    const f = new DBCanvas.Factory(); f.parseDragonBonesData(ske); f.parseTextureAtlasData(tex, img);
+    const p = f.build('stamp', 'smudge'), an = p.animation; an.play('idle', 0);
+    over = (name, times, layer) => { const s = an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s; };
+    (function blink() { over('blink', 1, 3); setTimeout(blink, 2200 + Math.random() * 3300); })();
+    let last = performance.now();
+    (function frame(now) {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now; f.advance(dt);
+      const w = host.clientWidth, dpr = Math.min(2, window.devicePixelRatio || 1);
+      if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(H * dpr); }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, H);
+      DBCanvas.draw(ctx, p, w / 2 + 10, H * 0.9, S, { bones });
+      requestAnimationFrame(frame);
+    })(last);
+    window.DB = { p, an, over };
+  } catch (e) { console.error(e); note($('new'), 'Could not start DragonBones: ' + e.message); }
 
-  document.getElementById('bStamp').onclick = () => { over('stamp', 1, 1); if (old) { old.kick('arm', 22); old.kick('head', 2); } };
-  document.getElementById('bCheer').onclick = () => { over('cheer', 8, 2); if (old) old.cheer(4); };
-  document.getElementById('bTalk').onclick = () => { const s = over('talk', 4, 4); if (old) old.say(2.7); };
-  document.getElementById('bBones').onchange = e => { a.debugDraw = e.target.checked; };
+  $('bStamp').onclick = () => { over('stamp', 1, 1); if (old) { old.kick('arm', 22); old.kick('head', 2); } };
+  $('bCheer').onclick = () => { over('cheer', 8, 2); if (old) old.cheer(4); };
+  $('bTalk').onclick = () => { over('talk', 4, 4); if (old) old.say(2.7); };
+  $('bBones').onchange = e => { bones = e.target.checked; };
 })();
 </script>
 </body>

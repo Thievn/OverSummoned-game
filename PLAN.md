@@ -82,7 +82,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Smudge stamp pose as a test: shared bone names, three-bone tail with a bending mesh, idle / stamp / cheer / blink / talk; test page at `/dbtest.html`
 - [ ] Dean to compare the test page and say go or no-go
 - [ ] If go: shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
-- [ ] If go: swap the game and landing puppets over to the DragonBones player; shrink the player download (about 2 MB unminified now)
+- [ ] If go: swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)
 - [ ] If go: DragonBones player for the Godot desktop pet (needs a compiled plugin; not tried yet)
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
 
