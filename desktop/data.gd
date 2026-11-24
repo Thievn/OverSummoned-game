@@ -13,10 +13,10 @@ const LOCATIONS := [
 		"blurb": "Slap the ledger. Fill the circle. Somebody falls out of history.",
 	},
 	{
-		"id": "bathhouse", "name": "Roman Bathhouse", "era": "Rome, 79 AD", "skill": "Fishing",
-		"kind": "fish", "scene": "bathhouse", "pose": "fish", "unlock": 1,
+		"id": "dock", "name": "Roman Dock", "era": "Ostia, 79 AD", "skill": "Fishing",
+		"kind": "fish", "scene": "dock", "pose": "fish", "unlock": 1,
 		"taps": 160,
-		"blurb": "A rift pool under the mosaic. Everything that falls in Rome ends up here.",
+		"blurb": "A quiet pier on the Tiber at Ostia. Everything Rome drops ends up in this river.",
 	},
 	{
 		"id": "speakeasy", "name": "Speakeasy Safe", "era": "Chicago, 1927", "skill": "Lockpicking",
@@ -29,7 +29,7 @@ const LOCATIONS := [
 # ------------------------------------------------------------ loot
 # name, icon file (art/loot/<id>.png), weight, coin value, rarity
 const LOOT := {
-	"bathhouse": [
+	"dock": [
 		["Golden Carp", "bath_carp", 22, 6, "common"],
 		["Rift Eel", "bath_eel", 22, 5, "common"],
 		["Silver Denarius", "bath_coin", 16, 10, "common"],
@@ -71,6 +71,12 @@ const HEROES := [
 	["vincenzo", "Vincenzo Moretti", "Gangster", "Chicago, 1927", "Weasel", "epic"],
 	["slapton", "Will Slapton", "Leading Man", "Hollywood", "Peacock", "legendary"],
 ]
+# XP per finished action (not per key), so levels come at a steady, earned pace.
+const XP_SUMMON := 60
+const XP_CATCH := 25
+const XP_PIN := 10
+const XP_UNLOCK := 30
+
 const RARITY_WEIGHT := {"common": 44, "uncommon": 28, "rare": 18, "epic": 8, "legendary": 2}
 const RARITY_COLOR := {
 	"common": Color("#8C94AA"), "uncommon": Color("#2EBE5A"), "rare": Color("#3478F6"),
@@ -89,7 +95,7 @@ const LINES := {
 		"wake": ["I'm up! I'm up! I was resting my eyes."],
 		"summon": ["Somebody's coming through! Hello, friend!", "A new friend for the city! Welcome!", "Oh! Hello! Please don't be mad, it was an accident."],
 		"summon_rare": ["Wow, look at them! The ledger likes you!", "A rare one! I'm telling everybody!"],
-		"catch": ["Got one! Look how shiny!", "Fishy! Well, mostly fishy.", "The pool gave us a present!"],
+		"catch": ["Got one! Look how shiny!", "Fishy! Well, mostly fishy.", "The river gave us a present!"],
 		"pin": ["Click! One pin down!", "Gentle, gentle... got it!"],
 		"unlock": ["The safe is open! Let's peek inside!", "We did it! I barely broke anything!"],
 		"move": ["New place! Let's explore!", "I packed snacks. And the ledger."],

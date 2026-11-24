@@ -2,46 +2,94 @@ extends Node2D
 # OverSummoned Desk, sample build.
 # Smudge sits on the taskbar. Every key press or click on his window powers
 # whatever he is doing at his current location: summoning heroes in the Archive,
-# fishing the Roman bathhouse, or picking the speakeasy safe.
+# fishing off the Roman dock at Ostia, or picking the speakeasy safe.
 
 const Data = preload("res://data.gd")
 const OverlayScript = preload("res://overlay.gd")
+const RigShader = preload("res://shaders/rig.gdshader")
+const SceneShader = preload("res://shaders/scene.gdshader")
 
 # ------------------------------------------------------------ layout (scene art pixels)
 const WIN := Vector2(640, 380)
-const SCENE_SCALE := 0.6
-const SCENE_POS := Vector2(8, 0)          # y is set so the scene sits on the bottom edge
-const POSE_SCALE := 0.34
-const POSE_SCALES := {"archive": 0.34, "bathhouse": 0.34, "speakeasy": 0.272}
-const ANCHOR := {"archive": Vector2(440, 392), "bathhouse": Vector2(215, 410), "speakeasy": Vector2(575, 338)}
+const SCENE_X := 8.0
+const SCENE_SCALES := {"archive": 0.6, "dock": 0.62, "speakeasy": 0.5}
+const POSE_SCALES := {"archive": 0.34, "dock": 0.35, "speakeasy": 0.38}
+# where Smudge's anchor point lands in each scene (scene image pixels)
+const ANCHOR := {"archive": Vector2(440, 392), "dock": Vector2(610, 300), "speakeasy": Vector2(470, 600)}
 const CIRCLE := Vector2(440, 382)
 const CIRCLE_R := Vector2(186, 44)
-const POOL := Vector2(585, 335)
-const POOL_R := Vector2(195, 58)
-const DIAL := Vector2(712, 196)
-const ROD_TIP := Vector2(0.99, 0.227)       # rod tip as a fraction of the fishing pose image
+const BOB := Vector2(800, 385)          # where the line meets the Tiber
+const DIAL := Vector2(615, 305)         # the safe's brass dial
 
-# ------------------------------------------------------------ tuning
+# ------------------------------------------------------------ Smudge's rig (pose image pixels)
+# The point of each pose that sits on the scene anchor: his seat on the pier,
+# his knee on the speakeasy floor, his feet everywhere else.
+const FOOT := {"fish": Vector2(250, 355), "pick": Vector2(257, 522)}
+# Where his backpack is in each pose: loot flies here.
+const BAG_AT := {
+	"stand": Vector2(55, 240), "slap_up": Vector2(100, 165), "slap_down": Vector2(105, 150),
+	"fish": Vector2(60, 250), "pick": Vector2(120, 250), "sleep": Vector2(240, 180), "cheer": Vector2(110, 190),
+}
+const LEDGER_AT := Vector2(330, 380)   # the open book in both slap poses
+const ROD_TIP := Vector2(470, 50)
+# Soft bones: name, pivot, center of the area it moves, radius of that area, where the soft edge starts.
+const RIG := {
+	"fish": [
+		["rod", Vector2(262, 248), Vector2(430, 140), Vector2(190, 150), 0.7],
+		["head", Vector2(205, 165), Vector2(215, 85), Vector2(80, 78), 0.55],
+		["feet", Vector2(265, 365), Vector2(285, 440), Vector2(70, 75), 0.5],
+		["tail", Vector2(140, 390), Vector2(125, 475), Vector2(55, 75), 0.5],
+	],
+	"pick": [
+		["hand_a", Vector2(370, 212), Vector2(455, 205), Vector2(80, 28), 0.5],
+		["hand_b", Vector2(370, 250), Vector2(455, 250), Vector2(80, 28), 0.5],
+		["head", Vector2(320, 165), Vector2(345, 95), Vector2(80, 75), 0.55],
+		["tail", Vector2(140, 445), Vector2(60, 470), Vector2(85, 55), 0.5],
+	],
+	"slap_up": [
+		["arm", Vector2(380, 195), Vector2(465, 95), Vector2(100, 100), 0.55],
+		["head", Vector2(300, 190), Vector2(310, 110), Vector2(80, 80), 0.55],
+		["tail", Vector2(130, 330), Vector2(60, 280), Vector2(60, 70), 0.5],
+	],
+	"slap_down": [
+		["head", Vector2(300, 190), Vector2(300, 110), Vector2(80, 80), 0.55],
+	],
+	"stand": [
+		["head", Vector2(150, 140), Vector2(160, 80), Vector2(70, 70), 0.55],
+		["tail", Vector2(300, 450), Vector2(345, 420), Vector2(70, 70), 0.5],
+	],
+	"sleep": [
+		["head", Vector2(300, 230), Vector2(300, 140), Vector2(95, 95), 0.55],
+	],
+	"cheer": [],
+}
+
+# ------------------------------------------------------------ rules
 const MAX_TAPS_PER_SEC := 20.0
+const ANIM_GAP := 0.07          # a new tap animation at most this often
 const YAWN_AFTER := 25.0
 const SLEEP_AFTER := 60.0
 const SAVE_PATH := "user://oversummoned_desk.cfg"
 const SKILLS := ["Summoning", "Fishing", "Lockpicking"]
+const MODELS := ["gpt-4o-mini", "claude-haiku-5-5", "grok-4-1-fast-non-reasoning"]
 
-# ------------------------------------------------------------ art
+# ------------------------------------------------------------ nodes and art
 var tex := {}
+var masks := {}
 var loot_tex := {}
 var hero_tex := {}
 var sfx := {}
 var font_body: FontFile
 var font_title: FontFile
 
-# ------------------------------------------------------------ nodes
 var scene_sprite: Sprite2D
-var overlay   # overlay.gd node (untyped so its `main` field is reachable)
+var scene_mat: ShaderMaterial
+var overlay        # overlay.gd under Smudge (untyped so its fields are reachable)
+var overlay_top    # overlay.gd above Smudge
 var last_passthrough := PackedVector2Array()
 var smudge_root: Node2D
 var smudge: Sprite2D
+var rig_mat: ShaderMaterial
 var zzz: Label
 var hud_title: Label
 var hud_sub: Label
@@ -49,11 +97,6 @@ var hud_bar: ProgressBar
 var hud_count: Label
 var bubble: PanelContainer
 var bubble_label: Label
-var popup: PanelContainer
-var popup_icon: TextureRect
-var popup_title: Label
-var popup_sub: Label
-var popup_tween: Tween
 var menu: PanelContainer
 var tab_boxes := {}
 var places_box: VBoxContainer
@@ -68,9 +111,9 @@ var ai_status: Label
 var http: HTTPRequest
 var ambience: AudioStreamPlayer
 
-# ------------------------------------------------------------ state (saved)
+# ------------------------------------------------------------ save data
 var loc_index := 0
-var progress := {"archive": 0.0, "bathhouse": 0.0, "speakeasy": 0.0}
+var progress := {"archive": 0.0, "dock": 0.0, "speakeasy": 0.0}
 var pins_done := 0
 var xp := {"Summoning": 0, "Fishing": 0, "Lockpicking": 0}
 var bag := {}
@@ -82,11 +125,12 @@ var api_provider := 0
 var api_model := ""
 var api_key := ""
 var sound_on := true
+var key_sounds := false
 var test_mode := false
 var demo_typing := false
 var size_index := 1
 
-# ------------------------------------------------------------ state (live)
+# ------------------------------------------------------------ live state
 var t := 0.0
 var since_tap := 999.0
 var tap_budget := MAX_TAPS_PER_SEC
@@ -96,22 +140,23 @@ var yawned := false
 var squash := Vector2.ZERO        # x = amount, y = velocity
 var slap_timer := 0.0
 var cheer_timer := 0.0
+var anim_gap := 0.0
 var bobber_dip := 0.0
 var circle_flash := 0.0
 var chatter_timer := 70.0
-var activity := 0.0              # 0 = idle, 1 = typing hard. Smoothed, drives every tempo.
-var slap_phase := 0.0
-var bob_phase := 0.0
-var pick_phase := 0.0
-var ripples: Array = []          # ages of expanding rings on the pool
-var ripple_timer := 0.0
-var tick_cooldown := 0.0
-var pose_scale := POSE_SCALE
+var activity := 0.0              # smoothed typing speed, 0..1 (only for wind and ambience)
+var bones := {}                  # bone name -> [angle, velocity] springs, kicked by taps
+var hand_flip := false
+var ripples: Array = []          # ages of rings at the bobber
+var fliers: Array = []           # loot and heroes flying into the bag
+var floaters: Array = []         # floating text (level ups, item names)
+var bursts: Array = []           # ring bursts
+var scene_scale := 0.6
+var pose_scale := 0.34
 var demo_timer := 0.0
 var save_timer := 10.0
 var dragging := false
 var drag_offset := Vector2i.ZERO
-const MODELS := ["gpt-4o-mini", "claude-haiku-5-5", "grok-4-1-fast-non-reasoning"]
 
 # ============================================================ setup
 
@@ -122,22 +167,31 @@ func _ready() -> void:
 	_load_game()
 	_apply_window_size()
 	_place_window()
-	_start_ambience()
 
 	scene_sprite = Sprite2D.new()
 	scene_sprite.centered = false
-	scene_sprite.scale = Vector2.ONE * SCENE_SCALE
+	scene_mat = ShaderMaterial.new()
+	scene_mat.shader = SceneShader
+	scene_sprite.material = scene_mat
 	add_child(scene_sprite)
 
 	overlay = OverlayScript.new()
 	overlay.main = self
+	overlay.layer = 0
 	add_child(overlay)
 
 	smudge_root = Node2D.new()
 	add_child(smudge_root)
 	smudge = Sprite2D.new()
-	smudge.scale = Vector2.ONE * pose_scale
+	rig_mat = ShaderMaterial.new()
+	rig_mat.shader = RigShader
+	smudge.material = rig_mat
 	smudge_root.add_child(smudge)
+
+	overlay_top = OverlayScript.new()
+	overlay_top.main = self
+	overlay_top.layer = 1
+	add_child(overlay_top)
 
 	zzz = _label(18, true)
 	zzz.text = "z Z z"
@@ -146,8 +200,11 @@ func _ready() -> void:
 
 	_build_hud()
 	_build_bubble()
-	_build_popup()
 	_build_menu()
+
+	ambience = AudioStreamPlayer.new()
+	ambience.volume_db = -16.0
+	add_child(ambience)
 
 	http = HTTPRequest.new()
 	http.timeout = 15.0
@@ -160,14 +217,16 @@ func _ready() -> void:
 func _load_art() -> void:
 	for k in ["stand", "slap_up", "slap_down", "sleep", "cheer", "fish", "pick"]:
 		tex[k] = load("res://art/smudge/%s.png" % k)
-	for k in ["archive", "bathhouse", "speakeasy"]:
-		tex["scene_" + k] = load("res://art/scenes/%s.png" % k)
+	for l in Data.LOCATIONS:
+		var id := str(l["id"])
+		tex["scene_" + id] = load("res://art/scenes/%s.png" % id)
+		masks[id] = load("res://art/scenes/%s_mask.png" % id)
 	for table in Data.LOOT.values():
 		for row in table:
 			loot_tex[row[1]] = load("res://art/loot/%s.png" % row[1])
 	for h in Data.HEROES:
 		hero_tex[h[0]] = load("res://art/heroes/%s.png" % h[0])
-	for n in ["tick", "plop", "splash", "catch", "pin", "unlock", "sparkle", "blip"]:
+	for n in ["tick", "slap", "plop", "catch", "pin", "unlock", "summon", "sparkle", "level", "whoosh", "blip"]:
 		sfx[n] = load("res://sfx/%s.wav" % n)
 	font_body = load("res://fonts/Nunito.ttf")
 	font_title = load("res://fonts/LilitaOne.ttf")
@@ -202,16 +261,25 @@ func _need() -> float:
 	var f := maxf(0.6, 1.0 - 0.004 * float(lvl - 1))
 	return base * f
 
+# scene image pixels -> window pixels
+func _sp(p: Vector2) -> Vector2:
+	return scene_sprite.position + p * scene_scale
+
 func _enter_location(talk: bool) -> void:
 	var id := _loc_id()
 	var stex: Texture2D = tex["scene_" + id]
+	scene_scale = float(SCENE_SCALES.get(id, 0.6))
+	pose_scale = float(POSE_SCALES.get(id, 0.34))
 	scene_sprite.texture = stex
-	scene_sprite.position = Vector2(SCENE_POS.x, WIN.y - 6.0 - stex.get_height() * SCENE_SCALE)
-	smudge_root.position = scene_sprite.position + ANCHOR[id] * SCENE_SCALE
-	pose_scale = float(POSE_SCALES.get(id, POSE_SCALE))
-	smudge.rotation = 0.0
+	scene_sprite.scale = Vector2.ONE * scene_scale
+	scene_sprite.position = Vector2(SCENE_X, WIN.y - 6.0 - stex.get_height() * scene_scale)
+	scene_mat.set_shader_parameter("mask", masks[id])
+	smudge_root.position = _sp(ANCHOR[id])
 	ripples.clear()
+	fliers.clear()
+	bones.clear()
 	_set_pose()
+	_start_ambience()
 	_update_hud()
 	overlay.queue_redraw()
 	if talk:
@@ -224,7 +292,7 @@ func _travel(index: int) -> void:
 	loc_index = index
 	pins_done = 0
 	_enter_location(true)
-	_play("blip")
+	_play("whoosh", 1.0, -6.0)
 	_refresh_places()
 
 func _pose_name() -> String:
@@ -241,12 +309,24 @@ func _pose_name() -> String:
 			return "pick"
 	return "stand"
 
+func _foot(p: String) -> Vector2:
+	if FOOT.has(p):
+		return FOOT[p]
+	var tx: Texture2D = tex[p]
+	return Vector2(tx.get_width() / 2.0, tx.get_height())
+
+# a point on the current pose image -> window pixels
+func _pose_point(img: Vector2) -> Vector2:
+	var p := _pose_name()
+	return smudge_root.position + (img - _foot(p)) * pose_scale
+
 func _set_pose() -> void:
 	var p := _pose_name()
 	var tx: Texture2D = tex[p]
 	if smudge.texture != tx:
 		smudge.texture = tx
-		smudge.offset = Vector2(0, -tx.get_height() / 2.0)
+		smudge.offset = tx.get_size() / 2.0 - _foot(p)
+		rig_mat.set_shader_parameter("tex_size", tx.get_size())
 
 # ============================================================ every frame
 
@@ -255,21 +335,20 @@ func _process(delta: float) -> void:
 	var dt := minf(delta, 0.05)
 	since_tap += delta
 	tap_budget = minf(MAX_TAPS_PER_SEC, tap_budget + MAX_TAPS_PER_SEC * delta)
-	rate = maxf(0.0, rate - rate * 0.6 * delta)
+	rate = maxf(0.0, rate - rate * 1.5 * delta)
 	slap_timer = maxf(0.0, slap_timer - delta)
 	cheer_timer = maxf(0.0, cheer_timer - delta)
-	bobber_dip = maxf(0.0, bobber_dip - 14.0 * delta)
-	tick_cooldown = maxf(0.0, tick_cooldown - delta)
-	var target := clampf(rate / 6.0, 0.0, 1.0)
-	activity = lerpf(activity, target, 1.0 - exp(-3.0 * delta))
-	_animate_location(delta)
+	anim_gap = maxf(0.0, anim_gap - delta)
+	bobber_dip = maxf(0.0, bobber_dip - 30.0 * delta)
 	circle_flash = maxf(0.0, circle_flash - delta * 1.5)
+	activity = lerpf(activity, clampf(rate / 6.0, 0.0, 1.0), 1.0 - exp(-4.0 * delta))
+	scene_mat.set_shader_parameter("wind", activity)
 
 	# demo typing (Settings): a steady fake typist so you can watch without typing
 	if demo_typing:
 		demo_timer -= delta
 		if demo_timer <= 0.0:
-			demo_timer = randf_range(0.08, 0.3)
+			demo_timer = randf_range(0.12, 0.35)
 			_tap()
 
 	# idle moods
@@ -281,8 +360,8 @@ func _process(delta: float) -> void:
 		_say("sleep")
 	zzz.visible = asleep
 	if asleep:
-		zzz.position = smudge_root.position + Vector2(30, -150 + sin(t * 2.0) * 4.0)
-		zzz.modulate.a = 0.6 + 0.4 * sin(t * 3.0)
+		zzz.position = _pose_point(Vector2(380, 60)) + Vector2(0, sin(t * 1.4) * 4.0)
+		zzz.modulate.a = 0.55 + 0.35 * sin(t * 1.8)
 
 	# chatter while you work
 	chatter_timer -= delta
@@ -291,16 +370,17 @@ func _process(delta: float) -> void:
 		if not asleep:
 			_say("busy" if rate > 2.0 else "idle")
 
-	# squash and stretch spring, gentle breathing, little hops
-	# squash and stretch around the feet, so Smudge stays planted on the floor
-	squash.y += (-90.0 * squash.x - 11.0 * squash.y) * dt
+	# a small spring on the whole body; breathing scales from the seat or feet, so he stays planted
+	squash.y += (-160.0 * squash.x - 16.0 * squash.y) * dt
 	squash.x += squash.y * dt
-	var breathe := sin(t * 2.2) * 0.012
-	smudge.scale = Vector2(pose_scale * (1.0 + squash.x * 0.5 - breathe * 0.5), pose_scale * (1.0 - squash.x + breathe))
-	smudge.position = Vector2.ZERO
+	var breathe := sin(t * (1.3 if asleep else 2.0)) * (0.018 if asleep else 0.010)
+	smudge.scale = Vector2(pose_scale * (1.0 + squash.x * 0.4 - breathe * 0.4), pose_scale * (1.0 - squash.x + breathe))
 	_set_pose()
+	_update_rig(dt)
+	_update_effects(delta)
 
 	overlay.queue_redraw()
+	overlay_top.queue_redraw()
 	_update_passthrough()
 
 	save_timer -= delta
@@ -308,32 +388,106 @@ func _process(delta: float) -> void:
 		save_timer = 10.0
 		_save_game()
 
-# Typing speed sets the tempo. Nothing reacts to single keys directly, so fast
-# typing speeds things up smoothly instead of making Smudge jitter.
-func _animate_location(delta: float) -> void:
-	match str(_loc()["kind"]):
-		"summon":
-			if activity > 0.04:
-				var before := floorf(slap_phase)
-				slap_phase += delta * (0.9 + 2.6 * activity)     # at most about 3.5 slaps a second
-				if floorf(slap_phase) > before:
-					slap_timer = 0.14
-					squash.y += 1.1
-		"fish":
-			bob_phase += delta * (1.4 + 4.6 * activity)
-			ripple_timer -= delta
-			if ripple_timer <= 0.0:
-				ripple_timer = lerpf(2.4, 0.45, activity)
-				ripples.append(0.0)
-			var keep: Array = []
-			for a in ripples:
-				var age := float(a) + delta
-				if age < 1.6:
-					keep.append(age)
-			ripples = keep
-		"lock":
-			pick_phase += delta * (1.5 + 6.5 * activity)
-			smudge.rotation = sin(pick_phase) * 0.02 * activity
+# ------------------------------------------------------------ the rig
+
+func _kick(bone: String, amount: float) -> void:
+	var b: Array = bones.get(bone, [0.0, 0.0])
+	b[1] = float(b[1]) + amount
+	bones[bone] = b
+
+func _bone(bone: String) -> float:
+	return float(bones.get(bone, [0.0, 0.0])[0])
+
+# Springs settle in about a quarter second, so motion stops when typing stops.
+func _update_rig(dt: float) -> void:
+	for k in bones:
+		var b: Array = bones[k]
+		var a := float(b[0])
+		var v := float(b[1])
+		v += (-220.0 * a - 22.0 * v) * dt
+		a += v * dt
+		bones[k] = [a, v]
+	var p := _pose_name()
+	var list: Array = RIG.get(p, [])
+	var ba := PackedVector4Array()
+	var bb := PackedVector4Array()
+	for bone in list:
+		var bname := str(bone[0])
+		var ang := _bone(bname)
+		match bname:
+			"head":
+				ang += sin(t * 0.8) * 0.025 if not asleep else sin(t * 1.3) * 0.05
+			"tail":
+				ang += sin(t * 1.2) * 0.07
+			"feet":
+				ang += sin(t * 1.6) * 0.07
+			"rod":
+				ang += sin(t * 1.1) * 0.012
+			"arm":
+				ang += sin(t * 2.0) * 0.03
+		var pivot: Vector2 = bone[1]
+		var center: Vector2 = bone[2]
+		var rad: Vector2 = bone[3]
+		ba.append(Vector4(pivot.x, pivot.y, center.x, center.y))
+		bb.append(Vector4(rad.x, rad.y, ang, float(bone[4])))
+	while ba.size() < 4:
+		ba.append(Vector4.ZERO)
+		bb.append(Vector4(1, 1, 0, 0.5))
+	rig_mat.set_shader_parameter("bone_a", ba)
+	rig_mat.set_shader_parameter("bone_b", bb)
+	rig_mat.set_shader_parameter("bone_count", list.size())
+
+# The rod tip, following the rod bone.
+func _rod_tip() -> Vector2:
+	var pivot: Vector2 = RIG["fish"][0][1]
+	var ang := _bone("rod") + sin(t * 1.1) * 0.012
+	var tip := pivot + (ROD_TIP - pivot).rotated(ang)
+	return smudge_root.position + (tip - _foot("fish")) * smudge.scale
+
+# ------------------------------------------------------------ flying things
+
+func _update_effects(delta: float) -> void:
+	var keep: Array = []
+	for a in ripples:
+		var age := float(a) + delta
+		if age < 1.4:
+			keep.append(age)
+	ripples = keep
+	keep = []
+	for f in fliers:
+		f["t"] = float(f["t"]) + delta
+		var total := float(f["rise"]) + float(f["hold"]) + float(f["fly"])
+		if float(f["t"]) < total:
+			keep.append(f)
+		elif not bool(f.get("landed", false)):
+			f["landed"] = true
+			squash.y -= 1.2
+			_play("plop", randf_range(0.95, 1.1), -6.0)
+	fliers = keep
+	keep = []
+	for f in floaters:
+		f["t"] = float(f["t"]) + delta
+		if float(f["t"]) < 1.6:
+			keep.append(f)
+	floaters = keep
+	keep = []
+	for b in bursts:
+		b["t"] = float(b["t"]) + delta
+		if float(b["t"]) < 0.8:
+			keep.append(b)
+	bursts = keep
+
+# Something pops out at `from`, hangs for a moment, then shrinks into `to`.
+func _fly(texture: Texture2D, from: Vector2, to: Vector2, big: float, rise: float, hold: float, fly: float, lift := 40.0) -> void:
+	if texture == null:
+		return
+	fliers.append({"tex": texture, "from": from, "to": to, "big": big, "rise": rise, "hold": hold, "fly": fly, "lift": lift, "t": 0.0})
+
+func _float_text(text: String, at: Vector2, col: Color, size := 16) -> void:
+	floaters.append({"text": text, "at": at, "col": col, "size": size, "t": 0.0})
+
+func _bag_point() -> Vector2:
+	return _pose_point(BAG_AT.get(_pose_name(), Vector2(80, 200)))
 
 # ============================================================ input
 
@@ -366,9 +520,9 @@ func _menu_has_text_focus() -> bool:
 
 func _smudge_rect() -> Rect2:
 	var tx: Texture2D = smudge.texture
-	var w := tx.get_width() * pose_scale
-	var h := tx.get_height() * pose_scale
-	return Rect2(smudge_root.position + Vector2(-w * 0.35, -h * 0.95), Vector2(w * 0.7, h * 0.9))
+	var top_left := _pose_point(Vector2.ZERO)
+	var sz := tx.get_size() * pose_scale
+	return Rect2(top_left + sz * Vector2(0.15, 0.05), sz * Vector2(0.7, 0.9))
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -382,7 +536,7 @@ func _update_passthrough() -> void:
 		return
 	var s := DisplayServer.window_get_size()
 	var k := float(s.x) / WIN.x
-	var r := Rect2(scene_sprite.position, scene_sprite.texture.get_size() * SCENE_SCALE)
+	var r := Rect2(scene_sprite.position, scene_sprite.texture.get_size() * scene_scale)
 	r = r.merge(_smudge_rect()).merge(Rect2(Vector2(6, 6), Vector2(232, 74)))
 	_set_passthrough(PackedVector2Array([
 		(r.position * k).round(), (Vector2(r.end.x, r.position.y) * k).round(), (r.end * k).round(), (Vector2(r.position.x, r.end.y) * k).round()]))
@@ -402,19 +556,32 @@ func _tap() -> void:
 	tap_budget -= 1.0
 	since_tap = 0.0
 	yawned = false
-	rate += 0.7
+	rate += 1.0
 	total_taps += 1
 	if asleep:
 		asleep = false
 		_say("wake")
-	var skill := _skill()
-	var before := _level(skill)
-	xp[skill] = int(xp.get(skill, 0)) + 1
-	if _level(skill) > before:
-		_level_up(skill)
-	if tick_cooldown <= 0.0:
-		tick_cooldown = 0.1
-		_play("tick", randf_range(0.9, 1.15), -16.0)
+	if key_sounds:
+		_play("tick", randf_range(0.92, 1.08), -18.0)
+
+	# one tap, one motion
+	if anim_gap <= 0.0:
+		anim_gap = ANIM_GAP
+		match str(_loc()["kind"]):
+			"summon":
+				slap_timer = 0.11
+				_kick("head", 1.4)
+				squash.y += 0.5
+				circle_flash = maxf(circle_flash, 0.15)
+			"fish":
+				_kick("rod", 1.8)
+				bobber_dip = maxf(bobber_dip, 3.0)
+				if ripples.size() < 6:
+					ripples.append(0.0)
+			"lock":
+				hand_flip = not hand_flip
+				_kick("hand_a" if hand_flip else "hand_b", -1.2 if hand_flip else 1.2)
+				_kick("head", 0.4)
 
 	var amount := 10.0 if test_mode else 1.0
 	var id := _loc_id()
@@ -432,7 +599,8 @@ func _tap() -> void:
 			if float(progress[id]) >= _need():
 				progress[id] = 0.0
 				pins_done += 1
-				_play("pin", randf_range(0.95, 1.1), -4.0)
+				_play("pin", randf_range(0.95, 1.1), -6.0)
+				_gain("Lockpicking", Data.XP_PIN)
 				if pins_done >= int(_loc().get("pins", 5)):
 					pins_done = 0
 					_unlock()
@@ -440,10 +608,18 @@ func _tap() -> void:
 					_say("pin")
 	_update_hud()
 
+func _gain(skill: String, amount: int) -> void:
+	var before := _level(skill)
+	xp[skill] = int(xp.get(skill, 0)) + amount
+	if _level(skill) > before:
+		_level_up(skill)
+
 func _level_up(skill: String) -> void:
-	_play("sparkle")
-	cheer_timer = 1.0
-	_say_text("Level up! %s is now %d." % [skill, _level(skill)])
+	_play("level", 1.0, -4.0)
+	var at := _pose_point(Vector2(260, 60))
+	bursts.append({"at": smudge_root.position + Vector2(0, -60), "t": 0.0})
+	_float_text("%s Lv %d" % [skill, _level(skill)], at, Color("#FFD35C"), 20)
+	_refresh_places()
 
 # ============================================================ rewards
 
@@ -465,50 +641,57 @@ func _summon() -> void:
 	var count := int(roster.get(id, 0))
 	roster[id] = count + 1
 	circle_flash = 1.0
-	cheer_timer = 1.6
-	_play("sparkle")
-	var sub := "%s · %s" % [str(hero[2]), str(hero[3])]
+	_play("summon", 1.0, -4.0)
+	# the hero rises out of the circle, stands a moment, then folds into the ledger
+	var c := _sp(CIRCLE)
+	_fly(hero_tex[id], c, _pose_point(LEDGER_AT), 150.0, 0.7, 1.1, 0.45, 70.0)
+	var label := str(hero[1])
 	if count > 0:
 		_add_bag("Card Shard", 1)
-		sub = "Duplicate: +1 Card Shard"
-	_show_popup(hero_tex[id], str(hero[1]), "%s %s · %s" % [rarity.capitalize(), str(hero[4]), sub], Data.RARITY_COLOR[rarity])
+		label += "  (dupe: +1 shard)"
+	_float_text(label, c + Vector2(0, -120), Data.RARITY_COLOR[rarity], 15)
+	_gain("Summoning", Data.XP_SUMMON)
 	if rarity in ["epic", "legendary", "rare"]:
+		cheer_timer = 1.2
 		_say("summon_rare")
 	else:
 		_say("summon")
 	_refresh_roster()
 
 func _catch() -> void:
-	var row := _roll_loot("bathhouse", "Fishing")
+	var row := _roll_loot("dock", "Fishing")
 	_add_bag(str(row[0]), 1)
 	bobber_dip = 9.0
-	ripples.append_array([0.0, 0.15, 0.3])
-	_play("splash")
-	_play("catch", 1.0, -4.0)
-	_show_popup(loot_tex[row[1]], str(row[0]), "%s · Bathhouse catch" % str(row[4]).capitalize(), Color("#2FA8FF"))
+	ripples.append_array([0.0, 0.12, 0.24])
+	_kick("rod", -4.0)
+	_play("catch", 1.0, -6.0)
+	var b := _sp(BOB)
+	_fly(loot_tex[row[1]], b, _bag_point(), 64.0, 0.35, 0.35, 0.55, 50.0)
+	_float_text(str(row[0]), b + Vector2(0, -70), _rarity_color(str(row[4])), 14)
+	_gain("Fishing", Data.XP_CATCH)
 	if str(row[4]) != "common":
-		cheer_timer = 1.0
+		cheer_timer = 0.9
 		_say("catch")
 	elif randf() < 0.3:
 		_say("catch")
 
 func _unlock() -> void:
 	var n := 2 + (1 if _level("Lockpicking") >= 10 else 0)
-	var best: Array = []
-	var best_rank := -1
+	var d := _sp(DIAL)
 	for i in n:
 		var row := _roll_loot("speakeasy", "Lockpicking")
 		_add_bag(str(row[0]), 1)
-		var rank := ["common", "uncommon", "rare", "epic"].find(str(row[4]))
-		if rank > best_rank:
-			best_rank = rank
-			best = row
+		_fly(loot_tex[row[1]], d + Vector2(i * 18 - 18, 0), _bag_point(), 56.0, 0.3 + i * 0.15, 0.3, 0.55, 45.0)
+		if i == 0:
+			_float_text(str(row[0]), d + Vector2(0, -70), _rarity_color(str(row[4])), 14)
 	coins += randi_range(5, 20)
-	cheer_timer = 1.4
-	_play("unlock")
-	_play("sparkle", 1.1, -6.0)
-	_show_popup(loot_tex[best[1]], "Safe cracked!", "%d items + coins. Best: %s" % [n, str(best[0])], Color("#FFC83D"))
+	_gain("Lockpicking", Data.XP_UNLOCK)
+	cheer_timer = 1.1
+	_play("unlock", 1.0, -4.0)
 	_say("unlock")
+
+func _rarity_color(r: String) -> Color:
+	return Data.RARITY_COLOR.get(r, Color.WHITE)
 
 func _roll_loot(table: String, skill: String) -> Array:
 	var rows: Array = Data.LOOT[table]
@@ -561,49 +744,102 @@ func _sell_extras() -> void:
 			bag[item] = 1
 	coins += earned
 	_refresh_bag()
-	_play("sparkle" if earned > 0 else "blip")
+	_play("sparkle" if earned > 0 else "blip", 1.0, -6.0)
 	_say_text("Sold the extras for %d coins." % earned if earned > 0 else "Nothing extra to sell yet.")
 
 # ============================================================ drawing the effects
 
-func draw_overlay(c: Node2D) -> void:
-	var o := scene_sprite.position
-	var k := SCENE_SCALE
+func draw_overlay(c: Node2D, layer: int) -> void:
+	if layer == 1:
+		_draw_top(c)
+		return
 	match str(_loc()["kind"]):
 		"summon":
-			var center := o + CIRCLE * k
-			var rad := CIRCLE_R * k
+			var center := _sp(CIRCLE)
+			var rad := CIRCLE_R * scene_scale
 			var f := clampf(float(progress.get("archive", 0.0)) / _need(), 0.0, 1.0)
 			_ellipse(c, center, rad, 0.0, 1.0, Color(0.5, 1.0, 0.92, 0.18), 6.0)
 			_ellipse(c, center, rad, 0.0, f, Color(0.5, 1.0, 0.92, 0.95), 4.0)
 			if circle_flash > 0.0:
 				_ellipse(c, center, rad * (1.0 + (1.0 - circle_flash) * 0.6), 0.0, 1.0, Color(0.6, 1.0, 0.95, circle_flash), 8.0)
 		"fish":
-			var tip := smudge_root.position + smudge.position + Vector2(
-				(ROD_TIP.x - 0.5) * smudge.texture.get_width() * smudge.scale.x,
-				-(1.0 - ROD_TIP.y) * smudge.texture.get_height() * smudge.scale.y)
-			var surface := o + POOL * k + Vector2(-40, 0)
-			var bob := surface + Vector2(0, bobber_dip + sin(bob_phase) * 1.6)
+			var bob := _sp(BOB) + Vector2(0, bobber_dip + sin(t * 1.7) * 1.2)
 			for a in ripples:
 				var age := float(a)
-				var rr := 5.0 + age * 22.0
-				_ellipse(c, surface + Vector2(0, 2), Vector2(rr, rr * 0.32), 0.0, 1.0, Color(1, 1, 1, clampf(0.75 - age * 0.47, 0.0, 1.0)), 1.4)
-			var mid := (tip + bob) / 2.0 + Vector2(0, 16)
-			c.draw_polyline(PackedVector2Array([tip, mid.lerp(tip, 0.45), mid, bob]), Color(1, 1, 1, 0.9), 1.2, true)
-			c.draw_line(bob, bob + Vector2(0, 9), Color(1, 1, 1, 0.3), 1.0)   # line under the surface
-			c.draw_circle(bob, 4.0, Color("#FF5B47"))
-			c.draw_circle(bob + Vector2(0, -1.5), 1.6, Color(1, 1, 1, 0.9))
+				var rr := 4.0 + age * 20.0
+				_ellipse(c, _sp(BOB) + Vector2(0, 2), Vector2(rr, rr * 0.3), 0.0, 1.0, Color(1, 1, 1, clampf(0.7 - age * 0.5, 0.0, 1.0)), 1.3)
+			c.draw_circle(bob, 3.5, Color("#FF5B47"))
+			c.draw_circle(bob + Vector2(0, -1.5), 1.4, Color(1, 1, 1, 0.9))
 		"lock":
-			var dial := o + DIAL * k
+			var dial := _sp(DIAL)
 			var pins := int(_loc().get("pins", 5))
 			var f2 := clampf(float(progress.get("speakeasy", 0.0)) / _need(), 0.0, 1.0)
 			for i in pins:
-				var p := dial + Vector2(-26 + i * 13, -38)
-				var col := Color("#FFC83D") if i < pins_done else Color(0.12, 0.16, 0.28, 0.85)
+				var p := dial + Vector2(-28 + i * 14, -62)
+				var col := Color("#FFC83D") if i < pins_done else Color(0.12, 0.16, 0.28, 0.9)
 				c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), col)
-				c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), Color("#1E2A47"), false, 1.5)
 				if i == pins_done:
-					c.draw_rect(Rect2(p + Vector2(-4, 7 - 14 * f2), Vector2(8, 14 * f2)), Color(1, 0.85, 0.4, 0.7))
+					c.draw_rect(Rect2(p + Vector2(-4, 7 - 14 * f2), Vector2(8, 14 * f2)), Color(1, 0.85, 0.4, 0.8))
+				c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), Color("#0B1020"), false, 1.5)
+
+# Above Smudge: the fishing line, flying loot, bursts and floating text.
+func _draw_top(c: Node2D) -> void:
+	if str(_loc()["kind"]) == "fish" and _pose_name() == "fish":
+		var tip := _rod_tip()
+		var bob := _sp(BOB) + Vector2(0, bobber_dip + sin(t * 1.7) * 1.2)
+		var pts := PackedVector2Array()
+		var sag := 18.0 - minf(12.0, bobber_dip * 1.5)
+		for i in 13:
+			var u := float(i) / 12.0
+			pts.append(tip.lerp(bob, u) + Vector2(0, sin(u * PI) * sag))
+		c.draw_polyline(pts, Color(0.95, 0.97, 1.0, 0.85), 1.1, true)
+	for b in bursts:
+		var k := float(b["t"]) / 0.8
+		var at: Vector2 = b["at"]
+		c.draw_arc(at, 20.0 + k * 70.0, 0.0, TAU, 48, Color(1.0, 0.85, 0.35, 1.0 - k), 4.0 * (1.0 - k) + 1.0, true)
+		c.draw_arc(at, 10.0 + k * 45.0, 0.0, TAU, 40, Color(0.5, 1.0, 0.92, (1.0 - k) * 0.8), 2.0, true)
+	for f in fliers:
+		var tt := float(f["t"])
+		var rise := float(f["rise"])
+		var hold := float(f["hold"])
+		var fly := float(f["fly"])
+		var from: Vector2 = f["from"]
+		var to: Vector2 = f["to"]
+		var big := float(f["big"])
+		var top := from + Vector2(0, -float(f["lift"]))
+		var pos := top
+		var side := big
+		var alpha := 1.0
+		if tt < rise:
+			var u := ease(tt / rise, -2.0)
+			pos = from.lerp(top, u)
+			side = lerpf(big * 0.2, big, u)
+			alpha = clampf(u * 2.0, 0.0, 1.0)
+		elif tt < rise + hold:
+			pos = top + Vector2(0, sin((tt - rise) * 6.0) * 2.0)
+		else:
+			var u2 := clampf((tt - rise - hold) / fly, 0.0, 1.0)
+			var e := u2 * u2
+			pos = top.lerp(to, e) + Vector2(0, -sin(u2 * PI) * 30.0)
+			side = lerpf(big, 10.0, e)
+			alpha = 1.0 - maxf(0.0, u2 - 0.85) / 0.15
+		var tx: Texture2D = f["tex"]
+		var sz := tx.get_size()
+		var k2 := side / maxf(sz.x, sz.y)
+		var draw_size := sz * k2
+		c.draw_texture_rect(tx, Rect2(pos - draw_size / 2.0, draw_size), false, Color(1, 1, 1, alpha))
+	for f in floaters:
+		var u3 := float(f["t"]) / 1.6
+		var at2: Vector2 = f["at"]
+		var size := int(f["size"])
+		var text := str(f["text"])
+		var w := font_title.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+		var p2 := Vector2(clampf(at2.x - w / 2.0, 6.0, WIN.x - w - 6.0), at2.y - u3 * 30.0)
+		var a := 1.0 - maxf(0.0, u3 - 0.6) / 0.4
+		c.draw_string_outline(font_title, p2, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, 6, Color(0.04, 0.06, 0.12, a))
+		var col: Color = f["col"]
+		col.a = a
+		c.draw_string(font_title, p2, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, col)
 
 func _ellipse(c: Node2D, center: Vector2, rad: Vector2, start: float, frac: float, col: Color, width: float) -> void:
 	if frac <= 0.0:
@@ -642,7 +878,7 @@ func _panel_style(bg: Color, border: Color, radius := 14) -> StyleBoxFlat:
 
 func _build_hud() -> void:
 	var p := PanelContainer.new()
-	p.add_theme_stylebox_override("panel", _panel_style(Color("#1E2A47F0"), Color("#FFC83D")))
+	p.add_theme_stylebox_override("panel", _panel_style(Color("#141C33F2"), Color("#3A4A72")))
 	p.position = Vector2(8, 8)
 	p.custom_minimum_size = Vector2(226, 0)
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -651,8 +887,8 @@ func _build_hud() -> void:
 	v.add_theme_constant_override("separation", 2)
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	p.add_child(v)
-	hud_title = _label(17, false, true)
-	hud_title.add_theme_color_override("font_color", Color("#FFC83D"))
+	hud_title = _label(18, false, true)
+	hud_title.add_theme_color_override("font_color", Color.WHITE)
 	v.add_child(hud_title)
 	hud_sub = _label(12, false)
 	hud_sub.add_theme_color_override("font_color", Color("#E7ECF7"))
@@ -708,59 +944,6 @@ func _build_bubble() -> void:
 	bubble.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bubble)
 
-func _build_popup() -> void:
-	popup = PanelContainer.new()
-	popup.add_theme_stylebox_override("panel", _panel_style(Color("#FFFBF2"), Color("#1E2A47")))
-	popup.custom_minimum_size = Vector2(150, 0)
-	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var v := VBoxContainer.new()
-	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	popup.add_child(v)
-	popup_icon = TextureRect.new()
-	popup_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	popup_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	popup_icon.custom_minimum_size = Vector2(130, 120)
-	popup_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v.add_child(popup_icon)
-	popup_title = _label(16, false, true)
-	popup_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	popup_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	v.add_child(popup_title)
-	popup_sub = _label(11, false)
-	popup_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	popup_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	popup_sub.custom_minimum_size = Vector2(150, 0)
-	v.add_child(popup_sub)
-	popup.visible = false
-	add_child(popup)
-
-func _show_popup(icon: Texture2D, title: String, sub: String, frame: Color) -> void:
-	popup_icon.texture = icon
-	popup_title.text = title
-	popup_sub.text = sub
-	var sb := _panel_style(Color("#FFFBF2"), frame)
-	sb.set_border_width_all(4)
-	popup.add_theme_stylebox_override("panel", sb)
-	popup.visible = true
-	popup.modulate.a = 1.0
-	popup.reset_size()
-	var x := WIN.x - 182.0
-	popup.position = Vector2(x, WIN.y)
-	popup.scale = Vector2(0.8, 0.8)
-	popup.pivot_offset = Vector2(80, 120)
-	if popup_tween:
-		popup_tween.kill()
-	popup_tween = create_tween()
-	popup_tween.set_parallel(true)
-	popup_tween.tween_property(popup, "position", Vector2(x, 70), 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	popup_tween.tween_property(popup, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	popup_tween.chain().tween_interval(2.6)
-	popup_tween.chain().tween_property(popup, "modulate:a", 0.0, 0.4)
-	popup_tween.chain().tween_callback(_hide_popup)
-
-func _hide_popup() -> void:
-	popup.visible = false
-
 # ============================================================ talking
 
 func _say(event: String) -> void:
@@ -777,11 +960,11 @@ func _say_text(text: String) -> void:
 	bubble_label.text = text
 	bubble.visible = true
 	bubble.reset_size()
-	var head := smudge_root.position + Vector2(-20, -smudge.texture.get_height() * pose_scale - 10)
+	var head := _pose_point(Vector2(smudge.texture.get_width() * 0.5, 0)) + Vector2(-20, -6)
 	bubble.position = Vector2(clampf(head.x - 40, 4, WIN.x - bubble.size.x - 4), clampf(head.y - bubble.size.y, 84, WIN.y - 60))
 	bubble.scale = Vector2(0.6, 0.6)
 	bubble.pivot_offset = Vector2(30, bubble.size.y)
-	_play("blip", randf_range(0.95, 1.15), -8.0)
+	_play("blip", randf_range(0.95, 1.1), -14.0)
 	var tw := create_tween()
 	tw.tween_property(bubble, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(3.8)
@@ -852,15 +1035,19 @@ func _play(sound: String, pitch := 1.0, db := 0.0) -> void:
 	p.play()
 	p.finished.connect(p.queue_free)
 
+# Each place has its own quiet bed of sound: page rustle, river and gulls, a muffled jazz room.
 func _start_ambience() -> void:
-	var stream: AudioStreamWAV = load("res://sfx/ambience.wav")
+	if ambience == null:
+		return
+	var path := "res://sfx/amb_%s.wav" % _loc_id()
+	if not ResourceLoader.exists(path):
+		ambience.stop()
+		return
+	var stream: AudioStreamWAV = load(path)
 	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	stream.loop_begin = 0
 	stream.loop_end = int(stream.get_length() * stream.mix_rate)
-	ambience = AudioStreamPlayer.new()
 	ambience.stream = stream
-	ambience.volume_db = -14.0
-	add_child(ambience)
 	ambience.play()
 	ambience.stream_paused = not sound_on
 
@@ -887,8 +1074,39 @@ func _build_menu() -> void:
 	th.set_stylebox("normal", "Button", b_normal)
 	th.set_stylebox("hover", "Button", b_hover)
 	th.set_stylebox("pressed", "Button", b_hover)
+	th.set_stylebox("focus", "Button", StyleBoxEmpty.new())
+	# dropdowns: same yellow buttons, dark readable text
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+		th.set_color(state, "Button", Color("#141C33"))
+		th.set_color(state, "OptionButton", Color("#141C33"))
+	th.set_stylebox("normal", "OptionButton", b_normal)
+	th.set_stylebox("hover", "OptionButton", b_hover)
+	th.set_stylebox("pressed", "OptionButton", b_hover)
+	th.set_stylebox("focus", "OptionButton", StyleBoxEmpty.new())
+	# checkboxes: no yellow box, light text on the dark panel
+	var empty := StyleBoxEmpty.new()
+	for st in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
+		th.set_stylebox(st, "CheckBox", empty)
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+		th.set_color(state, "CheckBox", Color("#E7ECF7"))
+	# the dropdown list itself
+	var pm := _panel_style(Color("#141C33"), Color("#FFC83D"), 8)
+	th.set_stylebox("panel", "PopupMenu", pm)
+	th.set_color("font_color", "PopupMenu", Color("#E7ECF7"))
+	th.set_color("font_hover_color", "PopupMenu", Color("#141C33"))
+	var hov := StyleBoxFlat.new()
+	hov.bg_color = Color("#FFC83D")
+	hov.set_corner_radius_all(4)
+	th.set_stylebox("hover", "PopupMenu", hov)
+	# text boxes
+	var le := _panel_style(Color("#0B1020"), Color("#3A4A72"), 8)
+	le.set_content_margin_all(5)
+	th.set_stylebox("normal", "LineEdit", le)
+	th.set_stylebox("focus", "LineEdit", le)
+	th.set_color("font_color", "LineEdit", Color("#E7ECF7"))
+	th.set_color("font_placeholder_color", "LineEdit", Color("#7C88A6"))
 	menu.theme = th
-	menu.add_theme_stylebox_override("panel", _panel_style(Color("#1E2A47F7"), Color("#FFC83D"), 16))
+	menu.add_theme_stylebox_override("panel", _panel_style(Color("#141C33F8"), Color("#FFC83D"), 16))
 	layer.add_child(menu)
 
 	var v := VBoxContainer.new()
@@ -898,7 +1116,7 @@ func _build_menu() -> void:
 	v.add_child(header)
 	var title := _label(20, false, true)
 	title.text = "Smudge's Ledger"
-	title.add_theme_color_override("font_color", Color("#FFC83D"))
+	title.add_theme_color_override("font_color", Color.WHITE)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title)
 	header.add_child(_button("x", _close_menu))
@@ -994,6 +1212,7 @@ func _build_menu() -> void:
 	pages.add_child(settings)
 	tab_boxes["Settings"] = settings
 	settings.add_child(_check("Sound", sound_on, _set_sound))
+	settings.add_child(_check("Key click sounds", key_sounds, _set_key_sounds))
 	settings.add_child(_check("Always on top", true, _set_on_top))
 	settings.add_child(_check("Test mode (10x faster)", test_mode, _set_test_mode))
 	settings.add_child(_check("Demo typing (types for you)", demo_typing, _set_demo))
@@ -1027,9 +1246,6 @@ func _check(text: String, on: bool, action: Callable) -> CheckBox:
 	c.text = text
 	c.button_pressed = on
 	c.focus_mode = Control.FOCUS_NONE
-	c.add_theme_color_override("font_color", Color("#E7ECF7"))
-	c.add_theme_color_override("font_hover_color", Color.WHITE)
-	c.add_theme_color_override("font_pressed_color", Color("#FFC83D"))
 	c.toggled.connect(action)
 	return c
 
@@ -1038,7 +1254,7 @@ func _show_tab(tab_name: String) -> void:
 		tab_boxes[k].visible = (k == tab_name)
 	if tab_name == "Bag":
 		_refresh_bag()
-	_play("blip", 1.0, -10.0)
+	_play("blip", 1.0, -16.0)
 
 func _toggle_menu() -> void:
 	menu.visible = not menu.visible
@@ -1177,6 +1393,10 @@ func _set_sound(on: bool) -> void:
 func _set_on_top(on: bool) -> void:
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, on)
 
+func _set_key_sounds(on: bool) -> void:
+	key_sounds = on
+	_save_game()
+
 func _set_test_mode(on: bool) -> void:
 	test_mode = on
 	_save_game()
@@ -1197,7 +1417,7 @@ func _reset_progress() -> void:
 		_say_text("Click Reset again to wipe everything. Everything.")
 		return
 	reset_armed = false
-	progress = {"archive": 0.0, "bathhouse": 0.0, "speakeasy": 0.0}
+	progress = {"archive": 0.0, "dock": 0.0, "speakeasy": 0.0}
 	pins_done = 0
 	xp = {"Summoning": 0, "Fishing": 0, "Lockpicking": 0}
 	bag = {}
@@ -1229,6 +1449,7 @@ func _save_game() -> void:
 	cfg.set_value("game", "total_taps", total_taps)
 	cfg.set_value("prefs", "mode", mode)
 	cfg.set_value("prefs", "sound", sound_on)
+	cfg.set_value("prefs", "key_sounds", key_sounds)
 	cfg.set_value("prefs", "test_mode", test_mode)
 	cfg.set_value("prefs", "size", size_index)
 	cfg.set_value("ai", "provider", api_provider)
@@ -1244,7 +1465,7 @@ func _load_game() -> void:
 	var p = cfg.get_value("game", "progress", progress)
 	if p is Dictionary:
 		for k in p:
-			progress[k] = float(p[k])
+			progress["dock" if str(k) == "bathhouse" else str(k)] = float(p[k])
 	pins_done = int(cfg.get_value("game", "pins_done", 0))
 	var x = cfg.get_value("game", "xp", xp)
 	if x is Dictionary:
@@ -1262,6 +1483,7 @@ func _load_game() -> void:
 	if not (mode in ["sweet", "salty", "unhinged"]):
 		mode = "salty"
 	sound_on = bool(cfg.get_value("prefs", "sound", true))
+	key_sounds = bool(cfg.get_value("prefs", "key_sounds", false))
 	test_mode = bool(cfg.get_value("prefs", "test_mode", false))
 	size_index = int(cfg.get_value("prefs", "size", 1))
 	api_provider = int(cfg.get_value("ai", "provider", 0))

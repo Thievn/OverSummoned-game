@@ -20,10 +20,12 @@ Smudge, the hooded otter apprentice, sits above your taskbar. Typing powers what
 | Place | Skill | What happens |
 | --- | --- | --- |
 | The Archive | Summoning | The circle fills. Full circle = a hero card from history |
-| Roman Bathhouse | Fishing | A bite every ~160 key presses. Roman loot and fish |
+| Roman Dock (Ostia) | Fishing | A bite every ~160 key presses. Roman loot and fish from the Tiber |
 | Speakeasy Safe | Lockpicking | 5 pins, ~70 presses each. Cracked safe = 2-3 items + coins |
 
-Skills level 1–99 on a Melvor-style curve. Higher levels are a little faster and luckier.
+Skills level 1–99 on a Melvor-style curve. XP comes from finished actions (a catch, a pin, a summon), not from single keys. Higher levels are a little faster and luckier.
+
+Needs Godot 4.3 or newer.
 
 ## Sample limits
 
