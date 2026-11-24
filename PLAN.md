@@ -77,9 +77,10 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Sounds for the new places
 
 ## Waiting on Dean
-- [ ] Approve the database change (accounts, saves, page views, admin numbers). Until then nobody can log in.
+- [x] Approve the database change (accounts, saves, page views, admin numbers)
 - [ ] Check the preview address is allowed as a sign-in redirect in Supabase, or go live
-- [ ] Deploy of the Grok marketing function
+- [x] Deploy of the Grok marketing function
+- [ ] First real sign-in test with Google on the preview, then open the Owner's office and try the marketing studio
 
 ## Known gaps
 - Saves are trusted from the browser. Before trading or real money, move the rolls to the server.
