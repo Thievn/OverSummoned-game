@@ -9,7 +9,7 @@
   // ---------------------------------------------------------------- the desk
   const desk = $('desk-demo'), bubble = $('bubble'), prog = $('prog'), glow = $('glow');
   let smudge, k = 1, ink = 0, busy = false, taps = 0, lastTap = 0;
-  const NEED = 28, SAMPLE = ['kevin', 'emu', 'lola', 'cleocatra', 'florida']   // only the five shown below; the rest stay secret;
+  const NEED = 28, SAMPLE = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin']   // only the five shown below; the rest stay secret;
   function layout() {
     k = desk.clientWidth / 910;
     if (!smudge) smudge = new OS.Puppet(desk, 'stamp', 0.45 * k);
@@ -49,7 +49,7 @@
   setTimeout(() => { if (!taps) say('Three hundred years guarding a book. Great career move, Smudge.'); }, 2500);
 
   // ---------------------------------------------------------------- cards
-  const show = ['kevin', 'emu', 'lola', 'cleocatra', 'florida'];
+  const show = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin'];
   show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id])));
   setTimeout(() => { const c = $('cards').children[2]; if (c) { c.classList.add('flip'); setTimeout(() => c.classList.remove('flip'), 2600); } }, 1800);
   R.heroes.filter(h => !show.includes(h.id)).forEach(h => { const i = new Image(); i.src = OS.img('heroes', h.id); i.alt = 'A hero not yet summoned'; $('shadows').appendChild(i); });

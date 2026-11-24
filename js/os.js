@@ -138,12 +138,13 @@ window.OS = (function () {
     const stats = opt.stats || h.stats, max = 60;
     let back = '';
     if (!opt.mini) {
-      back = `<div class="face back"><div><div class="nm">${h.name}</div><div class="ti">${h.title} · ${h.era}</div></div>
+      back = `<div class="face back"><i class="frame"></i><div><div class="nm">${h.name}</div><div class="ti">${h.title} · ${h.era}</div></div>
         <div class="bio">${h.bio}</div>
         <div class="stats">${R.stats.map(k => `<span>${OS.statWord[k]}</span><i><b style="width:${Math.min(100, stats[k] / max * 100)}%"></b></i><span>${stats[k]}</span>`).join('')}</div>
         <div class="slots"></div></div>`;
     }
-    c.innerHTML = `<div class="face front"><div class="rar"><b>${owned ? OS.cap(h.rarity) : 'Unknown'}</b><span>${owned ? h.species : ''}${opt.level > 1 ? ' · Lv ' + opt.level : ''}</span></div>
+    const deco = '<i class="frame"></i><i class="corner a"></i><i class="corner b"></i><i class="corner c"></i><i class="corner d"></i>';
+    c.innerHTML = `<div class="face front"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>${deco}<div class="rar"><b>${OS.cap(h.rarity)}</b><span>${owned ? h.species : ''}${opt.level > 1 ? ' · Lv ' + opt.level : ''}</span></div>
       <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div>
       <div class="plate"><div class="nm">${owned ? h.name : '???'}</div><div class="ti">${owned ? h.title + ' · ' + h.era : 'Not yet summoned'}</div></div></div>` + back;
     if (!opt.mini) {

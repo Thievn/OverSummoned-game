@@ -39,7 +39,7 @@
    },
    {
     "name": "head",
-    "mode": "fill",
+    "mode": "front",
     "pivot": [
      275,
      218
@@ -130,7 +130,7 @@
    },
    {
     "name": "head",
-    "mode": "fill",
+    "mode": "front",
     "pivot": [
      188,
      176
@@ -219,7 +219,7 @@
    },
    {
     "name": "head",
-    "mode": "fill",
+    "mode": "front",
     "pivot": [
      312,
      192
@@ -296,7 +296,7 @@
    },
    {
     "name": "head",
-    "mode": "fill",
+    "mode": "front",
     "pivot": [
      300,
      182
