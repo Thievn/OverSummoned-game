@@ -76,7 +76,7 @@ window.OS = (function () {
         else if (name === 'tail') a = clamp(a + Math.sin(t * 1.3) * 0.06 + Math.sin(t * 2.9) * 0.025 + (this.happy > 0 ? Math.sin(t * 14) * 0.12 : 0), -0.5, 0.5);
         else if (name === 'feet') a += Math.sin(t * 1.5) * 0.09;
         else if (name === 'rod') a = clamp(a + Math.sin(t * 0.9) * 0.012, -0.3, 0.2);
-        else if (name === 'arm') { a = clamp(a, -0.12, 1.25); const k = clamp(a, 0, 1); tr = `translate(${-14 * k}px,${78 * k}px) `; }
+        else if (name === 'arm') a = clamp(a, -0.2, 1.7);
         else if (name === 'shovel') a = clamp(a, -0.25, 0.45);
         else a = clamp(a, -0.3, 0.3);
         p.el.style.transform = tr + `rotate(${a}rad)`;

@@ -80,10 +80,12 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] DragonBones runtime (open source) pulled in; plays in the browser on the site
 - [x] `rules/dbexport.py` writes real DragonBones files from the cut parts and joints
 - [x] Smudge stamp pose as a test: shared bone names, three-bone tail with a bending mesh, idle / stamp / cheer / blink / talk; test page at `/dbtest.html`
-- [ ] Dean to compare the test page and say go or no-go
-- [ ] If go: shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
-- [ ] If go: swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)
-- [ ] If go: DragonBones player for the Godot desktop pet (needs a compiled plugin; not tried yet)
+- [x] Dean chose DragonBones (likes the tail). Keep the current rig's blink style and smaller mouth
+- [x] Stamp pose recut (`rules/smudge_stamp_cut.py`): white fringe peeled, head no longer takes the feather, arm cut from the shoulder with the cloak painted in behind, fist and stamp on a wrist joint so the stamp lands face-down
+- [ ] Same careful recut for Smudge's other poses (fish, pick, dig, sleep) and a white-fringe pass on every hero
+- [ ] Shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
+- [ ] Swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)
+- [ ] Godot desktop pet: play the same files (add-on if one works on 4.3, otherwise a small player on Godot's built-in Skeleton2D)
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
 
 ## Waiting on Dean
