@@ -342,7 +342,7 @@
   // first visit: a short welcome instead of a manual
   if (!S.actions && !Object.keys(S.roster).length) {
     S.ink = summonCost(); // the first summon is on the house
-    const d = el('div', 'reveal', `<img src="/assets/v2/puppet/stamp_base.webp" alt="" style="height:150px"><h3 style="font-size:1.7rem">The ledger is open</h3><p class="mut" style="max-width:32em">Smudge has started fishing off a Roman dock, because that is apparently his job now. He will keep at it whether you watch or not. Tap the scene or type to hurry him along. There is enough ink in the bottle for one summoning, and the Archive is waiting.</p>`);
+    const d = el('div', 'reveal', `<img src="/assets/v2/smudge/stamp.webp" alt="" style="height:150px"><h3 style="font-size:1.7rem">The ledger is open</h3><p class="mut" style="max-width:32em">Smudge has started fishing off a Roman dock, because that is apparently his job now. He will keep at it whether you watch or not. Tap the scene or type to hurry him along. There is enough ink in the bottle for one summoning, and the Archive is waiting.</p>`);
     const ok = el('button', 'btn', 'Go and summon somebody'); ok.onclick = () => { modal.close(); show('summon'); }; d.appendChild(ok); modal.open(d);
   }
   show('work'); requestAnimationFrame(frame);
