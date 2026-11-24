@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owner's office · OverSummoned</title><meta name="robots" content="noindex"><meta name="theme-color" content="#080c1a">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="stylesheet" href="/css/os.css"></head>
+<body class="game admin">
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp" alt=""><p>Unlocking the office…</p></div>
+<header class="gbar"><div class="wrap"><a class="brand" href="/play">Over<b>Summoned</b></a><span class="crown">Owner's office</span><div class="res"><button class="btn small ghost" id="refresh">Refresh</button><a class="btn small" href="/play">Back to the game</a></div></div></header>
+<main class="wrap">
+  <nav class="atabs" id="atabs"><button class="on" data-t="overview">Overview</button><button data-t="players">Players</button><button data-t="heroes">Characters</button><button data-t="items">Items</button><button data-t="economy">Economy</button><button data-t="studio">Marketing studio</button></nav>
+  <section class="view on" id="a-overview">
+    <div class="statrow six" id="o-tiles"></div>
+    <div class="grid2 even">
+      <div class="panel chart"><div class="spread"><h3>Visitors and page views</h3><button class="linkbtn" data-table="c-traffic">Table</button></div><p class="mut">Last 30 days. A visitor is one browser.</p><div class="legend"><span><i style="background:#14a08b"></i>Visitors</span><span><i style="background:#c2800c"></i>Page views</span></div><div id="c-traffic"></div></div>
+      <div class="panel chart"><div class="spread"><h3>New accounts</h3><button class="linkbtn" data-table="c-signups">Table</button></div><p class="mut">Per day, last 30 days.</p><div id="c-signups"></div></div>
+      <div class="panel chart"><div class="spread"><h3>Summons</h3><button class="linkbtn" data-table="c-summons">Table</button></div><p class="mut">Per day, last 30 days.</p><div id="c-summons"></div></div>
+      <div class="panel chart"><div class="spread"><h3>Players active</h3><button class="linkbtn" data-table="c-active">Table</button></div><p class="mut">Players who did something that day.</p><div id="c-active"></div></div>
+      <div class="panel"><h3>Most visited pages</h3><p class="mut">Last 7 days.</p><div id="o-paths"></div></div>
+      <div class="panel"><h3>Where visitors come from</h3><p class="mut">Last 7 days.</p><div id="o-refs"></div></div>
+    </div>
+  </section>
+  <section class="view" id="a-players"><div class="spread" style="margin-bottom:.8rem"><h2>Players</h2><input type="text" id="p-search" placeholder="Search name or email"></div><div class="panel" style="overflow:auto"><table class="atable" id="p-table"></table></div></section>
+  <section class="view" id="a-heroes"><div class="spread" style="margin-bottom:.8rem"><h2>Characters</h2><span class="mut" id="hc"></span></div><div class="heroes big" id="a-hgrid"></div></section>
+  <section class="view" id="a-items"><div class="spread" style="margin-bottom:.8rem"><h2>Items</h2><div class="row"><select id="i-kind"><option value="">Everything</option><option value="gear">Gear</option><option value="loot">Treasure</option></select><select id="i-place"><option value="">Every place</option></select></div></div><div class="panel"><div class="itemrow" id="a-igrid"></div></div><div class="panel" style="margin-top:.9rem;overflow:auto"><table class="atable" id="i-table"></table></div></section>
+  <section class="view" id="a-economy"><h2 style="margin-bottom:.8rem">Economy</h2><div class="statrow" id="e-tiles"></div>
+    <div class="grid2 even"><div class="panel"><h3>Summon odds</h3><p class="mut">What the rulebook says players get.</p><div class="odds" id="e-odds"></div></div><div class="panel"><h3>What players did</h3><p class="mut">Last 7 days.</p><div id="e-events"></div></div>
+    <div class="panel" style="grid-column:1/-1;overflow:auto"><h3>Pacing, from the rulebook</h3><table class="atable" id="e-pace"></table></div></div></section>
+  <section class="view" id="a-studio"><h2>Marketing studio</h2><p class="mut" style="margin-bottom:1rem">Pick something to talk about and where it is going. Grok writes it and paints it. Nothing is posted for you: copy the words, save the picture.</p>
+    <div class="grid2"><div class="panel"><div class="tag">What is it about</div><select id="m-what" style="width:100%;margin:.3rem 0 .8rem"></select>
+      <div class="tag">Where is it going</div><div class="seg three" id="m-plat"><button class="on" data-p="tiktok">TikTok</button><button data-p="x">X</button><button data-p="short">Video script</button></div>
+      <div class="tag" style="margin-top:.8rem">Tone</div><select id="m-tone" style="width:100%;margin:.3rem 0 .8rem"><option>salty and funny</option><option>sweet and wholesome</option><option>unhinged, swearing allowed</option><option>mysterious and dramatic</option></select>
+      <div class="tag">Anything else it should mention</div><input type="text" id="m-extra" style="width:100%;margin:.3rem 0 1rem" placeholder="Optional">
+      <div class="row"><button class="btn" id="m-copy">Write it</button><button class="btn teal" id="m-img">Paint it</button></div><p class="ferr" id="m-err"></p></div>
+    <div><div class="panel"><div class="spread"><h3>Words</h3><button class="btn small ghost" id="m-clip">Copy</button></div><pre id="m-out" class="mout">Nothing yet.</pre></div><div class="panel" style="margin-top:.9rem"><div class="spread"><h3>Picture</h3><a class="btn small ghost" id="m-dl" download="oversummoned-promo.jpg" hidden>Save</a></div><div id="m-pic" class="mut">Nothing yet.</div></div></div></div></section>
+</main>
+<div class="tip" id="ctip"></div><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="/js/cloud.js"></script><script src="/js/os.js"></script><script src="/js/admin.js"></script>
+</body></html>

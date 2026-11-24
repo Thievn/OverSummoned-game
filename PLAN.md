@@ -11,61 +11,61 @@ Status: [x] done, [~] partly done, [ ] not started.
 - Locked to thievnsden@gmail.com until signups are opened.
 
 ## Art
-- [ ] Every icon regenerated on a green screen so no white is ever trapped
-- [ ] Icons checked on dark, light and purple before shipping
-- [ ] Card backdrops: a soft painting of where each hero is from
-- [ ] One frame template per rarity, fancier as rarity rises
-- [ ] Silhouettes keep their rarity frame
-- [ ] Morwenna redone as a proper moth, Chad as a proper lemming
-- [ ] Head no longer leaves a still copy behind when Smudge tilts it
+- [x] Every icon regenerated on a green screen so no white is ever trapped
+- [x] Icons checked on dark, light and purple before shipping
+- [x] Card backdrops: a soft painting of where each hero is from
+- [x] One frame template per rarity, fancier as rarity rises
+- [x] Silhouettes keep their rarity frame
+- [x] Morwenna redone as a proper moth, Chad as a proper lemming
+- [x] Head no longer leaves a still copy behind when Smudge tilts it
 - [ ] Every hero cut into a puppet (head, arms, tail or cape, blink, idle, working)
 - [ ] Every new character goes through the same puppet step
 - [ ] Smudge: moving pupils, more mouth shapes
 
 ## Rarities and summoning
-- [ ] Seven rarities: Common, Uncommon, Rare, Epic, Legendary, Absurd, Unhinged
-- [ ] Odds 50 / 28 / 14 / 6 / 1.6 / 0.35 / 0.05, shown openly, no safety net
-- [ ] Florida Man and General Emu move to Absurd; new Unhinged heroes
-- [ ] Summon animation: ring fills, flashes the rarity colour, card rises out
+- [x] Seven rarities: Common, Uncommon, Rare, Epic, Legendary, Absurd, Unhinged
+- [x] Odds 50 / 28 / 14 / 6 / 1.6 / 0.35 / 0.05, shown openly, no safety net
+- [x] Florida Man and General Emu move to Absurd; new Unhinged heroes
+- [x] Summon animation: ring fills, flashes the rarity colour, card rises out
 
 ## Accounts
-- [ ] Login page: username (live "available / taken" tick), password, retype, Google and Steam buttons the same size
-- [ ] Optional "Connect Steam" in the account; notice where Steam is needed
-- [ ] Account settings page
-- [ ] Saves stored on the account, not the browser
-- [ ] Play now goes to login; the game does not load without an account
-- [ ] Admin button, only on the owner's account
+- [~] Login page: username (live "available / taken" tick), password, retype, Google and Steam buttons the same size
+- [~] Optional "Connect Steam" in the account; notice where Steam is needed
+- [x] Account settings page
+- [~] Saves stored on the account, not the browser
+- [~] Play now goes to login; the game does not load without an account
+- [~] Admin button, only on the owner's account
 
 ## The web game (Melvor and Torn style, simple but deep)
-- [ ] Player dashboard after login
-- [ ] First-run guide
-- [ ] Jobs: assign heroes to places, timers, mastery, offline progress
-- [ ] Workshop: tonics, gear upgrades
-- [ ] Training: energy bar, train a hero's stats
-- [ ] Raids: team of three against era bosses
-- [ ] Crates stack in the bag; open by hand or automatically (setting)
+- [x] Player dashboard after login
+- [x] First-run guide
+- [x] Jobs: assign heroes to places, timers, mastery, offline progress
+- [x] Workshop: tonics, gear upgrades
+- [x] Training: energy bar, train a hero's stats
+- [x] Raids: team of three against era bosses
+- [x] Crates stack in the bag; open by hand or automatically (setting)
 - [ ] Stay / Wander / Hunt
 - [ ] When ink is full Smudge goes home and summons
 - [ ] Treasure gets a second use beyond selling
-- [ ] Social: friends, profiles others can view, leaderboards, a city feed, gifting, crews, chat
+- [~] Social: friends, profiles others can view, leaderboards, a city feed, gifting, crews, chat
 - [ ] Trading and the player market (after the economy is proven)
 
 ## Landing page
-- [ ] "Twenty-four strangers and counting", number updates itself
-- [ ] Lost Property and Arrivals both say more is coming
-- [ ] Samples of the game screens
-- [ ] "Download the desktop pet" and "Coming to Steam"
+- [x] "Twenty-four strangers and counting", number updates itself
+- [x] Lost Property and Arrivals both say more is coming
+- [~] Samples of the game screens
+- [~] "Download the desktop pet" and "Coming to Steam"
 
 ## Admin panel (owner only, enforced on the server)
-- [ ] Overview graphs: visitors, page views, signups, active players, summons, gold and ink
-- [ ] Players list and search
-- [ ] Characters and items galleries with stats, odds and ownership
-- [ ] Economy numbers live
-- [ ] Marketing studio: Grok writes TikTok and X posts and makes images (key stays on the server)
-- [ ] Our own page-view tracker
+- [~] Overview graphs: visitors, page views, signups, active players, summons, gold and ink
+- [~] Players list and search
+- [~] Characters and items galleries with stats, odds and ownership
+- [~] Economy numbers live
+- [~] Marketing studio: Grok writes TikTok and X posts and makes images (key stays on the server)
+- [~] Our own page-view tracker
 
 ## Shop
-- [ ] Shop page shell: cosmetics, cart, "coming soon" checkout
+- [x] Shop page shell: cosmetics, cart, "coming soon" checkout
 - [ ] Real payments (needs a payment account in Dean's name)
 
 ## Desktop pet
@@ -75,6 +75,16 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Windows download from the site
 - [ ] Count keys in other apps (Windows add-on)
 - [ ] Sounds for the new places
+
+## Waiting on Dean
+- [ ] Approve the database change (accounts, saves, page views, admin numbers). Until then nobody can log in.
+- [ ] Check the preview address is allowed as a sign-in redirect in Supabase, or go live
+- [ ] Deploy of the Grok marketing function
+
+## Known gaps
+- Saves are trusted from the browser. Before trading or real money, move the rolls to the server.
+- Built pages marked [~] are written and tested with sample data, but not yet against the live database.
+- A leaderboard exists; friends, gifts, crews and chat do not yet.
 
 ## Tuning
 - [ ] Web game running around the clock levels too fast (about 4 weeks to 99)
