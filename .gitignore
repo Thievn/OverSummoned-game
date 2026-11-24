@@ -1,1 +1,5 @@
 .vercel
+
+# Godot
+desktop/.godot/
+desktop/*.translation
