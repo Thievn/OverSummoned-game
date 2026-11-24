@@ -78,7 +78,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 
 ## Waiting on Dean
 - [x] Approve the database change (accounts, saves, page views, admin numbers)
-- [ ] Check the preview address is allowed as a sign-in redirect in Supabase, or go live
+- [ ] Later: add the preview address to Supabase's sign-in redirect list (Authentication, URL Configuration), then test Google sign-in
 - [x] Deploy of the Grok marketing function
 - [ ] First real sign-in test with Google on the preview, then open the Owner's office and try the marketing studio
 
