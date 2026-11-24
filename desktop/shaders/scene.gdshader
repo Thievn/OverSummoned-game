@@ -4,6 +4,9 @@ shader_type canvas_item;
 uniform sampler2D mask : filter_linear;
 uniform float sway = 1.0;
 uniform float wind = 0.0;   // extra gusts while you type
+uniform float flicker = 0.0; // lamps flicker harder while you type
+uniform float exposure = 1.24;
+uniform float lift = 0.78;   // gamma below 1 opens up the shadows
 
 void fragment() {
 	vec4 m = texture(mask, UV);
@@ -23,6 +26,9 @@ void fragment() {
 	col.rgb += vec3(0.55, 0.75, 0.8) * glint * m.g * 0.55;
 	// lamps breathe a little
 	float fl = 0.5 + 0.5 * sin(t * 5.3) * sin(t * 2.3 + 1.7);
-	col.rgb *= 1.0 + m.b * (fl - 0.4) * 0.12;
+	float fast = 0.5 + 0.5 * sin(t * 23.0) * sin(t * 13.7 + 0.4);
+	col.rgb *= 1.0 + m.b * ((fl - 0.4) * 0.12 + (fast - 0.5) * 0.35 * flicker);
+	// brighter, warmer read on the desktop
+	col.rgb = pow(max(col.rgb, vec3(0.0)), vec3(lift)) * exposure;
 	COLOR = col * COLOR;
 }

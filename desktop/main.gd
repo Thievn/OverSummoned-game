@@ -15,10 +15,12 @@ const SCENE_X := 8.0
 const SCENE_SCALES := {"archive": 0.6, "dock": 0.62, "speakeasy": 0.5}
 const POSE_SCALES := {"archive": 0.34, "dock": 0.35, "speakeasy": 0.38}
 # where Smudge's anchor point lands in each scene (scene image pixels)
-const ANCHOR := {"archive": Vector2(440, 392), "dock": Vector2(610, 300), "speakeasy": Vector2(470, 600)}
+const ANCHOR := {"archive": Vector2(440, 350), "dock": Vector2(610, 300), "speakeasy": Vector2(470, 600)}
+# where he curls up to sleep, if not his work spot (on the planks, not over the water)
+const SLEEP_ANCHOR := {"dock": Vector2(430, 272)}
 const CIRCLE := Vector2(440, 382)
 const CIRCLE_R := Vector2(186, 44)
-const BOB := Vector2(800, 385)          # where the line meets the Tiber
+const BOB := Vector2(765, 358)          # where the line meets the Tiber
 const DIAL := Vector2(615, 305)         # the safe's brass dial
 
 # ------------------------------------------------------------ Smudge's rig (pose image pixels)
@@ -59,7 +61,7 @@ const RIG := {
 		["tail", Vector2(300, 450), Vector2(345, 420), Vector2(70, 70), 0.5],
 	],
 	"sleep": [
-		["head", Vector2(300, 230), Vector2(300, 140), Vector2(95, 95), 0.55],
+		["head", Vector2(290, 235), Vector2(290, 150), Vector2(95, 90), 0.55],
 	],
 	"cheer": [],
 }
@@ -99,6 +101,8 @@ var bubble: PanelContainer
 var bubble_label: Label
 var menu: PanelContainer
 var tab_boxes := {}
+var tab_buttons := {}
+var bag_hint: Label
 var places_box: VBoxContainer
 var roster_grid: GridContainer
 var bag_grid: GridContainer
@@ -132,7 +136,7 @@ var size_index := 1
 
 # ------------------------------------------------------------ live state
 var t := 0.0
-var since_tap := 999.0
+var since_tap := 0.0
 var tap_budget := MAX_TAPS_PER_SEC
 var rate := 0.0
 var asleep := false
@@ -151,6 +155,15 @@ var ripples: Array = []          # ages of rings at the bobber
 var fliers: Array = []           # loot and heroes flying into the bag
 var floaters: Array = []         # floating text (level ups, item names)
 var bursts: Array = []           # ring bursts
+var papers: Array = []           # loose ledger pages flying in the Archive
+var sparks: Array = []           # little sparks at the safe dial
+var dial_spin := 0.0
+var lean := Vector2.ZERO         # x = amount, y = velocity (leaning into the safe)
+var travel_t := -1.0             # time-travel animation clock, -1 when not travelling
+var travel_to := 0
+var travel_swapped := false
+var menu_drag := false
+var menu_drag_from := Vector2.ZERO
 var scene_scale := 0.6
 var pose_scale := 0.34
 var demo_timer := 0.0
@@ -238,7 +251,16 @@ func _place_window() -> void:
 
 func _apply_window_size() -> void:
 	var factor: float = [0.75, 1.0, 1.3][clampi(size_index, 0, 2)]
-	DisplayServer.window_set_size(Vector2i(int(WIN.x * factor), int(WIN.y * factor)))
+	if menu != null and menu.visible:
+		factor = maxf(factor, 1.0)   # the menu always opens at a readable size
+	var old_pos := DisplayServer.window_get_position()
+	var old_size := DisplayServer.window_get_size()
+	var new_size := Vector2i(int(WIN.x * factor), int(WIN.y * factor))
+	if new_size == old_size:
+		return
+	DisplayServer.window_set_size(new_size)
+	if menu != null:
+		DisplayServer.window_set_position(old_pos + old_size - new_size)   # keep the bottom-right corner put
 
 # ============================================================ locations
 
@@ -286,19 +308,50 @@ func _enter_location(talk: bool) -> void:
 		_say("move")
 	_save_game()
 
+# Smudge opens the ledger, a time portal swirls round him, the old place folds
+# away and the new one blooms in. About a second, start to finish.
 func _travel(index: int) -> void:
-	if index == loc_index:
+	if index == loc_index or travel_t >= 0.0:
 		return
-	loc_index = index
-	pins_done = 0
-	_enter_location(true)
-	_play("whoosh", 1.0, -6.0)
-	_refresh_places()
+	travel_to = index
+	travel_t = 0.0
+	travel_swapped = false
+	_close_menu()
+	asleep = false
+	since_tap = 0.0
+	_play("summon", 1.3, -8.0)
+
+const TRAVEL_OUT := 0.55
+const TRAVEL_IN := 0.55
+
+func _update_travel(delta: float) -> void:
+	if travel_t < 0.0:
+		return
+	travel_t += delta
+	if not travel_swapped and travel_t >= TRAVEL_OUT:
+		travel_swapped = true
+		loc_index = travel_to
+		pins_done = 0
+		_enter_location(true)
+		_play("whoosh", 1.0, -4.0)
+		_refresh_places()
+	var k := 0.0
+	if travel_t < TRAVEL_OUT:
+		k = travel_t / TRAVEL_OUT
+	elif travel_t < TRAVEL_OUT + TRAVEL_IN:
+		k = 1.0 - (travel_t - TRAVEL_OUT) / TRAVEL_IN
+	else:
+		travel_t = -1.0
+		k = 0.0
+	var e := k * k * (3.0 - 2.0 * k)
+	scene_sprite.modulate = Color(1.0 + e * 0.6, 1.0 + e * 1.2, 1.0 + e * 1.1, 1.0 - e)
+	scene_sprite.scale = Vector2.ONE * scene_scale * (1.0 - e * 0.08)
+	smudge.modulate = Color(1.0 + e * 0.8, 1.0 + e * 1.5, 1.0 + e * 1.4, 1.0 - e * 0.85)
 
 func _pose_name() -> String:
 	if asleep:
 		return "sleep"
-	if cheer_timer > 0.0:
+	if cheer_timer > 0.0 and str(_loc()["kind"]) == "summon":
 		return "cheer"
 	match str(_loc()["kind"]):
 		"summon":
@@ -322,6 +375,9 @@ func _pose_point(img: Vector2) -> Vector2:
 
 func _set_pose() -> void:
 	var p := _pose_name()
+	var id := _loc_id()
+	var spot: Vector2 = SLEEP_ANCHOR[id] if (p == "sleep" and SLEEP_ANCHOR.has(id)) else ANCHOR[id]
+	smudge_root.position = _sp(spot)
 	var tx: Texture2D = tex[p]
 	if smudge.texture != tx:
 		smudge.texture = tx
@@ -375,9 +431,17 @@ func _process(delta: float) -> void:
 	squash.x += squash.y * dt
 	var breathe := sin(t * (1.3 if asleep else 2.0)) * (0.018 if asleep else 0.010)
 	smudge.scale = Vector2(pose_scale * (1.0 + squash.x * 0.4 - breathe * 0.4), pose_scale * (1.0 - squash.x + breathe))
+	# leaning into the safe on each pick
+	lean.y += (-260.0 * lean.x - 24.0 * lean.y) * dt
+	lean.x += lean.y * dt
+	smudge.position = Vector2(lean.x * 6.0, 0)
+	smudge.rotation = lean.x * 0.04
+	dial_spin += delta * (0.4 + activity * 3.0)
+	scene_mat.set_shader_parameter("flicker", activity)
 	_set_pose()
 	_update_rig(dt)
 	_update_effects(delta)
+	_update_travel(delta)
 
 	overlay.queue_redraw()
 	overlay_top.queue_redraw()
@@ -476,6 +540,29 @@ func _update_effects(delta: float) -> void:
 		if float(b["t"]) < 0.8:
 			keep.append(b)
 	bursts = keep
+	keep = []
+	for p in papers:
+		p["t"] = float(p["t"]) + delta
+		var v: Vector2 = p["v"]
+		v.y += 140.0 * delta                       # gravity, but paper is light
+		v.x += sin(float(p["t"]) * 5.0 + float(p["w"])) * 160.0 * delta   # flutter
+		v *= 1.0 - 1.6 * delta                     # air drag
+		p["v"] = v
+		p["p"] = (p["p"] as Vector2) + v * delta
+		p["r"] = float(p["r"]) + float(p["w"]) * delta
+		if float(p["t"]) < float(p["life"]):
+			keep.append(p)
+	papers = keep
+	keep = []
+	for sp in sparks:
+		sp["t"] = float(sp["t"]) + delta
+		var v2: Vector2 = sp["v"]
+		v2.y += 260.0 * delta
+		sp["v"] = v2
+		sp["p"] = (sp["p"] as Vector2) + v2 * delta
+		if float(sp["t"]) < 0.45:
+			keep.append(sp)
+	sparks = keep
 
 # Something pops out at `from`, hangs for a moment, then shrinks into `to`.
 func _fly(texture: Texture2D, from: Vector2, to: Vector2, big: float, rise: float, hold: float, fly: float, lift := 40.0) -> void:
@@ -496,7 +583,7 @@ func _input(event: InputEvent) -> void:
 		if menu.visible and _menu_has_text_focus():
 			return
 		if event.keycode == KEY_ESCAPE and menu.visible:
-			menu.visible = false
+			_close_menu()
 			return
 		_tap()
 	elif event is InputEventMouseButton:
@@ -573,6 +660,9 @@ func _tap() -> void:
 				_kick("head", 1.4)
 				squash.y += 0.5
 				circle_flash = maxf(circle_flash, 0.15)
+				_play("slap", randf_range(0.9, 1.1), -10.0)
+				if randf() < 0.35 and papers.size() < 14:
+					_spawn_paper()
 			"fish":
 				_kick("rod", 1.8)
 				bobber_dip = maxf(bobber_dip, 3.0)
@@ -580,8 +670,12 @@ func _tap() -> void:
 					ripples.append(0.0)
 			"lock":
 				hand_flip = not hand_flip
-				_kick("hand_a" if hand_flip else "hand_b", -1.2 if hand_flip else 1.2)
-				_kick("head", 0.4)
+				_kick("hand_a" if hand_flip else "hand_b", -1.8 if hand_flip else 1.8)
+				_kick("head", 0.5)
+				lean.y += 2.2 if hand_flip else 1.4
+				dial_spin += 0.35 if hand_flip else -0.25
+				if randf() < 0.5:
+					_spark(2)
 
 	var amount := 10.0 if test_mode else 1.0
 	var id := _loc_id()
@@ -599,7 +693,8 @@ func _tap() -> void:
 			if float(progress[id]) >= _need():
 				progress[id] = 0.0
 				pins_done += 1
-				_play("pin", randf_range(0.95, 1.1), -6.0)
+				_play("pin", pow(1.122, float(pins_done - 1)), -4.0)   # each pin a step higher
+				_spark(8)
 				_gain("Lockpicking", Data.XP_PIN)
 				if pins_done >= int(_loc().get("pins", 5)):
 					pins_done = 0
@@ -649,13 +744,11 @@ func _summon() -> void:
 	if count > 0:
 		_add_bag("Card Shard", 1)
 		label += "  (dupe: +1 shard)"
-	_float_text(label, c + Vector2(0, -120), Data.RARITY_COLOR[rarity], 15)
+	_float_text(label, Vector2(c.x, minf(c.y + 34.0, WIN.y - 10.0)), Data.RARITY_COLOR[rarity], 16)
 	_gain("Summoning", Data.XP_SUMMON)
 	if rarity in ["epic", "legendary", "rare"]:
 		cheer_timer = 1.2
-		_say("summon_rare")
-	else:
-		_say("summon")
+	_say_find(Data.HERO_LINES.get(id, []), "summon_rare" if rarity in ["epic", "legendary", "rare"] else "summon", 1.0)
 	_refresh_roster()
 
 func _catch() -> void:
@@ -671,15 +764,19 @@ func _catch() -> void:
 	_gain("Fishing", Data.XP_CATCH)
 	if str(row[4]) != "common":
 		cheer_timer = 0.9
-		_say("catch")
-	elif randf() < 0.3:
-		_say("catch")
+	_say_find(Data.FINDS.get(str(row[0]), []), "catch", 1.0 if str(row[4]) != "common" else 0.6)
 
 func _unlock() -> void:
 	var n := 2 + (1 if _level("Lockpicking") >= 10 else 0)
 	var d := _sp(DIAL)
+	var best: Array = []
+	var best_rank := -1
 	for i in n:
 		var row := _roll_loot("speakeasy", "Lockpicking")
+		var rank := ["common", "uncommon", "rare", "epic"].find(str(row[4]))
+		if rank > best_rank:
+			best_rank = rank
+			best = row
 		_add_bag(str(row[0]), 1)
 		_fly(loot_tex[row[1]], d + Vector2(i * 18 - 18, 0), _bag_point(), 56.0, 0.3 + i * 0.15, 0.3, 0.55, 45.0)
 		if i == 0:
@@ -688,7 +785,32 @@ func _unlock() -> void:
 	_gain("Lockpicking", Data.XP_UNLOCK)
 	cheer_timer = 1.1
 	_play("unlock", 1.0, -4.0)
-	_say("unlock")
+	_spark(20)
+	_say_find(Data.FINDS.get(str(best[0]), []), "unlock", 1.0)
+
+# Smudge reacts to the actual thing he found, in his current voice.
+func _say_find(lines: Array, fallback: String, chance: float) -> void:
+	if randf() > chance:
+		return
+	if api_key != "" and randf() < 0.5:
+		_ask_ai(fallback)
+		return
+	var i := ["sweet", "salty", "unhinged"].find(mode)
+	if lines.size() == 3 and i >= 0:
+		_say_text(str(lines[i]))
+	else:
+		_say(fallback)
+
+func _spawn_paper() -> void:
+	var from := _pose_point(LEDGER_AT) + Vector2(randf_range(-10, 10), -6)
+	papers.append({"p": from, "v": Vector2(randf_range(-110, 110), randf_range(-230, -150)),
+		"r": randf() * TAU, "w": randf_range(-6.0, 6.0), "t": 0.0, "life": randf_range(1.4, 2.2), "s": randf_range(0.8, 1.2)})
+
+func _spark(n: int) -> void:
+	var at := _sp(DIAL)
+	for i in n:
+		var a := randf() * TAU
+		sparks.append({"p": at, "v": Vector2(cos(a), sin(a) - 0.6) * randf_range(40, 130), "t": 0.0})
 
 func _rarity_color(r: String) -> Color:
 	return Data.RARITY_COLOR.get(r, Color.WHITE)
@@ -755,35 +877,58 @@ func draw_overlay(c: Node2D, layer: int) -> void:
 		return
 	match str(_loc()["kind"]):
 		"summon":
-			var center := _sp(CIRCLE)
-			var rad := CIRCLE_R * scene_scale
-			var f := clampf(float(progress.get("archive", 0.0)) / _need(), 0.0, 1.0)
-			_ellipse(c, center, rad, 0.0, 1.0, Color(0.5, 1.0, 0.92, 0.18), 6.0)
-			_ellipse(c, center, rad, 0.0, f, Color(0.5, 1.0, 0.92, 0.95), 4.0)
-			if circle_flash > 0.0:
-				_ellipse(c, center, rad * (1.0 + (1.0 - circle_flash) * 0.6), 0.0, 1.0, Color(0.6, 1.0, 0.95, circle_flash), 8.0)
+			_draw_circle_part(c, false)
 		"fish":
 			var bob := _sp(BOB) + Vector2(0, bobber_dip + sin(t * 1.7) * 1.2)
 			for a in ripples:
 				var age := float(a)
-				var rr := 4.0 + age * 20.0
-				_ellipse(c, _sp(BOB) + Vector2(0, 2), Vector2(rr, rr * 0.3), 0.0, 1.0, Color(1, 1, 1, clampf(0.7 - age * 0.5, 0.0, 1.0)), 1.3)
-			c.draw_circle(bob, 3.5, Color("#FF5B47"))
-			c.draw_circle(bob + Vector2(0, -1.5), 1.4, Color(1, 1, 1, 0.9))
+				var rr := 5.0 + age * 26.0
+				var al := clampf(0.9 - age * 0.65, 0.0, 1.0)
+				_ellipse(c, _sp(BOB) + Vector2(0, 3), Vector2(rr, rr * 0.32), 0.0, 1.0, Color(0.85, 1.0, 1.0, al), 2.0)
+			c.draw_circle(bob + Vector2(0, 2), 6.0, Color(0, 0, 0, 0.25))
+			c.draw_circle(bob, 5.5, Color("#0B1020"))
+			c.draw_circle(bob, 4.5, Color("#FF4A3A"))
+			c.draw_rect(Rect2(bob + Vector2(-4.5, 0.5), Vector2(9, 4)), Color("#F4F1E8"))
+			c.draw_circle(bob + Vector2(-1.5, -2.0), 1.4, Color(1, 1, 1, 0.9))
 		"lock":
-			var dial := _sp(DIAL)
-			var pins := int(_loc().get("pins", 5))
-			var f2 := clampf(float(progress.get("speakeasy", 0.0)) / _need(), 0.0, 1.0)
-			for i in pins:
-				var p := dial + Vector2(-28 + i * 14, -62)
-				var col := Color("#FFC83D") if i < pins_done else Color(0.12, 0.16, 0.28, 0.9)
-				c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), col)
-				if i == pins_done:
-					c.draw_rect(Rect2(p + Vector2(-4, 7 - 14 * f2), Vector2(8, 14 * f2)), Color(1, 0.85, 0.4, 0.8))
-				c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), Color("#0B1020"), false, 1.5)
+			pass
 
 # Above Smudge: the fishing line, flying loot, bursts and floating text.
 func _draw_top(c: Node2D) -> void:
+	if str(_loc()["kind"]) == "summon":
+		_draw_circle_part(c, true)
+		for p in papers:
+			var age := float(p["t"]) / float(p["life"])
+			var a := 1.0 - maxf(0.0, age - 0.7) / 0.3
+			var flip := cos(float(p["t"]) * 7.0 + float(p["w"]))   # pages turn as they tumble
+			var sz := Vector2(13.0 * absf(flip) + 2.0, 16.0) * float(p["s"])
+			c.draw_set_transform(p["p"], float(p["r"]), Vector2.ONE)
+			c.draw_rect(Rect2(-sz / 2.0, sz), Color(0.96, 0.9, 0.76, a))
+			c.draw_rect(Rect2(-sz / 2.0, sz), Color(0.35, 0.25, 0.15, a * 0.8), false, 1.0)
+			for li in 3:
+				var y := -sz.y / 2.0 + 4.0 + li * 4.0
+				c.draw_line(Vector2(-sz.x / 2.0 + 2.0, y), Vector2(sz.x / 2.0 - 2.0, y), Color(0.3, 0.25, 0.2, a * 0.6), 1.0)
+		c.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	if str(_loc()["kind"]) == "lock":
+		var dial := _sp(DIAL)
+		var pins := int(_loc().get("pins", 5))
+		var f2 := clampf(float(progress.get("speakeasy", 0.0)) / _need(), 0.0, 1.0)
+		# the dial turns as you pick
+		var dr := 13.0
+		c.draw_arc(dial, dr, 0.0, TAU, 28, Color(1.0, 0.85, 0.4, 0.25 + 0.4 * activity), 2.0, true)
+		c.draw_line(dial, dial + Vector2(cos(dial_spin), sin(dial_spin)) * dr, Color("#FFE7A0"), 2.0, true)
+		for i in pins:
+			var p := dial + Vector2(16 + i * 12, 78)
+			var col := Color("#FFC83D") if i < pins_done else Color(0.12, 0.16, 0.28, 0.9)
+			c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), col)
+			if i == pins_done:
+				c.draw_rect(Rect2(p + Vector2(-4, 7 - 14 * f2), Vector2(8, 14 * f2)), Color(1, 0.85, 0.4, 0.8))
+			c.draw_rect(Rect2(p - Vector2(4, 7), Vector2(8, 14)), Color("#0B1020"), false, 1.5)
+	for sp in sparks:
+		var u := float(sp["t"]) / 0.45
+		c.draw_circle(sp["p"], 1.8 * (1.0 - u) + 0.6, Color(1.0, 0.85 + 0.15 * (1.0 - u), 0.5, 1.0 - u))
+	if travel_t >= 0.0:
+		_draw_portal(c)
 	if str(_loc()["kind"]) == "fish" and _pose_name() == "fish":
 		var tip := _rod_tip()
 		var bob := _sp(BOB) + Vector2(0, bobber_dip + sin(t * 1.7) * 1.2)
@@ -841,6 +986,67 @@ func _draw_top(c: Node2D) -> void:
 		col.a = a
 		c.draw_string(font_title, p2, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, col)
 
+# The summon circle. The back half is drawn under Smudge and the front half over
+# him, so he stands inside the ring and you can watch it close around him.
+func _draw_circle_part(c: Node2D, front: bool) -> void:
+	var center := _sp(CIRCLE)
+	var rad := CIRCLE_R * scene_scale
+	var f := clampf(float(progress.get("archive", 0.0)) / _need(), 0.0, 1.0)
+	_ellipse_half(c, center, rad, 1.0, Color(0.5, 1.0, 0.92, 0.22), 6.0, front)
+	_ellipse_half(c, center, rad, f, Color(0.55, 1.0, 0.93, 0.95), 4.0, front)
+	_ellipse_half(c, center, rad * 0.86, f, Color(0.55, 1.0, 0.93, 0.35), 2.0, front)
+	if not front:
+		# as the ring nears closing, the middle starts to glow
+		var g := clampf((f - 0.7) / 0.3, 0.0, 1.0)
+		g = maxf(g, circle_flash)
+		if g > 0.0:
+			for i in 6:
+				var k := 1.0 - float(i) / 6.0
+				_fill_ellipse(c, center, rad * (0.25 + 0.7 * k), Color(0.45, 1.0, 0.9, 0.07 * g * (1.0 + 0.3 * sin(t * 4.0))))
+	if circle_flash > 0.0:
+		_ellipse_half(c, center, rad * (1.0 + (1.0 - circle_flash) * 0.6), 1.0, Color(0.6, 1.0, 0.95, circle_flash), 8.0, front)
+
+func _fill_ellipse(c: Node2D, center: Vector2, rad: Vector2, col: Color) -> void:
+	var pts := PackedVector2Array()
+	for i in 40:
+		var a := TAU * float(i) / 40.0
+		pts.append(center + Vector2(cos(a) * rad.x, sin(a) * rad.y))
+	c.draw_colored_polygon(pts, col)
+
+# Part of an ellipse from the top, clockwise, keeping only the back (upper) or front (lower) half.
+func _ellipse_half(c: Node2D, center: Vector2, rad: Vector2, frac: float, col: Color, width: float, front: bool) -> void:
+	if frac <= 0.0:
+		return
+	var n := maxi(3, int(96 * frac))
+	var pts := PackedVector2Array()
+	for i in n + 1:
+		var a := -PI / 2.0 + TAU * frac * float(i) / float(n)
+		var lower := sin(a) > 0.0
+		if lower == front:
+			pts.append(center + Vector2(cos(a) * rad.x, sin(a) * rad.y))
+		elif pts.size() > 1:
+			c.draw_polyline(pts, col, width, true)
+			pts = PackedVector2Array()
+		else:
+			pts = PackedVector2Array()
+	if pts.size() > 1:
+		c.draw_polyline(pts, col, width, true)
+
+# A swirl of teal rings and sparks around Smudge while he jumps through time.
+func _draw_portal(c: Node2D) -> void:
+	var k := travel_t / TRAVEL_OUT if travel_t < TRAVEL_OUT else 1.0 - (travel_t - TRAVEL_OUT) / TRAVEL_IN
+	k = clampf(k, 0.0, 1.0)
+	var center := smudge_root.position + Vector2(0, -70)
+	for i in 5:
+		var r := (30.0 + i * 22.0) * (0.4 + k)
+		var a0 := travel_t * (6.0 - i) + i
+		c.draw_arc(center, r, a0, a0 + PI * 1.3, 32, Color(0.5, 1.0, 0.92, k * (0.9 - i * 0.12)), 3.0 - i * 0.3, true)
+	for i in 18:
+		var a := float(i) / 18.0 * TAU + travel_t * 4.0
+		var r2 := 40.0 + 80.0 * fmod(float(i) * 0.37 + travel_t, 1.0)
+		c.draw_circle(center + Vector2(cos(a), sin(a) * 0.7) * r2 * (0.5 + k * 0.8), 2.0, Color(1.0, 0.95, 0.7, k))
+	_fill_ellipse(c, center, Vector2(60, 60) * k, Color(0.7, 1.0, 0.95, k * 0.25))
+
 func _ellipse(c: Node2D, center: Vector2, rad: Vector2, start: float, frac: float, col: Color, width: float) -> void:
 	if frac <= 0.0:
 		return
@@ -890,7 +1096,7 @@ func _build_hud() -> void:
 	hud_title = _label(18, false, true)
 	hud_title.add_theme_color_override("font_color", Color.WHITE)
 	v.add_child(hud_title)
-	hud_sub = _label(12, false)
+	hud_sub = _label(13, false)
 	hud_sub.add_theme_color_override("font_color", Color("#E7ECF7"))
 	v.add_child(hud_sub)
 	hud_bar = ProgressBar.new()
@@ -906,7 +1112,7 @@ func _build_hud() -> void:
 	hud_bar.add_theme_stylebox_override("fill", fill)
 	hud_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(hud_bar)
-	hud_count = _label(11, false)
+	hud_count = _label(12, false)
 	hud_count.add_theme_color_override("font_color", Color("#AEB8D0"))
 	v.add_child(hud_count)
 
@@ -936,7 +1142,7 @@ func _update_hud() -> void:
 func _build_bubble() -> void:
 	bubble = PanelContainer.new()
 	bubble.add_theme_stylebox_override("panel", _panel_style(Color(1, 1, 1, 0.97), Color("#1E2A47"), 12))
-	bubble_label = _label(13, false)
+	bubble_label = _label(14, false)
 	bubble_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bubble_label.custom_minimum_size = Vector2(170, 0)
 	bubble.add_child(bubble_label)
@@ -1057,79 +1263,95 @@ func _build_menu() -> void:
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	menu = PanelContainer.new()
-	menu.position = Vector2(WIN.x - 318, 6)
-	menu.custom_minimum_size = Vector2(312, 368)
-	menu.size = Vector2(312, 368)
+	menu.position = Vector2(WIN.x - 330, 6)
+	menu.custom_minimum_size = Vector2(324, 368)
+	menu.size = Vector2(324, 368)
 	var th := Theme.new()
 	th.default_font = font_body
-	th.default_font_size = 13
-	th.set_color("font_color", "Label", Color("#E7ECF7"))
-	th.set_color("font_color", "Button", Color("#1E2A47"))
-	th.set_color("font_hover_color", "Button", Color("#1E2A47"))
-	th.set_color("font_pressed_color", "Button", Color("#1E2A47"))
-	var b_normal := _panel_style(Color("#FFC83D"), Color("#1E2A47"), 10)
+	th.default_font_size = 14
+	th.set_color("font_color", "Label", Color("#EEF2FA"))
+	var b_normal := _panel_style(Color("#F2B935"), Color("#0B1020"), 9)
 	b_normal.set_content_margin_all(5)
-	var b_hover := _panel_style(Color("#FFD866"), Color("#1E2A47"), 10)
-	b_hover.set_content_margin_all(5)
-	th.set_stylebox("normal", "Button", b_normal)
-	th.set_stylebox("hover", "Button", b_hover)
-	th.set_stylebox("pressed", "Button", b_hover)
-	th.set_stylebox("focus", "Button", StyleBoxEmpty.new())
-	# dropdowns: same yellow buttons, dark readable text
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
-		th.set_color(state, "Button", Color("#141C33"))
-		th.set_color(state, "OptionButton", Color("#141C33"))
-	th.set_stylebox("normal", "OptionButton", b_normal)
-	th.set_stylebox("hover", "OptionButton", b_hover)
-	th.set_stylebox("pressed", "OptionButton", b_hover)
-	th.set_stylebox("focus", "OptionButton", StyleBoxEmpty.new())
-	# checkboxes: no yellow box, light text on the dark panel
+	b_normal.content_margin_left = 10
+	b_normal.content_margin_right = 10
+	b_normal.shadow_size = 0
+	b_normal.border_width_bottom = 4
+	var b_hover := b_normal.duplicate()
+	b_hover.bg_color = Color("#FFD35C")
+	var b_press := b_normal.duplicate()
+	b_press.bg_color = Color("#E0A41F")
+	b_press.border_width_bottom = 2
+	for kind in ["Button", "OptionButton"]:
+		th.set_stylebox("normal", kind, b_normal)
+		th.set_stylebox("hover", kind, b_hover)
+		th.set_stylebox("pressed", kind, b_press)
+		th.set_stylebox("hover_pressed", kind, b_press)
+		th.set_stylebox("focus", kind, StyleBoxEmpty.new())
+		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+			th.set_color(state, kind, Color("#141C33"))
 	var empty := StyleBoxEmpty.new()
 	for st in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
 		th.set_stylebox(st, "CheckBox", empty)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
-		th.set_color(state, "CheckBox", Color("#E7ECF7"))
-	# the dropdown list itself
-	var pm := _panel_style(Color("#141C33"), Color("#FFC83D"), 8)
+		th.set_color(state, "CheckBox", Color("#EEF2FA"))
+	var pm := _panel_style(Color("#141C33"), Color("#F2B935"), 8)
 	th.set_stylebox("panel", "PopupMenu", pm)
-	th.set_color("font_color", "PopupMenu", Color("#E7ECF7"))
+	th.set_color("font_color", "PopupMenu", Color("#EEF2FA"))
 	th.set_color("font_hover_color", "PopupMenu", Color("#141C33"))
 	var hov := StyleBoxFlat.new()
-	hov.bg_color = Color("#FFC83D")
+	hov.bg_color = Color("#F2B935")
 	hov.set_corner_radius_all(4)
 	th.set_stylebox("hover", "PopupMenu", hov)
-	# text boxes
 	var le := _panel_style(Color("#0B1020"), Color("#3A4A72"), 8)
-	le.set_content_margin_all(5)
+	le.set_content_margin_all(6)
+	le.shadow_size = 0
 	th.set_stylebox("normal", "LineEdit", le)
 	th.set_stylebox("focus", "LineEdit", le)
-	th.set_color("font_color", "LineEdit", Color("#E7ECF7"))
+	th.set_color("font_color", "LineEdit", Color("#EEF2FA"))
 	th.set_color("font_placeholder_color", "LineEdit", Color("#7C88A6"))
+	var tip := _panel_style(Color("#0B1020"), Color("#F2B935"), 6)
+	tip.set_content_margin_all(5)
+	th.set_stylebox("panel", "TooltipPanel", tip)
+	th.set_color("font_color", "TooltipLabel", Color("#EEF2FA"))
+	th.set_icon("unchecked", "CheckBox", _box_icon(false))
+	th.set_icon("checked", "CheckBox", _box_icon(true))
 	menu.theme = th
-	menu.add_theme_stylebox_override("panel", _panel_style(Color("#141C33F8"), Color("#FFC83D"), 16))
+	var frame := _panel_style(Color("#121A30FA"), Color("#F2B935"), 16)
+	frame.set_content_margin_all(10)
+	menu.add_theme_stylebox_override("panel", frame)
 	layer.add_child(menu)
 
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 6)
+	v.add_theme_constant_override("separation", 8)
 	menu.add_child(v)
+
+	# header: drag it to move the menu
 	var header := HBoxContainer.new()
+	header.mouse_filter = Control.MOUSE_FILTER_STOP
+	header.mouse_default_cursor_shape = Control.CURSOR_MOVE
+	header.gui_input.connect(_on_menu_header_input)
+	header.tooltip_text = "Drag to move"
 	v.add_child(header)
-	var title := _label(20, false, true)
+	var title := _label(22, true, true)
 	title.text = "Smudge's Ledger"
-	title.add_theme_color_override("font_color", Color.WHITE)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title)
-	header.add_child(_button("x", _close_menu))
+	var close := _button("X", _close_menu)
+	header.add_child(close)
+
+	# tabs
 	var tabs := HBoxContainer.new()
-	tabs.add_theme_constant_override("separation", 3)
+	tabs.add_theme_constant_override("separation", 4)
 	v.add_child(tabs)
-	for tab_name in ["Places", "Roster", "Bag", "Smudge", "Settings"]:
+	for tab_name in ["Places", "Heroes", "Bag", "Smudge", "Settings"]:
 		var tb := _button(tab_name, _show_tab.bind(tab_name))
-		tb.add_theme_font_size_override("font_size", 11)
+		tb.add_theme_font_size_override("font_size", 12)
+		tb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tab_buttons[tab_name] = tb
 		tabs.add_child(tb)
 
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(0, 290)
+	scroll.custom_minimum_size = Vector2(0, 278)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	v.add_child(scroll)
 	var pages := VBoxContainer.new()
@@ -1138,38 +1360,52 @@ func _build_menu() -> void:
 
 	# Places
 	places_box = VBoxContainer.new()
+	places_box.add_theme_constant_override("separation", 8)
 	pages.add_child(places_box)
 	tab_boxes["Places"] = places_box
 	_refresh_places()
 
-	# Roster
+	# Heroes
 	var roster_box := VBoxContainer.new()
 	pages.add_child(roster_box)
-	tab_boxes["Roster"] = roster_box
+	tab_boxes["Heroes"] = roster_box
 	roster_grid = GridContainer.new()
 	roster_grid.columns = 3
+	roster_grid.add_theme_constant_override("h_separation", 6)
+	roster_grid.add_theme_constant_override("v_separation", 6)
 	roster_box.add_child(roster_grid)
 	_refresh_roster()
 
 	# Bag
 	var bag_box := VBoxContainer.new()
+	bag_box.add_theme_constant_override("separation", 8)
 	pages.add_child(bag_box)
 	tab_boxes["Bag"] = bag_box
-	coins_label = Label.new()
-	bag_box.add_child(coins_label)
-	bag_box.add_child(_button("Sell extras for coins", _sell_extras))
+	var bag_top := HBoxContainer.new()
+	bag_box.add_child(bag_top)
+	coins_label = _label(16, true, true)
+	coins_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bag_top.add_child(coins_label)
+	bag_top.add_child(_button("Sell extras", _sell_extras))
 	bag_grid = GridContainer.new()
-	bag_grid.columns = 2
+	bag_grid.columns = 6
+	bag_grid.add_theme_constant_override("h_separation", 4)
+	bag_grid.add_theme_constant_override("v_separation", 4)
 	bag_box.add_child(bag_grid)
+	bag_hint = Label.new()
+	bag_hint.add_theme_font_size_override("font_size", 12)
+	bag_hint.add_theme_color_override("font_color", Color("#9AA6C4"))
+	bag_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	bag_hint.custom_minimum_size = Vector2(290, 0)
+	bag_box.add_child(bag_hint)
 	_refresh_bag()
 
 	# Smudge (voice + your own AI key)
 	var talk := VBoxContainer.new()
+	talk.add_theme_constant_override("separation", 6)
 	pages.add_child(talk)
 	tab_boxes["Smudge"] = talk
-	var vl := Label.new()
-	vl.text = "Smudge's voice"
-	talk.add_child(vl)
+	talk.add_child(_section("Voice"))
 	mode_option = OptionButton.new()
 	mode_option.focus_mode = Control.FOCUS_NONE
 	for m in ["sweet", "salty", "unhinged"]:
@@ -1177,9 +1413,13 @@ func _build_menu() -> void:
 	mode_option.select(["sweet", "salty", "unhinged"].find(mode))
 	mode_option.item_selected.connect(_set_mode)
 	talk.add_child(mode_option)
+	talk.add_child(_section("Your own AI (optional)"))
 	var info := Label.new()
-	info.text = "Optional: your own AI key lets Smudge\nimprovise. It stays encrypted on this PC."
-	info.add_theme_font_size_override("font_size", 11)
+	info.text = "Lets Smudge improvise. The key stays encrypted on this PC."
+	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	info.custom_minimum_size = Vector2(290, 0)
+	info.add_theme_font_size_override("font_size", 12)
+	info.add_theme_color_override("font_color", Color("#9AA6C4"))
 	talk.add_child(info)
 	ai_provider = OptionButton.new()
 	ai_provider.focus_mode = Control.FOCUS_NONE
@@ -1203,36 +1443,75 @@ func _build_menu() -> void:
 	row.add_child(_button("Clear", _clear_ai))
 	talk.add_child(row)
 	ai_status = Label.new()
-	ai_status.add_theme_font_size_override("font_size", 11)
+	ai_status.add_theme_font_size_override("font_size", 12)
 	ai_status.text = "Using built-in lines." if api_key == "" else "AI key saved."
 	talk.add_child(ai_status)
 
 	# Settings
 	var settings := VBoxContainer.new()
+	settings.add_theme_constant_override("separation", 4)
 	pages.add_child(settings)
 	tab_boxes["Settings"] = settings
+	settings.add_child(_section("Sound"))
 	settings.add_child(_check("Sound", sound_on, _set_sound))
 	settings.add_child(_check("Key click sounds", key_sounds, _set_key_sounds))
+	settings.add_child(_section("Window"))
 	settings.add_child(_check("Always on top", true, _set_on_top))
-	settings.add_child(_check("Test mode (10x faster)", test_mode, _set_test_mode))
-	settings.add_child(_check("Demo typing (types for you)", demo_typing, _set_demo))
 	var size_row := HBoxContainer.new()
-	var sl := Label.new()
-	sl.text = "Size "
-	size_row.add_child(sl)
+	size_row.add_theme_constant_override("separation", 4)
 	for i in 3:
 		size_row.add_child(_button(["Small", "Normal", "Large"][i], _set_size.bind(i)))
 	settings.add_child(size_row)
 	settings.add_child(_button("Snap to bottom-right", _place_window))
+	settings.add_child(_section("Testing"))
+	settings.add_child(_check("Test mode (10x faster)", test_mode, _set_test_mode))
+	settings.add_child(_check("Demo typing (types for you)", demo_typing, _set_demo))
 	var hint := Label.new()
-	hint.text = "Right-drag to move. Click Smudge for this menu.\nThis sample counts keys while its window\nis focused. Global counting comes next."
-	hint.add_theme_font_size_override("font_size", 11)
+	hint.text = "Right-drag the scene to move the window. Drag this menu by its title. Click Smudge to open it."
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.custom_minimum_size = Vector2(290, 0)
+	hint.add_theme_font_size_override("font_size", 12)
+	hint.add_theme_color_override("font_color", Color("#9AA6C4"))
 	settings.add_child(hint)
-	settings.add_child(_button("Reset progress", _reset_progress))
-	settings.add_child(_button("Quit", _quit))
+	var danger := HBoxContainer.new()
+	danger.add_child(_button("Reset progress", _reset_progress))
+	danger.add_child(_button("Quit", _quit))
+	settings.add_child(danger)
 
 	_show_tab("Places")
 	menu.visible = false
+
+# Checkbox icons drawn in code: an outlined box, and a yellow box with a tick.
+func _box_icon(on: bool) -> ImageTexture:
+	var img := Image.create(18, 18, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	for y in 18:
+		for x in 18:
+			var edge := x < 2 or y < 2 or x > 15 or y > 15
+			if on:
+				img.set_pixel(x, y, Color("#F2B935") if not edge else Color("#FFD35C"))
+			elif edge:
+				img.set_pixel(x, y, Color("#9AA6C4"))
+	if on:
+		var tick := [Vector2i(4, 9), Vector2i(5, 10), Vector2i(6, 11), Vector2i(7, 12), Vector2i(8, 11), Vector2i(9, 10), Vector2i(10, 9), Vector2i(11, 8), Vector2i(12, 7), Vector2i(13, 6)]
+		for p in tick:
+			for d in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 0)]:
+				img.set_pixelv(p + d, Color("#141C33"))
+	return ImageTexture.create_from_image(img)
+
+func _section(text: String) -> Label:
+	var l := _label(15, false, true)
+	l.text = text
+	l.add_theme_color_override("font_color", Color("#F2B935"))
+	return l
+
+func _on_menu_header_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		menu_drag = event.pressed
+		menu_drag_from = event.global_position - menu.position
+	elif event is InputEventMouseMotion and menu_drag:
+		var p: Vector2 = event.global_position - menu_drag_from
+		menu.position = Vector2(clampf(p.x, 0.0, WIN.x - menu.size.x), clampf(p.y, 0.0, WIN.y - 40.0))
 
 func _button(text: String, action: Callable) -> Button:
 	var b := Button.new()
@@ -1252,18 +1531,39 @@ func _check(text: String, on: bool, action: Callable) -> CheckBox:
 func _show_tab(tab_name: String) -> void:
 	for k in tab_boxes:
 		tab_boxes[k].visible = (k == tab_name)
+	for k in tab_buttons:
+		var b: Button = tab_buttons[k]
+		var on: bool = k == tab_name
+		var sb := _panel_style(Color("#F2B935") if on else Color("#1E2848"), Color("#0B1020") if on else Color("#3A4A72"), 9)
+		sb.set_content_margin_all(4)
+		sb.shadow_size = 0
+		b.add_theme_stylebox_override("normal", sb)
+		b.add_theme_stylebox_override("hover", sb)
+		b.add_theme_color_override("font_color", Color("#141C33") if on else Color("#C9D2E8"))
+		b.add_theme_color_override("font_hover_color", Color("#141C33") if on else Color.WHITE)
 	if tab_name == "Bag":
 		_refresh_bag()
-	_play("blip", 1.0, -16.0)
+	_play("blip", 1.0, -14.0)
 
 func _toggle_menu() -> void:
 	menu.visible = not menu.visible
+	_apply_window_size()
 	if menu.visible:
 		_show_tab("Places")
 		squash.y += 1.0
 
 func _close_menu() -> void:
 	menu.visible = false
+	_apply_window_size()
+
+func _card_style(border: Color, bg := Color("#0B1020")) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = bg
+	sb.border_color = border
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(8)
+	sb.set_content_margin_all(4)
+	return sb
 
 func _refresh_places() -> void:
 	if places_box == null:
@@ -1272,22 +1572,50 @@ func _refresh_places() -> void:
 		ch.queue_free()
 	for i in Data.LOCATIONS.size():
 		var l: Dictionary = Data.LOCATIONS[i]
-		var box := VBoxContainer.new()
-		var b := _button("%s%s" % ["> " if i == loc_index else "", str(l["name"])], _travel.bind(i))
-		box.add_child(b)
+		var here := i == loc_index
+		var card := PanelContainer.new()
+		card.add_theme_stylebox_override("panel", _card_style(Color("#F2B935") if here else Color("#2C3A5E"), Color("#1A2442") if here else Color("#0F1629")))
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		card.add_child(row)
+		var pic := TextureRect.new()
+		pic.texture = tex["scene_" + str(l["id"])]
+		pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		pic.custom_minimum_size = Vector2(72, 52)
+		row.add_child(pic)
+		var col := VBoxContainer.new()
+		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.add_theme_constant_override("separation", 0)
+		row.add_child(col)
+		var name_l := _label(15, false, true)
+		name_l.text = str(l["name"])
+		name_l.add_theme_color_override("font_color", Color.WHITE)
+		col.add_child(name_l)
 		var d := Label.new()
-		d.text = "%s · %s Lv %d\n%s" % [str(l["era"]), str(l["skill"]), _level(str(l["skill"])), str(l["blurb"])]
-		d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		d.custom_minimum_size = Vector2(280, 0)
-		d.add_theme_font_size_override("font_size", 11)
-		box.add_child(d)
-		places_box.add_child(box)
+		d.text = "%s · %s Lv %d" % [str(l["era"]), str(l["skill"]), _level(str(l["skill"]))]
+		d.add_theme_font_size_override("font_size", 12)
+		d.add_theme_color_override("font_color", Color("#9AA6C4"))
+		col.add_child(d)
+		if here:
+			var hl := Label.new()
+			hl.text = "Smudge is here"
+			hl.add_theme_font_size_override("font_size", 12)
+			hl.add_theme_color_override("font_color", Color("#5CE0C6"))
+			col.add_child(hl)
+		else:
+			var go := _button("Travel", _travel.bind(i))
+			go.add_theme_font_size_override("font_size", 12)
+			go.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			col.add_child(go)
+		card.tooltip_text = str(l["blurb"])
+		places_box.add_child(card)
 	var soon := Label.new()
 	soon.text = "Coming next: Pompeii dig site, Ice Age fishing hole, pharaoh's tomb."
 	soon.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	soon.custom_minimum_size = Vector2(280, 0)
-	soon.add_theme_font_size_override("font_size", 11)
-	soon.add_theme_color_override("font_color", Color("#AEB8D0"))
+	soon.custom_minimum_size = Vector2(290, 0)
+	soon.add_theme_font_size_override("font_size", 12)
+	soon.add_theme_color_override("font_color", Color("#9AA6C4"))
 	places_box.add_child(soon)
 
 func _refresh_roster() -> void:
@@ -1298,61 +1626,83 @@ func _refresh_roster() -> void:
 	for h in Data.HEROES:
 		var id := str(h[0])
 		var owned := int(roster.get(id, 0))
+		var rc: Color = Data.RARITY_COLOR[str(h[5])]
+		var card := PanelContainer.new()
+		card.add_theme_stylebox_override("panel", _card_style(rc if owned > 0 else Color("#2C3A5E")))
+		card.custom_minimum_size = Vector2(92, 0)
 		var cell := VBoxContainer.new()
-		cell.custom_minimum_size = Vector2(92, 0)
+		cell.add_theme_constant_override("separation", 0)
+		card.add_child(cell)
 		var pic := TextureRect.new()
 		pic.texture = hero_tex[id]
 		pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		pic.custom_minimum_size = Vector2(88, 88)
+		pic.custom_minimum_size = Vector2(84, 84)
 		if owned == 0:
-			pic.modulate = Color(0.05, 0.07, 0.15, 0.85)
+			pic.modulate = Color(0.05, 0.07, 0.15, 0.9)
 		cell.add_child(pic)
 		var n := Label.new()
 		n.text = str(h[1]) if owned > 0 else "???"
-		n.add_theme_font_size_override("font_size", 10)
-		n.add_theme_color_override("font_color", Data.RARITY_COLOR[str(h[5])])
+		n.add_theme_font_size_override("font_size", 11)
+		n.add_theme_color_override("font_color", rc if owned > 0 else Color("#5A668A"))
 		n.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		n.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		n.custom_minimum_size = Vector2(88, 0)
+		n.custom_minimum_size = Vector2(84, 0)
 		cell.add_child(n)
 		if owned > 1:
 			var c := Label.new()
 			c.text = "x%d" % owned
-			c.add_theme_font_size_override("font_size", 10)
+			c.add_theme_font_size_override("font_size", 11)
 			c.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			cell.add_child(c)
-		roster_grid.add_child(cell)
+		card.tooltip_text = ("%s, %s\n%s · %s %s" % [str(h[1]), str(h[2]), str(h[3]), str(h[5]).capitalize(), str(h[4])]) if owned > 0 else "Not summoned yet"
+		roster_grid.add_child(card)
+
+func _item_rarity(item: String) -> String:
+	for table in Data.LOOT.values():
+		for row in table:
+			if str(row[0]) == item:
+				return str(row[4])
+	return "common"
+
+const BAG_SLOTS := 30
 
 func _refresh_bag() -> void:
 	if bag_grid == null:
 		return
-	coins_label.text = "Coins: %d" % coins
+	var total := 0
+	for k in bag:
+		total += int(bag[k])
+	coins_label.text = "%d coins" % coins
+	bag_hint.text = "%d items, %d kinds. Hover an item for details." % [total, bag.size()] if total > 0 else "Empty. Go fishing or crack a safe."
 	for ch in bag_grid.get_children():
 		ch.queue_free()
 	var items := bag.keys()
-	items.sort()
-	if items.is_empty():
-		var e := Label.new()
-		e.text = "Empty. Go fishing or crack a safe."
-		bag_grid.add_child(e)
-		return
-	for item in items:
-		var row := HBoxContainer.new()
-		row.custom_minimum_size = Vector2(140, 0)
-		var icon := TextureRect.new()
-		icon.texture = _item_icon(str(item))
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.custom_minimum_size = Vector2(28, 28)
-		row.add_child(icon)
-		var l := Label.new()
-		l.text = "%s x%d" % [str(item), int(bag[item])]
-		l.add_theme_font_size_override("font_size", 11)
-		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		l.custom_minimum_size = Vector2(104, 0)
-		row.add_child(l)
-		bag_grid.add_child(row)
+	items.sort_custom(func(a, b): return ["epic", "rare", "uncommon", "common"].find(_item_rarity(str(a))) < ["epic", "rare", "uncommon", "common"].find(_item_rarity(str(b))))
+	for i in maxi(BAG_SLOTS, items.size()):
+		var slot := PanelContainer.new()
+		slot.custom_minimum_size = Vector2(46, 46)
+		if i < items.size():
+			var item := str(items[i])
+			var r := _item_rarity(item)
+			slot.add_theme_stylebox_override("panel", _card_style(Data.RARITY_COLOR.get(r, Color.GRAY), Color("#182343")))
+			var icon := TextureRect.new()
+			icon.texture = _item_icon(item)
+			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			slot.add_child(icon)
+			var n := int(bag[items[i]])
+			if n > 1:
+				var badge := _label(12, true, true)
+				badge.text = str(n)
+				badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+				badge.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+				slot.add_child(badge)
+			slot.tooltip_text = "%s  x%d\n%s · worth %d coins each" % [item, n, r.capitalize(), _item_value(item)]
+		else:
+			slot.add_theme_stylebox_override("panel", _card_style(Color("#222D4C"), Color("#0D1427")))
+		bag_grid.add_child(slot)
 
 # ------------------------------------------------------------ menu actions
 

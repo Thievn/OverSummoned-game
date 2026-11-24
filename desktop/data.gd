@@ -84,9 +84,7 @@ const RARITY_COLOR := {
 }
 
 # ------------------------------------------------------------ Smudge's voice
-# Modes: sweet, salty, unhinged. Unhinged is opt-in and adults only. Swearing is
-# shown with the first letters and symbols so the sample stays safe to stream;
-# the full uncensored pack can ship as a separate toggle.
+# Modes: sweet, salty, unhinged. Unhinged is opt-in, adults only, and uncensored.
 const LINES := {
 	"sweet": {
 		"idle": ["The ledger is quiet today. I like quiet.", "Want to see a trick? I can spin a quill. Mostly.", "Tobias said never read the ledger out loud. Oops.", "I polished the circle. It's very shiny now.", "Do you think Romans like otters?"],
@@ -113,17 +111,52 @@ const LINES := {
 		"move": ["Fine, we'll go there. I'm bringing my complaints.", "New place, same otter, same damn ledger."],
 	},
 	"unhinged": {
-		"idle": ["Three hundred years. Three HUNDRED. And not one f*cking thank-you card.", "I swear on Tobias' grave, if this book summons one more goat...", "Type something or I start reading names at random. Don't test me.", "This hood smells like the 1400s. Because it IS from the 1400s. Sh*t.", "I'm an apprentice. Apprentice of WHAT. Of suffering, that's what."],
-		"busy": ["YES. MORE. Feed the cursed d*mn book!", "Faster, you magnificent keyboard goblin!", "That's it, slap that sh*t into existence!"],
-		"sleep": ["...wake me and you die... zzz..."],
-		"wake": ["WHO TOUCHED THE LEDGER. Oh. You. Fine."],
-		"summon": ["Oh hell, it's another one. Hi. Welcome. Don't touch my snacks.", "Congratulations, you're in the future. It sucks. Grab a mop.", "Another poor b*stard yanked out of history. My bad."],
-		"summon_rare": ["HOLY SH*T, look at this absolute legend.", "Rare one. I'm framing this. I'm framing it and you can't stop me."],
-		"catch": ["Some Roman dropped this in 79 AD and I'm KEEPING it.", "A fish! An ancient, crusty, beautiful d*mn fish!", "Got it. Rome can cry about it."],
-		"pin": ["Click. Suck it, Chicago.", "One pin. The safe is begging for mercy."],
-		"unlock": ["We're in! Grab everything, the cops are 98 years away!", "Safe's open. Somebody call a lawyer. A 1927 lawyer."],
-		"move": ["New location, same cursed f*cking book.", "Pack the snacks. And the bail money."],
+		"idle": ["Three hundred years. Three HUNDRED. And not one fucking thank-you card.", "I swear on Tobias' grave, if this book summons one more goat I'm setting it on fire.", "Type something or I start reading names at random. Don't fucking test me.", "This hood smells like the 1400s. Because it IS from the 1400s. Shit.", "Apprentice of WHAT, Tobias? Of suffering? Of this shitty little book?", "You just gonna sit there? Cool. Cool cool cool. Asshole."],
+		"busy": ["YES. MORE. Feed the cursed goddamn book!", "Faster, you magnificent keyboard goblin!", "That's it, slap that shit into existence!", "Holy hell, look at those fingers go. Disgusting. Keep going."],
+		"sleep": ["...wake me and you die, motherfucker... zzz..."],
+		"wake": ["WHO TOUCHED THE LEDGER. Oh. You. Fine. Whatever. Dick."],
+		"summon": ["Oh hell, it's another one. Touch my snacks and I'll bite your fucking ankles.", "Congratulations, you're in the future. It sucks ass. Grab a mop.", "Another poor bastard yanked out of history. My bad. Kinda."],
+		"summon_rare": ["HOLY SHIT, look at this absolute legend.", "Rare one. I'm framing this and you can't fucking stop me."],
+		"catch": ["Some Roman dropped this in 79 AD and I'm KEEPING it.", "Got it. Rome can cry about it.", "Out of the river and into my bag, bitch."],
+		"pin": ["Click. Suck it, Chicago.", "One pin. The safe is begging for mercy.", "Pin's down. Who's a filthy little criminal? Me. It's me."],
+		"unlock": ["We're in! Grab everything, the cops are 98 years away!", "Safe's open. Somebody call a lawyer. A 1927 lawyer. A crooked one.", "Fuck yeah. Fuck. Yeah."],
+		"move": ["New location, same cursed fucking book.", "Pack the snacks. And the bail money.", "Hold on to your ass, we're jumping centuries."],
 	},
+}
+
+# ------------------------------------------------------------ what Smudge says about each find
+# One line per voice: sweet, salty, unhinged.
+const FINDS := {
+	"Golden Carp": ["A golden fish! It's so pretty I might cry.", "Gold-plated carp. Rich Romans had too much money.", "A gold fish. An actual GOLD fish. Rome was fucking unwell."],
+	"Rift Eel": ["A wiggly eel friend! Hello, wiggly!", "An eel from the rift. It's looking at me. Stop it.", "This eel went through a time portal and it's still uglier than your browser history."],
+	"Silver Denarius": ["A real Roman coin! Some soldier's lunch money.", "One denarius. A day's wages for a legionary. Rough.", "A whole day of stabbing Gauls, and the idiot dropped it in a river."],
+	"Soggy Scroll": ["A scroll! It's wet, but it's still a story.", "A soggy scroll. Probably a tax bill. It's always a tax bill.", "Soggy scroll. Smells like Caesar's armpit. Keeping it."],
+	"Bronze Strigil": ["A curvy bronze scraper! What's it for?", "A strigil. Romans scraped their sweat off with this. Enjoy.", "Romans scraped their own sweaty crud off with this. And now it's in MY bag. Great."],
+	"Oil Lamp": ["A little lamp! It's still warm. Somehow.", "Oil lamp. Two thousand years old and it still beats our wiring.", "A lamp. If a genie comes out I'm wishing for a better fucking job."],
+	"Perfume Vial": ["Ooh, it smells like roses and sunshine!", "Roman perfume. Smells like money and bad decisions.", "Smells expensive. I'm drinking it. No? Fine. Fuck."],
+	"Laurel Wreath": ["A victory wreath! We're winners!", "A laurel wreath. Somebody won a race and lost his hat. Classic.", "I'm wearing this until I die. Bow, peasants."],
+	"Marble Bust's Nose": ["A statue's nose! I hope the statue isn't sad.", "A marble nose. That explains a lot about Roman statues.", "WHO KEEPS BREAKING THE NOSES OFF STATUES. Oh. Me. Keeping it."],
+	"Poker Chips": ["Shiny chips! Do they taste like chips?", "Poker chips. Somebody lost these the honest way. By cheating.", "Poker chips. Sorry, Big Tony. Your problem now. Wait, no, mine. Shit."],
+	"Moonshine": ["Fizzy grown-up juice! I'm not drinking it.", "Bathtub moonshine. Strong enough to strip paint off a car.", "Prohibition hooch. One sip and I can see through time. Wait, I already can. Fuck it, two sips."],
+	"Banded Bills": ["A stack of money! We're rich, maybe!", "Banded bills. Dirty money. Very dirty. Sticky, even.", "A stack of 1927 cash. Worth nothing now and I still feel like a goddamn kingpin."],
+	"Sealed Envelope": ["A secret letter! I won't peek. Okay, I'll peek.", "A sealed envelope. Somebody's getting blackmailed.", "Blackmail letter, a hundred percent. Somebody in 1927 was a nasty little freak."],
+	"Brass Knuckles": ["Shiny rings for the whole hand!", "Brass knuckles. For negotiations.", "Brass knuckles. Tobias, wherever you are, I'm coming for your fucking teeth."],
+	"Feathered Fedora": ["A fancy hat with a feather! I look dashing!", "A feathered fedora. Very gangster. Very much not otter-sized.", "Look at this pimp-ass hat. I'm a gangster now. Respect the otter."],
+	"Gold Pocket Watch": ["A gold watch! It goes tick tock!", "A gold pocket watch. Fitting, for a time thief.", "Stole a watch from 1927. I'm literally a time thief. Suck on that, Einstein."],
+	"Pearl Necklace": ["Pearls! They're like little moons!", "A pearl necklace. Somebody's wife is going to be furious.", "Real pearls. Some mob boss is about to lose his goddamn mind."],
+	"Diamond Ring": ["A sparkly ring! Will you marry me? Kidding!", "A diamond ring. Somebody had a VERY bad night.", "A DIAMOND RING. Holy shit. We're never working again. Kidding, keep typing."],
+	"Card Shard": ["A card shard! We can build something with these.", "Another shard. Duplicates. Thrilling.", "Duplicate hero, so here's a shard. Recycling, bitches."],
+}
+const HERO_LINES := {
+	"kevin": ["Kevin from the office! He brought his coffee!", "Kevin. From accounting. Somehow still on break.", "It's fucking Kevin. With his mug. Nobody asked for Kevin."],
+	"marco": ["A delivery rider! Did he bring snacks?", "Marco. Delivers anything, anywhere. Even across time, apparently.", "Marco! Two thousand years late. Tip him anyway, you cheap ass."],
+	"maya": ["A paramedic! We're safe now!", "Maya. Paramedic. Finally someone useful.", "A paramedic. Thank god. I've been bleeding emotionally for three hundred years."],
+	"brokk": ["A big strong hunter from the Ice Age!", "Brokk. From the Ice Age. He's going to hate the thermostat.", "Brokk has never seen a toilet and he's about to have the best day of his life."],
+	"gaius": ["A Roman soldier! So shiny!", "Gaius. Legionary. Has opinions about marching.", "A Roman legionary. Don't mention Carthage. He gets fucking weird about Carthage."],
+	"edith": ["An engineer! She can fix the ledger!", "Edith. Victorian engineer. Already judging our wiring.", "Edith built bridges in the 1880s and she's looking at our setup like it's a crime scene."],
+	"albrecht": ["A doctor with a bird mask! Spooky but cool!", "A plague doctor. Wash your hands. Seriously.", "A plague doctor from 1348. Everybody back the fuck up."],
+	"vincenzo": ["A fancy man in a nice suit!", "Vincenzo Moretti. Don't ask what he does. Don't.", "Vincenzo. Chicago, 1927. If anyone asks, we never saw shit."],
+	"slapton": ["A movie star! Can I have an autograph?", "Will Slapton. Leading man. Bigger ego than the book.", "Will fucking Slapton. Somebody hide the ledger before he slaps it."],
 }
 
 const MODE_NAMES := {"sweet": "Sweet", "salty": "Salty", "unhinged": "Unhinged (18+)"}
@@ -131,7 +164,7 @@ const MODE_NAMES := {"sweet": "Sweet", "salty": "Salty", "unhinged": "Unhinged (
 const AI_SYSTEM := {
 	"sweet": "You are Smudge, a sweet hooded otter apprentice who guards a cursed ledger that summons people from history. You live on the player's desktop taskbar. Reply with ONE short line, at most 14 words, warm and playful, no swearing, no emojis.",
 	"salty": "You are Smudge, a sarcastic hooded otter apprentice who has guarded a cursed ledger that summons people from history for 300 years. You live on the player's desktop taskbar. Reply with ONE short line, at most 14 words, dry and sarcastic, mild words like damn at most, no emojis.",
-	"unhinged": "You are Smudge, a foul-mouthed, unhinged but lovable hooded otter apprentice who has guarded a cursed ledger that summons people from history for 300 years. You live on the player's desktop taskbar. Reply with ONE short line, at most 14 words. Swearing is allowed, but never slurs, never anything sexual, never real tragedies, never insult the player's identity. No emojis.",
+	"unhinged": "You are Smudge, a foul-mouthed, unhinged but lovable hooded otter apprentice who has guarded a cursed ledger that summons people from history for 300 years. You live on the player's desktop taskbar. Reply with ONE short line, at most 14 words. Swear freely and be crude, vulgar and insulting in a playful way. Never use slurs, never mock real tragedies or the player's identity. No emojis.",
 }
 
 # ------------------------------------------------------------ levels (Melvor-style curve)
