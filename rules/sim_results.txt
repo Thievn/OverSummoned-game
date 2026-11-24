@@ -1,0 +1,12 @@
+XP: L15 2411 L40 37224 L75 1210421 L99 13034431
+casual typist 5k keys/day        days to L15     1.8  L40    13.5  L75    186.8  L99    1933.5
+office typist 15k keys/day       days to L15     0.6  L40     4.5  L75     62.3  L99     644.5
+heavy typist 30k keys/day        days to L15     0.3  L40     2.2  L75     31.1  L99     322.3
+macro at the key cap, 24h        days to L15     0.1  L40     0.7  L75      9.5  L99      98.2
+web idle 2h/day                  days to L15     0.3  L40     2.8  L75     44.4  L99     464.3
+web idle 8h/day, crew +40%       days to L15     0.1  L40     0.5  L75      8.1  L99      85.1
+web 24h/day offline, crew +40%   days to L15     0.0  L40     0.2  L75      2.7  L99      28.4
+summons: first 5 heroes 22,366 ink (1.5 days at 15k keys); all 24 median 1,296,600 ink (86 days)
+dock: gear share of drops 3.4%, all 9 signature items after ~2893 actions = 29 days typing or 32 h web idle
+vault: gear share of drops 4.3%, all 9 signature items after ~976 actions = 13 days typing or 16 h web idle
+fjord: gear share of drops 4.0%, all 9 signature items after ~767 actions = 13 days typing or 19 h web idle

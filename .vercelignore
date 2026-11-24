@@ -10,3 +10,6 @@ CHANGELOG.md
 .git
 docs
 desktop
+desktop-fable
+art2
+rules/*.py

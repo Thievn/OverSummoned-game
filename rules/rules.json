@@ -1,0 +1,3557 @@
+{
+ "version": 3,
+ "rarities": [
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary"
+ ],
+ "rarity_color": {
+  "common": "#9aa3b8",
+  "uncommon": "#3ecf6b",
+  "rare": "#4a8dff",
+  "epic": "#b06bff",
+  "legendary": "#ff9a2e"
+ },
+ "stats": [
+  "attack",
+  "defense",
+  "health",
+  "speed",
+  "luck"
+ ],
+ "skills": [
+  "Summoning",
+  "Fishing",
+  "Lockpicking",
+  "Digging"
+ ],
+ "tier": {
+  "1": {
+   "keys": 150,
+   "seconds": 20,
+   "xp": 40,
+   "ink": 60
+  },
+  "2": {
+   "keys": 200,
+   "seconds": 30,
+   "xp": 110,
+   "ink": 110
+  },
+  "3": {
+   "keys": 260,
+   "seconds": 45,
+   "xp": 320,
+   "ink": 200
+  }
+ },
+ "lock_pins": 5,
+ "max_keys_per_second": 14,
+ "daily_keys": {
+  "full": 40000,
+  "after": 0.05
+ },
+ "web": {
+  "xp_mult": 0.5,
+  "loot_chance": 0.5,
+  "ink_mult": 0.5
+ },
+ "summon": {
+  "base_ink": 3000,
+  "per_unique": 400,
+  "xp_per_ink": 0.25,
+  "weights": {
+   "common": 44,
+   "uncommon": 28,
+   "rare": 18,
+   "epic": 8,
+   "legendary": 2
+  },
+  "luck_per_level": 0.15
+ },
+ "card": {
+  "max_level": 10,
+  "stat_per_level": 0.08,
+  "shard_gold": 25,
+  "hero_total": {
+   "common": 50,
+   "uncommon": 62,
+   "rare": 76,
+   "epic": 92,
+   "legendary": 110
+  }
+ },
+ "gear": {
+  "budget": {
+   "common": 5,
+   "uncommon": 8,
+   "rare": 14,
+   "epic": 22,
+   "legendary": 32
+  },
+  "signature_bonus": 0.5,
+  "skill_speed": {
+   "common": 1,
+   "uncommon": 2,
+   "rare": 4,
+   "epic": 6,
+   "legendary": 10
+  },
+  "drop_weight": {
+   "common": 1.2,
+   "uncommon": 0.75,
+   "rare": 0.375,
+   "epic": 0.15,
+   "legendary": 0.06
+  },
+  "sell": {
+   "common": 15,
+   "uncommon": 30,
+   "rare": 80,
+   "epic": 220,
+   "legendary": 600
+  }
+ },
+ "loot": {
+  "weight": {
+   "common": 20,
+   "uncommon": 9,
+   "rare": 4,
+   "epic": 1
+  },
+  "sell": {
+   "common": 5,
+   "uncommon": 18,
+   "rare": 45,
+   "epic": 150
+  },
+  "luck_per_level": 0.01
+ },
+ "crew": {
+  "slots": 3,
+  "speed_div": 400,
+  "speed_cap": 0.75,
+  "luck_div": 300,
+  "offline_hours": 12
+ },
+ "perks": [
+  {
+   "level": 10,
+   "name": "Double Haul",
+   "text": "10% chance of a second item",
+   "double": 0.1
+  },
+  {
+   "level": 25,
+   "name": "Quick Paws",
+   "text": "10% faster",
+   "speed": 0.1
+  },
+  {
+   "level": 50,
+   "name": "Double Haul II",
+   "text": "20% chance of a second item",
+   "double": 0.2
+  },
+  {
+   "level": 75,
+   "name": "Nose for Treasure",
+   "text": "+25% luck",
+   "luck": 0.25
+  },
+  {
+   "level": 99,
+   "name": "Mastery",
+   "text": "Mastery cape, +10% speed and luck",
+   "speed": 0.1,
+   "luck": 0.1
+  }
+ ],
+ "crate": {
+  "minutes": 30,
+  "rolls": 3,
+  "luck": 1.0,
+  "gold": [
+   50,
+   150
+  ],
+  "ink": 300
+ },
+ "expedition": {
+  "lengths": [
+   {
+    "id": "short",
+    "name": "Quick Raid",
+    "minutes": 15,
+    "rolls": 2,
+    "gold": 30
+   },
+   {
+    "id": "medium",
+    "name": "Day Trip",
+    "minutes": 60,
+    "rolls": 6,
+    "gold": 100
+   },
+   {
+    "id": "long",
+    "name": "Grand Tour",
+    "minutes": 240,
+    "rolls": 18,
+    "gold": 320
+   }
+  ],
+  "power_needed": {
+   "1": 60,
+   "2": 140,
+   "3": 260
+  },
+  "min_chance": 0.1,
+  "max_chance": 0.95,
+  "luck": 0.5,
+  "slots": [
+   {
+    "total_level": 0
+   },
+   {
+    "total_level": 50
+   },
+   {
+    "total_level": 150
+   }
+  ]
+ },
+ "gold": {
+  "daily_sell_cap_base": 2000,
+  "daily_sell_cap_per_level": 20,
+  "ink_pack": {
+   "gold": 100,
+   "ink": 250
+  }
+ },
+ "xp_table": [
+  0,
+  83,
+  174,
+  276,
+  388,
+  512,
+  650,
+  801,
+  969,
+  1154,
+  1358,
+  1584,
+  1833,
+  2107,
+  2411,
+  2746,
+  3115,
+  3523,
+  3973,
+  4470,
+  5018,
+  5624,
+  6291,
+  7028,
+  7842,
+  8740,
+  9730,
+  10824,
+  12031,
+  13363,
+  14833,
+  16456,
+  18247,
+  20224,
+  22406,
+  24815,
+  27473,
+  30408,
+  33648,
+  37224,
+  41171,
+  45529,
+  50339,
+  55649,
+  61512,
+  67983,
+  75127,
+  83014,
+  91721,
+  101333,
+  111945,
+  123660,
+  136594,
+  150872,
+  166636,
+  184040,
+  203254,
+  224466,
+  247886,
+  273742,
+  302288,
+  333804,
+  368599,
+  407015,
+  449428,
+  496254,
+  547953,
+  605032,
+  668051,
+  737627,
+  814445,
+  899257,
+  992895,
+  1096278,
+  1210421,
+  1336443,
+  1475581,
+  1629200,
+  1798808,
+  1986068,
+  2192818,
+  2421087,
+  2673114,
+  2951373,
+  3258594,
+  3597792,
+  3972294,
+  4385776,
+  4842295,
+  5346332,
+  5902831,
+  6517253,
+  7195629,
+  7944614,
+  8771558,
+  9684577,
+  10692629,
+  11805606,
+  13034431
+ ],
+ "heroes": [
+  {
+   "id": "kevin",
+   "name": "Kevin Latham",
+   "title": "Office Worker",
+   "era": "Today",
+   "species": "Sloth",
+   "rarity": "common",
+   "bio": "Kevin has been 'circling back' on the same email since March. He was summoned mid-sip and has not put the mug down since. Nobody at his office has noticed he is gone.",
+   "lines": [
+    "Kevin from the office! He brought his coffee!",
+    "Kevin. From accounting. Somehow still on break.",
+    "It's fucking Kevin. With his mug. Nobody asked for Kevin."
+   ],
+   "stats": {
+    "attack": 9,
+    "defense": 16,
+    "health": 15,
+    "speed": 4,
+    "luck": 6
+   },
+   "gear": [
+    "kevin_weapon",
+    "kevin_armor",
+    "kevin_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "marco",
+   "name": "Marco Reyes",
+   "title": "Delivery Rider",
+   "era": "Today",
+   "species": "Greyhound",
+   "rarity": "common",
+   "bio": "Marco has delivered through rain, snow, and one small tornado. He was pulled through the rift mid-wheelie and still asked who ordered the pad thai.",
+   "lines": [
+    "A delivery rider! Did he bring snacks?",
+    "Marco. Delivers anything, anywhere. Even across time, apparently.",
+    "Marco! Two thousand years late. Tip him anyway, you cheap ass."
+   ],
+   "stats": {
+    "attack": 11,
+    "defense": 5,
+    "health": 8,
+    "speed": 19,
+    "luck": 7
+   },
+   "gear": [
+    "marco_weapon",
+    "marco_armor",
+    "marco_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "maya",
+   "name": "Maya Washington",
+   "title": "Paramedic",
+   "era": "Today",
+   "species": "Golden Retriever",
+   "rarity": "uncommon",
+   "bio": "Maya has seen everything and is still nice about it. She arrived with a full trauma kit and immediately started checking everyone's pulse, including the book's.",
+   "lines": [
+    "A paramedic! We're safe now!",
+    "Maya. Paramedic. Finally someone useful.",
+    "A paramedic. Thank god. I've been bleeding emotionally for three hundred years."
+   ],
+   "stats": {
+    "attack": 8,
+    "defense": 14,
+    "health": 17,
+    "speed": 12,
+    "luck": 11
+   },
+   "gear": [
+    "maya_weapon",
+    "maya_armor",
+    "maya_trinket"
+   ],
+   "place": "outback"
+  },
+  {
+   "id": "brokk",
+   "name": "Brokk",
+   "title": "Ice Age Hunter",
+   "era": "Ice Age",
+   "species": "Badger",
+   "rarity": "uncommon",
+   "bio": "Brokk hunted mammoth with a stick and bad eyesight. He considers the wheel a fad. He has discovered central heating and will not be leaving.",
+   "lines": [
+    "A big strong hunter from the Ice Age!",
+    "Brokk. From the Ice Age. He's going to hate the thermostat.",
+    "Brokk has never seen a toilet and he's about to have the best day of his life."
+   ],
+   "stats": {
+    "attack": 21,
+    "defense": 10,
+    "health": 16,
+    "speed": 9,
+    "luck": 6
+   },
+   "gear": [
+    "brokk_weapon",
+    "brokk_armor",
+    "brokk_trinket"
+   ],
+   "place": "dock"
+  },
+  {
+   "id": "gaius",
+   "name": "Gaius Marcellus",
+   "title": "Legionary",
+   "era": "Rome, 79 AD",
+   "species": "Bulldog",
+   "rarity": "rare",
+   "bio": "Twenty years in the Ninth Legion and all he got was a bad knee and strong opinions about road quality. Marches everywhere. Even to the fridge.",
+   "lines": [
+    "A Roman soldier! So shiny!",
+    "Gaius. Legionary. Has opinions about marching.",
+    "A Roman legionary. Don't mention Carthage. He gets fucking weird about Carthage."
+   ],
+   "stats": {
+    "attack": 14,
+    "defense": 24,
+    "health": 23,
+    "speed": 6,
+    "luck": 9
+   },
+   "gear": [
+    "gaius_weapon",
+    "gaius_armor",
+    "gaius_trinket"
+   ],
+   "place": "dock"
+  },
+  {
+   "id": "edith",
+   "name": "Edith Crane",
+   "title": "Engineer",
+   "era": "London, 1880s",
+   "species": "Beaver",
+   "rarity": "rare",
+   "bio": "Edith built three bridges before breakfast and was told each time that a gentleman must have helped. She keeps a list of those gentlemen. The list is laminated now.",
+   "lines": [
+    "An engineer! She can fix the ledger!",
+    "Edith. Victorian engineer. Already judging our wiring.",
+    "Edith built bridges in the 1880s and she's looking at our setup like it's a crime scene."
+   ],
+   "stats": {
+    "attack": 9,
+    "defense": 17,
+    "health": 21,
+    "speed": 15,
+    "luck": 14
+   },
+   "gear": [
+    "edith_weapon",
+    "edith_armor",
+    "edith_trinket"
+   ],
+   "place": "outback"
+  },
+  {
+   "id": "albrecht",
+   "name": "Doctor Albrecht",
+   "title": "Plague Doctor",
+   "era": "1348",
+   "species": "Crow",
+   "rarity": "rare",
+   "bio": "His cure for everything is leeches, and his cure for leeches is more leeches. Somehow his patients keep improving, mostly out of spite.",
+   "lines": [
+    "A doctor with a bird mask! Spooky but cool!",
+    "A plague doctor. Wash your hands. Seriously.",
+    "A plague doctor from 1348. Everybody back the fuck up."
+   ],
+   "stats": {
+    "attack": 23,
+    "defense": 9,
+    "health": 12,
+    "speed": 12,
+    "luck": 20
+   },
+   "gear": [
+    "albrecht_weapon",
+    "albrecht_armor",
+    "albrecht_trinket"
+   ],
+   "place": "blackforest"
+  },
+  {
+   "id": "vincenzo",
+   "name": "Vincenzo Moretti",
+   "title": "Gangster",
+   "era": "Chicago, 1927",
+   "species": "Weasel",
+   "rarity": "epic",
+   "bio": "Runs a perfectly legitimate olive oil business that has never sold a single olive. Extremely polite. That is the scary part.",
+   "lines": [
+    "A fancy man in a nice suit!",
+    "Vincenzo Moretti. Don't ask what he does. Don't.",
+    "Vincenzo. Chicago, 1927. If anyone asks, we never saw shit."
+   ],
+   "stats": {
+    "attack": 24,
+    "defense": 7,
+    "health": 13,
+    "speed": 24,
+    "luck": 24
+   },
+   "gear": [
+    "vincenzo_weapon",
+    "vincenzo_armor",
+    "vincenzo_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "slapton",
+   "name": "Will Slapton",
+   "title": "Leading Man",
+   "era": "Hollywood",
+   "species": "Peacock",
+   "rarity": "legendary",
+   "bio": "Four-time winner of awards he gave himself. One slap away from greatness at all times. Does his own stunts, then describes them to you for an hour.",
+   "lines": [
+    "A movie star! Can I have an autograph?",
+    "Will Slapton. Leading man. Bigger ego than the book.",
+    "Will fucking Slapton. Somebody hide the ledger before he slaps it."
+   ],
+   "stats": {
+    "attack": 24,
+    "defense": 20,
+    "health": 22,
+    "speed": 22,
+    "luck": 22
+   },
+   "gear": [
+    "slapton_weapon",
+    "slapton_armor",
+    "slapton_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "napoleon",
+   "name": "Napoleon Bone-apart",
+   "title": "Emperor",
+   "era": "France, 1805",
+   "species": "Corgi",
+   "rarity": "epic",
+   "bio": "Conquered most of Europe and still cannot reach the top shelf. Will invade any country that mentions it. Do not bring up Russia, winter, or stepladders.",
+   "lines": [
+    "A tiny emperor! Look at his little hat!",
+    "Napoleon. Conquered Europe. Defeated by a kitchen counter.",
+    "It's Napoleon. He's two feet tall and he will absolutely fuck up your whole continent."
+   ],
+   "stats": {
+    "attack": 17,
+    "defense": 29,
+    "health": 28,
+    "speed": 7,
+    "luck": 11
+   },
+   "gear": [
+    "napoleon_weapon",
+    "napoleon_armor",
+    "napoleon_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "cleocatra",
+   "name": "Cleocatra",
+   "title": "Queen of the Nile",
+   "era": "Alexandria, 40 BC",
+   "species": "Egyptian Cat",
+   "rarity": "legendary",
+   "bio": "Ruler of Egypt, seducer of empires, knocker of priceless vases off tables. Has not walked anywhere in years. Expects to be carried and will stare at you until it happens.",
+   "lines": [
+    "A queen! A real queen! Should I bow?",
+    "Cleocatra. She's already decided you work for her.",
+    "Cleocatra. She fucked up two Roman generals' whole lives and she'll do yours for fun."
+   ],
+   "stats": {
+    "attack": 24,
+    "defense": 20,
+    "health": 22,
+    "speed": 22,
+    "luck": 22
+   },
+   "gear": [
+    "cleocatra_weapon",
+    "cleocatra_armor",
+    "cleocatra_trinket"
+   ],
+   "place": "dock"
+  },
+  {
+   "id": "blackbear",
+   "name": "Captain Blackbear",
+   "title": "Pirate Captain",
+   "era": "Caribbean, 1717",
+   "species": "Black Bear",
+   "rarity": "epic",
+   "bio": "The most feared captain on the seven seas, with smoking fuses in his beard and a ship full of stolen rum. Terrified of seagulls. The crew has agreed never to discuss it.",
+   "lines": [
+    "A pirate captain! With a real beard!",
+    "Captain Blackbear. Scourge of the seas. Scared of birds.",
+    "Blackbear. He'll gut you for a doubloon and cry if a seagull looks at him."
+   ],
+   "stats": {
+    "attack": 31,
+    "defense": 15,
+    "health": 24,
+    "speed": 13,
+    "luck": 9
+   },
+   "gear": [
+    "blackbear_weapon",
+    "blackbear_armor",
+    "blackbear_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "astrid",
+   "name": "Astrid Ironhowl",
+   "title": "Shield-Maiden",
+   "era": "Norway, 870",
+   "species": "Wolf",
+   "rarity": "rare",
+   "bio": "Raided six kingdoms before she was twenty and was bored by five of them. Undefeated in battle. Has been looking for a comfortable chair for eleven hundred years.",
+   "lines": [
+    "A wolf warrior! She's so strong!",
+    "Astrid. Shield-maiden. Could bench-press the book.",
+    "Astrid could snap me in half and honestly? I'd fucking thank her."
+   ],
+   "stats": {
+    "attack": 25,
+    "defense": 12,
+    "health": 20,
+    "speed": 11,
+    "luck": 8
+   },
+   "gear": [
+    "astrid_weapon",
+    "astrid_armor",
+    "astrid_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "kenji",
+   "name": "Kenji Shibata",
+   "title": "Ronin",
+   "era": "Japan, 1640",
+   "species": "Shiba Inu",
+   "rarity": "rare",
+   "bio": "A masterless samurai bound by honor, discipline, and a ferocious loyalty to whoever is currently holding a rice ball. Sits when told. Does not roll over. He has standards.",
+   "lines": [
+    "A samurai puppy! Such a serious face!",
+    "Kenji. Ronin. Loyal to no master. Loyal to all snacks.",
+    "Kenji will die for his honor. He'll also sell you out for one goddamn dumpling."
+   ],
+   "stats": {
+    "attack": 16,
+    "defense": 8,
+    "health": 12,
+    "speed": 29,
+    "luck": 11
+   },
+   "gear": [
+    "kenji_weapon",
+    "kenji_armor",
+    "kenji_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "emu",
+   "name": "General Emu",
+   "title": "Undefeated Commander",
+   "era": "Australia, 1932",
+   "species": "Emu",
+   "rarity": "epic",
+   "bio": "In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
+   "lines": [
+    "A big bird general! He looks so proud!",
+    "General Emu. Beat an actual army. With his legs.",
+    "This bird beat the Australian fucking army. Machine guns and all. Salute him."
+   ],
+   "stats": {
+    "attack": 20,
+    "defense": 9,
+    "health": 15,
+    "speed": 35,
+    "luck": 13
+   },
+   "gear": [
+    "emu_weapon",
+    "emu_armor",
+    "emu_trinket"
+   ],
+   "place": "outback"
+  },
+  {
+   "id": "troffea",
+   "name": "Frau Troffea",
+   "title": "The Dancing Plague",
+   "era": "Strasbourg, 1518",
+   "species": "Hare",
+   "rarity": "uncommon",
+   "bio": "One July morning in 1518 she stepped into the street and started dancing. Four hundred people joined in. Nobody knows why. She is still going, and she is not tired.",
+   "lines": [
+    "She's dancing! She's so good at dancing!",
+    "Frau Troffea. Started dancing in 1518. Hasn't stopped. Don't make eye contact.",
+    "She's been dancing for five hundred years. Do NOT let her grab your fucking hand."
+   ],
+   "stats": {
+    "attack": 13,
+    "defense": 6,
+    "health": 10,
+    "speed": 24,
+    "luck": 9
+   },
+   "gear": [
+    "troffea_weapon",
+    "troffea_armor",
+    "troffea_trinket"
+   ],
+   "place": "blackforest"
+  },
+  {
+   "id": "joost",
+   "name": "Joost van der Bloem",
+   "title": "Tulip Speculator",
+   "era": "Amsterdam, 1637",
+   "species": "Hamster",
+   "rarity": "uncommon",
+   "bio": "At the peak of tulip mania Joost traded his house, his boat and two cows for a single bulb. The market crashed on a Tuesday. He ate the bulb on Wednesday. Still bullish.",
+   "lines": [
+    "He has a flower! He really loves his flower!",
+    "Joost. Traded his house for a tulip. It's a long story. It's a sad story.",
+    "This idiot swapped a whole fucking house for one flower. And he'd do it again."
+   ],
+   "stats": {
+    "attack": 7,
+    "defense": 7,
+    "health": 11,
+    "speed": 11,
+    "luck": 26
+   },
+   "gear": [
+    "joost_weapon",
+    "joost_armor",
+    "joost_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "chad",
+   "name": "Chad Hodler",
+   "title": "Crypto Visionary",
+   "era": "Online, 2021",
+   "species": "Lemming",
+   "rarity": "common",
+   "bio": "Chad got in early on nine different coins and out early on none. He calls every cliff a dip. He is not giving financial advice, but he is giving it loudly.",
+   "lines": [
+    "He says we're all going to the moon! Fun!",
+    "Chad. Lost everything twice. Calls it 'building'.",
+    "Chad's down ninety percent and still calling everybody else poor. Fucking legend."
+   ],
+   "stats": {
+    "attack": 5,
+    "defense": 6,
+    "health": 9,
+    "speed": 9,
+    "luck": 21
+   },
+   "gear": [
+    "chad_weapon",
+    "chad_armor",
+    "chad_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "bella",
+   "name": "Bella Pawsworth",
+   "title": "Influencer",
+   "era": "Miami, today",
+   "species": "Flamingo",
+   "rarity": "rare",
+   "bio": "Four million followers, three brand deals, one leg. Bella has been holding the same pose since 2019 and no longer remembers what the other foot was for. Link in bio.",
+   "lines": [
+    "She's so glamorous! And so pink!",
+    "Bella. Four million followers. Zero idea where she is right now.",
+    "Bella's hot, she knows it, and she's already filmed you without asking. Smile, dipshit."
+   ],
+   "stats": {
+    "attack": 17,
+    "defense": 14,
+    "health": 15,
+    "speed": 15,
+    "luck": 15
+   },
+   "gear": [
+    "bella_weapon",
+    "bella_armor",
+    "bella_trinket"
+   ],
+   "place": "bondi"
+  },
+  {
+   "id": "florida",
+   "name": "Florida Man",
+   "title": "Local Legend",
+   "era": "Florida, today",
+   "species": "Alligator",
+   "rarity": "epic",
+   "bio": "Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
+   "lines": [
+    "A big smiley alligator! With muscles!",
+    "Florida Man. Yes, that one. All of them, actually.",
+    "Florida Man. Shirtless, lawless, and one bad idea away from the fucking evening news."
+   ],
+   "stats": {
+    "attack": 31,
+    "defense": 15,
+    "health": 24,
+    "speed": 13,
+    "luck": 9
+   },
+   "gear": [
+    "florida_weapon",
+    "florida_armor",
+    "florida_trinket"
+   ],
+   "place": "bondi"
+  },
+  {
+   "id": "lola",
+   "name": "Lola Vixen",
+   "title": "Cabaret Star",
+   "era": "Paris, 1895",
+   "species": "Fox",
+   "rarity": "epic",
+   "bio": "The brightest star of the Paris cabaret. Gentlemen came from across Europe to watch her dance, and went home without their watches, wallets, and in one case a small yacht.",
+   "lines": [
+    "A dancer! With feathers! So fancy!",
+    "Lola Vixen. Steals hearts. And, separately, wallets.",
+    "Lola. She'll blow you a kiss with one hand and take your goddamn wallet with the other."
+   ],
+   "stats": {
+    "attack": 24,
+    "defense": 7,
+    "health": 13,
+    "speed": 24,
+    "luck": 24
+   },
+   "gear": [
+    "lola_weapon",
+    "lola_armor",
+    "lola_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "morwenna",
+   "name": "Morwenna Duskwing",
+   "title": "Hedge Witch",
+   "era": "Black Forest, 1600s",
+   "species": "Moth",
+   "rarity": "rare",
+   "bio": "Dark, brooding, mistress of forbidden arts. Lives alone in a cottage of bones and candle smoke. Completely unable to resist a lamp. It has ruined several curses.",
+   "lines": [
+    "A witch! A pretty moth witch!",
+    "Morwenna. Very dark. Very mysterious. Keeps flying into the lantern.",
+    "Morwenna's a scary goth witch right up until someone turns on a fucking light."
+   ],
+   "stats": {
+    "attack": 23,
+    "defense": 9,
+    "health": 12,
+    "speed": 12,
+    "luck": 20
+   },
+   "gear": [
+    "morwenna_weapon",
+    "morwenna_armor",
+    "morwenna_trinket"
+   ],
+   "place": "blackforest"
+  },
+  {
+   "id": "sable",
+   "name": "Sable Quickpaw",
+   "title": "Master Thief",
+   "era": "Venice, 1610",
+   "species": "Raccoon",
+   "rarity": "rare",
+   "bio": "The finest thief in Venice. Has robbed the Doge three times and returned twice to rinse the loot in the canal. Leaves no fingerprints. Leaves everything slightly damp.",
+   "lines": [
+    "A sneaky raccoon! Look at his little mask!",
+    "Sable. Master thief. Washes everything he steals. Everything.",
+    "Sable'll rob you blind and then wash your shit in a canal. Weird little bastard."
+   ],
+   "stats": {
+    "attack": 19,
+    "defense": 6,
+    "health": 11,
+    "speed": 20,
+    "luck": 20
+   },
+   "gear": [
+    "sable_weapon",
+    "sable_armor",
+    "sable_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "jacko",
+   "name": "Jacko Riley",
+   "title": "Surf Lifeguard",
+   "era": "Bondi Beach, today",
+   "species": "Kangaroo",
+   "rarity": "uncommon",
+   "bio": "Has pulled three hundred swimmers out of the surf and reminded every single one about sunscreen. Never skips leg day. Has never needed to.",
+   "lines": [
+    "A lifeguard! He'll keep us safe!",
+    "Jacko. Lifeguard. Abs you could grate cheese on.",
+    "Jacko's shredded, he's shirtless, and he just called me 'mate'. I'm fucking done."
+   ],
+   "stats": {
+    "attack": 8,
+    "defense": 14,
+    "health": 17,
+    "speed": 12,
+    "luck": 11
+   },
+   "gear": [
+    "jacko_weapon",
+    "jacko_armor",
+    "jacko_trinket"
+   ],
+   "place": "bondi"
+  }
+ ],
+ "places": [
+  {
+   "id": "archive",
+   "name": "The Archive",
+   "era": "Aldermere, home",
+   "skill": "Summoning",
+   "level": 1,
+   "tier": 0,
+   "blurb": "A cellar of unread books and one that reads back. Every name Smudge stamps pulls a stranger out of history.",
+   "loot": []
+  },
+  {
+   "id": "dock",
+   "name": "Roman Dock",
+   "era": "Ostia, 79 AD",
+   "skill": "Fishing",
+   "level": 1,
+   "tier": 1,
+   "blurb": "A quiet pier on the Tiber. Everything Rome ever dropped drifts past here sooner or later.",
+   "loot": [
+    [
+     "bath_carp",
+     20
+    ],
+    [
+     "bath_eel",
+     20
+    ],
+    [
+     "bath_coin",
+     20
+    ],
+    [
+     "bath_scroll",
+     20
+    ],
+    [
+     "bath_strigil",
+     9
+    ],
+    [
+     "bath_lamp",
+     9
+    ],
+    [
+     "bath_vial",
+     4
+    ],
+    [
+     "bath_wreath",
+     4
+    ],
+    [
+     "bath_nose",
+     1
+    ],
+    [
+     "brokk_weapon",
+     0.75
+    ],
+    [
+     "brokk_armor",
+     0.75
+    ],
+    [
+     "brokk_trinket",
+     0.75
+    ],
+    [
+     "gaius_weapon",
+     0.375
+    ],
+    [
+     "gaius_armor",
+     0.375
+    ],
+    [
+     "gaius_trinket",
+     0.375
+    ],
+    [
+     "cleocatra_weapon",
+     0.06
+    ],
+    [
+     "cleocatra_armor",
+     0.06
+    ],
+    [
+     "cleocatra_trinket",
+     0.06
+    ]
+   ]
+  },
+  {
+   "id": "bondi",
+   "name": "Bondi Rock Pool",
+   "era": "Sydney, today",
+   "skill": "Fishing",
+   "level": 15,
+   "tier": 2,
+   "blurb": "Sun, salt, and a tide that keeps handing back whatever the tourists lost.",
+   "loot": [
+    [
+     "bondi_1",
+     20
+    ],
+    [
+     "bondi_2",
+     20
+    ],
+    [
+     "bondi_3",
+     20
+    ],
+    [
+     "bondi_4",
+     20
+    ],
+    [
+     "bondi_5",
+     9
+    ],
+    [
+     "bondi_6",
+     9
+    ],
+    [
+     "bondi_7",
+     4
+    ],
+    [
+     "bondi_8",
+     1
+    ],
+    [
+     "bella_weapon",
+     0.375
+    ],
+    [
+     "bella_armor",
+     0.375
+    ],
+    [
+     "bella_trinket",
+     0.375
+    ],
+    [
+     "florida_weapon",
+     0.15
+    ],
+    [
+     "florida_armor",
+     0.15
+    ],
+    [
+     "florida_trinket",
+     0.15
+    ],
+    [
+     "jacko_weapon",
+     0.75
+    ],
+    [
+     "jacko_armor",
+     0.75
+    ],
+    [
+     "jacko_trinket",
+     0.75
+    ]
+   ]
+  },
+  {
+   "id": "fjord",
+   "name": "Lofoten Ice Hole",
+   "era": "Norway, 870",
+   "skill": "Fishing",
+   "level": 40,
+   "tier": 3,
+   "blurb": "A hole cut through fjord ice. The cod are huge, the cold is worse, and something down there has antlers.",
+   "loot": [
+    [
+     "fjord_1",
+     20
+    ],
+    [
+     "fjord_2",
+     20
+    ],
+    [
+     "fjord_3",
+     20
+    ],
+    [
+     "fjord_4",
+     9
+    ],
+    [
+     "fjord_5",
+     9
+    ],
+    [
+     "fjord_6",
+     4
+    ],
+    [
+     "fjord_7",
+     4
+    ],
+    [
+     "fjord_8",
+     1
+    ],
+    [
+     "blackbear_weapon",
+     0.15
+    ],
+    [
+     "blackbear_armor",
+     0.15
+    ],
+    [
+     "blackbear_trinket",
+     0.15
+    ],
+    [
+     "astrid_weapon",
+     0.375
+    ],
+    [
+     "astrid_armor",
+     0.375
+    ],
+    [
+     "astrid_trinket",
+     0.375
+    ],
+    [
+     "kenji_weapon",
+     0.375
+    ],
+    [
+     "kenji_armor",
+     0.375
+    ],
+    [
+     "kenji_trinket",
+     0.375
+    ]
+   ]
+  },
+  {
+   "id": "speakeasy",
+   "name": "Speakeasy Safe",
+   "era": "Chicago, 1927",
+   "skill": "Lockpicking",
+   "level": 1,
+   "tier": 1,
+   "blurb": "Five pins between Smudge and somebody else's money. The jazz upstairs covers the clicking.",
+   "loot": [
+    [
+     "easy_chips",
+     20
+    ],
+    [
+     "easy_moonshine",
+     20
+    ],
+    [
+     "easy_bills",
+     20
+    ],
+    [
+     "easy_envelope",
+     20
+    ],
+    [
+     "easy_knuckles",
+     9
+    ],
+    [
+     "easy_fedora",
+     9
+    ],
+    [
+     "easy_watch",
+     4
+    ],
+    [
+     "easy_pearls",
+     4
+    ],
+    [
+     "easy_ring",
+     1
+    ],
+    [
+     "vincenzo_weapon",
+     0.15
+    ],
+    [
+     "vincenzo_armor",
+     0.15
+    ],
+    [
+     "vincenzo_trinket",
+     0.15
+    ],
+    [
+     "slapton_weapon",
+     0.06
+    ],
+    [
+     "slapton_armor",
+     0.06
+    ],
+    [
+     "slapton_trinket",
+     0.06
+    ],
+    [
+     "lola_weapon",
+     0.15
+    ],
+    [
+     "lola_armor",
+     0.15
+    ],
+    [
+     "lola_trinket",
+     0.15
+    ]
+   ]
+  },
+  {
+   "id": "vault",
+   "name": "The Doge's Vault",
+   "era": "Venice, 1610",
+   "skill": "Lockpicking",
+   "level": 15,
+   "tier": 2,
+   "blurb": "The richest strongbox in Venice. The lock was made by a genius. The guard was hired by a nephew.",
+   "loot": [
+    [
+     "vault_1",
+     20
+    ],
+    [
+     "vault_2",
+     20
+    ],
+    [
+     "vault_3",
+     20
+    ],
+    [
+     "vault_4",
+     20
+    ],
+    [
+     "vault_5",
+     9
+    ],
+    [
+     "vault_6",
+     9
+    ],
+    [
+     "vault_7",
+     4
+    ],
+    [
+     "vault_8",
+     1
+    ],
+    [
+     "napoleon_weapon",
+     0.15
+    ],
+    [
+     "napoleon_armor",
+     0.15
+    ],
+    [
+     "napoleon_trinket",
+     0.15
+    ],
+    [
+     "joost_weapon",
+     0.75
+    ],
+    [
+     "joost_armor",
+     0.75
+    ],
+    [
+     "joost_trinket",
+     0.75
+    ],
+    [
+     "sable_weapon",
+     0.375
+    ],
+    [
+     "sable_armor",
+     0.375
+    ],
+    [
+     "sable_trinket",
+     0.375
+    ]
+   ]
+  },
+  {
+   "id": "closet",
+   "name": "The Supply Closet",
+   "era": "Open-plan office, today",
+   "skill": "Lockpicking",
+   "level": 40,
+   "tier": 3,
+   "blurb": "The hardest lock in history. Only Brenda from Facilities has the key, and Brenda is on leave.",
+   "loot": [
+    [
+     "closet_1",
+     20
+    ],
+    [
+     "closet_2",
+     20
+    ],
+    [
+     "closet_3",
+     20
+    ],
+    [
+     "closet_4",
+     20
+    ],
+    [
+     "closet_5",
+     9
+    ],
+    [
+     "closet_6",
+     9
+    ],
+    [
+     "closet_7",
+     4
+    ],
+    [
+     "closet_8",
+     1
+    ],
+    [
+     "kevin_weapon",
+     0.75
+    ],
+    [
+     "kevin_armor",
+     0.75
+    ],
+    [
+     "kevin_trinket",
+     0.75
+    ],
+    [
+     "marco_weapon",
+     0.75
+    ],
+    [
+     "marco_armor",
+     0.75
+    ],
+    [
+     "marco_trinket",
+     0.75
+    ],
+    [
+     "chad_weapon",
+     0.75
+    ],
+    [
+     "chad_armor",
+     0.75
+    ],
+    [
+     "chad_trinket",
+     0.75
+    ]
+   ]
+  },
+  {
+   "id": "outback",
+   "name": "Emu War Trench",
+   "era": "Western Australia, 1932",
+   "skill": "Digging",
+   "level": 1,
+   "tier": 1,
+   "blurb": "An abandoned trench from the only war ever lost to birds. The army left in a hurry. The emus kept score.",
+   "loot": [
+    [
+     "outback_1",
+     20
+    ],
+    [
+     "outback_2",
+     20
+    ],
+    [
+     "outback_3",
+     20
+    ],
+    [
+     "outback_4",
+     20
+    ],
+    [
+     "outback_5",
+     9
+    ],
+    [
+     "outback_6",
+     9
+    ],
+    [
+     "outback_7",
+     4
+    ],
+    [
+     "outback_8",
+     1
+    ],
+    [
+     "maya_weapon",
+     0.75
+    ],
+    [
+     "maya_armor",
+     0.75
+    ],
+    [
+     "maya_trinket",
+     0.75
+    ],
+    [
+     "edith_weapon",
+     0.375
+    ],
+    [
+     "edith_armor",
+     0.375
+    ],
+    [
+     "edith_trinket",
+     0.375
+    ],
+    [
+     "emu_weapon",
+     0.15
+    ],
+    [
+     "emu_armor",
+     0.15
+    ],
+    [
+     "emu_trinket",
+     0.15
+    ]
+   ]
+  },
+  {
+   "id": "blackforest",
+   "name": "Witch's Clearing",
+   "era": "Black Forest, 1600s",
+   "skill": "Digging",
+   "level": 15,
+   "tier": 2,
+   "blurb": "Things are buried here that should stay buried. Smudge has a shovel and no sense of self-preservation.",
+   "loot": [
+    [
+     "blackforest_1",
+     20
+    ],
+    [
+     "blackforest_2",
+     20
+    ],
+    [
+     "blackforest_3",
+     20
+    ],
+    [
+     "blackforest_4",
+     20
+    ],
+    [
+     "blackforest_5",
+     9
+    ],
+    [
+     "blackforest_6",
+     9
+    ],
+    [
+     "blackforest_7",
+     4
+    ],
+    [
+     "blackforest_8",
+     1
+    ],
+    [
+     "albrecht_weapon",
+     0.375
+    ],
+    [
+     "albrecht_armor",
+     0.375
+    ],
+    [
+     "albrecht_trinket",
+     0.375
+    ],
+    [
+     "troffea_weapon",
+     0.75
+    ],
+    [
+     "troffea_armor",
+     0.75
+    ],
+    [
+     "troffea_trinket",
+     0.75
+    ],
+    [
+     "morwenna_weapon",
+     0.375
+    ],
+    [
+     "morwenna_armor",
+     0.375
+    ],
+    [
+     "morwenna_trinket",
+     0.375
+    ]
+   ]
+  }
+ ],
+ "items": {
+  "kevin_weapon": {
+   "id": "kevin_weapon",
+   "name": "Passive-Aggressive Stapler",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "kevin_weapon",
+   "flavor": "Property of Kevin. Do not touch. He will know.",
+   "owner": "kevin",
+   "place": "closet",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "kevin_armor": {
+   "id": "kevin_armor",
+   "name": "Lanyard of Mild Authority",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "kevin_armor",
+   "flavor": "Opens one door. The wrong one.",
+   "owner": "kevin",
+   "place": "closet",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "kevin_trinket": {
+   "id": "kevin_trinket",
+   "name": "Bottomless Mug",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "kevin_trinket",
+   "flavor": "It has never been washed. It has never been empty.",
+   "owner": "kevin",
+   "place": "closet",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "marco_weapon": {
+   "id": "marco_weapon",
+   "name": "Bike Lock of Reckoning",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "marco_weapon",
+   "flavor": "Technically a security device. Technically.",
+   "owner": "marco",
+   "place": "closet",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "marco_armor": {
+   "id": "marco_armor",
+   "name": "Thermal Delivery Bag",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "marco_armor",
+   "flavor": "Keeps hot things hot and cold things someone else's problem.",
+   "owner": "marco",
+   "place": "closet",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "marco_trinket": {
+   "id": "marco_trinket",
+   "name": "Five-Star Rating",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "marco_trinket",
+   "flavor": "He earned every one. Then a guy named Greg gave him a three.",
+   "owner": "marco",
+   "place": "closet",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "maya_weapon": {
+   "id": "maya_weapon",
+   "name": "Trauma Shears",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "maya_weapon",
+   "flavor": "Cuts through denim, seatbelts, and excuses.",
+   "owner": "maya",
+   "place": "outback",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "maya_armor": {
+   "id": "maya_armor",
+   "name": "High-Vis Jacket",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "maya_armor",
+   "flavor": "Visible from space. Comforting from up close.",
+   "owner": "maya",
+   "place": "outback",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "maya_trinket": {
+   "id": "maya_trinket",
+   "name": "Lucky Stethoscope",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "maya_trinket",
+   "flavor": "She listens. That's the whole secret.",
+   "owner": "maya",
+   "place": "outback",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Digging",
+    "speed": 2
+   }
+  },
+  "brokk_weapon": {
+   "id": "brokk_weapon",
+   "name": "Mammoth-Tusk Spear",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "brokk_weapon",
+   "flavor": "Pointy end goes in the mammoth. Brokk wrote the manual. In grunts.",
+   "owner": "brokk",
+   "place": "dock",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "brokk_armor": {
+   "id": "brokk_armor",
+   "name": "Sabertooth Pelt",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "brokk_armor",
+   "flavor": "Warm, stylish, and the previous owner put up a fight.",
+   "owner": "brokk",
+   "place": "dock",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "brokk_trinket": {
+   "id": "brokk_trinket",
+   "name": "First Fire",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "brokk_trinket",
+   "flavor": "He found it. He's very proud. Do not blow on it.",
+   "owner": "brokk",
+   "place": "dock",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 2
+   }
+  },
+  "gaius_weapon": {
+   "id": "gaius_weapon",
+   "name": "Gladius of the Ninth",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "gaius_weapon",
+   "flavor": "Short sword. Short temper.",
+   "owner": "gaius",
+   "place": "dock",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "gaius_armor": {
+   "id": "gaius_armor",
+   "name": "Scutum Shield",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "gaius_armor",
+   "flavor": "Has stopped arrows, spears, and one very angry goose.",
+   "owner": "gaius",
+   "place": "dock",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "gaius_trinket": {
+   "id": "gaius_trinket",
+   "name": "Legion Eagle Pin",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "gaius_trinket",
+   "flavor": "Lose it and the whole legion never speaks to you again.",
+   "owner": "gaius",
+   "place": "dock",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "edith_weapon": {
+   "id": "edith_weapon",
+   "name": "Brass Spanner",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "edith_weapon",
+   "flavor": "Tightens bolts. Loosens attitudes.",
+   "owner": "edith",
+   "place": "outback",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "edith_armor": {
+   "id": "edith_armor",
+   "name": "Riveted Work Apron",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "edith_armor",
+   "flavor": "Fourteen pockets. She knows what is in every one.",
+   "owner": "edith",
+   "place": "outback",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "edith_trinket": {
+   "id": "edith_trinket",
+   "name": "Pocket Blueprint",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "edith_trinket",
+   "flavor": "A plan for everything. Including you.",
+   "owner": "edith",
+   "place": "outback",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Digging",
+    "speed": 4
+   }
+  },
+  "albrecht_weapon": {
+   "id": "albrecht_weapon",
+   "name": "Leech Jar",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "albrecht_weapon",
+   "flavor": "For medicinal use. And for throwing.",
+   "owner": "albrecht",
+   "place": "blackforest",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "albrecht_armor": {
+   "id": "albrecht_armor",
+   "name": "Waxed Long Coat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "albrecht_armor",
+   "flavor": "Nothing sticks to it. He has tested this extensively.",
+   "owner": "albrecht",
+   "place": "blackforest",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "albrecht_trinket": {
+   "id": "albrecht_trinket",
+   "name": "Herb Pomander",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "albrecht_trinket",
+   "flavor": "Smells of lavender and denial.",
+   "owner": "albrecht",
+   "place": "blackforest",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Digging",
+    "speed": 4
+   }
+  },
+  "vincenzo_weapon": {
+   "id": "vincenzo_weapon",
+   "name": "Violin Case",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "vincenzo_weapon",
+   "flavor": "He does not play the violin.",
+   "owner": "vincenzo",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "vincenzo_armor": {
+   "id": "vincenzo_armor",
+   "name": "Pinstripe Suit",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "vincenzo_armor",
+   "flavor": "Tailored to hide exactly two things.",
+   "owner": "vincenzo",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "vincenzo_trinket": {
+   "id": "vincenzo_trinket",
+   "name": "Lucky Silver Dollar",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "vincenzo_trinket",
+   "flavor": "Heads, he wins. Tails, you never flipped it.",
+   "owner": "vincenzo",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "slapton_weapon": {
+   "id": "slapton_weapon",
+   "name": "The Golden Hand",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "slapton_weapon",
+   "flavor": "Awarded for Outstanding Achievement in Open Palm.",
+   "owner": "slapton",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 22,
+    "speed": 10
+   },
+   "sell": 600
+  },
+  "slapton_armor": {
+   "id": "slapton_armor",
+   "name": "Red Carpet Tuxedo",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "legendary",
+   "icon": "slapton_armor",
+   "flavor": "Dry clean only. Slap proof.",
+   "owner": "slapton",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 16,
+    "health": 16
+   },
+   "sell": 600
+  },
+  "slapton_trinket": {
+   "id": "slapton_trinket",
+   "name": "Walk of Fame Star",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "legendary",
+   "icon": "slapton_trinket",
+   "flavor": "He pried it up himself. It was not his star.",
+   "owner": "slapton",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 13,
+    "luck": 19
+   },
+   "sell": 600,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 10
+   }
+  },
+  "napoleon_weapon": {
+   "id": "napoleon_weapon",
+   "name": "Saber of Austerlitz",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "napoleon_weapon",
+   "flavor": "Very long. Compensating for nothing, he insists.",
+   "owner": "napoleon",
+   "place": "vault",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "napoleon_armor": {
+   "id": "napoleon_armor",
+   "name": "Bicorne Hat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "napoleon_armor",
+   "flavor": "Adds four inches. He counts them.",
+   "owner": "napoleon",
+   "place": "vault",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "napoleon_trinket": {
+   "id": "napoleon_trinket",
+   "name": "Imperial Stepladder",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "napoleon_trinket",
+   "flavor": "The real power behind the throne.",
+   "owner": "napoleon",
+   "place": "vault",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "cleocatra_weapon": {
+   "id": "cleocatra_weapon",
+   "name": "Asp Scepter",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "cleocatra_weapon",
+   "flavor": "It bites. So does she.",
+   "owner": "cleocatra",
+   "place": "dock",
+   "stats": {
+    "attack": 22,
+    "speed": 10
+   },
+   "sell": 600
+  },
+  "cleocatra_armor": {
+   "id": "cleocatra_armor",
+   "name": "Collar of Isis",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "legendary",
+   "icon": "cleocatra_armor",
+   "flavor": "Heavy enough to explain why she refuses to walk.",
+   "owner": "cleocatra",
+   "place": "dock",
+   "stats": {
+    "defense": 16,
+    "health": 16
+   },
+   "sell": 600
+  },
+  "cleocatra_trinket": {
+   "id": "cleocatra_trinket",
+   "name": "Royal Milk Bath",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "legendary",
+   "icon": "cleocatra_trinket",
+   "flavor": "Seven hundred donkeys were involved. Do not ask.",
+   "owner": "cleocatra",
+   "place": "dock",
+   "stats": {
+    "speed": 13,
+    "luck": 19
+   },
+   "sell": 600,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 10
+   }
+  },
+  "blackbear_weapon": {
+   "id": "blackbear_weapon",
+   "name": "Boarding Cutlass",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "blackbear_weapon",
+   "flavor": "Eleven notches. Ten ships and one seagull that had it coming.",
+   "owner": "blackbear",
+   "place": "fjord",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "blackbear_armor": {
+   "id": "blackbear_armor",
+   "name": "Captain's Greatcoat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "blackbear_armor",
+   "flavor": "Smells of rum, gunpowder, and poor decisions.",
+   "owner": "blackbear",
+   "place": "fjord",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "blackbear_trinket": {
+   "id": "blackbear_trinket",
+   "name": "Smoking Beard Fuse",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "blackbear_trinket",
+   "flavor": "Intimidating. Also a fire hazard. Mostly a fire hazard.",
+   "owner": "blackbear",
+   "place": "fjord",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 6
+   }
+  },
+  "astrid_weapon": {
+   "id": "astrid_weapon",
+   "name": "Bearded Axe",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "astrid_weapon",
+   "flavor": "Named 'Negotiator'. Negotiations are brief.",
+   "owner": "astrid",
+   "place": "fjord",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "astrid_armor": {
+   "id": "astrid_armor",
+   "name": "Raven Round Shield",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "astrid_armor",
+   "flavor": "Dented in six kingdoms.",
+   "owner": "astrid",
+   "place": "fjord",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "astrid_trinket": {
+   "id": "astrid_trinket",
+   "name": "Mead Horn",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "astrid_trinket",
+   "flavor": "Victory tastes like honey and somebody else's village.",
+   "owner": "astrid",
+   "place": "fjord",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "kenji_weapon": {
+   "id": "kenji_weapon",
+   "name": "Katana 'Good Boy'",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "kenji_weapon",
+   "flavor": "The blade's true name is known only to him. It's 'Good Boy'.",
+   "owner": "kenji",
+   "place": "fjord",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "kenji_armor": {
+   "id": "kenji_armor",
+   "name": "Straw Travel Hat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "kenji_armor",
+   "flavor": "Hides his eyes. And his ears going flat.",
+   "owner": "kenji",
+   "place": "fjord",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "kenji_trinket": {
+   "id": "kenji_trinket",
+   "name": "Honorable Rice Ball",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "kenji_trinket",
+   "flavor": "He would never eat it. He is going to eat it.",
+   "owner": "kenji",
+   "place": "fjord",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "emu_weapon": {
+   "id": "emu_weapon",
+   "name": "Captured Lewis Gun",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "emu_weapon",
+   "flavor": "Taken as a trophy. He has no idea how it works. Neither did they.",
+   "owner": "emu",
+   "place": "outback",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "emu_armor": {
+   "id": "emu_armor",
+   "name": "Outback Slouch Hat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "emu_armor",
+   "flavor": "The feather is his own. A power move.",
+   "owner": "emu",
+   "place": "outback",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "emu_trinket": {
+   "id": "emu_trinket",
+   "name": "Medal of Total Victory",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "emu_trinket",
+   "flavor": "Self-awarded. Fully deserved.",
+   "owner": "emu",
+   "place": "outback",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Digging",
+    "speed": 6
+   }
+  },
+  "troffea_weapon": {
+   "id": "troffea_weapon",
+   "name": "Worn-Through Dancing Shoes",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "troffea_weapon",
+   "flavor": "Pair number nine thousand and four.",
+   "owner": "troffea",
+   "place": "blackforest",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "troffea_armor": {
+   "id": "troffea_armor",
+   "name": "Whirling Skirt",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "troffea_armor",
+   "flavor": "Stand back at least one skirt length.",
+   "owner": "troffea",
+   "place": "blackforest",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "troffea_trinket": {
+   "id": "troffea_trinket",
+   "name": "Unstoppable Tambourine",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "troffea_trinket",
+   "flavor": "It plays itself now. That's new.",
+   "owner": "troffea",
+   "place": "blackforest",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Digging",
+    "speed": 2
+   }
+  },
+  "joost_weapon": {
+   "id": "joost_weapon",
+   "name": "Pruning Knife",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "joost_weapon",
+   "flavor": "For tulips, and for anyone who says 'bubble'.",
+   "owner": "joost",
+   "place": "vault",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "joost_armor": {
+   "id": "joost_armor",
+   "name": "Merchant's Ruff",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "joost_armor",
+   "flavor": "The bigger the collar, the bigger the debt.",
+   "owner": "joost",
+   "place": "vault",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "joost_trinket": {
+   "id": "joost_trinket",
+   "name": "Semper Augustus Bulb",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "joost_trinket",
+   "flavor": "Worth one canal house. Or one lunch. Depends on the day.",
+   "owner": "joost",
+   "place": "vault",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "chad_weapon": {
+   "id": "chad_weapon",
+   "name": "Laser Eyes",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "chad_weapon",
+   "flavor": "Profile-picture grade. Not rated for actual combat.",
+   "owner": "chad",
+   "place": "closet",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "chad_armor": {
+   "id": "chad_armor",
+   "name": "Ape Hoodie",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "chad_armor",
+   "flavor": "Bought at the top. Like everything else.",
+   "owner": "chad",
+   "place": "closet",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "chad_trinket": {
+   "id": "chad_trinket",
+   "name": "Diamond Hands",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "chad_trinket",
+   "flavor": "Cannot sell. Cannot hold a fork either.",
+   "owner": "chad",
+   "place": "closet",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "bella_weapon": {
+   "id": "bella_weapon",
+   "name": "Ring Light",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "bella_weapon",
+   "flavor": "Blinds enemies. Flatters everyone else.",
+   "owner": "bella",
+   "place": "bondi",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "bella_armor": {
+   "id": "bella_armor",
+   "name": "Sponsored Bikini",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "bella_armor",
+   "flavor": "Hashtag ad. Hashtag blessed. Hashtag armor, apparently.",
+   "owner": "bella",
+   "place": "bondi",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "bella_trinket": {
+   "id": "bella_trinket",
+   "name": "Verified Checkmark",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "bella_trinket",
+   "flavor": "Proof that she is who she says she is. She isn't sure either.",
+   "owner": "bella",
+   "place": "bondi",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "florida_weapon": {
+   "id": "florida_weapon",
+   "name": "Gas Station Machete",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "florida_weapon",
+   "flavor": "Purchased legally. Alarmingly.",
+   "owner": "florida",
+   "place": "bondi",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "florida_armor": {
+   "id": "florida_armor",
+   "name": "Jorts of Power",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "florida_armor",
+   "flavor": "No shirt. No shoes. No problem. No service.",
+   "owner": "florida",
+   "place": "bondi",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "florida_trinket": {
+   "id": "florida_trinket",
+   "name": "Lucky Scratch-Off",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "florida_trinket",
+   "flavor": "Won forty dollars. Spent sixty celebrating.",
+   "owner": "florida",
+   "place": "bondi",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 6
+   }
+  },
+  "lola_weapon": {
+   "id": "lola_weapon",
+   "name": "Ostrich Feather Fans",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "lola_weapon",
+   "flavor": "Now you see her. Now you don't have a wallet.",
+   "owner": "lola",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "lola_armor": {
+   "id": "lola_armor",
+   "name": "Sequined Corset",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "lola_armor",
+   "flavor": "Three thousand sequins. She sewed on none of them.",
+   "owner": "lola",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "lola_trinket": {
+   "id": "lola_trinket",
+   "name": "Stolen Pocket Watch",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "lola_trinket",
+   "flavor": "Engraved 'To Henri, forever'. Sorry, Henri.",
+   "owner": "lola",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "morwenna_weapon": {
+   "id": "morwenna_weapon",
+   "name": "Crooked Wand",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "morwenna_weapon",
+   "flavor": "Bent that way on purpose. She says.",
+   "owner": "morwenna",
+   "place": "blackforest",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "morwenna_armor": {
+   "id": "morwenna_armor",
+   "name": "Cloak of Dusk",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "morwenna_armor",
+   "flavor": "Looks like a shadow. Feels like a blanket.",
+   "owner": "morwenna",
+   "place": "blackforest",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "morwenna_trinket": {
+   "id": "morwenna_trinket",
+   "name": "Suspiciously Warm Lantern",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "morwenna_trinket",
+   "flavor": "She knows she shouldn't. She's going to.",
+   "owner": "morwenna",
+   "place": "blackforest",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Digging",
+    "speed": 4
+   }
+  },
+  "sable_weapon": {
+   "id": "sable_weapon",
+   "name": "Stiletto Dagger",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "sable_weapon",
+   "flavor": "Thin enough to open a lock. Or an argument.",
+   "owner": "sable",
+   "place": "vault",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "sable_armor": {
+   "id": "sable_armor",
+   "name": "Carnival Half-Mask",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "sable_armor",
+   "flavor": "Redundant. He wears it anyway.",
+   "owner": "sable",
+   "place": "vault",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "sable_trinket": {
+   "id": "sable_trinket",
+   "name": "Skeleton Key Ring",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "sable_trinket",
+   "flavor": "Forty keys. Thirty-nine doors. He's still looking for the last one.",
+   "owner": "sable",
+   "place": "vault",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 4
+   }
+  },
+  "jacko_weapon": {
+   "id": "jacko_weapon",
+   "name": "Rescue Board",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "jacko_weapon",
+   "flavor": "Saves lives. Also a pretty decent bat.",
+   "owner": "jacko",
+   "place": "bondi",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "jacko_armor": {
+   "id": "jacko_armor",
+   "name": "Red-and-Yellow Cap",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "jacko_armor",
+   "flavor": "Swim between the flags. He's serious.",
+   "owner": "jacko",
+   "place": "bondi",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "jacko_trinket": {
+   "id": "jacko_trinket",
+   "name": "Zinc Stripe",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "jacko_trinket",
+   "flavor": "SPF one million. Smells like summer.",
+   "owner": "jacko",
+   "place": "bondi",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 2
+   }
+  },
+  "bath_carp": {
+   "id": "bath_carp",
+   "name": "Golden Carp",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bath_carp",
+   "flavor": "A fish so fancy it has a pension.",
+   "place": "dock",
+   "sell": 5
+  },
+  "bath_eel": {
+   "id": "bath_eel",
+   "name": "Rift Eel",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bath_eel",
+   "flavor": "Slipped through a crack in time. Still slippery.",
+   "place": "dock",
+   "sell": 5
+  },
+  "bath_coin": {
+   "id": "bath_coin",
+   "name": "Silver Denarius",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bath_coin",
+   "flavor": "A day's pay for a legionary. He will want it back.",
+   "place": "dock",
+   "sell": 5
+  },
+  "bath_scroll": {
+   "id": "bath_scroll",
+   "name": "Soggy Scroll",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bath_scroll",
+   "flavor": "Probably a tax bill. It is always a tax bill.",
+   "place": "dock",
+   "sell": 5
+  },
+  "bath_strigil": {
+   "id": "bath_strigil",
+   "name": "Bronze Strigil",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "bath_strigil",
+   "flavor": "Romans scraped the sweat off with this. Enjoy.",
+   "place": "dock",
+   "sell": 18
+  },
+  "bath_lamp": {
+   "id": "bath_lamp",
+   "name": "Oil Lamp",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "bath_lamp",
+   "flavor": "Two thousand years old and still works first time.",
+   "place": "dock",
+   "sell": 18
+  },
+  "bath_vial": {
+   "id": "bath_vial",
+   "name": "Perfume Vial",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "bath_vial",
+   "flavor": "Smells of roses, money, and bad decisions.",
+   "place": "dock",
+   "sell": 45
+  },
+  "bath_wreath": {
+   "id": "bath_wreath",
+   "name": "Laurel Wreath",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "bath_wreath",
+   "flavor": "Someone won a race and lost a hat.",
+   "place": "dock",
+   "sell": 45
+  },
+  "bath_nose": {
+   "id": "bath_nose",
+   "name": "Marble Bust's Nose",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "bath_nose",
+   "flavor": "This explains every Roman statue you have ever seen.",
+   "place": "dock",
+   "sell": 150
+  },
+  "bondi_1": {
+   "id": "bondi_1",
+   "name": "Lost Thong",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bondi_1",
+   "flavor": "One of a pair. The sea kept the other.",
+   "place": "bondi",
+   "sell": 5
+  },
+  "bondi_2": {
+   "id": "bondi_2",
+   "name": "Sunnies",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bondi_2",
+   "flavor": "Somebody is squinting right now.",
+   "place": "bondi",
+   "sell": 5
+  },
+  "bondi_3": {
+   "id": "bondi_3",
+   "name": "Soggy Sausage Roll",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bondi_3",
+   "flavor": "A seagull is about to be furious.",
+   "place": "bondi",
+   "sell": 5
+  },
+  "bondi_4": {
+   "id": "bondi_4",
+   "name": "Blue Swimmer Crab",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "bondi_4",
+   "flavor": "Pinches first. Pinches later too.",
+   "place": "bondi",
+   "sell": 5
+  },
+  "bondi_5": {
+   "id": "bondi_5",
+   "name": "Shark Tooth Necklace",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "bondi_5",
+   "flavor": "The shark did not donate it.",
+   "place": "bondi",
+   "sell": 18
+  },
+  "bondi_6": {
+   "id": "bondi_6",
+   "name": "Waterproof Speaker",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "bondi_6",
+   "flavor": "Still playing the same three songs.",
+   "place": "bondi",
+   "sell": 18
+  },
+  "bondi_7": {
+   "id": "bondi_7",
+   "name": "Message in a Stubby",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "bondi_7",
+   "flavor": "It says 'send more beer'.",
+   "place": "bondi",
+   "sell": 45
+  },
+  "bondi_8": {
+   "id": "bondi_8",
+   "name": "Black Pearl",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "bondi_8",
+   "flavor": "The oyster worked on it for years. You found it in an afternoon.",
+   "place": "bondi",
+   "sell": 150
+  },
+  "fjord_1": {
+   "id": "fjord_1",
+   "name": "Skrei Cod",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "fjord_1",
+   "flavor": "Dinner for six Vikings or one Brokk.",
+   "place": "fjord",
+   "sell": 5
+  },
+  "fjord_2": {
+   "id": "fjord_2",
+   "name": "Frozen Herring",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "fjord_2",
+   "flavor": "Thaw before use. Or throw it.",
+   "place": "fjord",
+   "sell": 5
+  },
+  "fjord_3": {
+   "id": "fjord_3",
+   "name": "Hack-Silver",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "fjord_3",
+   "flavor": "Viking loose change.",
+   "place": "fjord",
+   "sell": 5
+  },
+  "fjord_4": {
+   "id": "fjord_4",
+   "name": "Rune Stone",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "fjord_4",
+   "flavor": "It says 'Olaf was here'.",
+   "place": "fjord",
+   "sell": 18
+  },
+  "fjord_5": {
+   "id": "fjord_5",
+   "name": "Amber Bead",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "fjord_5",
+   "flavor": "Somebody's bad day, fifty million years ago.",
+   "place": "fjord",
+   "sell": 18
+  },
+  "fjord_6": {
+   "id": "fjord_6",
+   "name": "Walrus Ivory Comb",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "fjord_6",
+   "flavor": "Vikings were surprisingly vain about their hair.",
+   "place": "fjord",
+   "sell": 45
+  },
+  "fjord_7": {
+   "id": "fjord_7",
+   "name": "Drowned Helm",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "fjord_7",
+   "flavor": "No horns. They never had horns. Let it go.",
+   "place": "fjord",
+   "sell": 45
+  },
+  "fjord_8": {
+   "id": "fjord_8",
+   "name": "Kraken Sucker",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "fjord_8",
+   "flavor": "It let go. Be grateful.",
+   "place": "fjord",
+   "sell": 150
+  },
+  "easy_chips": {
+   "id": "easy_chips",
+   "name": "Poker Chips",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "easy_chips",
+   "flavor": "Lost the honest way. By cheating.",
+   "place": "speakeasy",
+   "sell": 5
+  },
+  "easy_moonshine": {
+   "id": "easy_moonshine",
+   "name": "Moonshine",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "easy_moonshine",
+   "flavor": "Strips paint. Also memories.",
+   "place": "speakeasy",
+   "sell": 5
+  },
+  "easy_bills": {
+   "id": "easy_bills",
+   "name": "Banded Bills",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "easy_bills",
+   "flavor": "Dirty money. Sticky, even.",
+   "place": "speakeasy",
+   "sell": 5
+  },
+  "easy_envelope": {
+   "id": "easy_envelope",
+   "name": "Sealed Envelope",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "easy_envelope",
+   "flavor": "Somebody is being blackmailed.",
+   "place": "speakeasy",
+   "sell": 5
+  },
+  "easy_knuckles": {
+   "id": "easy_knuckles",
+   "name": "Brass Knuckles",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "easy_knuckles",
+   "flavor": "For negotiations.",
+   "place": "speakeasy",
+   "sell": 18
+  },
+  "easy_fedora": {
+   "id": "easy_fedora",
+   "name": "Feathered Fedora",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "easy_fedora",
+   "flavor": "Very gangster. Not otter-sized.",
+   "place": "speakeasy",
+   "sell": 18
+  },
+  "easy_watch": {
+   "id": "easy_watch",
+   "name": "Gold Pocket Watch",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "easy_watch",
+   "flavor": "Fitting, for a time thief.",
+   "place": "speakeasy",
+   "sell": 45
+  },
+  "easy_pearls": {
+   "id": "easy_pearls",
+   "name": "Pearl Necklace",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "easy_pearls",
+   "flavor": "Somebody's wife is going to be furious.",
+   "place": "speakeasy",
+   "sell": 45
+  },
+  "easy_ring": {
+   "id": "easy_ring",
+   "name": "Diamond Ring",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "easy_ring",
+   "flavor": "Somebody had a very bad night.",
+   "place": "speakeasy",
+   "sell": 150
+  },
+  "vault_1": {
+   "id": "vault_1",
+   "name": "Gold Ducat",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "vault_1",
+   "flavor": "The dollar of 1610. Heavier.",
+   "place": "vault",
+   "sell": 5
+  },
+  "vault_2": {
+   "id": "vault_2",
+   "name": "Murano Glass Bead",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "vault_2",
+   "flavor": "Made on an island nobody was allowed to leave.",
+   "place": "vault",
+   "sell": 5
+  },
+  "vault_3": {
+   "id": "vault_3",
+   "name": "Sealing Wax",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "vault_3",
+   "flavor": "For secrets. Venice ran on secrets.",
+   "place": "vault",
+   "sell": 5
+  },
+  "vault_4": {
+   "id": "vault_4",
+   "name": "Lace Handkerchief",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "vault_4",
+   "flavor": "Took six months to make. For noses.",
+   "place": "vault",
+   "sell": 5
+  },
+  "vault_5": {
+   "id": "vault_5",
+   "name": "Spice Pouch",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "vault_5",
+   "flavor": "Worth more than the gold. Truly.",
+   "place": "vault",
+   "sell": 18
+  },
+  "vault_6": {
+   "id": "vault_6",
+   "name": "Gondolier's Ferro",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "vault_6",
+   "flavor": "Somebody's boat is steering badly tonight.",
+   "place": "vault",
+   "sell": 18
+  },
+  "vault_7": {
+   "id": "vault_7",
+   "name": "Doge's Signet",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "vault_7",
+   "flavor": "Stamps laws. Also very good for cheese.",
+   "place": "vault",
+   "sell": 45
+  },
+  "vault_8": {
+   "id": "vault_8",
+   "name": "Golden Carnival Mask",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "vault_8",
+   "flavor": "Whoever wore it was never seen again. By choice.",
+   "place": "vault",
+   "sell": 150
+  },
+  "closet_1": {
+   "id": "closet_1",
+   "name": "Good Pens",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "closet_1",
+   "flavor": "Not the cheap ones. The GOOD ones.",
+   "place": "closet",
+   "sell": 5
+  },
+  "closet_2": {
+   "id": "closet_2",
+   "name": "Sticky Notes",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "closet_2",
+   "flavor": "Each one says 'URGENT'. None of them are.",
+   "place": "closet",
+   "sell": 5
+  },
+  "closet_3": {
+   "id": "closet_3",
+   "name": "Toner Cartridge",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "closet_3",
+   "flavor": "Worth more per ounce than gold. Look it up.",
+   "place": "closet",
+   "sell": 5
+  },
+  "closet_4": {
+   "id": "closet_4",
+   "name": "Stress Ball",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "closet_4",
+   "flavor": "Squeezed flat by one hundred Mondays.",
+   "place": "closet",
+   "sell": 5
+  },
+  "closet_5": {
+   "id": "closet_5",
+   "name": "Ergonomic Mouse",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "closet_5",
+   "flavor": "Requested in 2019. Approved today.",
+   "place": "closet",
+   "sell": 18
+  },
+  "closet_6": {
+   "id": "closet_6",
+   "name": "Label Maker",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "closet_6",
+   "flavor": "It has labelled itself. 'LABEL MAKER'.",
+   "place": "closet",
+   "sell": 18
+  },
+  "closet_7": {
+   "id": "closet_7",
+   "name": "The Good Stapler",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "closet_7",
+   "flavor": "There was only ever one. Wars have been fought.",
+   "place": "closet",
+   "sell": 45
+  },
+  "closet_8": {
+   "id": "closet_8",
+   "name": "Brenda's Key",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "closet_8",
+   "flavor": "It was in the closet. Of course it was in the closet.",
+   "place": "closet",
+   "sell": 150
+  },
+  "outback_1": {
+   "id": "outback_1",
+   "name": "Spent Casing",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "outback_1",
+   "flavor": "Ten thousand fired. Almost none hit.",
+   "place": "outback",
+   "sell": 5
+  },
+  "outback_2": {
+   "id": "outback_2",
+   "name": "Emu Feather",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "outback_2",
+   "flavor": "Dropped mid-victory lap.",
+   "place": "outback",
+   "sell": 5
+  },
+  "outback_3": {
+   "id": "outback_3",
+   "name": "Tin of Bully Beef",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "outback_3",
+   "flavor": "Best before 1933. Still better than the alternative.",
+   "place": "outback",
+   "sell": 5
+  },
+  "outback_4": {
+   "id": "outback_4",
+   "name": "Billy Can",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "outback_4",
+   "flavor": "Makes tea that tastes like campfire.",
+   "place": "outback",
+   "sell": 5
+  },
+  "outback_5": {
+   "id": "outback_5",
+   "name": "Army Field Report",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "outback_5",
+   "flavor": "It reads: 'The emus have won.'",
+   "place": "outback",
+   "sell": 18
+  },
+  "outback_6": {
+   "id": "outback_6",
+   "name": "Rabbit-Proof Fence Wire",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "outback_6",
+   "flavor": "It was never emu-proof.",
+   "place": "outback",
+   "sell": 18
+  },
+  "outback_7": {
+   "id": "outback_7",
+   "name": "Opal Chunk",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "outback_7",
+   "flavor": "The outback keeps its colors underground.",
+   "place": "outback",
+   "sell": 45
+  },
+  "outback_8": {
+   "id": "outback_8",
+   "name": "Gold Nugget",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "outback_8",
+   "flavor": "Somebody dug here for years and missed it by a foot.",
+   "place": "outback",
+   "sell": 150
+  },
+  "blackforest_1": {
+   "id": "blackforest_1",
+   "name": "Toadstool",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "blackforest_1",
+   "flavor": "Do not eat. Do not even look hungry near it.",
+   "place": "blackforest",
+   "sell": 5
+  },
+  "blackforest_2": {
+   "id": "blackforest_2",
+   "name": "Crow's Foot Charm",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "blackforest_2",
+   "flavor": "Wards off evil. And guests.",
+   "place": "blackforest",
+   "sell": 5
+  },
+  "blackforest_3": {
+   "id": "blackforest_3",
+   "name": "Bent Silver Spoon",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "blackforest_3",
+   "flavor": "Somebody tried to dig their way out with it.",
+   "place": "blackforest",
+   "sell": 5
+  },
+  "blackforest_4": {
+   "id": "blackforest_4",
+   "name": "Candle Stub",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "blackforest_4",
+   "flavor": "Burned for something. Nobody says what.",
+   "place": "blackforest",
+   "sell": 5
+  },
+  "blackforest_5": {
+   "id": "blackforest_5",
+   "name": "Mandrake Root",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "blackforest_5",
+   "flavor": "Screams when pulled. Wear earmuffs.",
+   "place": "blackforest",
+   "sell": 18
+  },
+  "blackforest_6": {
+   "id": "blackforest_6",
+   "name": "Cursed Thimble",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "blackforest_6",
+   "flavor": "Every stitch you sew comes undone by morning.",
+   "place": "blackforest",
+   "sell": 18
+  },
+  "blackforest_7": {
+   "id": "blackforest_7",
+   "name": "Grimoire Page",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "blackforest_7",
+   "flavor": "The recipe is for soup. The soup is the problem.",
+   "place": "blackforest",
+   "sell": 45
+  },
+  "blackforest_8": {
+   "id": "blackforest_8",
+   "name": "Wolfsbane Bloom",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "blackforest_8",
+   "flavor": "Blooms once a century. You are welcome.",
+   "place": "blackforest",
+   "sell": 150
+  },
+  "x_shard": {
+   "id": "x_shard",
+   "name": "Card Shard",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "x_shard",
+   "flavor": "A corner of somebody who has already arrived.",
+   "place": "archive",
+   "sell": 25
+  }
+ }
+}
