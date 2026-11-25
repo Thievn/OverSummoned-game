@@ -746,7 +746,7 @@ func _summon() -> void:
 		label = "NEW: " + label
 	_float_text(label, Vector2(c.x, minf(c.y + 40.0, WIN.y - 10.0)), Color(str(R["rarity_color"][rarity])), 16)
 	_gain("Summoning", int(cost * float(R["summon"]["xp_per_ink"])))
-	if rarity in ["rare", "epic", "legendary"] or had == 0:
+	if rarity in ["rare", "epic", "legendary", "absurd", "unhinged"] or had == 0:
 		smudge.cheer(1.8)
 	var i := ["sweet", "salty", "unhinged"].find(mode)
 	_say_text(str(hero["lines"][i]))

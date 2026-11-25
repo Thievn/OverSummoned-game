@@ -71,7 +71,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 ## Desktop pet
 - [x] Fable build: puppet Smudge, 9 places, 24 heroes, crate, loot lists
 - [ ] Sign in with a link code so heroes and ink sync with the web
-- [ ] New rarities, stacked crates, Stay / Wander / Hunt
+- [x] Desktop pet on the current rulebook: seven rarities, all 26 heroes (tested: summon, menu, places, sleep)
+- [ ] Desktop pet: stacked crates, Stay / Wander / Hunt
 - [ ] Windows download from the site
 - [ ] Count keys in other apps (Windows add-on)
 - [ ] Sounds for the new places

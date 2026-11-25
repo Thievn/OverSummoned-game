@@ -5,14 +5,18 @@
   "uncommon",
   "rare",
   "epic",
-  "legendary"
+  "legendary",
+  "absurd",
+  "unhinged"
  ],
  "rarity_color": {
   "common": "#9aa3b8",
   "uncommon": "#3ecf6b",
   "rare": "#4a8dff",
   "epic": "#b06bff",
-  "legendary": "#ff9a2e"
+  "legendary": "#ff9a2e",
+  "absurd": "#ff4fb4",
+  "unhinged": "#ff3b30"
  },
  "stats": [
   "attack",
@@ -54,22 +58,25 @@
   "after": 0.05
  },
  "web": {
-  "xp_mult": 0.5,
+  "xp_mult": 0.25,
   "loot_chance": 0.5,
-  "ink_mult": 0.5
+  "ink_mult": 0.35,
+  "stamp_ink": 5
  },
  "summon": {
   "base_ink": 3000,
   "per_unique": 400,
   "xp_per_ink": 0.25,
   "weights": {
-   "common": 44,
+   "common": 50,
    "uncommon": 28,
-   "rare": 18,
-   "epic": 8,
-   "legendary": 2
+   "rare": 14,
+   "epic": 6,
+   "legendary": 1.6,
+   "absurd": 0.35,
+   "unhinged": 0.05
   },
-  "luck_per_level": 0.15
+  "luck_per_level": 0.0
  },
  "card": {
   "max_level": 10,
@@ -80,7 +87,9 @@
    "uncommon": 62,
    "rare": 76,
    "epic": 92,
-   "legendary": 110
+   "legendary": 110,
+   "absurd": 130,
+   "unhinged": 155
   }
  },
  "gear": {
@@ -89,7 +98,9 @@
    "uncommon": 8,
    "rare": 14,
    "epic": 22,
-   "legendary": 32
+   "legendary": 32,
+   "absurd": 42,
+   "unhinged": 55
   },
   "signature_bonus": 0.5,
   "skill_speed": {
@@ -97,21 +108,27 @@
    "uncommon": 2,
    "rare": 4,
    "epic": 6,
-   "legendary": 10
+   "legendary": 10,
+   "absurd": 13,
+   "unhinged": 16
   },
   "drop_weight": {
    "common": 1.2,
    "uncommon": 0.75,
    "rare": 0.375,
    "epic": 0.15,
-   "legendary": 0.06
+   "legendary": 0.06,
+   "absurd": 0.03,
+   "unhinged": 0.012
   },
   "sell": {
    "common": 15,
    "uncommon": 30,
    "rare": 80,
    "epic": 220,
-   "legendary": 600
+   "legendary": 600,
+   "absurd": 1500,
+   "unhinged": 4000
   }
  },
  "loot": {
@@ -231,6 +248,172 @@
    "ink": 250
   }
  },
+ "jobs": {
+  "slots": [
+   0,
+   0,
+   20,
+   50,
+   100,
+   150
+  ],
+  "speed_div": 100,
+  "luck_div": 100,
+  "mastery_xp": 10,
+  "mastery_speed": 0.01,
+  "mastery_cap": 50,
+  "wander_minutes": 15
+ },
+ "cabinet": {
+  "ink_per": 0.005,
+  "set_speed": 0.1
+ },
+ "energy": {
+  "max": 100,
+  "regen_seconds": 180,
+  "train_cost": 10,
+  "cap_base": 10,
+  "cap_per_card_level": 5
+ },
+ "tonics": [
+  {
+   "id": "x_tonic_speed",
+   "name": "Quickstep Tonic",
+   "effect": "speed",
+   "amount": 0.25,
+   "minutes": 60,
+   "cost": {
+    "rarity": "common",
+    "n": 8
+   },
+   "text": "Every job runs 25% faster for an hour."
+  },
+  {
+   "id": "x_tonic_luck",
+   "name": "Lucky Dip Tonic",
+   "effect": "luck",
+   "amount": 0.5,
+   "minutes": 60,
+   "cost": {
+    "rarity": "uncommon",
+    "n": 4
+   },
+   "text": "Better finds everywhere for an hour."
+  },
+  {
+   "id": "x_tonic_xp",
+   "name": "Bookworm Tonic",
+   "effect": "xp",
+   "amount": 0.5,
+   "minutes": 60,
+   "cost": {
+    "rarity": "rare",
+    "n": 2
+   },
+   "text": "Half again as much skill xp for an hour."
+  }
+ ],
+ "gear_up": {
+  "max": 5,
+  "per_level": 0.15,
+  "gold": [
+   100,
+   250,
+   600,
+   1500,
+   4000
+  ]
+ },
+ "raids": {
+  "tickets": 3,
+  "regen_minutes": 120,
+  "hp_mult": 8,
+  "rounds": 20,
+  "loot_rolls": 3,
+  "loot_luck": 2.0,
+  "bosses": [
+   {
+    "id": "tiber",
+    "name": "The Tiber Thing",
+    "place": "dock",
+    "hp": 300,
+    "attack": 35,
+    "defense": 10,
+    "gold": 120,
+    "text": "Nobody has seen all of it. The part with the teeth is enough."
+   },
+   {
+    "id": "tony",
+    "name": "Big Tony's Boys",
+    "place": "speakeasy",
+    "hp": 340,
+    "attack": 38,
+    "defense": 12,
+    "gold": 140,
+    "text": "Four gentlemen who would like a word about the safe."
+   },
+   {
+    "id": "vanguard",
+    "name": "The Emu Vanguard",
+    "place": "outback",
+    "hp": 380,
+    "attack": 36,
+    "defense": 14,
+    "gold": 160,
+    "text": "They beat an army once. They would like to do it again."
+   },
+   {
+    "id": "gary",
+    "name": "Gary the Great White",
+    "place": "bondi",
+    "hp": 1200,
+    "attack": 80,
+    "defense": 40,
+    "gold": 400,
+    "text": "He is between the flags. That is the problem."
+   },
+   {
+    "id": "nephew",
+    "name": "The Doge's Nephew",
+    "place": "vault",
+    "hp": 1350,
+    "attack": 85,
+    "defense": 45,
+    "gold": 450,
+    "text": "Bad at guarding. Surprisingly good at fencing."
+   },
+   {
+    "id": "well",
+    "name": "The Thing Under the Well",
+    "place": "blackforest",
+    "hp": 1500,
+    "attack": 90,
+    "defense": 50,
+    "gold": 500,
+    "text": "It was buried for a reason. Smudge had a shovel."
+   },
+   {
+    "id": "antlers",
+    "name": "The Antlered Deep",
+    "place": "fjord",
+    "hp": 4000,
+    "attack": 160,
+    "defense": 100,
+    "gold": 1400,
+    "text": "Something under the ice has antlers. It also has opinions."
+   },
+   {
+    "id": "brenda",
+    "name": "Brenda, Back From Leave",
+    "place": "closet",
+    "hp": 4600,
+    "attack": 175,
+    "defense": 115,
+    "gold": 1700,
+    "text": "She has seen the state of the supply closet."
+   }
+  ]
+ },
  "xp_table": [
   0,
   83,
@@ -346,6 +529,7 @@
     "Kevin. From accounting. Somehow still on break.",
     "It's fucking Kevin. With his mug. Nobody asked for Kevin."
    ],
+   "bg": "office",
    "stats": {
     "attack": 9,
     "defense": 16,
@@ -373,6 +557,7 @@
     "Marco. Delivers anything, anywhere. Even across time, apparently.",
     "Marco! Two thousand years late. Tip him anyway, you cheap ass."
    ],
+   "bg": "city",
    "stats": {
     "attack": 11,
     "defense": 5,
@@ -400,6 +585,7 @@
     "Maya. Paramedic. Finally someone useful.",
     "A paramedic. Thank god. I've been bleeding emotionally for three hundred years."
    ],
+   "bg": "city",
    "stats": {
     "attack": 8,
     "defense": 14,
@@ -427,6 +613,7 @@
     "Brokk. From the Ice Age. He's going to hate the thermostat.",
     "Brokk has never seen a toilet and he's about to have the best day of his life."
    ],
+   "bg": "iceage",
    "stats": {
     "attack": 21,
     "defense": 10,
@@ -454,6 +641,7 @@
     "Gaius. Legionary. Has opinions about marching.",
     "A Roman legionary. Don't mention Carthage. He gets fucking weird about Carthage."
    ],
+   "bg": "rome",
    "stats": {
     "attack": 14,
     "defense": 24,
@@ -481,6 +669,7 @@
     "Edith. Victorian engineer. Already judging our wiring.",
     "Edith built bridges in the 1880s and she's looking at our setup like it's a crime scene."
    ],
+   "bg": "london",
    "stats": {
     "attack": 9,
     "defense": 17,
@@ -508,6 +697,7 @@
     "A plague doctor. Wash your hands. Seriously.",
     "A plague doctor from 1348. Everybody back the fuck up."
    ],
+   "bg": "medieval",
    "stats": {
     "attack": 23,
     "defense": 9,
@@ -535,6 +725,7 @@
     "Vincenzo Moretti. Don't ask what he does. Don't.",
     "Vincenzo. Chicago, 1927. If anyone asks, we never saw shit."
    ],
+   "bg": "chicago",
    "stats": {
     "attack": 24,
     "defense": 7,
@@ -562,6 +753,7 @@
     "Will Slapton. Leading man. Bigger ego than the book.",
     "Will fucking Slapton. Somebody hide the ledger before he slaps it."
    ],
+   "bg": "hollywood",
    "stats": {
     "attack": 24,
     "defense": 20,
@@ -589,6 +781,7 @@
     "Napoleon. Conquered Europe. Defeated by a kitchen counter.",
     "It's Napoleon. He's two feet tall and he will absolutely fuck up your whole continent."
    ],
+   "bg": "france",
    "stats": {
     "attack": 17,
     "defense": 29,
@@ -616,6 +809,7 @@
     "Cleocatra. She's already decided you work for her.",
     "Cleocatra. She fucked up two Roman generals' whole lives and she'll do yours for fun."
    ],
+   "bg": "egypt",
    "stats": {
     "attack": 24,
     "defense": 20,
@@ -643,6 +837,7 @@
     "Captain Blackbear. Scourge of the seas. Scared of birds.",
     "Blackbear. He'll gut you for a doubloon and cry if a seagull looks at him."
    ],
+   "bg": "caribbean",
    "stats": {
     "attack": 31,
     "defense": 15,
@@ -670,6 +865,7 @@
     "Astrid. Shield-maiden. Could bench-press the book.",
     "Astrid could snap me in half and honestly? I'd fucking thank her."
    ],
+   "bg": "norway",
    "stats": {
     "attack": 25,
     "defense": 12,
@@ -697,6 +893,7 @@
     "Kenji. Ronin. Loyal to no master. Loyal to all snacks.",
     "Kenji will die for his honor. He'll also sell you out for one goddamn dumpling."
    ],
+   "bg": "japan",
    "stats": {
     "attack": 16,
     "defense": 8,
@@ -717,19 +914,20 @@
    "title": "Undefeated Commander",
    "era": "Australia, 1932",
    "species": "Emu",
-   "rarity": "epic",
+   "rarity": "absurd",
    "bio": "In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
    "lines": [
     "A big bird general! He looks so proud!",
     "General Emu. Beat an actual army. With his legs.",
     "This bird beat the Australian fucking army. Machine guns and all. Salute him."
    ],
+   "bg": "outback",
    "stats": {
-    "attack": 20,
-    "defense": 9,
-    "health": 15,
-    "speed": 35,
-    "luck": 13
+    "attack": 29,
+    "defense": 13,
+    "health": 21,
+    "speed": 49,
+    "luck": 18
    },
    "gear": [
     "emu_weapon",
@@ -751,6 +949,7 @@
     "Frau Troffea. Started dancing in 1518. Hasn't stopped. Don't make eye contact.",
     "She's been dancing for five hundred years. Do NOT let her grab your fucking hand."
    ],
+   "bg": "medieval",
    "stats": {
     "attack": 13,
     "defense": 6,
@@ -778,6 +977,7 @@
     "Joost. Traded his house for a tulip. It's a long story. It's a sad story.",
     "This idiot swapped a whole fucking house for one flower. And he'd do it again."
    ],
+   "bg": "amsterdam",
    "stats": {
     "attack": 7,
     "defense": 7,
@@ -805,6 +1005,7 @@
     "Chad. Lost everything twice. Calls it 'building'.",
     "Chad's down ninety percent and still calling everybody else poor. Fucking legend."
    ],
+   "bg": "office",
    "stats": {
     "attack": 5,
     "defense": 6,
@@ -832,6 +1033,7 @@
     "Bella. Four million followers. Zero idea where she is right now.",
     "Bella's hot, she knows it, and she's already filmed you without asking. Smile, dipshit."
    ],
+   "bg": "beach",
    "stats": {
     "attack": 17,
     "defense": 14,
@@ -852,19 +1054,20 @@
    "title": "Local Legend",
    "era": "Florida, today",
    "species": "Alligator",
-   "rarity": "epic",
+   "rarity": "absurd",
    "bio": "Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
    "lines": [
     "A big smiley alligator! With muscles!",
     "Florida Man. Yes, that one. All of them, actually.",
     "Florida Man. Shirtless, lawless, and one bad idea away from the fucking evening news."
    ],
+   "bg": "beach",
    "stats": {
-    "attack": 31,
-    "defense": 15,
-    "health": 24,
-    "speed": 13,
-    "luck": 9
+    "attack": 44,
+    "defense": 21,
+    "health": 34,
+    "speed": 18,
+    "luck": 13
    },
    "gear": [
     "florida_weapon",
@@ -886,6 +1089,7 @@
     "Lola Vixen. Steals hearts. And, separately, wallets.",
     "Lola. She'll blow you a kiss with one hand and take your goddamn wallet with the other."
    ],
+   "bg": "paris",
    "stats": {
     "attack": 24,
     "defense": 7,
@@ -913,6 +1117,7 @@
     "Morwenna. Very dark. Very mysterious. Keeps flying into the lantern.",
     "Morwenna's a scary goth witch right up until someone turns on a fucking light."
    ],
+   "bg": "forest",
    "stats": {
     "attack": 23,
     "defense": 9,
@@ -940,6 +1145,7 @@
     "Sable. Master thief. Washes everything he steals. Everything.",
     "Sable'll rob you blind and then wash your shit in a canal. Weird little bastard."
    ],
+   "bg": "venice",
    "stats": {
     "attack": 19,
     "defense": 6,
@@ -967,6 +1173,7 @@
     "Jacko. Lifeguard. Abs you could grate cheese on.",
     "Jacko's shredded, he's shirtless, and he just called me 'mate'. I'm fucking done."
    ],
+   "bg": "beach",
    "stats": {
     "attack": 8,
     "defense": 14,
@@ -980,6 +1187,62 @@
     "jacko_trinket"
    ],
    "place": "bondi"
+  },
+  {
+   "id": "raspawtin",
+   "name": "Raspawtin",
+   "title": "Unkillable Mystic",
+   "era": "St Petersburg, 1916",
+   "species": "Borzoi",
+   "rarity": "unhinged",
+   "bio": "They poisoned his cakes. He asked for seconds. They shot him, twice. He complimented the aim. They threw him in a frozen river and he was seen the next morning ordering brunch. Nobody has tried since. It seems rude.",
+   "lines": [
+    "A very tall dog with very intense eyes! Hello!",
+    "Raspawtin. Poisoned, shot, drowned. Still here. Deeply annoying.",
+    "They poisoned him, shot him and drowned him and the creepy fucker STILL showed up. Hide."
+   ],
+   "bg": "russia",
+   "stats": {
+    "attack": 46,
+    "defense": 19,
+    "health": 25,
+    "speed": 25,
+    "luck": 40
+   },
+   "gear": [
+    "raspawtin_weapon",
+    "raspawtin_armor",
+    "raspawtin_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "madjack",
+   "name": "Mad Jack Ramsbottom",
+   "title": "Officer and Lunatic",
+   "era": "Normandy, 1944",
+   "species": "Ram",
+   "rarity": "unhinged",
+   "bio": "Went to the Second World War carrying a longbow, a broadsword and a set of bagpipes, and used all three. When the war ended he was reportedly furious. Says any officer who goes into action without his sword is improperly dressed.",
+   "lines": [
+    "A soldier with bagpipes! And a sword! And a bow!",
+    "Mad Jack. Brought a sword to a tank fight. Won.",
+    "This lunatic charged a fucking beach playing the bagpipes. With a SWORD. And it WORKED."
+   ],
+   "bg": "normandy",
+   "stats": {
+    "attack": 52,
+    "defense": 25,
+    "health": 40,
+    "speed": 22,
+    "luck": 16
+   },
+   "gear": [
+    "madjack_weapon",
+    "madjack_armor",
+    "madjack_trinket"
+   ],
+   "place": "outback"
   }
  ],
  "places": [
@@ -1131,15 +1394,15 @@
     ],
     [
      "florida_weapon",
-     0.15
+     0.03
     ],
     [
      "florida_armor",
-     0.15
+     0.03
     ],
     [
      "florida_trinket",
-     0.15
+     0.03
     ],
     [
      "jacko_weapon",
@@ -1231,6 +1494,18 @@
     [
      "kenji_trinket",
      0.375
+    ],
+    [
+     "raspawtin_weapon",
+     0.012
+    ],
+    [
+     "raspawtin_armor",
+     0.012
+    ],
+    [
+     "raspawtin_trinket",
+     0.012
     ]
    ]
   },
@@ -1542,15 +1817,27 @@
     ],
     [
      "emu_weapon",
-     0.15
+     0.03
     ],
     [
      "emu_armor",
-     0.15
+     0.03
     ],
     [
      "emu_trinket",
-     0.15
+     0.03
+    ],
+    [
+     "madjack_weapon",
+     0.012
+    ],
+    [
+     "madjack_armor",
+     0.012
+    ],
+    [
+     "madjack_trinket",
+     0.012
     ]
    ]
   },
@@ -2368,51 +2655,51 @@
    "name": "Captured Lewis Gun",
    "kind": "gear",
    "slot": "weapon",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_weapon",
    "flavor": "Taken as a trophy. He has no idea how it works. Neither did they.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 29,
+    "speed": 13
    },
-   "sell": 220
+   "sell": 1500
   },
   "emu_armor": {
    "id": "emu_armor",
    "name": "Outback Slouch Hat",
    "kind": "gear",
    "slot": "armor",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_armor",
    "flavor": "The feather is his own. A power move.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 21,
+    "health": 21
    },
-   "sell": 220
+   "sell": 1500
   },
   "emu_trinket": {
    "id": "emu_trinket",
    "name": "Medal of Total Victory",
    "kind": "gear",
    "slot": "trinket",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "emu_trinket",
    "flavor": "Self-awarded. Fully deserved.",
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 17,
+    "luck": 25
    },
-   "sell": 220,
+   "sell": 1500,
    "equip": {
     "skill": "Digging",
-    "speed": 6
+    "speed": 13
    }
   },
   "troffea_weapon": {
@@ -2628,51 +2915,51 @@
    "name": "Gas Station Machete",
    "kind": "gear",
    "slot": "weapon",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_weapon",
    "flavor": "Purchased legally. Alarmingly.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 29,
+    "speed": 13
    },
-   "sell": 220
+   "sell": 1500
   },
   "florida_armor": {
    "id": "florida_armor",
    "name": "Jorts of Power",
    "kind": "gear",
    "slot": "armor",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_armor",
    "flavor": "No shirt. No shoes. No problem. No service.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 21,
+    "health": 21
    },
-   "sell": 220
+   "sell": 1500
   },
   "florida_trinket": {
    "id": "florida_trinket",
    "name": "Lucky Scratch-Off",
    "kind": "gear",
    "slot": "trinket",
-   "rarity": "epic",
+   "rarity": "absurd",
    "icon": "florida_trinket",
    "flavor": "Won forty dollars. Spent sixty celebrating.",
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 17,
+    "luck": 25
    },
-   "sell": 220,
+   "sell": 1500,
    "equip": {
     "skill": "Fishing",
-    "speed": 6
+    "speed": 13
    }
   },
   "lola_weapon": {
@@ -2881,6 +3168,112 @@
    "equip": {
     "skill": "Fishing",
     "speed": 2
+   }
+  },
+  "raspawtin_weapon": {
+   "id": "raspawtin_weapon",
+   "name": "Suspicious Tea Cake",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "unhinged",
+   "icon": "raspawtin_weapon",
+   "flavor": "Laced with enough poison to stop an ox. He has eaten nine.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "attack": 39,
+    "speed": 16
+   },
+   "sell": 4000
+  },
+  "raspawtin_armor": {
+   "id": "raspawtin_armor",
+   "name": "Mystic's Black Robe",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "unhinged",
+   "icon": "raspawtin_armor",
+   "flavor": "Three bullet holes. No complaints.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "attack": -1,
+    "defense": 28,
+    "health": 28
+   },
+   "sell": 4000
+  },
+  "raspawtin_trinket": {
+   "id": "raspawtin_trinket",
+   "name": "The Stare",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "unhinged",
+   "icon": "raspawtin_trinket",
+   "flavor": "You blinked first. Everyone blinks first.",
+   "owner": "raspawtin",
+   "place": "fjord",
+   "stats": {
+    "speed": 22,
+    "luck": 33
+   },
+   "sell": 4000,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 16
+   }
+  },
+  "madjack_weapon": {
+   "id": "madjack_weapon",
+   "name": "Basket-Hilted Broadsword",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "unhinged",
+   "icon": "madjack_weapon",
+   "flavor": "The last sword drawn in anger in a modern war. He drew it a lot.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "attack": 39,
+    "speed": 16
+   },
+   "sell": 4000
+  },
+  "madjack_armor": {
+   "id": "madjack_armor",
+   "name": "Battle Bagpipes",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "unhinged",
+   "icon": "madjack_armor",
+   "flavor": "Enemy morale drops forty percent. So does everyone else's.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "attack": -1,
+    "defense": 28,
+    "health": 28
+   },
+   "sell": 4000
+  },
+  "madjack_trinket": {
+   "id": "madjack_trinket",
+   "name": "War Longbow",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "unhinged",
+   "icon": "madjack_trinket",
+   "flavor": "The only confirmed longbow kill of 1940. He would like that on record.",
+   "owner": "madjack",
+   "place": "outback",
+   "stats": {
+    "speed": 22,
+    "luck": 33
+   },
+   "sell": 4000,
+   "equip": {
+    "skill": "Digging",
+    "speed": 16
    }
   },
   "bath_carp": {
@@ -3542,6 +3935,46 @@
    "flavor": "Blooms once a century. You are welcome.",
    "place": "blackforest",
    "sell": 150
+  },
+  "x_crate": {
+   "id": "x_crate",
+   "name": "Rift Crate",
+   "kind": "crate",
+   "rarity": "rare",
+   "icon": "x_crate",
+   "flavor": "It fell out of a hole in time. It is ticking. Probably fine.",
+   "place": "archive",
+   "sell": 0
+  },
+  "x_tonic_speed": {
+   "id": "x_tonic_speed",
+   "name": "Quickstep Tonic",
+   "kind": "tonic",
+   "rarity": "uncommon",
+   "icon": "x_tonic_speed",
+   "flavor": "Every job runs 25% faster for an hour.",
+   "place": "archive",
+   "sell": 0
+  },
+  "x_tonic_luck": {
+   "id": "x_tonic_luck",
+   "name": "Lucky Dip Tonic",
+   "kind": "tonic",
+   "rarity": "uncommon",
+   "icon": "x_tonic_luck",
+   "flavor": "Better finds everywhere for an hour.",
+   "place": "archive",
+   "sell": 0
+  },
+  "x_tonic_xp": {
+   "id": "x_tonic_xp",
+   "name": "Bookworm Tonic",
+   "kind": "tonic",
+   "rarity": "uncommon",
+   "icon": "x_tonic_xp",
+   "flavor": "Half again as much skill xp for an hour.",
+   "place": "archive",
+   "sell": 0
   },
   "x_shard": {
    "id": "x_shard",
