@@ -142,6 +142,9 @@ var summon_wait := 0.0
 var hauls_unsent := 0
 var link_code: LineEdit
 var link_status: Label
+var link_req := ""            # the request id while waiting for Yes on the website
+var link_poll_t := 0.0
+var link_left := 0.0
 
 # ============================================================ setup
 
@@ -443,6 +446,15 @@ func _process(delta: float) -> void:
 	overlay_top.queue_redraw()
 	_update_passthrough()
 
+	if link_req != "":
+		link_left -= delta
+		link_poll_t -= delta
+		if link_left <= 0.0:
+			link_req = ""
+			_refresh_link()
+		elif link_poll_t <= 0.0 and not cloud_busy:
+			link_poll_t = 2.5
+			_link_poll()
 	if cloud.linked():
 		roll_timer -= delta
 		summon_wait -= delta
@@ -1391,6 +1403,7 @@ func _build_menu() -> void:
 	lrow.add_child(_button("Link", _link_now))
 	lrow.add_child(_button("Unlink", _unlink))
 	settings.add_child(lrow)
+	settings.add_child(_button("Link in browser (no code)", _link_browser))
 	_refresh_link()
 	settings.add_child(_section("Sound"))
 	settings.add_child(_check("Sound", sound_on, _set_sound))
@@ -1925,10 +1938,12 @@ func _load_game() -> void:
 func _refresh_link() -> void:
 	if link_status == null:
 		return
-	if cloud.linked():
+	if link_req != "":
+		link_status.text = "Your browser has opened oversummoned.com. Sign in if it asks, check it shows %s, and press Yes. Waiting." % link_req.left(4).to_upper()
+	elif cloud.linked():
 		link_status.text = "Linked to %s. Everything here is the same ledger as the website." % (cloud.username if cloud.username != "" else "your account")
 	else:
-		link_status.text = "Not linked. On oversummoned.com open Account, press Link a desktop pet, and type the code here."
+		link_status.text = "Not linked. Press Link in browser, or get a code on oversummoned.com (Account, Link a desktop pet) and type it here. Once per computer. On Steam neither will be needed."
 
 func _link_now() -> void:
 	var code := link_code.text.strip_edges()
@@ -1951,7 +1966,33 @@ func _link_now() -> void:
 	_refresh_link()
 	await _cloud_load()
 
+# the no-typing way: make up a long random id, open the website with it, and keep asking until the player says Yes there
+func _link_browser() -> void:
+	if cloud.linked():
+		return
+	var bytes := Crypto.new().generate_random_bytes(20)
+	link_req = bytes.hex_encode()
+	link_left = 600.0
+	link_poll_t = 3.0
+	OS.shell_open("https://oversummoned.com/play?pet=" + link_req)
+	_refresh_link()
+
+func _link_poll() -> void:
+	var req := link_req
+	cloud_busy = true
+	var r = await cloud.poll(req)
+	cloud_busy = false
+	if req != link_req or not (r is Dictionary) or str(r.get("r", "")) != "ok":
+		return
+	link_req = ""
+	cloud.token = str(r["token"])
+	cloud.username = str(r.get("username", ""))
+	_save_game()
+	_refresh_link()
+	await _cloud_load()
+
 func _unlink() -> void:
+	link_req = ""
 	cloud.token = ""
 	cloud.username = ""
 	cloud_data = {}

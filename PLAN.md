@@ -292,3 +292,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] **Steam: automatic, no code at all.** The Steam build signs in with the player's Steam identity; the website gets "Sign in with Steam"; same Steam id = same ledger.
       Needs: a Steam app id, a Steam Web API key (Dean's Steamworks account), the GodotSteam add-on, one small server function to check Steam tickets
 - [ ] Pet still lacks crew, expeditions, bench, 8-slot cards; .exe needs export templates
+- [x] Linking explained where people will see it: landing page under the download button, Account > Desktop pet, the pet's Settings, the pet's readme. Says: once per computer, codes are random, single-use, ten minutes, not needed on Steam
+- [x] Steam sign-in greyed out and marked "coming soon" on the login page and the account page (it did nothing yet)
+- [x] Second way to link, nothing to type: pet's Settings > Link in browser opens the site, the site shows a four-letter check and a Yes button. Built in the pet and on the website, tested in the pet against a pretend server
+- [ ] **Blocked: the database part of Link in browser is not applied.** The approval prompt was cancelled three times while Dean was away. SQL is in `supabase/os2_pet_link_browser.sql`; apply it, then test in a rolled-back block. Until then that button opens the site but Yes fails; linking by code works
+- Decided by Dean: the pet stays minimal, for farming by typing. Crew, expeditions, bench, gear and the city stay on the website

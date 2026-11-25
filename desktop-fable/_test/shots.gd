@@ -73,6 +73,11 @@ func _process(_d: float) -> bool:
 			main.cloud.token = "test"
 			main.cloud.username = "DevOtter"
 			main._cloud_load()
+		"linkb":
+			main.cloud.fake = _fake_server
+			main.link_req = "ab12cd34ef56ab12cd34ef56ab12cd34ef56ab12"
+			main.link_left = 600.0
+			main._refresh_link()
 		"cloudsave":
 			main._cloud_save()
 		"menu":
@@ -98,6 +103,9 @@ func _process(_d: float) -> bool:
 # a pretend server for the linked path: same answers the real one gives
 var srv := {"rev": 3, "data": {"v": 3, "ink": 9000.0, "gold": 12.0, "xp": {"Fishing": 5000000.0, "Summoning": 100.0}, "bag": {"bath_carp": 2.0, "x_shard": 1.0}, "roster": {"kevin": 1.0, "lola": 2.0}, "actions": 10.0, "crew": ["lola", null, null]}}
 func _fake_server(fn: String, body: Dictionary):
+	if fn == "os2_link_poll":
+		print("FAKE poll")
+		return {"r": "ok", "token": "test", "username": "DevOtter"}
 	if fn != "os2_pet":
 		return {"r": "ok", "token": "test", "username": "DevOtter"}
 	var a: Dictionary = body["p_args"]

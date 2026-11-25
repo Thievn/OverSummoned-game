@@ -677,6 +677,12 @@
     d.appendChild(btn('', 'Put it on the stall', async () => { const v = note(); if (v < 1 || v > 100000 || !(S.bag[id] > 0)) return; const r = await srv(() => Cloud.marketList(id, 1, v)); if (r.r !== 'ok') toast(r.r); else bump('market_lists'); modal.close(); render(); cityAgain(); }));
     d.appendChild(btn('ghost', 'Never mind', modal.close)); modal.open(d); d.querySelector('#ls-price').oninput = note; note(); }
   function renderShop() { if ($('shoplist').children.length) return; [['A dry hood', 'An outfit for Smudge.'], ['Gilded frames', 'A card frame set.'], ['Midnight Archive', 'A new look for the cellar.'], ['Supporter badge', 'Next to your name in the city.']].forEach(([a, b]) => $('shoplist').appendChild(el('div', 'tile soon', `<b>${a}</b><span>${b}</span><em>Opening soon</em>`))); }
+  // a pet opened this page asking to be linked: show its four-letter check and ask
+  function petAsk() { const req = Cloud.petWaiting(); if (!req) return; const d = el('div', 'reveal');
+    d.innerHTML = `<div class="tag">Desktop pet</div><h3 style="font-size:1.5rem;margin:.2rem 0 .5rem">Link this desktop pet to ${esc(me.profile.username)}?</h3><p class="mut">The pet on your screen should be showing this check. If it is not, or you did not just press Link in your own pet, press No.</p><div class="petcode" style="align-items:center"><b>${esc(req.slice(0, 4).toUpperCase())}</b></div>`;
+    const row = el('div', 'row'); row.style.justifyContent = 'center';
+    row.appendChild(btn('', 'Yes, link it', async () => { let r; try { r = await Cloud.linkApprove(req, 'Desktop pet'); } catch (e) { r = 'The city is not answering.'; } Cloud.petDone(); modal.close(); toast(r === 'ok' ? 'Linked. The pet will pick it up in a moment.' : r); renderPet(true); }));
+    row.appendChild(btn('ghost', 'No', () => { Cloud.petDone(); modal.close(); })); d.appendChild(row); modal.open(d); }
   // the desktop pet: a code to type into it once, and the list of pets already linked
   let petCode = null, petList = null, petAt = 0;
   async function renderPet(force) { const box = $('ac-pet'); if (!box) return; if (force || !petList || now() - petAt > 30000) { try { petList = await Cloud.devices() || []; } catch (e) { petList = petList || []; } petAt = now(); }
@@ -686,8 +692,8 @@
       row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
   function renderAccount() { renderPet();
     $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>`;
-    const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Not connected'}</b></div>
-      <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet and Steam items stay switched off for this account, and nothing else is affected.</p>`;
+    const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv soon"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Coming soon'}</b></div>
+      <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links with a code, below.</p>`;
     const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
     sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
     const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
@@ -711,6 +717,7 @@
 
   // ------------------------------------------------------------------ the clock
   (function offline() { const gone = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (gone > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(gone, true); toast(`While you were away (${fmt(gone)}): ${PEND.reduce((t, x) => t + x[2], 0)} hauls and ${OS.num(Math.max(0, S.ink - ink0))} ink.`); } else tickMeters(); })();
+  setTimeout(petAsk, 900);
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; bump('seconds', dt); const got = advance(dt, false);

@@ -40,3 +40,6 @@ func pet(op: String, args: Dictionary = {}):
 
 func claim(code: String, device_name: String):
 	return await rpc_call("os2_pair_claim", {"p_code": code, "p_name": device_name})
+
+func poll(req: String):
+	return await rpc_call("os2_link_poll", {"p_req": req})

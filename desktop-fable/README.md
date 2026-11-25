@@ -21,9 +21,10 @@ one tug on his line, one turn of his pick or one push of his shovel.
 - Every number comes from `rules.json`, the same file the website uses.
 
 ## Limits of this build
-- Link it to your account once: on oversummoned.com open Account, press Link a desktop pet, and type the code into the pet's Settings tab. After that it loads and saves the same ledger as the website every time it starts, and the server rolls every find and summon.
+- Each computer links once, with its own code (codes are random, single-use and last ten minutes). On Steam no code will be needed.
+- Link it to your account once, either way: in the pet's Settings press Link in browser and say Yes on the website, or on oversummoned.com open Account, press Link a desktop pet, and type the code into the pet's Settings tab. After that it loads and saves the same ledger as the website every time it starts, and the server rolls every find and summon.
 - Not linked, it is a stand-alone game saved on this PC.
-- No crew of three, expeditions, bench, eight gear slots, city or new card design yet. Those live on the website for now.
+- The pet is for farming by typing. Crew, expeditions, the bench, gear and the city are on the website, on the same ledger.
 - No Windows .exe yet: run it from the Godot editor.
 - Keys are counted while Smudge's window has focus. Counting in other apps needs a small Windows add-on that comes later.
 - Progress is saved on this PC only.

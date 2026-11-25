@@ -1,5 +1,7 @@
 // Accounts and cloud saves (Supabase). The game never loads without an account.
 window.Cloud = (function () {
+  // a pet that wants linking opens /play?pet=<its request id>; keep the id through the sign-in pages
+  try { const pq = new URLSearchParams(location.search).get('pet'); if (pq && /^[a-f0-9]{32,64}$/.test(pq)) sessionStorage.setItem('os_pet', pq); } catch (e) { }
   const URL = 'https://eresamyqxarlrdgudgrw.supabase.co', KEY = 'sb_publishable_VZn5RjVsoRhLhYW87TJY3Q_CrgicMQF';
   const DEV = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) && /[?&]dev=1/.test(location.search);   // local testing only
   const C = { dev: DEV, me: null, user: null };
@@ -58,6 +60,9 @@ window.Cloud = (function () {
   C.roll = (list, cost) => rpc('os2_roll', { p_rolls: list, p_cost: cost || null });
   C.summon = n => rpc('os2_summon', { p_n: n });
   // linking the desktop pet
+  C.petWaiting = () => { try { return sessionStorage.getItem('os_pet'); } catch (e) { return null; } };
+  C.petDone = () => { try { sessionStorage.removeItem('os_pet'); } catch (e) { } };
+  C.linkApprove = (req, name) => rpc('os2_link_approve', { p_req: req, p_name: name }, () => 'ok');
   C.pairNew = () => rpc('os2_pair_new', null, () => 'DEV0CODE12');
   C.devices = () => rpc('os2_devices', null, () => [{ id: 'd1', name: "Dean's PC", linked: new Date().toISOString(), seen: null }]);
   C.deviceDrop = id => rpc('os2_device_drop', { p_id: id }, () => null);

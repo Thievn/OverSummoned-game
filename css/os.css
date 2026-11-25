@@ -511,3 +511,7 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 @media(max-width:600px){.brow.g span:nth-of-type(n+2){display:block}.pkstats{grid-template-columns:repeat(2,1fr)}.frow{flex-wrap:wrap}.frow .facts{margin-left:auto}}
 
 .petcode{display:flex;flex-direction:column;gap:.2rem;margin:0 0 .6rem;padding:.7rem .9rem;border:2px dashed var(--gold);border-radius:12px;background:#0b1020}.petcode b{font:400 1.7rem "Lilita One";letter-spacing:.18em;color:var(--gold)}
+
+.sbtn.soon,.sbtn.soon:hover{background:#161d33;color:#6f7b99;border-color:#232d4d;cursor:not-allowed;transform:none;filter:none}.sbtn.soon svg{opacity:.35;filter:grayscale(1)}
+.kv.soon b{color:var(--mut);font-weight:700}
+.howlink{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--line);border-radius:12px;background:rgba(11,16,32,.6);font-size:.9rem;color:#aab5d6;line-height:1.5}.howlink b{color:#e9eefb;font-weight:800}.howlink ol{margin:.5rem 0 .5rem 1.2rem;padding:0}.howlink p{margin:0}.howlink i{font-style:normal;color:var(--gold)}
