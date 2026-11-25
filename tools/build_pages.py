@@ -292,6 +292,7 @@ for p in PLACES:
     x += url("%s/places/%s" % (SITE, p['id']), "monthly", "0.6",
              [(SITE + "/assets/v2/scenes/%s.webp" % p['id'], p['name'])])
 for extra, cf, pr in [("/roadmap", "weekly", "0.7"), ("/story", "monthly", "0.6"),
+                      ("/desktop-pet", "monthly", "0.8"),
                       ("/privacy", "yearly", "0.3"), ("/terms", "yearly", "0.3")]:
     if os.path.exists(extra.strip('/') + '.html'):
         x += url(SITE + extra, cf, pr)

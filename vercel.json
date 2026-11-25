@@ -154,11 +154,6 @@
   ],
   "redirects": [
     {
-      "source": "/story",
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/updates",
       "destination": "/",
       "permanent": false
