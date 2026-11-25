@@ -10,8 +10,9 @@ P = lambda *a: os.path.join(ROOT, *a)
 W, H = 1500, 500
 INK = (8, 12, 26); TEAL = (63, 224, 197)
 FLOOR = 456
-# back to front: (hero id, left edge, height)
-CAST = [('vesper', 1040, 278), ('ajolote', 1368, 258), ('flap', 1242, 240), ('stella', 1100, 292), ('gorm', 912, 300), ('roxy', 1312, 272)]
+LEFT, RIGHT = 600, 1480     # the row of characters runs between these
+# left to right after Smudge: (hero id, height)
+CAST = [('gorm', 244), ('vesper', 228), ('stella', 240), ('flap', 200), ('roxy', 224), ('ajolote', 212)]
 
 
 def smudge():
@@ -49,15 +50,21 @@ def build(dst):
         ImageDraw.Draw(sh).ellipse([x + im.width * 0.12, floor - 12, x + im.width * 0.88, floor + 10], fill=(0, 0, 0, 120))
         bg.alpha_composite(sh.filter(ImageFilter.GaussianBlur(7))); bg.alpha_composite(im, (x, floor - h))
 
-    for hid, x, h in CAST: stand(Image.open(P('art2', 'heroes', hid + '.png')).convert('RGBA'), x, h)
-    stand(smudge(), 748, 262, floor=468)
+    # everyone stands in one row with the same gap between neighbours, nobody cut off by the right edge
+    row = [('smudge', smudge(), 218, 464)] + [(hid, Image.open(P('art2', 'heroes', hid + '.png')).convert('RGBA'), h, FLOOR) for hid, h in CAST]
+    widths = [round(im.width * h / im.height) for _, im, h, _ in row]
+    gap = (RIGHT - LEFT - sum(widths)) / (len(row) - 1)
+    xs = []; x = LEFT
+    for w in widths: xs.append(round(x)); x += w + gap
+    for i in list(range(1, len(row), 2)) + list(range(0, len(row), 2)):      # every other one a step behind, so overlaps look natural
+        stand(row[i][1], xs[i], row[i][2], floor=row[i][3])
 
     d = ImageDraw.Draw(bg)
-    L = ImageFont.truetype(P('assets', 'fonts', 'LilitaOne.ttf'), 84); N = ImageFont.truetype(P('assets', 'fonts', 'Nunito.ttf'), 30)
-    x = 248; y = 172
+    L = ImageFont.truetype(P('assets', 'fonts', 'LilitaOne.ttf'), 72); N = ImageFont.truetype(P('assets', 'fonts', 'Nunito.ttf'), 27)
+    x = 84; y = 168
     for txt, col in (('Over', (255, 255, 255)), ('Summoned', TEAL)):
         d.text((x + 3, y + 5), txt, font=L, fill=(0, 0, 0, 200)); d.text((x, y), txt, font=L, fill=col); x += d.textlength(txt, font=L)
-    d.text((250, 274), 'He only meant to summon one.', font=N, fill=(222, 228, 242))
+    d.text((87, 254), 'He only meant to summon one.', font=N, fill=(222, 228, 242))
     bg.convert('RGB').save(dst); print('saved', dst, bg.size)
 
 
