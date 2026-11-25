@@ -73,7 +73,7 @@ def grid(w, h, origin, NX, NY, weigh):
 
 
 # Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
-CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (155, 215, 26), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (215, 172, 22)}
+CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (155, 215, 26), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (228, 172, 22)}
 
 # Other soft spots on a hero's body picture that move without being cut out (so no seams, ever):
 # (bone name, centre x, centre y, radius x, radius y, kind).  kind: 'sway' rocks, 'bob' rides up and down.

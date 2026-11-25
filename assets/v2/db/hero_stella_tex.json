@@ -1,1 +1,1 @@
-{"name":"hero_stella","imagePath":"hero_stella_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":373,"height":650},{"name":"head","x":377,"y":2,"width":131,"height":123}]}
+{"name":"hero_stella","imagePath":"hero_stella_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":341,"height":650},{"name":"head","x":345,"y":2,"width":133,"height":122}]}
