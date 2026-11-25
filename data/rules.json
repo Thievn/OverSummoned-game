@@ -555,6 +555,465 @@
   11805606,
   13034431
  ],
+ "gear_sets": {
+  "set_kevin": {
+   "id": "set_kevin",
+   "name": "Open-Plan",
+   "hero": "kevin",
+   "two": {
+    "defense": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_kevin_head",
+    "e_kevin_body",
+    "e_kevin_feet"
+   ]
+  },
+  "set_marco": {
+   "id": "set_marco",
+   "name": "Gig Economy",
+   "hero": "marco",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_marco_head",
+    "e_marco_body",
+    "e_marco_feet"
+   ]
+  },
+  "set_maya": {
+   "id": "set_maya",
+   "name": "First Responder",
+   "hero": "maya",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.06
+   },
+   "pieces": [
+    "e_maya_head",
+    "e_maya_body",
+    "e_maya_feet"
+   ]
+  },
+  "set_brokk": {
+   "id": "set_brokk",
+   "name": "Tundra",
+   "hero": "brokk",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_brokk_head",
+    "e_brokk_body",
+    "e_brokk_feet"
+   ]
+  },
+  "set_gaius": {
+   "id": "set_gaius",
+   "name": "Legion",
+   "hero": "gaius",
+   "two": {
+    "defense": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_gaius_head",
+    "e_gaius_body",
+    "e_gaius_feet"
+   ]
+  },
+  "set_edith": {
+   "id": "set_edith",
+   "name": "Workshop",
+   "hero": "edith",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_edith_head",
+    "e_edith_body",
+    "e_edith_feet"
+   ]
+  },
+  "set_albrecht": {
+   "id": "set_albrecht",
+   "name": "Pestilence",
+   "hero": "albrecht",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_albrecht_head",
+    "e_albrecht_body",
+    "e_albrecht_feet"
+   ]
+  },
+  "set_vincenzo": {
+   "id": "set_vincenzo",
+   "name": "Prohibition",
+   "hero": "vincenzo",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_vincenzo_head",
+    "e_vincenzo_body",
+    "e_vincenzo_feet"
+   ]
+  },
+  "set_slapton": {
+   "id": "set_slapton",
+   "name": "Red Carpet",
+   "hero": "slapton",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_slapton_head",
+    "e_slapton_body",
+    "e_slapton_feet"
+   ]
+  },
+  "set_napoleon": {
+   "id": "set_napoleon",
+   "name": "Grande Arm\u00e9e",
+   "hero": "napoleon",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_napoleon_head",
+    "e_napoleon_body",
+    "e_napoleon_feet"
+   ]
+  },
+  "set_cleocatra": {
+   "id": "set_cleocatra",
+   "name": "Nile",
+   "hero": "cleocatra",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_cleocatra_head",
+    "e_cleocatra_body",
+    "e_cleocatra_feet"
+   ]
+  },
+  "set_blackbear": {
+   "id": "set_blackbear",
+   "name": "Jolly Roger",
+   "hero": "blackbear",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_blackbear_head",
+    "e_blackbear_body",
+    "e_blackbear_feet"
+   ]
+  },
+  "set_astrid": {
+   "id": "set_astrid",
+   "name": "Longship",
+   "hero": "astrid",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_astrid_head",
+    "e_astrid_body",
+    "e_astrid_feet"
+   ]
+  },
+  "set_kenji": {
+   "id": "set_kenji",
+   "name": "Edo Road",
+   "hero": "kenji",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_kenji_head",
+    "e_kenji_body",
+    "e_kenji_feet"
+   ]
+  },
+  "set_emu": {
+   "id": "set_emu",
+   "name": "Great Emu War",
+   "hero": "emu",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_emu_head",
+    "e_emu_body",
+    "e_emu_feet"
+   ]
+  },
+  "set_troffea": {
+   "id": "set_troffea",
+   "name": "Dancing Plague",
+   "hero": "troffea",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_troffea_head",
+    "e_troffea_body",
+    "e_troffea_feet"
+   ]
+  },
+  "set_joost": {
+   "id": "set_joost",
+   "name": "Tulip Mania",
+   "hero": "joost",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_joost_head",
+    "e_joost_body",
+    "e_joost_feet"
+   ]
+  },
+  "set_chad": {
+   "id": "set_chad",
+   "name": "To The Moon",
+   "hero": "chad",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_chad_head",
+    "e_chad_body",
+    "e_chad_feet"
+   ]
+  },
+  "set_bella": {
+   "id": "set_bella",
+   "name": "Golden Hour",
+   "hero": "bella",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_bella_head",
+    "e_bella_body",
+    "e_bella_feet"
+   ]
+  },
+  "set_florida": {
+   "id": "set_florida",
+   "name": "Sunshine State",
+   "hero": "florida",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_florida_head",
+    "e_florida_body",
+    "e_florida_feet"
+   ]
+  },
+  "set_lola": {
+   "id": "set_lola",
+   "name": "Cabaret",
+   "hero": "lola",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_lola_head",
+    "e_lola_body",
+    "e_lola_feet"
+   ]
+  },
+  "set_morwenna": {
+   "id": "set_morwenna",
+   "name": "Hedgerow",
+   "hero": "morwenna",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_morwenna_head",
+    "e_morwenna_body",
+    "e_morwenna_feet"
+   ]
+  },
+  "set_sable": {
+   "id": "set_sable",
+   "name": "Carnival",
+   "hero": "sable",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_sable_head",
+    "e_sable_body",
+    "e_sable_feet"
+   ]
+  },
+  "set_jacko": {
+   "id": "set_jacko",
+   "name": "Surf Patrol",
+   "hero": "jacko",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_jacko_head",
+    "e_jacko_body",
+    "e_jacko_feet"
+   ]
+  },
+  "set_raspawtin": {
+   "id": "set_raspawtin",
+   "name": "Winter Palace",
+   "hero": "raspawtin",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_raspawtin_head",
+    "e_raspawtin_body",
+    "e_raspawtin_feet"
+   ]
+  },
+  "set_madjack": {
+   "id": "set_madjack",
+   "name": "D-Day",
+   "hero": "madjack",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_madjack_head",
+    "e_madjack_body",
+    "e_madjack_feet"
+   ]
+  }
+ },
+ "slots": {
+  "general": [
+   "weapon",
+   "head",
+   "body",
+   "feet",
+   "charm"
+  ],
+  "own": [
+   "weapon",
+   "armor",
+   "trinket"
+  ],
+  "charm_level": 5
+ },
  "heroes": [
   {
    "id": "kevin",
@@ -1354,6 +1813,26 @@
      0.75
     ],
     [
+     "e_brokk_weapon",
+     1.2
+    ],
+    [
+     "e_brokk_head",
+     0.375
+    ],
+    [
+     "e_brokk_body",
+     0.75
+    ],
+    [
+     "e_brokk_feet",
+     1.2
+    ],
+    [
+     "e_brokk_charm",
+     0.15
+    ],
+    [
      "gaius_weapon",
      0.375
     ],
@@ -1366,6 +1845,26 @@
      0.375
     ],
     [
+     "e_gaius_weapon",
+     0.75
+    ],
+    [
+     "e_gaius_head",
+     0.375
+    ],
+    [
+     "e_gaius_body",
+     0.15
+    ],
+    [
+     "e_gaius_feet",
+     1.2
+    ],
+    [
+     "e_gaius_charm",
+     0.06
+    ],
+    [
      "cleocatra_weapon",
      0.06
     ],
@@ -1376,6 +1875,26 @@
     [
      "cleocatra_trinket",
      0.06
+    ],
+    [
+     "e_cleocatra_weapon",
+     0.375
+    ],
+    [
+     "e_cleocatra_head",
+     0.15
+    ],
+    [
+     "e_cleocatra_body",
+     0.75
+    ],
+    [
+     "e_cleocatra_feet",
+     1.2
+    ],
+    [
+     "e_cleocatra_charm",
+     0.03
     ]
    ]
   },
@@ -1433,6 +1952,26 @@
      0.375
     ],
     [
+     "e_bella_weapon",
+     0.75
+    ],
+    [
+     "e_bella_head",
+     1.2
+    ],
+    [
+     "e_bella_body",
+     0.375
+    ],
+    [
+     "e_bella_feet",
+     0.75
+    ],
+    [
+     "e_bella_charm",
+     0.06
+    ],
+    [
      "florida_weapon",
      0.03
     ],
@@ -1445,6 +1984,26 @@
      0.03
     ],
     [
+     "e_florida_weapon",
+     1.2
+    ],
+    [
+     "e_florida_head",
+     0.375
+    ],
+    [
+     "e_florida_body",
+     1.2
+    ],
+    [
+     "e_florida_feet",
+     0.75
+    ],
+    [
+     "e_florida_charm",
+     0.012
+    ],
+    [
      "jacko_weapon",
      0.75
     ],
@@ -1455,6 +2014,26 @@
     [
      "jacko_trinket",
      0.75
+    ],
+    [
+     "e_jacko_weapon",
+     0.75
+    ],
+    [
+     "e_jacko_head",
+     1.2
+    ],
+    [
+     "e_jacko_body",
+     1.2
+    ],
+    [
+     "e_jacko_feet",
+     0.375
+    ],
+    [
+     "e_jacko_charm",
+     0.15
     ]
    ]
   },
@@ -1512,6 +2091,26 @@
      0.15
     ],
     [
+     "e_blackbear_weapon",
+     0.75
+    ],
+    [
+     "e_blackbear_head",
+     0.375
+    ],
+    [
+     "e_blackbear_body",
+     1.2
+    ],
+    [
+     "e_blackbear_feet",
+     0.75
+    ],
+    [
+     "e_blackbear_charm",
+     0.06
+    ],
+    [
      "astrid_weapon",
      0.375
     ],
@@ -1522,6 +2121,26 @@
     [
      "astrid_trinket",
      0.375
+    ],
+    [
+     "e_astrid_weapon",
+     1.2
+    ],
+    [
+     "e_astrid_head",
+     0.375
+    ],
+    [
+     "e_astrid_body",
+     0.15
+    ],
+    [
+     "e_astrid_feet",
+     0.75
+    ],
+    [
+     "e_astrid_charm",
+     0.03
     ],
     [
      "kenji_weapon",
@@ -1536,6 +2155,26 @@
      0.375
     ],
     [
+     "e_kenji_weapon",
+     1.2
+    ],
+    [
+     "e_kenji_head",
+     0.75
+    ],
+    [
+     "e_kenji_body",
+     1.2
+    ],
+    [
+     "e_kenji_feet",
+     1.2
+    ],
+    [
+     "e_kenji_charm",
+     0.06
+    ],
+    [
      "raspawtin_weapon",
      0.012
     ],
@@ -1545,6 +2184,26 @@
     ],
     [
      "raspawtin_trinket",
+     0.012
+    ],
+    [
+     "e_raspawtin_weapon",
+     0.375
+    ],
+    [
+     "e_raspawtin_head",
+     0.75
+    ],
+    [
+     "e_raspawtin_body",
+     0.15
+    ],
+    [
+     "e_raspawtin_feet",
+     1.2
+    ],
+    [
+     "e_raspawtin_charm",
      0.012
     ]
    ]
@@ -1607,6 +2266,26 @@
      0.15
     ],
     [
+     "e_vincenzo_weapon",
+     0.75
+    ],
+    [
+     "e_vincenzo_head",
+     1.2
+    ],
+    [
+     "e_vincenzo_body",
+     0.375
+    ],
+    [
+     "e_vincenzo_feet",
+     0.75
+    ],
+    [
+     "e_vincenzo_charm",
+     0.06
+    ],
+    [
      "slapton_weapon",
      0.06
     ],
@@ -1619,6 +2298,26 @@
      0.06
     ],
     [
+     "e_slapton_weapon",
+     0.75
+    ],
+    [
+     "e_slapton_head",
+     0.375
+    ],
+    [
+     "e_slapton_body",
+     0.15
+    ],
+    [
+     "e_slapton_feet",
+     1.2
+    ],
+    [
+     "e_slapton_charm",
+     0.03
+    ],
+    [
      "lola_weapon",
      0.15
     ],
@@ -1629,6 +2328,26 @@
     [
      "lola_trinket",
      0.15
+    ],
+    [
+     "e_lola_weapon",
+     0.375
+    ],
+    [
+     "e_lola_head",
+     0.15
+    ],
+    [
+     "e_lola_body",
+     0.75
+    ],
+    [
+     "e_lola_feet",
+     0.375
+    ],
+    [
+     "e_lola_charm",
+     1.2
     ]
    ]
   },
@@ -1686,6 +2405,26 @@
      0.15
     ],
     [
+     "e_napoleon_weapon",
+     0.15
+    ],
+    [
+     "e_napoleon_head",
+     0.375
+    ],
+    [
+     "e_napoleon_body",
+     0.75
+    ],
+    [
+     "e_napoleon_feet",
+     0.375
+    ],
+    [
+     "e_napoleon_charm",
+     0.06
+    ],
+    [
      "joost_weapon",
      0.75
     ],
@@ -1698,6 +2437,26 @@
      0.75
     ],
     [
+     "e_joost_weapon",
+     1.2
+    ],
+    [
+     "e_joost_head",
+     0.75
+    ],
+    [
+     "e_joost_body",
+     0.375
+    ],
+    [
+     "e_joost_feet",
+     1.2
+    ],
+    [
+     "e_joost_charm",
+     0.06
+    ],
+    [
      "sable_weapon",
      0.375
     ],
@@ -1708,6 +2467,26 @@
     [
      "sable_trinket",
      0.375
+    ],
+    [
+     "e_sable_weapon",
+     1.2
+    ],
+    [
+     "e_sable_head",
+     0.75
+    ],
+    [
+     "e_sable_body",
+     0.375
+    ],
+    [
+     "e_sable_feet",
+     0.15
+    ],
+    [
+     "e_sable_charm",
+     0.06
     ]
    ]
   },
@@ -1765,6 +2544,26 @@
      0.75
     ],
     [
+     "e_kevin_weapon",
+     1.2
+    ],
+    [
+     "e_kevin_head",
+     0.75
+    ],
+    [
+     "e_kevin_body",
+     0.375
+    ],
+    [
+     "e_kevin_feet",
+     1.2
+    ],
+    [
+     "e_kevin_charm",
+     0.15
+    ],
+    [
      "marco_weapon",
      0.75
     ],
@@ -1777,6 +2576,26 @@
      0.75
     ],
     [
+     "e_marco_weapon",
+     1.2
+    ],
+    [
+     "e_marco_head",
+     0.75
+    ],
+    [
+     "e_marco_body",
+     1.2
+    ],
+    [
+     "e_marco_feet",
+     0.375
+    ],
+    [
+     "e_marco_charm",
+     0.15
+    ],
+    [
      "chad_weapon",
      0.75
     ],
@@ -1787,6 +2606,26 @@
     [
      "chad_trinket",
      0.75
+    ],
+    [
+     "e_chad_weapon",
+     1.2
+    ],
+    [
+     "e_chad_head",
+     0.375
+    ],
+    [
+     "e_chad_body",
+     0.75
+    ],
+    [
+     "e_chad_feet",
+     0.15
+    ],
+    [
+     "e_chad_charm",
+     0.012
     ]
    ]
   },
@@ -1844,6 +2683,26 @@
      0.75
     ],
     [
+     "e_maya_weapon",
+     0.375
+    ],
+    [
+     "e_maya_head",
+     0.75
+    ],
+    [
+     "e_maya_body",
+     0.375
+    ],
+    [
+     "e_maya_feet",
+     1.2
+    ],
+    [
+     "e_maya_charm",
+     0.06
+    ],
+    [
      "edith_weapon",
      0.375
     ],
@@ -1854,6 +2713,26 @@
     [
      "edith_trinket",
      0.375
+    ],
+    [
+     "e_edith_weapon",
+     1.2
+    ],
+    [
+     "e_edith_head",
+     0.75
+    ],
+    [
+     "e_edith_body",
+     1.2
+    ],
+    [
+     "e_edith_feet",
+     0.75
+    ],
+    [
+     "e_edith_charm",
+     0.03
     ],
     [
      "emu_weapon",
@@ -1868,6 +2747,26 @@
      0.03
     ],
     [
+     "e_emu_weapon",
+     0.75
+    ],
+    [
+     "e_emu_head",
+     1.2
+    ],
+    [
+     "e_emu_body",
+     0.375
+    ],
+    [
+     "e_emu_feet",
+     0.15
+    ],
+    [
+     "e_emu_charm",
+     0.012
+    ],
+    [
      "madjack_weapon",
      0.012
     ],
@@ -1877,6 +2776,26 @@
     ],
     [
      "madjack_trinket",
+     0.012
+    ],
+    [
+     "e_madjack_weapon",
+     0.15
+    ],
+    [
+     "e_madjack_head",
+     0.75
+    ],
+    [
+     "e_madjack_body",
+     0.375
+    ],
+    [
+     "e_madjack_feet",
+     1.2
+    ],
+    [
+     "e_madjack_charm",
      0.012
     ]
    ]
@@ -1935,6 +2854,26 @@
      0.375
     ],
     [
+     "e_albrecht_weapon",
+     1.2
+    ],
+    [
+     "e_albrecht_head",
+     0.375
+    ],
+    [
+     "e_albrecht_body",
+     0.75
+    ],
+    [
+     "e_albrecht_feet",
+     1.2
+    ],
+    [
+     "e_albrecht_charm",
+     0.15
+    ],
+    [
      "troffea_weapon",
      0.75
     ],
@@ -1947,6 +2886,26 @@
      0.75
     ],
     [
+     "e_troffea_weapon",
+     1.2
+    ],
+    [
+     "e_troffea_head",
+     1.2
+    ],
+    [
+     "e_troffea_body",
+     0.75
+    ],
+    [
+     "e_troffea_feet",
+     0.15
+    ],
+    [
+     "e_troffea_charm",
+     0.03
+    ],
+    [
      "morwenna_weapon",
      0.375
     ],
@@ -1957,6 +2916,26 @@
     [
      "morwenna_trinket",
      0.375
+    ],
+    [
+     "e_morwenna_weapon",
+     0.75
+    ],
+    [
+     "e_morwenna_head",
+     0.375
+    ],
+    [
+     "e_morwenna_body",
+     0.15
+    ],
+    [
+     "e_morwenna_feet",
+     1.2
+    ],
+    [
+     "e_morwenna_charm",
+     0.03
     ]
    ]
   }
@@ -3315,6 +4294,2372 @@
     "skill": "Digging",
     "speed": 16
    }
+  },
+  "e_kevin_weapon": {
+   "id": "e_kevin_weapon",
+   "name": "Whiteboard Marker (Dry)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_kevin_weapon",
+   "flavor": "Squeaks. Leaves no mark. Still somehow threatening in a meeting.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "kevin",
+   "special": {
+    "kind": "speed",
+    "amount": 0.04
+   },
+   "place": "closet",
+   "sell": 15
+  },
+  "e_kevin_head": {
+   "id": "e_kevin_head",
+   "name": "Noise-Cancelling Headphones",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_kevin_head",
+   "flavor": "Cancels noise, colleagues and three fire drills.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "kevin",
+   "set": "set_kevin",
+   "place": "closet",
+   "sell": 30
+  },
+  "e_kevin_body": {
+   "id": "e_kevin_body",
+   "name": "Fleece Vest of Middle Management",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_kevin_body",
+   "flavor": "Grants the power to schedule a meeting about meetings.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "kevin",
+   "set": "set_kevin",
+   "place": "closet",
+   "sell": 80
+  },
+  "e_kevin_feet": {
+   "id": "e_kevin_feet",
+   "name": "Sensible Loafers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_kevin_feet",
+   "flavor": "Have walked to the printer and back nine thousand times.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "kevin",
+   "set": "set_kevin",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_kevin_charm": {
+   "id": "e_kevin_charm",
+   "name": "Reply-All of Doom",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_kevin_charm",
+   "flavor": "Four hundred people now know about the missing yoghurt.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "kevin",
+   "special": {
+    "kind": "ink",
+    "amount": 0.03
+   },
+   "place": "closet",
+   "sell": 220
+  },
+  "e_marco_weapon": {
+   "id": "e_marco_weapon",
+   "name": "Bent Bicycle Pump",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_marco_weapon",
+   "flavor": "Inflates tyres and, briefly, egos.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "marco",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "closet",
+   "sell": 15
+  },
+  "e_marco_head": {
+   "id": "e_marco_head",
+   "name": "Cracked Bike Helmet",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_marco_head",
+   "flavor": "It did its job once. It would like you to stop testing it.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "marco",
+   "set": "set_marco",
+   "place": "closet",
+   "sell": 30
+  },
+  "e_marco_body": {
+   "id": "e_marco_body",
+   "name": "Hi-Vis Rain Poncho",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_marco_body",
+   "flavor": "Visible from space. Still nobody yields.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "marco",
+   "set": "set_marco",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_marco_feet": {
+   "id": "e_marco_feet",
+   "name": "Clip-In Cycling Shoes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_marco_feet",
+   "flavor": "You will fall over at a red light exactly once. Everyone does.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "marco",
+   "set": "set_marco",
+   "place": "closet",
+   "sell": 80
+  },
+  "e_marco_charm": {
+   "id": "e_marco_charm",
+   "name": "Phone at One Percent",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_marco_charm",
+   "flavor": "It has been at one percent for six hours. Nobody understands how.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "marco",
+   "special": {
+    "kind": "luck",
+    "amount": 0.03
+   },
+   "place": "closet",
+   "sell": 220
+  },
+  "e_maya_weapon": {
+   "id": "e_maya_weapon",
+   "name": "Halligan Bar",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_maya_weapon",
+   "flavor": "Opens doors, cars, and conversations nobody wanted to have.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "maya",
+   "special": {
+    "kind": "raid",
+    "amount": 0.06
+   },
+   "place": "outback",
+   "sell": 80
+  },
+  "e_maya_head": {
+   "id": "e_maya_head",
+   "name": "Scuffed Fire Helmet",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_maya_head",
+   "flavor": "Smells of smoke and somebody else's kitchen.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "maya",
+   "set": "set_maya",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_maya_body": {
+   "id": "e_maya_body",
+   "name": "Turnout Coat",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_maya_body",
+   "flavor": "Heavy, hot, and the only reason you still have eyebrows.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "maya",
+   "set": "set_maya",
+   "place": "outback",
+   "sell": 80
+  },
+  "e_maya_feet": {
+   "id": "e_maya_feet",
+   "name": "Steel-Toe Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_maya_feet",
+   "flavor": "You could drop a piano on these. Please do not.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "maya",
+   "set": "set_maya",
+   "place": "outback",
+   "sell": 15
+  },
+  "e_maya_charm": {
+   "id": "e_maya_charm",
+   "name": "Defibrillator Paddle of Enthusiasm",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_maya_charm",
+   "flavor": "CLEAR. No, further back than that.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "maya",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "outback",
+   "sell": 600
+  },
+  "e_brokk_weapon": {
+   "id": "e_brokk_weapon",
+   "name": "A Really Good Rock",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_brokk_weapon",
+   "flavor": "The original weapon. Zero moving parts. Never jams.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "brokk",
+   "special": {
+    "kind": "raid",
+    "amount": 0.06
+   },
+   "place": "dock",
+   "sell": 15
+  },
+  "e_brokk_head": {
+   "id": "e_brokk_head",
+   "name": "Antler Headdress",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_brokk_head",
+   "flavor": "Very impressive until you meet a doorway. Doorways have not been invented.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "brokk",
+   "set": "set_brokk",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_brokk_body": {
+   "id": "e_brokk_body",
+   "name": "Woolly Mammoth Coat",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_brokk_body",
+   "flavor": "The mammoth is no longer using it.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "brokk",
+   "set": "set_brokk",
+   "place": "dock",
+   "sell": 30
+  },
+  "e_brokk_feet": {
+   "id": "e_brokk_feet",
+   "name": "Hide Foot Wraps",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_brokk_feet",
+   "flavor": "Shoes, version one. Mostly a suggestion.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "brokk",
+   "set": "set_brokk",
+   "place": "dock",
+   "sell": 15
+  },
+  "e_brokk_charm": {
+   "id": "e_brokk_charm",
+   "name": "Cave Painting of a Horse",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_brokk_charm",
+   "flavor": "The first art critic said the legs were wrong. He was eaten.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "brokk",
+   "special": {
+    "kind": "luck",
+    "amount": 0.03
+   },
+   "place": "dock",
+   "sell": 220
+  },
+  "e_gaius_weapon": {
+   "id": "e_gaius_weapon",
+   "name": "Pilum Javelin",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_gaius_weapon",
+   "flavor": "Designed to bend on impact so it cannot be thrown back. Rude.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "gaius",
+   "special": {
+    "kind": "raid",
+    "amount": 0.07
+   },
+   "place": "dock",
+   "sell": 30
+  },
+  "e_gaius_head": {
+   "id": "e_gaius_head",
+   "name": "Crested Galea Helmet",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_gaius_head",
+   "flavor": "The crest is so the centurion can find you to shout at.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "gaius",
+   "set": "set_gaius",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_gaius_body": {
+   "id": "e_gaius_body",
+   "name": "Lorica Segmentata",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_gaius_body",
+   "flavor": "Forty-seven straps. One of them is always undone.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "gaius",
+   "set": "set_gaius",
+   "place": "dock",
+   "sell": 220
+  },
+  "e_gaius_feet": {
+   "id": "e_gaius_feet",
+   "name": "Caligae Sandals",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_gaius_feet",
+   "flavor": "Marched across a continent. Smell like it.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "gaius",
+   "set": "set_gaius",
+   "place": "dock",
+   "sell": 15
+  },
+  "e_gaius_charm": {
+   "id": "e_gaius_charm",
+   "name": "Thumbs-Down of the Emperor",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_gaius_charm",
+   "flavor": "Nobody is sure which way was bad. It worked out badly either way.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "gaius",
+   "special": {
+    "kind": "ink",
+    "amount": 0.03
+   },
+   "place": "dock",
+   "sell": 600
+  },
+  "e_edith_weapon": {
+   "id": "e_edith_weapon",
+   "name": "Ball-Peen Hammer",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_edith_weapon",
+   "flavor": "When it is your only tool, everything looks like a bridge.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "edith",
+   "special": {
+    "kind": "xp",
+    "amount": 0.05
+   },
+   "place": "outback",
+   "sell": 15
+  },
+  "e_edith_head": {
+   "id": "e_edith_head",
+   "name": "Brass Welding Goggles",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_edith_head",
+   "flavor": "Make everything look like it is on fire. In her line of work, it usually is.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "edith",
+   "set": "set_edith",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_edith_body": {
+   "id": "e_edith_body",
+   "name": "Boiler Suit",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_edith_body",
+   "flavor": "More pockets than sense. A spanner in every one.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "edith",
+   "set": "set_edith",
+   "place": "outback",
+   "sell": 15
+  },
+  "e_edith_feet": {
+   "id": "e_edith_feet",
+   "name": "Hobnail Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_edith_feet",
+   "flavor": "Announce your arrival two streets away.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "edith",
+   "set": "set_edith",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_edith_charm": {
+   "id": "e_edith_charm",
+   "name": "Perpetual Motion Machine (Broken)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_edith_charm",
+   "flavor": "Ran forever, for about a minute.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "edith",
+   "special": {
+    "kind": "speed",
+    "amount": 0.03
+   },
+   "place": "outback",
+   "sell": 1500
+  },
+  "e_albrecht_weapon": {
+   "id": "e_albrecht_weapon",
+   "name": "Pointing Stick",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_albrecht_weapon",
+   "flavor": "For examining patients from a distance he considers reasonable.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "albrecht",
+   "special": {
+    "kind": "raid",
+    "amount": 0.05
+   },
+   "place": "blackforest",
+   "sell": 15
+  },
+  "e_albrecht_head": {
+   "id": "e_albrecht_head",
+   "name": "Beaked Mask",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_albrecht_head",
+   "flavor": "Stuffed with lavender. Solves nothing. Smells lovely.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "albrecht",
+   "set": "set_albrecht",
+   "place": "blackforest",
+   "sell": 80
+  },
+  "e_albrecht_body": {
+   "id": "e_albrecht_body",
+   "name": "Burial Shroud (Unused)",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_albrecht_body",
+   "flavor": "Still in the wrapping. He is saving it.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "albrecht",
+   "set": "set_albrecht",
+   "place": "blackforest",
+   "sell": 30
+  },
+  "e_albrecht_feet": {
+   "id": "e_albrecht_feet",
+   "name": "Mud-Caked Clogs",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_albrecht_feet",
+   "flavor": "The mud is the cleanest thing in the village.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "albrecht",
+   "set": "set_albrecht",
+   "place": "blackforest",
+   "sell": 15
+  },
+  "e_albrecht_charm": {
+   "id": "e_albrecht_charm",
+   "name": "Jar of Bad Air",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_albrecht_charm",
+   "flavor": "Medieval science at its finest. Do not open. Do not ask.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "albrecht",
+   "special": {
+    "kind": "luck",
+    "amount": 0.04
+   },
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_vincenzo_weapon": {
+   "id": "e_vincenzo_weapon",
+   "name": "Baseball Bat (Negotiating)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_vincenzo_weapon",
+   "flavor": "He has never played baseball. He has had many conversations.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "vincenzo",
+   "special": {
+    "kind": "raid",
+    "amount": 0.06
+   },
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_vincenzo_head": {
+   "id": "e_vincenzo_head",
+   "name": "Flat Cap",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_vincenzo_head",
+   "flavor": "Worn low. Sees nothing. Heard nothing.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "vincenzo",
+   "set": "set_vincenzo",
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_vincenzo_body": {
+   "id": "e_vincenzo_body",
+   "name": "Trench Coat With Too Many Pockets",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_vincenzo_body",
+   "flavor": "Watches? Cutlery? A second, smaller coat?",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "vincenzo",
+   "set": "set_vincenzo",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_vincenzo_feet": {
+   "id": "e_vincenzo_feet",
+   "name": "Two-Tone Spats",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_vincenzo_feet",
+   "flavor": "For leaving a room quickly but with style.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "vincenzo",
+   "set": "set_vincenzo",
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_vincenzo_charm": {
+   "id": "e_vincenzo_charm",
+   "name": "Cement Sample",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_vincenzo_charm",
+   "flavor": "A gift from a business associate. It is a hint.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "vincenzo",
+   "special": {
+    "kind": "ink",
+    "amount": 0.04
+   },
+   "place": "speakeasy",
+   "sell": 600
+  },
+  "e_slapton_weapon": {
+   "id": "e_slapton_weapon",
+   "name": "Clapperboard",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_slapton_weapon",
+   "flavor": "Take forty-seven. He will get it this time.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "slapton",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_slapton_head": {
+   "id": "e_slapton_head",
+   "name": "Director's Megaphone",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_slapton_head",
+   "flavor": "Not a hat. He wears it as a hat.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "slapton",
+   "set": "set_slapton",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_slapton_body": {
+   "id": "e_slapton_body",
+   "name": "Dressing Gown With His Own Face On",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_slapton_body",
+   "flavor": "Monogrammed, embroidered, and for sale in the lobby.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "slapton",
+   "set": "set_slapton",
+   "place": "speakeasy",
+   "sell": 220
+  },
+  "e_slapton_feet": {
+   "id": "e_slapton_feet",
+   "name": "Tap Shoes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_slapton_feet",
+   "flavor": "He cannot tap. The shoes do not know that.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "slapton",
+   "set": "set_slapton",
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_slapton_charm": {
+   "id": "e_slapton_charm",
+   "name": "Acceptance Speech (Unused)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_slapton_charm",
+   "flavor": "Eleven pages. Thanks himself twice.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "slapton",
+   "special": {
+    "kind": "ink",
+    "amount": 0.05
+   },
+   "place": "speakeasy",
+   "sell": 1500
+  },
+  "e_napoleon_weapon": {
+   "id": "e_napoleon_weapon",
+   "name": "Field Cannon (Pocket)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "e_napoleon_weapon",
+   "flavor": "Small, loud, and with a great deal to prove.",
+   "stats": {
+    "attack": 18,
+    "speed": 6
+   },
+   "era": "napoleon",
+   "special": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "place": "vault",
+   "sell": 220
+  },
+  "e_napoleon_head": {
+   "id": "e_napoleon_head",
+   "name": "Bearskin Cap",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_napoleon_head",
+   "flavor": "Adds a full foot of height. He owns nine.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "napoleon",
+   "set": "set_napoleon",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_napoleon_body": {
+   "id": "e_napoleon_body",
+   "name": "Grenadier Greatcoat",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_napoleon_body",
+   "flavor": "Marched to Moscow. Regretted it around Smolensk.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "napoleon",
+   "set": "set_napoleon",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_napoleon_feet": {
+   "id": "e_napoleon_feet",
+   "name": "Riding Boots With Lifts",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_napoleon_feet",
+   "flavor": "The lifts are a state secret.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "napoleon",
+   "set": "set_napoleon",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_napoleon_charm": {
+   "id": "e_napoleon_charm",
+   "name": "Map With Everything Circled",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_napoleon_charm",
+   "flavor": "He circled Russia twice. Nobody stopped him.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "napoleon",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "vault",
+   "sell": 600
+  },
+  "e_cleocatra_weapon": {
+   "id": "e_cleocatra_weapon",
+   "name": "Crook and Flail",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_cleocatra_weapon",
+   "flavor": "One is for guiding. One is for the other thing.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "cleocatra",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "dock",
+   "sell": 80
+  },
+  "e_cleocatra_head": {
+   "id": "e_cleocatra_head",
+   "name": "Vulture Crown",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_cleocatra_head",
+   "flavor": "The vulture is decorative. She says.",
+   "stats": {
+    "defense": 11,
+    "luck": 7
+   },
+   "era": "cleocatra",
+   "set": "set_cleocatra",
+   "place": "dock",
+   "sell": 220
+  },
+  "e_cleocatra_body": {
+   "id": "e_cleocatra_body",
+   "name": "Linen Robe of Nine Pleats",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_cleocatra_body",
+   "flavor": "Ironed by forty servants. Sat on by one cat.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "cleocatra",
+   "set": "set_cleocatra",
+   "place": "dock",
+   "sell": 30
+  },
+  "e_cleocatra_feet": {
+   "id": "e_cleocatra_feet",
+   "name": "Papyrus Sandals",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_cleocatra_feet",
+   "flavor": "Have never touched the floor. That is what the litter is for.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "cleocatra",
+   "set": "set_cleocatra",
+   "place": "dock",
+   "sell": 15
+  },
+  "e_cleocatra_charm": {
+   "id": "e_cleocatra_charm",
+   "name": "Cursed Cat Statue",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_cleocatra_charm",
+   "flavor": "It is on the shelf. It was on the table. Nobody moved it.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "cleocatra",
+   "special": {
+    "kind": "ink",
+    "amount": 0.05
+   },
+   "place": "dock",
+   "sell": 1500
+  },
+  "e_blackbear_weapon": {
+   "id": "e_blackbear_weapon",
+   "name": "Flintlock With a Bent Barrel",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_blackbear_weapon",
+   "flavor": "Shoots around corners. Not on purpose.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "blackbear",
+   "special": {
+    "kind": "raid",
+    "amount": 0.07
+   },
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_blackbear_head": {
+   "id": "e_blackbear_head",
+   "name": "Tricorne With a Parrot-Shaped Stain",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_blackbear_head",
+   "flavor": "The parrot is gone. The memory remains.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "blackbear",
+   "set": "set_blackbear",
+   "place": "fjord",
+   "sell": 80
+  },
+  "e_blackbear_body": {
+   "id": "e_blackbear_body",
+   "name": "Striped Deckhand Shirt",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_blackbear_body",
+   "flavor": "Washed annually, by rain.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "blackbear",
+   "set": "set_blackbear",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_blackbear_feet": {
+   "id": "e_blackbear_feet",
+   "name": "Sea Boots Full of Water",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_blackbear_feet",
+   "flavor": "Squelch. Squelch. Squelch.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "blackbear",
+   "set": "set_blackbear",
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_blackbear_charm": {
+   "id": "e_blackbear_charm",
+   "name": "Treasure Map Where X Is Everywhere",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_blackbear_charm",
+   "flavor": "He drew it himself after the rum. All of them are worth checking.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "blackbear",
+   "special": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "place": "fjord",
+   "sell": 600
+  },
+  "e_astrid_weapon": {
+   "id": "e_astrid_weapon",
+   "name": "Seax Knife",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_astrid_weapon",
+   "flavor": "For bread, rope, and settling disputes about bread.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "astrid",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_astrid_head": {
+   "id": "e_astrid_head",
+   "name": "Helmet (No Horns, Actually)",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_astrid_head",
+   "flavor": "Historians were very insistent about this.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "astrid",
+   "set": "set_astrid",
+   "place": "fjord",
+   "sell": 80
+  },
+  "e_astrid_body": {
+   "id": "e_astrid_body",
+   "name": "Ring Mail Byrnie",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_astrid_body",
+   "flavor": "Ten thousand rings. She counted on a slow raid.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "astrid",
+   "set": "set_astrid",
+   "place": "fjord",
+   "sell": 220
+  },
+  "e_astrid_feet": {
+   "id": "e_astrid_feet",
+   "name": "Fur-Lined Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_astrid_feet",
+   "flavor": "Warm, quiet, and soaked with someone else's river.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "astrid",
+   "set": "set_astrid",
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_astrid_charm": {
+   "id": "e_astrid_charm",
+   "name": "Rune Stone That Says \"Wet Paint\"",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_astrid_charm",
+   "flavor": "Scholars spent forty years translating it.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "astrid",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "fjord",
+   "sell": 1500
+  },
+  "e_kenji_weapon": {
+   "id": "e_kenji_weapon",
+   "name": "Bamboo Training Sword",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_kenji_weapon",
+   "flavor": "A thousand strikes a day. The bamboo is tired too.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "kenji",
+   "special": {
+    "kind": "raid",
+    "amount": 0.06
+   },
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_kenji_head": {
+   "id": "e_kenji_head",
+   "name": "Topknot Ribbon",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_kenji_head",
+   "flavor": "Holds the hair. Holds the honour.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "kenji",
+   "set": "set_kenji",
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_kenji_body": {
+   "id": "e_kenji_body",
+   "name": "Patched Travelling Kimono",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_kenji_body",
+   "flavor": "More patch than kimono now. Each one is a story he will not tell.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "kenji",
+   "set": "set_kenji",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_kenji_feet": {
+   "id": "e_kenji_feet",
+   "name": "Straw Waraji Sandals",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_kenji_feet",
+   "flavor": "Last about a week. He has walked through four hundred pairs.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "kenji",
+   "set": "set_kenji",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_kenji_charm": {
+   "id": "e_kenji_charm",
+   "name": "Tea Whisk of Absolute Calm",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_kenji_charm",
+   "flavor": "Nothing can disturb the one who holds it. Except a dropped rice ball.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "kenji",
+   "special": {
+    "kind": "xp",
+    "amount": 0.05
+   },
+   "place": "fjord",
+   "sell": 600
+  },
+  "e_emu_weapon": {
+   "id": "e_emu_weapon",
+   "name": "Rifle With a Bent Sight",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_emu_weapon",
+   "flavor": "Issued to the losing side. Explains a lot.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "emu",
+   "special": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "place": "outback",
+   "sell": 30
+  },
+  "e_emu_head": {
+   "id": "e_emu_head",
+   "name": "Cork Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_emu_head",
+   "flavor": "Keeps the flies off. Makes a noise like applause.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "emu",
+   "set": "set_emu",
+   "place": "outback",
+   "sell": 15
+  },
+  "e_emu_body": {
+   "id": "e_emu_body",
+   "name": "Feather Camouflage",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_emu_body",
+   "flavor": "An emu wearing emu feathers. The army never stood a chance.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "emu",
+   "set": "set_emu",
+   "place": "outback",
+   "sell": 80
+  },
+  "e_emu_feet": {
+   "id": "e_emu_feet",
+   "name": "Sprinting Talons",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_emu_feet",
+   "flavor": "Fifty kilometres an hour and no idea where they are going.",
+   "stats": {
+    "speed": 12,
+    "luck": 5
+   },
+   "era": "emu",
+   "set": "set_emu",
+   "place": "outback",
+   "sell": 220
+  },
+  "e_emu_charm": {
+   "id": "e_emu_charm",
+   "name": "Official Surrender of Australia",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "unhinged",
+   "icon": "e_emu_charm",
+   "flavor": "Signed by a major, a minister, and one confused farmer.",
+   "stats": {
+    "luck": 26,
+    "health": 18
+   },
+   "era": "emu",
+   "special": {
+    "kind": "speed",
+    "amount": 0.06
+   },
+   "place": "outback",
+   "sell": 4000
+  },
+  "e_troffea_weapon": {
+   "id": "e_troffea_weapon",
+   "name": "Wooden Spoon",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_troffea_weapon",
+   "flavor": "She was cooking when it started. She never put it down.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "troffea",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "blackforest",
+   "sell": 15
+  },
+  "e_troffea_head": {
+   "id": "e_troffea_head",
+   "name": "Ribboned Kerchief",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_troffea_head",
+   "flavor": "Has not come loose in four days of dancing. Nobody knows how.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "troffea",
+   "set": "set_troffea",
+   "place": "blackforest",
+   "sell": 15
+  },
+  "e_troffea_body": {
+   "id": "e_troffea_body",
+   "name": "Embroidered Bodice",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_troffea_body",
+   "flavor": "Stitched by her mother, who also could not stop.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "troffea",
+   "set": "set_troffea",
+   "place": "blackforest",
+   "sell": 30
+  },
+  "e_troffea_feet": {
+   "id": "e_troffea_feet",
+   "name": "Clogs That Will Not Stop",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_troffea_feet",
+   "flavor": "They tap when nobody is in them. The priest has been informed.",
+   "stats": {
+    "speed": 12,
+    "luck": 5
+   },
+   "era": "troffea",
+   "set": "set_troffea",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_troffea_charm": {
+   "id": "e_troffea_charm",
+   "name": "Physician's Note: \"More Dancing\"",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_troffea_charm",
+   "flavor": "The real cure the council actually tried. It did not work.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "troffea",
+   "special": {
+    "kind": "luck",
+    "amount": 0.04
+   },
+   "place": "blackforest",
+   "sell": 1500
+  },
+  "e_joost_weapon": {
+   "id": "e_joost_weapon",
+   "name": "Bulb Dibber",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_joost_weapon",
+   "flavor": "For planting. For pointing. For poking rival speculators.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "joost",
+   "special": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "place": "vault",
+   "sell": 15
+  },
+  "e_joost_head": {
+   "id": "e_joost_head",
+   "name": "Tall Capotain Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_joost_head",
+   "flavor": "Height is confidence. Confidence is credit.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "joost",
+   "set": "set_joost",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_joost_body": {
+   "id": "e_joost_body",
+   "name": "Fur-Trimmed Merchant Coat",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_joost_body",
+   "flavor": "Bought at the peak. Worth three radishes now.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "joost",
+   "set": "set_joost",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_joost_feet": {
+   "id": "e_joost_feet",
+   "name": "Buckled Shoes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_joost_feet",
+   "flavor": "The buckles were silver until Tuesday.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "joost",
+   "set": "set_joost",
+   "place": "vault",
+   "sell": 15
+  },
+  "e_joost_charm": {
+   "id": "e_joost_charm",
+   "name": "Futures Contract for One Onion",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_joost_charm",
+   "flavor": "He was told it was a tulip. He has stopped checking.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "joost",
+   "special": {
+    "kind": "ink",
+    "amount": 0.06
+   },
+   "place": "vault",
+   "sell": 600
+  },
+  "e_chad_weapon": {
+   "id": "e_chad_weapon",
+   "name": "Selfie Stick of Conviction",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_chad_weapon",
+   "flavor": "For filming the apology video.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "chad",
+   "special": {
+    "kind": "ink",
+    "amount": 0.06
+   },
+   "place": "closet",
+   "sell": 15
+  },
+  "e_chad_head": {
+   "id": "e_chad_head",
+   "name": "VR Headset",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_chad_head",
+   "flavor": "He lives in there now. The rent is lower.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "chad",
+   "set": "set_chad",
+   "place": "closet",
+   "sell": 80
+  },
+  "e_chad_body": {
+   "id": "e_chad_body",
+   "name": "Rocket Onesie",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_chad_body",
+   "flavor": "Formal wear, in his circles.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "chad",
+   "set": "set_chad",
+   "place": "closet",
+   "sell": 30
+  },
+  "e_chad_feet": {
+   "id": "e_chad_feet",
+   "name": "Limited-Edition Sneakers (Unboxed)",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_chad_feet",
+   "flavor": "Never worn. Never will be. Somehow worth a car.",
+   "stats": {
+    "speed": 12,
+    "luck": 5
+   },
+   "era": "chad",
+   "set": "set_chad",
+   "place": "closet",
+   "sell": 220
+  },
+  "e_chad_charm": {
+   "id": "e_chad_charm",
+   "name": "Picture of a Monkey",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "unhinged",
+   "icon": "e_chad_charm",
+   "flavor": "He paid more for this than for his education. It was a screenshot.",
+   "stats": {
+    "luck": 26,
+    "health": 18
+   },
+   "era": "chad",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "closet",
+   "sell": 4000
+  },
+  "e_bella_weapon": {
+   "id": "e_bella_weapon",
+   "name": "Hair Straightener (Hot)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_bella_weapon",
+   "flavor": "Four hundred degrees and left on the bed.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "bella",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_bella_head": {
+   "id": "e_bella_head",
+   "name": "Oversized Sunglasses",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_bella_head",
+   "flavor": "Cover most of the face. That is the look.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "bella",
+   "set": "set_bella",
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_bella_body": {
+   "id": "e_bella_body",
+   "name": "Kaftan She Was Paid to Wear",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_bella_body",
+   "flavor": "Hashtag ad. Hashtag gifted. Hashtag please.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "bella",
+   "set": "set_bella",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_bella_feet": {
+   "id": "e_bella_feet",
+   "name": "Six-Inch Wedges",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_bella_feet",
+   "flavor": "On sand. She has one leg and still makes it work.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "bella",
+   "set": "set_bella",
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_bella_charm": {
+   "id": "e_bella_charm",
+   "name": "Discount Code BELLA10",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_bella_charm",
+   "flavor": "Ten percent off something nobody needed.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "bella",
+   "special": {
+    "kind": "ink",
+    "amount": 0.05
+   },
+   "place": "bondi",
+   "sell": 600
+  },
+  "e_florida_weapon": {
+   "id": "e_florida_weapon",
+   "name": "Pool Noodle (Weaponised)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_florida_weapon",
+   "flavor": "Police report describes it as \"surprisingly effective\".",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "florida",
+   "special": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_florida_head": {
+   "id": "e_florida_head",
+   "name": "Airboat Fan Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_florida_head",
+   "flavor": "Provides lift. Not enough. Yet.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "florida",
+   "set": "set_florida",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_florida_body": {
+   "id": "e_florida_body",
+   "name": "Tank Top From a Gas Station",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_florida_body",
+   "flavor": "Came free with forty gallons.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "florida",
+   "set": "set_florida",
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_florida_feet": {
+   "id": "e_florida_feet",
+   "name": "One Flip-Flop",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_florida_feet",
+   "flavor": "The other one is with the alligator. They have an understanding.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "florida",
+   "set": "set_florida",
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_florida_charm": {
+   "id": "e_florida_charm",
+   "name": "Mugshot (Framed)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "unhinged",
+   "icon": "e_florida_charm",
+   "flavor": "His third favourite. The other two are on the fridge.",
+   "stats": {
+    "luck": 26,
+    "health": 18
+   },
+   "era": "florida",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "bondi",
+   "sell": 4000
+  },
+  "e_lola_weapon": {
+   "id": "e_lola_weapon",
+   "name": "Champagne Sabre",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_lola_weapon",
+   "flavor": "Opens bottles. Ends arguments. Usually in that order.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "lola",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_lola_head": {
+   "id": "e_lola_head",
+   "name": "Feathered Showgirl Headdress",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_lola_head",
+   "flavor": "Weighs as much as a small dog. She has never once looked down.",
+   "stats": {
+    "defense": 11,
+    "luck": 7
+   },
+   "era": "lola",
+   "set": "set_lola",
+   "place": "speakeasy",
+   "sell": 220
+  },
+  "e_lola_body": {
+   "id": "e_lola_body",
+   "name": "Velvet Opera Cloak",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_lola_body",
+   "flavor": "For arriving late on purpose.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "lola",
+   "set": "set_lola",
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_lola_feet": {
+   "id": "e_lola_feet",
+   "name": "Tap-Dance Spats",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_lola_feet",
+   "flavor": "Every step is a drumroll.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "lola",
+   "set": "set_lola",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_lola_charm": {
+   "id": "e_lola_charm",
+   "name": "Admirer's Letter (One of Hundreds)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_lola_charm",
+   "flavor": "She uses them to light the stove.",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "lola",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_morwenna_weapon": {
+   "id": "e_morwenna_weapon",
+   "name": "Broom That Sulks",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_morwenna_weapon",
+   "flavor": "Will fly, but will make a noise about it.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "morwenna",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "blackforest",
+   "sell": 30
+  },
+  "e_morwenna_head": {
+   "id": "e_morwenna_head",
+   "name": "Hat With a Bite Taken Out",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_morwenna_head",
+   "flavor": "The cauldron did that. They do not talk about it.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "morwenna",
+   "set": "set_morwenna",
+   "place": "blackforest",
+   "sell": 80
+  },
+  "e_morwenna_body": {
+   "id": "e_morwenna_body",
+   "name": "Shawl of Spider Silk",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_morwenna_body",
+   "flavor": "The spiders want it back.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "morwenna",
+   "set": "set_morwenna",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_morwenna_feet": {
+   "id": "e_morwenna_feet",
+   "name": "Curly-Toed Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_morwenna_feet",
+   "flavor": "Curl more when she lies.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "morwenna",
+   "set": "set_morwenna",
+   "place": "blackforest",
+   "sell": 15
+  },
+  "e_morwenna_charm": {
+   "id": "e_morwenna_charm",
+   "name": "Frog (Formerly a Prince, He Says)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "absurd",
+   "icon": "e_morwenna_charm",
+   "flavor": "She has no memory of doing it. He has paperwork.",
+   "stats": {
+    "luck": 20,
+    "health": 13
+   },
+   "era": "morwenna",
+   "special": {
+    "kind": "xp",
+    "amount": 0.05
+   },
+   "place": "blackforest",
+   "sell": 1500
+  },
+  "e_sable_weapon": {
+   "id": "e_sable_weapon",
+   "name": "Gondola Oar",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_sable_weapon",
+   "flavor": "Stolen. The gondolier is still going in circles.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "sable",
+   "special": {
+    "kind": "luck",
+    "amount": 0.07
+   },
+   "place": "vault",
+   "sell": 15
+  },
+  "e_sable_head": {
+   "id": "e_sable_head",
+   "name": "Plumed Tricorno",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_sable_head",
+   "flavor": "Tip it once for hello, twice for run.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "sable",
+   "set": "set_sable",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_sable_body": {
+   "id": "e_sable_body",
+   "name": "Harlequin Doublet",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_sable_body",
+   "flavor": "So loud that nobody remembers the face above it.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "sable",
+   "set": "set_sable",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_sable_feet": {
+   "id": "e_sable_feet",
+   "name": "Soft-Soled Thief Slippers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_sable_feet",
+   "flavor": "Silent on marble. Silent on tile. Silent on the Doge's bed.",
+   "stats": {
+    "speed": 12,
+    "luck": 5
+   },
+   "era": "sable",
+   "set": "set_sable",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_sable_charm": {
+   "id": "e_sable_charm",
+   "name": "The Doge's Spare Ring",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "legendary",
+   "icon": "e_sable_charm",
+   "flavor": "He has not noticed. He has eleven.",
+   "stats": {
+    "luck": 15,
+    "health": 10
+   },
+   "era": "sable",
+   "special": {
+    "kind": "ink",
+    "amount": 0.04
+   },
+   "place": "vault",
+   "sell": 600
+  },
+  "e_jacko_weapon": {
+   "id": "e_jacko_weapon",
+   "name": "Shark-Bitten Paddle",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_jacko_weapon",
+   "flavor": "The shark apologised. Sort of.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "jacko",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_jacko_head": {
+   "id": "e_jacko_head",
+   "name": "Zinc-Smeared Bucket Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_jacko_head",
+   "flavor": "SPF one thousand.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "jacko",
+   "set": "set_jacko",
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_jacko_body": {
+   "id": "e_jacko_body",
+   "name": "Rashie",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_jacko_body",
+   "flavor": "Worn in the surf, at the pub and to one wedding.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "jacko",
+   "set": "set_jacko",
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_jacko_feet": {
+   "id": "e_jacko_feet",
+   "name": "Swim Fins",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_jacko_feet",
+   "flavor": "Magnificent in water. Tragic on stairs.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "jacko",
+   "set": "set_jacko",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_jacko_charm": {
+   "id": "e_jacko_charm",
+   "name": "Whistle of Mild Disapproval",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_jacko_charm",
+   "flavor": "One blast: swim between the flags. Two blasts: mate. Come on.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "jacko",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "bondi",
+   "sell": 220
+  },
+  "e_raspawtin_weapon": {
+   "id": "e_raspawtin_weapon",
+   "name": "Poisoned Wine (Already Drunk)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_raspawtin_weapon",
+   "flavor": "It did nothing. He asked for the vintage.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "raspawtin",
+   "special": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "place": "fjord",
+   "sell": 80
+  },
+  "e_raspawtin_head": {
+   "id": "e_raspawtin_head",
+   "name": "Bear-Fur Ushanka",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_raspawtin_head",
+   "flavor": "The bear had it coming.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "raspawtin",
+   "set": "set_raspawtin",
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_raspawtin_body": {
+   "id": "e_raspawtin_body",
+   "name": "Peasant Tunic With Bullet Holes",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_raspawtin_body",
+   "flavor": "He considers them ventilation.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "raspawtin",
+   "set": "set_raspawtin",
+   "place": "fjord",
+   "sell": 220
+  },
+  "e_raspawtin_feet": {
+   "id": "e_raspawtin_feet",
+   "name": "Felt Valenki",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_raspawtin_feet",
+   "flavor": "Warm through a Russian winter and one frozen river.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "raspawtin",
+   "set": "set_raspawtin",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_raspawtin_charm": {
+   "id": "e_raspawtin_charm",
+   "name": "Icon That Follows You Around the Room",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "unhinged",
+   "icon": "e_raspawtin_charm",
+   "flavor": "It is not a trick of the light. He checked.",
+   "stats": {
+    "luck": 26,
+    "health": 18
+   },
+   "era": "raspawtin",
+   "special": {
+    "kind": "luck",
+    "amount": 0.08
+   },
+   "place": "fjord",
+   "sell": 4000
+  },
+  "e_madjack_weapon": {
+   "id": "e_madjack_weapon",
+   "name": "Umbrella (Taken Into Battle)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "e_madjack_weapon",
+   "flavor": "A real officer did this. The enemy assumed it was a new weapon.",
+   "stats": {
+    "attack": 18,
+    "speed": 6
+   },
+   "era": "madjack",
+   "special": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "place": "outback",
+   "sell": 220
+  },
+  "e_madjack_head": {
+   "id": "e_madjack_head",
+   "name": "Tin Hat With a Dent",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_madjack_head",
+   "flavor": "The dent has a name and a regimental history.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "madjack",
+   "set": "set_madjack",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_madjack_body": {
+   "id": "e_madjack_body",
+   "name": "Denison Smock",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_madjack_body",
+   "flavor": "Smells of cordite and marmalade.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "madjack",
+   "set": "set_madjack",
+   "place": "outback",
+   "sell": 80
+  },
+  "e_madjack_feet": {
+   "id": "e_madjack_feet",
+   "name": "Ammunition Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_madjack_feet",
+   "flavor": "Polished the night before the invasion. Obviously.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "madjack",
+   "set": "set_madjack",
+   "place": "outback",
+   "sell": 15
+  },
+  "e_madjack_charm": {
+   "id": "e_madjack_charm",
+   "name": "Strongly Worded Letter to the Enemy",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "unhinged",
+   "icon": "e_madjack_charm",
+   "flavor": "Dear Sir. I must protest in the strongest possible terms.",
+   "stats": {
+    "luck": 26,
+    "health": 18
+   },
+   "era": "madjack",
+   "special": {
+    "kind": "speed",
+    "amount": 0.06
+   },
+   "place": "outback",
+   "sell": 4000
   },
   "bath_carp": {
    "id": "bath_carp",

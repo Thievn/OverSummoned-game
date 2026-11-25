@@ -126,6 +126,16 @@ for h in HEROES:
                        bio=h["bio"], lines=h["lines"], bg=BG[h["id"]], stats=spread(C["card"]["hero_total"][h["rarity"]], ARCH[h["arch"]]),
                        gear=gear_ids, place=h["place"]))
 
+# ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gear2
+era_items, gear_sets = gear2.expand(C["gear"]["budget"])
+hero_place = {h["id"]: h["place"] for h in HEROES}
+for it in era_items:
+    it["place"] = hero_place[it["era"]]; it["sell"] = C["gear"]["sell"][it["rarity"]]; art_desc = it.pop("desc"); items[it["id"]] = it
+C["gear_sets"] = gear_sets
+C["slots"] = {"general": ["weapon", "head", "body", "feet", "charm"], "own": ["weapon", "armor", "trinket"], "charm_level": 5}
+
 places = []
 for p in PLACES:
     table, n = [], 0
@@ -140,6 +150,8 @@ for p in PLACES:
         if h["place"] == p["id"]:
             for g in h["gear"]:
                 table.append([g, C["gear"]["drop_weight"][items[g]["rarity"]]])
+            for it in era_items:
+                if it["era"] == h["id"]: table.append([it["id"], C["gear"]["drop_weight"][it["rarity"]]])
     places.append(dict(id=p["id"], name=p["name"], era=p["era"], skill=p["skill"], level=p["level"], tier=p["tier"], blurb=p["blurb"], loot=table))
 items["x_crate"] = dict(id="x_crate", name="Rift Crate", kind="crate", rarity="rare", icon="x_crate", flavor="It fell out of a hole in time. It is ticking. Probably fine.", place="archive", sell=0)
 for t in C["tonics"]:
