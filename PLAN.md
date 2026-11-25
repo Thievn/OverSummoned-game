@@ -170,4 +170,25 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Test with two real accounts (needs Dean signed in on the preview + a second account)
 - [ ] Chat refresh is manual/15s; live chat later. Report/mute for chat before going public
 - [ ] Mailbox dot on the home tile; guild goal tuning; market price history
-- [ ] Saves are still trusted from the browser, so trades can be cheated until saves move server-side
+
+## Anti-cheat: the server keeps the ledger — stage 1 built 24 Nov
+- [x] Browsers can no longer write the save table. Every save goes through `os2_save_put`, which checks it against the last page it accepted
+- [x] Refused: unknown items or heroes, negative counts, rebirth without level 99, and anything earned faster than is possible
+      (xp, ink, gold, items, legendary+ items, unhinged items, new cards, legendary+ cards, hauls) — limits per second plus a small burst
+- [x] Gold from selling is credited by the server's own price list, so a big sell-off is never refused
+- [x] Gifts, market listing/buying/taking back, mailbox and guild reward all change the server's copy; the game takes the server's numbers
+- [x] Guild hauls are counted by the server from checked saves; guild reward needs 100 hauls of your own
+- [x] Leaderboard numbers (total level, cards, gold) are worked out by the server, not sent by the browser
+- [x] Refusals are written to `os2_flag`; a second device loads the newest page instead of overwriting
+- [ ] **Not yet run against a real signed-in account** — Dean to play on the preview for a few minutes; watch for "ledger did not balance"
+- [ ] Reload `os2_item` whenever heroes/items are added (it is filled from data/rules.json)
+- [ ] Show `os2_flag` in the Owner's office
+- [ ] **Stage 2 (the full fix): the server rolls every haul, drop and summon itself.** Today a cheat can still nudge luck inside the
+      speed limits (e.g. claim a lucky drop). Stage 2 moves the haul/loot/summon maths into the database so the browser only draws.
+- [ ] Limits are generous on purpose; tighten after watching real play
+
+## To-do list (raised, not urgent)
+- [ ] Scenes: speakeasy crew stand close together; outback third spot is on the dirt pile; check every hero's facing in each scene
+- [ ] Guild chat live refresh, report/mute before going public
+- [ ] Mailbox dot on the home tile; market price history
+- [ ] Logo and social icon set (on hold)
