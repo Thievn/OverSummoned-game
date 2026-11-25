@@ -183,6 +183,7 @@
     // One swing per press, however fast the presses come. A swing already under way is never restarted (that is what used to
     // leave the arm stuck in the air); it is hurried along instead, and one more is queued behind it.
     act() {
+      if (!this.an) return null;            // pressed before the puppet finished loading
       const now = performance.now(), gap = (now - (this._at || 0)) / 1000; this._at = now;
       const st = this.an.getState('act'), len = st ? st.totalTime : 0.58, fast = gap < 0.7 ? Math.min(7, Math.max(1, len / Math.max(gap, 0.07))) : 1;
       if (st && st.isPlaying && !st.isCompleted) { st.timeScale = Math.max(st.timeScale, fast); this._q = fast; return st; }
