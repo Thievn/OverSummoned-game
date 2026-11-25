@@ -12,7 +12,7 @@
   }
   const land = () => loading || (loading = fetch(LAND).then(r => r.json()).then(t => { rings = decode(t); }).catch(() => { rings = []; }));
   const name = c => { try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(c) || c; } catch (e) { return c; } };
-  const flag = c => /^[A-Z]{2}$/.test(c || '') ? String.fromCodePoint(...[...c].map(ch => 0x1F1E6 + ch.charCodeAt(0) - 65)) : '';
+  const flag = () => '';
 
   function mount(host, data) {
     if (host._geo) host._geo.stop();
@@ -32,7 +32,7 @@
       for (let lon = -150; lon <= 150; lon += 30) { ctx.moveTo(X(lon), 0); ctx.lineTo(X(lon), H); }
       for (let lat = -30; lat <= 60; lat += 30) { ctx.moveTo(0, Y(lat)); ctx.lineTo(W, Y(lat)); } ctx.stroke();
       // land
-      if (rings && rings.length) { ctx.beginPath(); rings.forEach(r => { r.forEach((p, i) => i ? ctx.lineTo(X(p[0]), Y(p[1])) : ctx.moveTo(X(p[0]), Y(p[1]))); ctx.closePath(); });
+      if (rings && rings.length) { ctx.beginPath(); rings.forEach(r => { let cut = false; r.forEach((p, i) => { if (i && Math.abs(p[0] - r[i - 1][0]) > 180) cut = true; (i && !(Math.abs(p[0] - r[i - 1][0]) > 180)) ? ctx.lineTo(X(p[0]), Y(p[1])) : ctx.moveTo(X(p[0]), Y(p[1])); }); if (!cut) ctx.closePath(); });
         ctx.fillStyle = '#1b2850'; ctx.fill('evenodd'); ctx.strokeStyle = 'rgba(96,120,190,.55)'; ctx.lineWidth = .8; ctx.stroke(); }
       // a slow sweep, so the map is never still
       const sx = (t * 0.06 % 1) * W, g = ctx.createLinearGradient(sx - 140, 0, sx, 0); g.addColorStop(0, 'rgba(63,224,197,0)'); g.addColorStop(1, 'rgba(63,224,197,.10)'); ctx.fillStyle = g; ctx.fillRect(sx - 140, 0, 140, H);
@@ -45,14 +45,14 @@
       if (recent.length) { const step = 2.4, k = Math.floor(t / step) % recent.length, v = recent[k], ph = (t % step) / step, x = X(v.lon), y = Y(v.lat);
         ctx.beginPath(); ctx.arc(x, y, 4 + ph * 34, 0, 7); ctx.strokeStyle = `rgba(242,185,53,${1 - ph})`; ctx.lineWidth = 2.5; ctx.stroke();
         ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fillStyle = '#f2b935'; ctx.fill();
-        if (nowEl._k !== k) { nowEl._k = k; nowEl.textContent = `${flag(v.country)} ${v.city ? v.city + ', ' : ''}${name(v.country)} · ${v.path} · ${ago(v.at)}`; nowEl.classList.remove('in'); void nowEl.offsetWidth; nowEl.classList.add('in'); } }
+        if (nowEl._k !== k) { nowEl._k = k; nowEl.textContent = `${v.city ? v.city + ', ' : ''}${name(v.country)} · ${v.path} · ${ago(v.at)}`; nowEl.classList.remove('in'); void nowEl.offsetWidth; nowEl.classList.add('in'); } }
       else if (!places.length && !nowEl.textContent) nowEl.textContent = 'No located visits yet. They appear here as people arrive.';
       raf = requestAnimationFrame(frame);
     }
     const ago = at => { const s = Math.max(0, (Date.now() - new Date(at)) / 1000); return s < 90 ? 'just now' : s < 5400 ? Math.round(s / 60) + ' min ago' : s < 129600 ? Math.round(s / 3600) + ' h ago' : Math.round(s / 86400) + ' days ago'; };
     cv.addEventListener('mousemove', e => { const b = cv.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top; let best = null, bd = 18;
       places.forEach(p => { const d = Math.hypot(X(p.lon) - mx, Y(p.lat) - my) - R(p); if (d < bd) { bd = d; best = p; } }); hover = best;
-      if (best) { tip.textContent = `${flag(best.country)} ${best.city ? best.city + ', ' : ''}${name(best.country)}: ${best.visitors} visitor${best.visitors === 1 ? '' : 's'}, ${best.views} view${best.views === 1 ? '' : 's'}`; tip.style.left = Math.min(W - 230, Math.max(0, mx + 14)) + 'px'; tip.style.top = Math.max(0, my - 34) + 'px'; tip.classList.add('on'); } else tip.classList.remove('on'); });
+      if (best) { tip.textContent = `${best.city ? best.city + ', ' : ''}${name(best.country)}: ${best.visitors} visitor${best.visitors === 1 ? '' : 's'}, ${best.views} view${best.views === 1 ? '' : 's'}`; tip.style.left = Math.min(W - 230, Math.max(0, mx + 14)) + 'px'; tip.style.top = Math.max(0, my - 34) + 'px'; tip.classList.add('on'); } else tip.classList.remove('on'); });
     cv.addEventListener('mouseleave', () => { hover = null; tip.classList.remove('on'); });
     size(); land(); raf = requestAnimationFrame(frame);
     host._geo = { stop() { dead = true; cancelAnimationFrame(raf); } };
