@@ -7,7 +7,7 @@
   const places = {}; R.places.forEach(p => places[p.id] = p);
   const workPlaces = R.places.filter(p => p.skill !== 'Summoning');
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
-    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
+    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, cabinet: {}, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
 
   // ------------------------------------------------------------------ rules
@@ -36,7 +36,7 @@
   function jobSpeed(j) {
     const p = places[j.place], st = heroStats(j.hero); let gear = 0;
     (S.equip[j.hero] || []).forEach(g => { const it = g && OS.items[g]; if (it && it.equip && it.equip.skill === p.skill) gear += it.equip.speed * gearMult(g, j.hero) / 100; });
-    return 1 + st.speed / R.jobs.speed_div + mastery(j.hero, p.skill) * R.jobs.mastery_speed + perk(p.skill, 'speed') + tonic('speed') + gear;
+    return 1 + st.speed / R.jobs.speed_div + mastery(j.hero, p.skill) * R.jobs.mastery_speed + perk(p.skill, 'speed') + tonic('speed') + gear + (cabSet(p.id) ? CAB.set_speed : 0);
   }
   const jobTime = j => R.tier[places[j.place].tier].seconds / jobSpeed(j);
   const jobLuck = j => heroStats(j.hero).luck / R.jobs.luck_div + tonic('luck');
@@ -44,6 +44,14 @@
   function rollLoot(p, extra) { const ws = weights(p, extra), tot = ws.reduce((a, b) => a + b, 0); let r = Math.random() * tot; for (let i = 0; i < ws.length; i++) { r -= ws[i]; if (r <= 0) return p.loot[i][0]; } return p.loot[0][0]; }
   const dropChance = (p, id, extra) => { const ws = weights(p, extra || 0), c = ws[p.loot.findIndex(r => r[0] === id)] / ws.reduce((a, b) => a + b, 0) * 100; return (c >= 1 ? c.toFixed(1) : c.toFixed(2)) + '% of finds'; };
   const give = (id, n) => S.bag[id] = (S.bag[id] || 0) + (n || 1);
+  // ---- the cabinet: one of each treasure on display. Every piece makes all ink worth a little more, for good;
+  //      finish a place's set and everybody works faster there.
+  const CAB = R.cabinet || { ink_per: 0.005, set_speed: 0.1 };
+  const treasures = Object.values(OS.items).filter(i => i.kind === 'loot' && i.id.indexOf('x_') !== 0);
+  const inkBonus = () => 1 + Object.keys(S.cabinet || {}).length * CAB.ink_per;
+  const cabSet = pid => { const set = treasures.filter(i => i.place === pid); return set.length > 0 && set.every(i => S.cabinet[i.id]); };
+  const cabReady = () => treasures.filter(i => !S.cabinet[i.id] && S.bag[i.id] > 0);
+  function fillCabinet() { const add = cabReady(); add.forEach(i => { S.bag[i.id]--; S.cabinet[i.id] = 1; }); if (add.length) { save(true); render(); toast(`${add.length} new ${add.length === 1 ? 'piece' : 'pieces'} on display. Ink is now worth ${Math.round((inkBonus() - 1) * 1000) / 10}% more.`); } }
   const owns = id => (S.bag[id] || 0) > 0 || Object.values(S.equip).some(e => e.includes(id));
   function gainXP(sk, n, quiet) {
     const b = level(sk); S.xp[sk] = (S.xp[sk] || 0) + n; const a = level(sk);
@@ -52,10 +60,29 @@
   // one finished action of one job
   function doAction(j, quiet) {
     const p = places[j.place], t = R.tier[p.tier], drops = [];
-    S.actions++; S.ink += t.ink * R.web.ink_mult; gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp'))), quiet);
+    S.actions++; S.ink += t.ink * R.web.ink_mult * inkBonus(); gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp'))), quiet);
     const m = S.mastery[j.hero] || (S.mastery[j.hero] = {}); m[p.skill] = (m[p.skill] || 0) + R.jobs.mastery_xp;
     if (Math.random() < R.web.loot_chance) { const n = Math.random() < perk(p.skill, 'double') ? 2 : 1; for (let i = 0; i < n; i++) { const id = rollLoot(p, jobLuck(j)); give(id); drops.push(id); } }
     return drops;
+  }
+  const WANDER = (R.jobs.wander_minutes || 15) * 60; let jobsMoved = false;
+  const ORDERS = { stay: ['Stay', 'Keeps working this spot.'], wander: ['Wander', `Moves to the next open place every ${R.jobs.wander_minutes || 15} minutes, so every skill gets a turn.`], hunt: ['Hunt', `Goes wherever the things you still lack are most likely to turn up, and looks again every ${R.jobs.wander_minutes || 15} minutes.`] };
+  const openPlaces = () => workPlaces.filter(unlocked);
+  function nextPlace(j) { const o = openPlaces(); if (!o.length) return j.place; return o[(o.findIndex(p => p.id === j.place) + 1) % o.length].id; }
+  const owned = id => S.bag[id] > 0 || S.cabinet[id] || Object.values(S.equip).some(e => (e || []).includes(id));
+  function huntPlace(j) {
+    let best = j.place, top = 0;
+    openPlaces().forEach(p => { const luck = jobLuck({ hero: j.hero, place: p.id }); let sc = 0; p.loot.forEach(([id]) => { if (OS.items[id] && !owned(id)) sc += dropChance(p, id, luck) * (OS.items[id].owner === j.hero ? 3 : 1); }); if (sc > top + 1e-9) { top = sc; best = p.id; } });
+    return best;
+  }
+  // when the ink is full, Smudge goes home and summons on his own (a setting)
+  let autoGot = [];
+  function autoSummon(quiet) {
+    if (summoning || S.ink < summonCost()) return;
+    if (!quiet && current === 'summon') { summon(); return; }
+    const names = []; let n = 0; while (S.ink >= summonCost() && n++ < 25) { const r = rollSummon(true); names.push(r.h.name + (r.had ? '' : ' (new)')); }
+    autoGot = autoGot.concat(names); save(true);
+    if (!quiet) { toast(`Smudge went home and summoned ${names.join(', ')}.`); render(); }
   }
   function tickMeters() {
     const e = R.energy.regen_seconds * 1000; while (S.energy < R.energy.max && now() - S.energyT >= e) { S.energy++; S.energyT += e; } if (S.energy >= R.energy.max) S.energyT = now();
@@ -63,8 +90,12 @@
   }
   function advance(dt, quiet) {
     const found = [];
-    S.jobs.forEach((j, i) => { if (!j || !S.roster[j.hero] || !places[j.place]) return; const t = jobTime(j); j.prog = (j.prog || 0) + dt; let g = 0; while (j.prog >= t && g++ < 20000) { j.prog -= t; doAction(j, quiet).forEach(id => found.push([i, id])); } });
+    S.jobs.forEach((j, i) => { if (!j || !S.roster[j.hero] || !places[j.place]) return;
+      // standing orders: Wander moves on every so often, Hunt goes where the missing things are
+      if (j.order && j.order !== 'stay') { j.since = (j.since || 0) + dt; let hops = 0; while (j.since >= WANDER && hops++ < 400) { j.since -= WANDER; const to = j.order === 'wander' ? nextPlace(j) : huntPlace(j); if (to && to !== j.place) { j.place = to; jobsMoved = true; } } }
+      const t = jobTime(j); j.prog = (j.prog || 0) + dt; let g = 0; while (j.prog >= t && g++ < 20000) { j.prog -= t; doAction(j, quiet).forEach(id => found.push([i, id])); } });
     S.crateT += dt; const every = R.crate.minutes * 60; while (S.crateT >= every) { S.crateT -= every; if (S.autoCrate && !quiet) openCrate(true); else give('x_crate'); if (!quiet) toast(line('crate')); }
+    if (S.autoSummon) autoSummon(quiet);
     tickMeters(); return found;
   }
 
@@ -124,7 +155,7 @@
       else {
         const p = places[j.place], h = OS.heroes[j.hero], t = jobTime(j);
         card.innerHTML = `<div class="jscene"><img class="sc" src="${OS.img('scenes', p.id)}" alt=""><div class="who" data-who="${i}" role="img" aria-label="${h.name}"></div><div class="jpop" data-pop="${i}"></div></div>
-          <div class="jl"><div class="tag">${p.era} · ${p.skill}</div><b>${h.name} at ${p.name}</b><div class="bar"><i data-job="${i}"></i></div>
+          <div class="jl"><div class="tag">${p.era} · ${p.skill}${j.order === 'wander' ? ' · wandering' : j.order === 'hunt' ? ' · hunting' : ''}</div><b>${h.name} at ${p.name}</b><div class="bar"><i data-job="${i}"></i></div>
           <div class="spread mut"><span>one haul every ${t.toFixed(1)}s · mastery ${mastery(j.hero, p.skill)}</span><span data-next="${i}"></span></div></div>`;
         card.onclick = () => jobSheet(i); pending.push([i, j.hero]);
       }
@@ -145,10 +176,15 @@
       const acts = el('div', 'row acts'); acts.appendChild(btn('small ghost', 'What drops here', e => { e.stopPropagation(); lootSheet(p, () => jobSheet(i)); })); row.appendChild(acts);
       if (open) row.onclick = () => { j.place = p.id; upd(); }; row.dataset.id = p.id; ps.appendChild(row); });
     d.appendChild(ps);
-    const info = el('p', 'mut', ''), row = el('div', 'row'), go = btn('', 'Start', () => { if (!j.hero || !j.place) return; j.prog = 0; S.jobs[i] = j; save(true); modal.close(); render(); toast(`${OS.heroes[j.hero].name} is off to ${places[j.place].name}.`); });
+    d.appendChild(el('div', 'tag', 'Orders')).style.marginTop = '1rem';
+    const os = el('div', 'orders'), oh = el('p', 'mut', ''); oh.style.cssText = 'margin:.4rem 0 0;font-size:.9rem';
+    Object.keys(ORDERS).forEach(k => { const b = el('button', 'btn small ghost', ORDERS[k][0]); b.type = 'button'; b.dataset.o = k; b.onclick = () => { j.order = k; upd(); }; os.appendChild(b); });
+    os.style.cssText = 'display:flex;gap:.5rem;flex-wrap:wrap'; d.append(os, oh);
+    const info = el('p', 'mut', ''), row = el('div', 'row'), go = btn('', 'Start', () => { if (!j.hero || !j.place) return; j.prog = 0; j.since = 0; if (j.order === 'hunt') j.place = huntPlace(j); S.jobs[i] = j; save(true); modal.close(); render(); toast(`${OS.heroes[j.hero].name} is off to ${places[j.place].name}.`); });
     row.appendChild(go); if (S.jobs[i]) row.appendChild(btn('ghost', 'Call them home', () => { S.jobs[i] = null; save(true); modal.close(); render(); }));
     d.append(info, row);
-    function upd() { hs.querySelectorAll('.card').forEach(c => c.classList.toggle('sel', c.dataset.id === j.hero)); ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !(j.hero && j.place);
+    function upd() { const ord = j.order || 'stay'; os.querySelectorAll('button').forEach(b => { const on = b.dataset.o === ord; b.classList.toggle('ghost', !on); b.setAttribute('aria-pressed', on); }); oh.textContent = ORDERS[ord][1];
+      hs.querySelectorAll('.card').forEach(c => c.classList.toggle('sel', c.dataset.id === j.hero)); ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !(j.hero && j.place);
       info.innerHTML = j.hero && j.place ? `One haul every <b style="color:#fff">${jobTime(j).toFixed(1)}s</b> · +${Math.round(jobLuck(j) * 100)}% luck from ${OS.heroes[j.hero].name}` : 'Pick who, then where.'; }
     upd(); modal.open(d);
   }
@@ -173,12 +209,17 @@
       $('s-odds').innerHTML = RAR.map(r => `<span class="r-${r}" style="color:var(--rc)">${OS.cap(r)}</span><i class="r-${r}"><b style="width:${Math.sqrt(w[r] / mx) * 100}%"></b></i><span>${(w[r] / tot * 100).toFixed(w[r] < 1 ? 2 : 1)}%</span>`).join(''); }
   }
   let summoning = false, lastStamp = 0;
-  function summon() {
-    const cost = summonCost(); if (S.ink < cost || summoning) return; summoning = true;
-    S.ink -= cost; S.summons++; const w = R.summon.weights; let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0), rar = 'common'; for (const k of RAR) { r -= w[k]; if (r <= 0) { rar = k; break; } }
+  // the roll itself: spend the ink, pick a rarity by the published odds, pick anybody of that rarity
+  function rollSummon(quiet) {
+    const cost = summonCost(); S.ink -= cost; S.summons++; const w = R.summon.weights; let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0), rar = 'common'; for (const k of RAR) { r -= w[k]; if (r <= 0) { rar = k; break; } }
     let pool = R.heroes.filter(h => h.rarity === rar); if (!pool.length) pool = R.heroes.filter(h => h.rarity === 'common');
     const h = pool[Math.floor(Math.random() * pool.length)], had = S.roster[h.id] || 0, before = cardLevel(had || 1);
-    S.roster[h.id] = had + 1; if (had && before >= R.card.max_level) give('x_shard'); gainXP('Summoning', Math.round(cost * R.summon.xp_per_ink)); Cloud.log('summon', h.id); save(true);
+    S.roster[h.id] = had + 1; if (had && before >= R.card.max_level) give('x_shard'); gainXP('Summoning', Math.round(cost * R.summon.xp_per_ink), quiet); Cloud.log('summon', h.id);
+    return { h, had, before, rar, cost };
+  }
+  function summon() {
+    if (S.ink < summonCost() || summoning) return; summoning = true;
+    const { h, had, before, rar } = rollSummon(); save(true);
     // the ring fills, floods with the rarity's colour, and the card climbs out of it
     const col = R.rarity_color[rar], glow = $('s-glow'), flash = $('s-flash'), prog = $('s-prog'); renderTop(); $('s-go').disabled = true;
     prog.setAttribute('stroke-dasharray', '100 100'); prog.style.transition = 'stroke .5s'; prog.setAttribute('stroke', col); glow.style.transition = 'opacity .6s,fill .6s'; glow.setAttribute('fill', col); glow.setAttribute('opacity', '.75');
@@ -193,7 +234,7 @@
       d.appendChild(btn('', had ? 'Welcome back' : 'Find them somewhere to stand', modal.close)); modal.open(d); render();
     }, 2300 + (rr(rar) >= 4 ? 900 : 0));
   }
-  function stamp() { const t = performance.now(); if (summoning || t - lastStamp < 1000 / R.max_keys_per_second) return; lastStamp = t; S.ink += R.web.stamp_ink; sfx.stamp(); renderTop(); renderSummon(); }
+  function stamp() { const t = performance.now(); if (summoning || t - lastStamp < 1000 / R.max_keys_per_second) return; lastStamp = t; S.ink += R.web.stamp_ink * inkBonus(); sfx.stamp(); renderTop(); renderSummon(); }
   $('s-go').onclick = summon; $('s-stamp').onclick = stamp; sstage.addEventListener('pointerdown', stamp);
 
   // ------------------------------------------------------------------ arrivals
@@ -229,6 +270,12 @@
     ids.forEach(id => { const it = OS.items[id], s = OS.slot(id, { count: S.bag[id], have: S.bag[id] }); if (it.kind === 'crate') { s.classList.add('pulse'); s.onclick = () => openCrate(); } if (it.kind === 'tonic') s.onclick = () => drink(id); g.appendChild(s); });
     for (let i = ids.length; i < Math.max(24, Math.ceil(ids.length / 12) * 12); i++) g.appendChild(OS.slot(null));
     $('b-cap').textContent = `Sold today: ${OS.num(S.sold)} of ${OS.num(sellCap())} gold`;
+    let cab = $('cabinet'); if (!cab) { cab = el('div', 'panel'); cab.id = 'cabinet'; cab.style.marginTop = '1rem'; g.parentNode.parentNode.appendChild(cab); }
+    const shown = Object.keys(S.cabinet).length, ready = cabReady().length;
+    cab.innerHTML = `<div class="spread"><h3 style="margin:0">The cabinet</h3><span class="mut">${shown} of ${treasures.length} on display · ink worth +${Math.round((inkBonus() - 1) * 1000) / 10}%</span></div>
+      <p class="mut" style="margin:.4rem 0 .7rem">Put one of each treasure on display. Every piece makes all ink worth ${CAB.ink_per * 100}% more, for good. Finish a place's set and everybody works ${CAB.set_speed * 100}% faster there.</p>
+      <div class="row" style="flex-wrap:wrap;gap:.4rem;margin-bottom:.7rem">${R.places.filter(p => treasures.some(i => i.place === p.id)).map(p => { const set = treasures.filter(i => i.place === p.id), n = set.filter(i => S.cabinet[i.id]).length; return `<span class="chip${n === set.length ? ' done' : ''}" style="border:1px solid ${n === set.length ? '#3fe0c5' : '#2a3761'};border-radius:999px;padding:.2em .7em;font-size:.82rem;color:${n === set.length ? '#3fe0c5' : '#aab6d6'}">${p.name} ${n}/${set.length}${n === set.length ? ' ✓' : ''}</span>`; }).join('')}</div>`;
+    const cb = btn('small', ready ? `Put ${ready} new ${ready === 1 ? 'piece' : 'pieces'} on display` : 'Nothing new to display', fillCabinet); cb.disabled = !ready; cab.appendChild(cb);
   }
   function openCrate(quiet) {
     if (!quiet) { if (!(S.bag.x_crate > 0)) return; S.bag.x_crate--; }
@@ -312,6 +359,7 @@
     const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
     sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
     const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
+    const as = el('label', 'kv', '<span>Smudge summons by himself when the ink is full</span>'), ab = el('input'); ab.type = 'checkbox'; ab.checked = !!S.autoSummon; ab.onchange = () => { S.autoSummon = ab.checked; save(true); }; as.appendChild(ab); st.appendChild(as);
     $('ac-stats').innerHTML = R.skills.map(s => `<div class="kv"><span>${s}</span><b>Level ${level(s)}</b></div>`).join('') + `<div class="kv"><span>Hauls</span><b>${OS.num(S.actions)}</b></div><div class="kv"><span>Summons</span><b>${S.summons}</b></div>`;
   }
   $('ac-out').onclick = async () => { await save(true); Cloud.signOut(); };
@@ -321,10 +369,11 @@
   function render() { renderTop(); renderers[current](); }
 
   // ------------------------------------------------------------------ the clock
-  (function offline() { const away = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (away > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(away, true); toast(`While you were away (${fmt(away)}): ${got.length} finds and ${OS.num(S.ink - ink0)} ink.`); } else tickMeters(); })();
+  (function offline() { const away = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (away > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(away, true); toast(`While you were away (${fmt(away)}): ${got.length} finds` + (autoGot.length ? `, and Smudge summoned ${autoGot.length} (${autoGot.slice(0, 4).join(', ')}${autoGot.length > 4 ? '…' : ''}).` : ` and ${OS.num(S.ink - ink0)} ink.`)); autoGot = []; } else tickMeters(); })();
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; const got = advance(dt, false);
+    if (jobsMoved) { jobsMoved = false; if (current === 'jobs' && !$('modal').classList.contains('on')) renderJobs(); }
     got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[i]; if (pp) { pp.kick('head', 1.6); pp.kick('tail', 6); pp.cheer(1.2); }
       if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } if (rr(it.rarity) >= 2) toast(`${OS.heroes[S.jobs[i].hero].name} found: ${it.name}`); });
     uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
@@ -336,5 +385,5 @@
   addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const away = (now() - S.last) / 1000; if (away > 5) advance(Math.min(away, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home'); requestAnimationFrame(frame);
-  window.__os = { S: () => S, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
+  window.__os = { S: () => S, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
 })();

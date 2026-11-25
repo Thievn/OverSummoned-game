@@ -261,7 +261,12 @@
   "luck_div": 100,
   "mastery_xp": 10,
   "mastery_speed": 0.01,
-  "mastery_cap": 50
+  "mastery_cap": 50,
+  "wander_minutes": 15
+ },
+ "cabinet": {
+  "ink_per": 0.005,
+  "set_speed": 0.1
  },
  "energy": {
   "max": 100,

@@ -44,9 +44,9 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Training: energy bar, train a hero's stats
 - [x] Raids: team of three against era bosses
 - [x] Crates stack in the bag; open by hand or automatically (setting)
-- [ ] Stay / Wander / Hunt
-- [ ] When ink is full Smudge goes home and summons
-- [ ] Treasure gets a second use beyond selling
+- [x] Standing orders on every job: Stay, Wander (next open place every 15 min), Hunt (goes where the things you still lack are likeliest, hero's own signature gear counts triple)
+- [x] When ink is full Smudge summons by himself (a setting in the account; works while you are away, capped at 25 at a time)
+- [x] Treasure's second use: the cabinet in the bag. One of each on display = all ink worth +0.5% per piece for good; a finished place set = +10% work speed there
 - [~] Social: friends, profiles others can view, leaderboards, a city feed, gifting, crews, chat
 - [ ] Trading and the player market (after the economy is proven)
 
@@ -85,7 +85,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Fishing, lockpicking and digging recut (`rules/smudge_fish_cut.py`, `_pick_`, `_dig_`, shared helpers in `rules/cutlib.py`): hood no longer takes the feather, whole arms on the lockpick pose, shovel slides under both fists, legs and tails reach up under the body so no gaps open
 - [x] White-edge check: only the stamp pose had it. Other Smudge poses and spot-checked heroes are clean; heroes left untouched (auto-peel would eat blades, grey fur, white shirts)
 - [x] Version stamp on art and data links (`OS.VER` in `js/os.js`); bump it whenever art changes
-- [ ] Stamp pose leftovers: small dark nick at the shoulder, flat cloak patch behind the lowered arm
+- [x] Stamp pose shoulder: round fur cap on the arm, chest strip no longer covers the lowered arm
 - [x] All four working poses are DragonBones rigs (`rules/dbexport.py` writes `assets/v2/db/smudge_<pose>_*`): shared bones, bending tail, same move names on each (idle, act, cheer, blink, talk)
 - [x] `DBCanvas.Puppet` in `js/dbcanvas.js`: drop-in Smudge player (act / cheer / say), loads each pose on demand
 - [x] Sleeping pose as a DragonBones rig: back rises and falls, snout and paw twitches at random, tail tip curls, three Zs ripple one after another
@@ -110,4 +110,6 @@ Status: [x] done, [~] partly done, [ ] not started.
 - A leaderboard exists; friends, gifts, crews and chat do not yet.
 
 ## Tuning
+- [ ] Cabinet bonus fills fast (44 of 66 pieces in two hours of testing): check +0.5% per piece is not too generous
+- [ ] Hunt order tends to park a hero at the place with their own signature gear; decide if that is wanted
 - [ ] Web game running around the clock levels too fast (about 4 weeks to 99)

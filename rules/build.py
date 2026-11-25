@@ -63,7 +63,9 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           cleocatra="egypt", blackbear="caribbean", astrid="norway", kenji="japan", emu="outback", troffea="medieval", joost="amsterdam", chad="office", bella="beach", florida="beach",
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 C.update(
-    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50},
+    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15},
+    # the cabinet: one of each treasure on display. Each piece makes all ink worth a bit more; a finished place set speeds work there
+    cabinet={"ink_per": 0.005, "set_speed": 0.10},
     energy={"max": 100, "regen_seconds": 180, "train_cost": 10, "cap_base": 10, "cap_per_card_level": 5},
     tonics=[{"id": "x_tonic_speed", "name": "Quickstep Tonic", "effect": "speed", "amount": 0.25, "minutes": 60, "cost": {"rarity": "common", "n": 8}, "text": "Every job runs 25% faster for an hour."},
             {"id": "x_tonic_luck", "name": "Lucky Dip Tonic", "effect": "luck", "amount": 0.5, "minutes": 60, "cost": {"rarity": "uncommon", "n": 4}, "text": "Better finds everywhere for an hour."},
