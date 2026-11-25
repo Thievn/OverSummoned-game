@@ -1,1 +1,1 @@
-{"name":"hero_troffea","imagePath":"hero_troffea_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":426,"height":650},{"name":"head","x":430,"y":2,"width":199,"height":225},{"name":"lid0","x":631,"y":2,"width":28,"height":33}]}
+{"name":"hero_troffea","imagePath":"hero_troffea_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":426,"height":650},{"name":"head","x":430,"y":2,"width":195,"height":204},{"name":"lid0","x":627,"y":2,"width":28,"height":33}]}
