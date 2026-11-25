@@ -365,3 +365,41 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 
 .jscene div.who{position:absolute;left:0;right:0;top:34%;bottom:6%;height:auto;transform:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.6))}
 .puppet .lid{border-bottom-width:2px}
+
+/* ---------------------------------------------------------------- cards, trading-card layout (replaces the busy frames) */
+.card .frame,.card .corner,.card .face::before,.card .front::after{display:none!important}
+.card .face,.card:not(.locked) .face{animation:none!important}
+.card .face{border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.55)}
+.card .front.tcg{background:linear-gradient(160deg,color-mix(in srgb,var(--rc) 78%,#fff),color-mix(in srgb,var(--rc) 62%,#0b1020) 45%,color-mix(in srgb,var(--rc) 40%,#0b1020));padding:0;display:block}
+.card .front.tcg::before{display:block!important;content:"";position:absolute;inset:3px;border-radius:11px;background:#10162c;box-shadow:none;z-index:0}
+.tcg>*{position:absolute;left:5%;right:5%;z-index:1}
+.tcg .nbar{top:3.2%;height:8.6%;display:flex;align-items:center;justify-content:space-between;gap:.4em;padding:0 .55em;border-radius:7px;background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020,0 0 0 1.5px color-mix(in srgb,var(--rc) 70%,#0b1020)}
+.tcg .nbar .nm{font:400 1.02rem/1 "Lilita One",sans-serif;color:#221708;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcg .nbar .lv{flex:none;font:800 .66rem/1 Nunito,sans-serif;color:#fff;background:#221708;border-radius:999px;padding:.3em .6em}
+.tcg .win{top:13.4%;bottom:33%;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px color-mix(in srgb,var(--rc) 75%,#0b1020);background:#0d1430}
+.tcg .win .bgi{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(.9) brightness(.82)}
+.tcg .win .bgi::after{content:"";position:absolute;inset:0;background:radial-gradient(90% 70% at 50% 45%,transparent 35%,rgba(6,9,22,.5) 100%)}
+.card .tcg .art{position:absolute;left:3%;right:3%;top:4%;bottom:0;display:flex;align-items:flex-end;justify-content:center}
+.tcg .tline{bottom:25.2%;height:6.6%;display:flex;align-items:center;justify-content:space-between;gap:.4em;padding:0 .55em;border-radius:6px;background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020;font:800 .64rem/1 Nunito,sans-serif;color:#3a2a14;white-space:nowrap}
+.tcg .tline span{overflow:hidden;text-overflow:ellipsis}
+.tcg .gem{flex:none;width:.85em;height:.85em;rotate:45deg;background:var(--rc);box-shadow:0 0 0 1.5px #0b1020,inset -2px -2px 0 rgba(0,0,0,.25),inset 2px 2px 0 rgba(255,255,255,.45)}
+.tcg .tbox{bottom:3.4%;height:20.6%;border-radius:6px;padding:.4em .55em;background:linear-gradient(180deg,#efe6cf,#e2d4b0);box-shadow:inset 0 0 0 1.5px #0b1020;color:#3a2a14;overflow:hidden}
+.tcg .tbox .era{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:800 .56rem/1.1 Nunito,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:color-mix(in srgb,var(--rc) 55%,#221708);margin-bottom:.25em}
+.tcg .tbox .fl{font:italic 600 .62rem/1.28 Nunito,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* the top three rarities get a quiet foil edge and a soft glow. Nothing moves. */
+.r-legendary .front.tcg{background:linear-gradient(135deg,#fff1b8,#f2a516 22%,#fff6d0 45%,#c9730a 68%,#ffd35c)}
+.r-absurd .front.tcg{background:linear-gradient(135deg,#ff4fb4,#ffd35c 30%,#3fe0c5 55%,#b06bff 78%,#ff4fb4)}
+.r-unhinged .front.tcg{background:linear-gradient(135deg,#ff3b30,#3a0508 30%,#ff7a66 52%,#3a0508 74%,#ff3b30)}
+.card.r-legendary:not(.locked) .face{box-shadow:0 0 20px rgba(255,170,40,.35),0 10px 26px rgba(0,0,0,.55)}
+.card.r-absurd:not(.locked) .face{box-shadow:0 0 22px rgba(255,79,180,.4),0 10px 26px rgba(0,0,0,.55)}
+.card.r-unhinged:not(.locked) .face{box-shadow:0 0 22px rgba(255,59,48,.45),0 10px 26px rgba(0,0,0,.55)}
+.card.locked .tcg .win .bgi{filter:grayscale(1) brightness(.25)}
+.card.locked .tcg .nbar,.card.locked .tcg .tline,.card.locked .tcg .tbox{filter:grayscale(.6) brightness(.72)}
+.card .back{border-radius:14px;box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--rc) 65%,#0b1020)}
+/* small cards: name bar and picture only */
+.card.mini .face{border-radius:10px}
+.card.mini .front.tcg::before{inset:2px;border-radius:8px}
+.card.mini .tcg .nbar{top:3.5%;height:12%;padding:0 .4em;border-radius:5px;justify-content:center}
+.card.mini .tcg .nbar .nm{font-size:.7rem}.card.mini .tcg .nbar .lv{display:none}
+.card.mini .tcg .win{top:18.5%;bottom:4%}
+.card.mini .tcg .tline,.card.mini .tcg .tbox{display:none}

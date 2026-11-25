@@ -23,6 +23,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Smudge: moving pupils, more mouth shapes
 
 ## Rarities and summoning
+- [x] Cards redrawn as calm trading cards (name bar, art window, type line, text box, rarity gem); no moving frames, corners or shake. Top three rarities keep a quiet foil edge and glow
 - [x] Seven rarities: Common, Uncommon, Rare, Epic, Legendary, Absurd, Unhinged
 - [x] Odds 50 / 28 / 14 / 6 / 1.6 / 0.35 / 0.05, shown openly, no safety net
 - [x] Florida Man and General Emu move to Absurd; new Unhinged heroes
