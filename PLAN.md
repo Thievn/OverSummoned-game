@@ -295,5 +295,6 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Linking explained where people will see it: landing page under the download button, Account > Desktop pet, the pet's Settings, the pet's readme. Says: once per computer, codes are random, single-use, ten minutes, not needed on Steam
 - [x] Steam sign-in greyed out and marked "coming soon" on the login page and the account page (it did nothing yet)
 - [x] Second way to link, nothing to type: pet's Settings > Link in browser opens the site, the site shows a four-letter check and a Yes button. Built in the pet and on the website, tested in the pet against a pretend server
-- [ ] **Blocked: the database part of Link in browser is not applied.** The approval prompt was cancelled three times while Dean was away. SQL is in `supabase/os2_pet_link_browser.sql`; apply it, then test in a rolled-back block. Until then that button opens the site but Yes fails; linking by code works
+- [x] Database part of Link in browser applied (25 Nov, after Dean approved) and tested in a rolled-back block: nothing before Yes, wrong id gets nothing, the secret is handed over once only, and it loads the ledger
+- [ ] Not yet run for real: the Yes button itself needs a signed-in player, and the pet has not talked to the real server. Dean to try both ways from the zip
 - Decided by Dean: the pet stays minimal, for farming by typing. Crew, expeditions, bench, gear and the city stay on the website
