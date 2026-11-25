@@ -62,6 +62,8 @@ C = dict(
 BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome", edith="london", albrecht="medieval", vincenzo="chicago", slapton="hollywood", napoleon="france",
           cleocatra="egypt", blackbear="caribbean", astrid="norway", kenji="japan", emu="outback", troffea="medieval", joost="amsterdam", chad="office", bella="beach", florida="beach",
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
+import wave2 as _w2
+BG.update(_w2.BG)
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15,
           # Smudge does the work, one place at a time; up to three heroes stand behind him as crew
@@ -136,7 +138,7 @@ for h in HEROES:
         items[iid] = it
         gear_ids.append(iid)
     heroes.append(dict(id=h["id"], name=h["name"], title=h["title"], era=h["era"], species=h["species"], rarity=h["rarity"],
-                       bio=h["bio"], lines=h["lines"], bg=BG[h["id"]], stats=spread(C["card"]["hero_total"][h["rarity"]], ARCH[h["arch"]]),
+                       bio=h["bio"], fact=h.get("fact", ""), lines=h["lines"], bg=BG[h["id"]], stats=spread(C["card"]["hero_total"][h["rarity"]], ARCH[h["arch"]]),
                        gear=gear_ids, place=h["place"]))
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)

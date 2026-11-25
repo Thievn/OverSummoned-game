@@ -1132,6 +1132,176 @@
     "e_madjack_body",
     "e_madjack_feet"
    ]
+  },
+  "set_vesper": {
+   "id": "set_vesper",
+   "name": "Batcave",
+   "hero": "vesper",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_vesper_head",
+    "e_vesper_body",
+    "e_vesper_feet"
+   ]
+  },
+  "set_roxy": {
+   "id": "set_roxy",
+   "name": "Garage Band",
+   "hero": "roxy",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_roxy_head",
+    "e_roxy_body",
+    "e_roxy_feet"
+   ]
+  },
+  "set_jazzmin": {
+   "id": "set_jazzmin",
+   "name": "Workout",
+   "hero": "jazzmin",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_jazzmin_head",
+    "e_jazzmin_body",
+    "e_jazzmin_feet"
+   ]
+  },
+  "set_stella": {
+   "id": "set_stella",
+   "name": "Rocket Patrol",
+   "hero": "stella",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_stella_head",
+    "e_stella_body",
+    "e_stella_feet"
+   ]
+  },
+  "set_pam": {
+   "id": "set_pam",
+   "name": "Arcade",
+   "hero": "pam",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_pam_head",
+    "e_pam_body",
+    "e_pam_feet"
+   ]
+  },
+  "set_gorm": {
+   "id": "set_gorm",
+   "name": "Toy Aisle",
+   "hero": "gorm",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_gorm_head",
+    "e_gorm_body",
+    "e_gorm_feet"
+   ]
+  },
+  "set_flap": {
+   "id": "set_flap",
+   "name": "Serial",
+   "hero": "flap",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_flap_head",
+    "e_flap_body",
+    "e_flap_feet"
+   ]
+  },
+  "set_max": {
+   "id": "set_max",
+   "name": "Action Movie",
+   "hero": "max",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_max_head",
+    "e_max_body",
+    "e_max_feet"
+   ]
+  },
+  "set_rex": {
+   "id": "set_rex",
+   "name": "Arena Rock",
+   "hero": "rex",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_rex_head",
+    "e_rex_body",
+    "e_rex_feet"
+   ]
+  },
+  "set_ajolote": {
+   "id": "set_ajolote",
+   "name": "Lucha",
+   "hero": "ajolote",
+   "two": {
+    "defense": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.12
+   },
+   "pieces": [
+    "e_ajolote_head",
+    "e_ajolote_body",
+    "e_ajolote_feet"
+   ]
   }
  },
  "slots": {
@@ -1158,6 +1328,7 @@
    "species": "Sloth",
    "rarity": "common",
    "bio": "Kevin has been 'circling back' on the same email since March. He was summoned mid-sip and has not put the mug down since. Nobody at his office has noticed he is gone.",
+   "fact": "",
    "lines": [
     "Kevin from the office! He brought his coffee!",
     "Kevin. From accounting. Somehow still on break.",
@@ -1186,6 +1357,7 @@
    "species": "Greyhound",
    "rarity": "common",
    "bio": "Marco has delivered through rain, snow, and one small tornado. He was pulled through the rift mid-wheelie and still asked who ordered the pad thai.",
+   "fact": "",
    "lines": [
     "A delivery rider! Did he bring snacks?",
     "Marco. Delivers anything, anywhere. Even across time, apparently.",
@@ -1214,6 +1386,7 @@
    "species": "Golden Retriever",
    "rarity": "uncommon",
    "bio": "Maya has seen everything and is still nice about it. She arrived with a full trauma kit and immediately started checking everyone's pulse, including the book's.",
+   "fact": "",
    "lines": [
     "A paramedic! We're safe now!",
     "Maya. Paramedic. Finally someone useful.",
@@ -1242,6 +1415,7 @@
    "species": "Badger",
    "rarity": "uncommon",
    "bio": "Brokk hunted mammoth with a stick and bad eyesight. He considers the wheel a fad. He has discovered central heating and will not be leaving.",
+   "fact": "",
    "lines": [
     "A big strong hunter from the Ice Age!",
     "Brokk. From the Ice Age. He's going to hate the thermostat.",
@@ -1270,6 +1444,7 @@
    "species": "Bulldog",
    "rarity": "rare",
    "bio": "Twenty years in the Ninth Legion and all he got was a bad knee and strong opinions about road quality. Marches everywhere. Even to the fridge.",
+   "fact": "",
    "lines": [
     "A Roman soldier! So shiny!",
     "Gaius. Legionary. Has opinions about marching.",
@@ -1298,6 +1473,7 @@
    "species": "Beaver",
    "rarity": "rare",
    "bio": "Edith built three bridges before breakfast and was told each time that a gentleman must have helped. She keeps a list of those gentlemen. The list is laminated now.",
+   "fact": "",
    "lines": [
     "An engineer! She can fix the ledger!",
     "Edith. Victorian engineer. Already judging our wiring.",
@@ -1326,6 +1502,7 @@
    "species": "Crow",
    "rarity": "rare",
    "bio": "His cure for everything is leeches, and his cure for leeches is more leeches. Somehow his patients keep improving, mostly out of spite.",
+   "fact": "",
    "lines": [
     "A doctor with a bird mask! Spooky but cool!",
     "A plague doctor. Wash your hands. Seriously.",
@@ -1354,6 +1531,7 @@
    "species": "Weasel",
    "rarity": "epic",
    "bio": "Runs a perfectly legitimate olive oil business that has never sold a single olive. Extremely polite. That is the scary part.",
+   "fact": "",
    "lines": [
     "A fancy man in a nice suit!",
     "Vincenzo Moretti. Don't ask what he does. Don't.",
@@ -1382,6 +1560,7 @@
    "species": "Peacock",
    "rarity": "legendary",
    "bio": "Four-time winner of awards he gave himself. One slap away from greatness at all times. Does his own stunts, then describes them to you for an hour.",
+   "fact": "",
    "lines": [
     "A movie star! Can I have an autograph?",
     "Will Slapton. Leading man. Bigger ego than the book.",
@@ -1410,6 +1589,7 @@
    "species": "Corgi",
    "rarity": "epic",
    "bio": "Conquered most of Europe and still cannot reach the top shelf. Will invade any country that mentions it. Do not bring up Russia, winter, or stepladders.",
+   "fact": "",
    "lines": [
     "A tiny emperor! Look at his little hat!",
     "Napoleon. Conquered Europe. Defeated by a kitchen counter.",
@@ -1438,6 +1618,7 @@
    "species": "Egyptian Cat",
    "rarity": "legendary",
    "bio": "Ruler of Egypt, seducer of empires, knocker of priceless vases off tables. Has not walked anywhere in years. Expects to be carried and will stare at you until it happens.",
+   "fact": "",
    "lines": [
     "A queen! A real queen! Should I bow?",
     "Cleocatra. She's already decided you work for her.",
@@ -1466,6 +1647,7 @@
    "species": "Black Bear",
    "rarity": "epic",
    "bio": "The most feared captain on the seven seas, with smoking fuses in his beard and a ship full of stolen rum. Terrified of seagulls. The crew has agreed never to discuss it.",
+   "fact": "",
    "lines": [
     "A pirate captain! With a real beard!",
     "Captain Blackbear. Scourge of the seas. Scared of birds.",
@@ -1494,6 +1676,7 @@
    "species": "Wolf",
    "rarity": "rare",
    "bio": "Raided six kingdoms before she was twenty and was bored by five of them. Undefeated in battle. Has been looking for a comfortable chair for eleven hundred years.",
+   "fact": "",
    "lines": [
     "A wolf warrior! She's so strong!",
     "Astrid. Shield-maiden. Could bench-press the book.",
@@ -1522,6 +1705,7 @@
    "species": "Shiba Inu",
    "rarity": "rare",
    "bio": "A masterless samurai bound by honor, discipline, and a ferocious loyalty to whoever is currently holding a rice ball. Sits when told. Does not roll over. He has standards.",
+   "fact": "",
    "lines": [
     "A samurai puppy! Such a serious face!",
     "Kenji. Ronin. Loyal to no master. Loyal to all snacks.",
@@ -1550,6 +1734,7 @@
    "species": "Emu",
    "rarity": "absurd",
    "bio": "In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
+   "fact": "",
    "lines": [
     "A big bird general! He looks so proud!",
     "General Emu. Beat an actual army. With his legs.",
@@ -1578,6 +1763,7 @@
    "species": "Hare",
    "rarity": "uncommon",
    "bio": "One July morning in 1518 she stepped into the street and started dancing. Four hundred people joined in. Nobody knows why. She is still going, and she is not tired.",
+   "fact": "",
    "lines": [
     "She's dancing! She's so good at dancing!",
     "Frau Troffea. Started dancing in 1518. Hasn't stopped. Don't make eye contact.",
@@ -1606,6 +1792,7 @@
    "species": "Hamster",
    "rarity": "uncommon",
    "bio": "At the peak of tulip mania Joost traded his house, his boat and two cows for a single bulb. The market crashed on a Tuesday. He ate the bulb on Wednesday. Still bullish.",
+   "fact": "",
    "lines": [
     "He has a flower! He really loves his flower!",
     "Joost. Traded his house for a tulip. It's a long story. It's a sad story.",
@@ -1634,6 +1821,7 @@
    "species": "Lemming",
    "rarity": "common",
    "bio": "Chad got in early on nine different coins and out early on none. He calls every cliff a dip. He is not giving financial advice, but he is giving it loudly.",
+   "fact": "",
    "lines": [
     "He says we're all going to the moon! Fun!",
     "Chad. Lost everything twice. Calls it 'building'.",
@@ -1662,6 +1850,7 @@
    "species": "Flamingo",
    "rarity": "rare",
    "bio": "Four million followers, three brand deals, one leg. Bella has been holding the same pose since 2019 and no longer remembers what the other foot was for. Link in bio.",
+   "fact": "",
    "lines": [
     "She's so glamorous! And so pink!",
     "Bella. Four million followers. Zero idea where she is right now.",
@@ -1690,6 +1879,7 @@
    "species": "Alligator",
    "rarity": "absurd",
    "bio": "Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
+   "fact": "",
    "lines": [
     "A big smiley alligator! With muscles!",
     "Florida Man. Yes, that one. All of them, actually.",
@@ -1718,6 +1908,7 @@
    "species": "Fox",
    "rarity": "epic",
    "bio": "The brightest star of the Paris cabaret. Gentlemen came from across Europe to watch her dance, and went home without their watches, wallets, and in one case a small yacht.",
+   "fact": "",
    "lines": [
     "A dancer! With feathers! So fancy!",
     "Lola Vixen. Steals hearts. And, separately, wallets.",
@@ -1746,6 +1937,7 @@
    "species": "Moth",
    "rarity": "rare",
    "bio": "Dark, brooding, mistress of forbidden arts. Lives alone in a cottage of bones and candle smoke. Completely unable to resist a lamp. It has ruined several curses.",
+   "fact": "",
    "lines": [
     "A witch! A pretty moth witch!",
     "Morwenna. Very dark. Very mysterious. Keeps flying into the lantern.",
@@ -1774,6 +1966,7 @@
    "species": "Raccoon",
    "rarity": "rare",
    "bio": "The finest thief in Venice. Has robbed the Doge three times and returned twice to rinse the loot in the canal. Leaves no fingerprints. Leaves everything slightly damp.",
+   "fact": "",
    "lines": [
     "A sneaky raccoon! Look at his little mask!",
     "Sable. Master thief. Washes everything he steals. Everything.",
@@ -1802,6 +1995,7 @@
    "species": "Kangaroo",
    "rarity": "uncommon",
    "bio": "Has pulled three hundred swimmers out of the surf and reminded every single one about sunscreen. Never skips leg day. Has never needed to.",
+   "fact": "",
    "lines": [
     "A lifeguard! He'll keep us safe!",
     "Jacko. Lifeguard. Abs you could grate cheese on.",
@@ -1830,6 +2024,7 @@
    "species": "Borzoi",
    "rarity": "unhinged",
    "bio": "They poisoned his cakes. He asked for seconds. They shot him, twice. He complimented the aim. They threw him in a frozen river and he was seen the next morning ordering brunch. Nobody has tried since. It seems rude.",
+   "fact": "",
    "lines": [
     "A very tall dog with very intense eyes! Hello!",
     "Raspawtin. Poisoned, shot, drowned. Still here. Deeply annoying.",
@@ -1858,6 +2053,7 @@
    "species": "Ram",
    "rarity": "unhinged",
    "bio": "Went to the Second World War carrying a longbow, a broadsword and a set of bagpipes, and used all three. When the war ended he was reportedly furious. Says any officer who goes into action without his sword is improperly dressed.",
+   "fact": "",
    "lines": [
     "A soldier with bagpipes! And a sword! And a bow!",
     "Mad Jack. Brought a sword to a tank fight. Won.",
@@ -1877,6 +2073,296 @@
     "madjack_trinket"
    ],
    "place": "outback"
+  },
+  {
+   "id": "vesper",
+   "name": "Vesper Nightshade",
+   "title": "Queen of the Batcave",
+   "era": "London, 1982",
+   "species": "Bat",
+   "rarity": "epic",
+   "bio": "She has not smiled since 1979 and considers that a personal best. Knows every doorman in Soho, owns eleven black dresses that are all different, and will dance only if nobody is watching.",
+   "fact": "Bats are the only mammals that can truly fly. Everything else is gliding.",
+   "lines": [
+    "She looks sad! Shall we give her a biscuit?",
+    "Vesper Nightshade. Finds your enthusiasm exhausting.",
+    "Vesper. She'd haunt you, but honestly you're not worth the fucking eyeliner."
+   ],
+   "bg": "gothclub",
+   "stats": {
+    "attack": 27,
+    "defense": 11,
+    "health": 15,
+    "speed": 15,
+    "luck": 24
+   },
+   "gear": [
+    "vesper_trinket",
+    "vesper_weapon",
+    "vesper_armor"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "roxy",
+   "name": "Roxy Riot",
+   "title": "Three Chords and a Grudge",
+   "era": "London, 1977",
+   "species": "Skunk",
+   "rarity": "rare",
+   "bio": "Bass player in a band that has had four names and two gigs. The stripe is natural, the attitude is practised, and the amplifier is technically borrowed.",
+   "fact": "A skunk can hit a target about three metres away, and warns you first by stamping its feet.",
+   "lines": [
+    "Her hair is so tall! And stripy!",
+    "Roxy Riot. Plays bass badly, loudly, and on purpose.",
+    "Roxy. Can't play a note and doesn't give a single shit. Neither will you by the second song."
+   ],
+   "bg": "punkclub",
+   "stats": {
+    "attack": 25,
+    "defense": 12,
+    "health": 20,
+    "speed": 11,
+    "luck": 8
+   },
+   "gear": [
+    "roxy_weapon",
+    "roxy_armor",
+    "roxy_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "jazzmin",
+   "name": "Jazzmin Sweat",
+   "title": "Feel the Burn",
+   "era": "Los Angeles, 1984",
+   "species": "Poodle",
+   "rarity": "uncommon",
+   "bio": "Host of a morning workout show watched by nine million people, six of whom exercise. Has never been tired, sad or still. Doctors would like to study her.",
+   "fact": "Poodles were bred as water retrievers. The famous haircut was to keep joints warm in cold water.",
+   "lines": [
+    "She's so bouncy! And five, six, seven, eight!",
+    "Jazzmin Sweat. Will make you do one more. Then one more.",
+    "Jazzmin. Smiles like that because she knows you're about to cry in a fucking leotard."
+   ],
+   "bg": "gym",
+   "stats": {
+    "attack": 13,
+    "defense": 6,
+    "health": 10,
+    "speed": 24,
+    "luck": 9
+   },
+   "gear": [
+    "jazzmin_armor",
+    "jazzmin_weapon",
+    "jazzmin_trinket"
+   ],
+   "place": "bondi"
+  },
+  {
+   "id": "stella",
+   "name": "Captain Stella Comet",
+   "title": "Ace of the Rocket Patrol",
+   "era": "The Future, as of 1953",
+   "species": "Snow Leopard",
+   "rarity": "legendary",
+   "bio": "Star of forty-one Saturday serials, each ending with her about to be eaten, melted or married to a Martian. She escaped every time, usually by flipping a switch marked ESCAPE.",
+   "fact": "Snow leopards cannot roar. They chuff, growl and yowl instead.",
+   "lines": [
+    "A space lady! Her hat is a fishbowl!",
+    "Captain Stella Comet. Saves the galaxy weekly. Matinee at two.",
+    "Stella. Forty-one death traps and the worst thing she ever met was the goddamn studio accountant."
+   ],
+   "bg": "rocketship",
+   "stats": {
+    "attack": 24,
+    "defense": 20,
+    "health": 22,
+    "speed": 22,
+    "luck": 22
+   },
+   "gear": [
+    "stella_weapon",
+    "stella_armor",
+    "stella_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "pam",
+   "name": "Pixel Pam",
+   "title": "Three Letters, Top of Every Board",
+   "era": "A mall arcade, 1983",
+   "species": "Red Panda",
+   "rarity": "common",
+   "bio": "Holds the high score on every cabinet in the arcade, including the broken one. Lives on vending machine crisps. Her initials are PAM and you will never get rid of them.",
+   "fact": "The red panda was called a panda about forty years before the giant panda got the name.",
+   "lines": [
+    "She is very good at the beepy games!",
+    "Pixel Pam. Has one more quarter than you, always.",
+    "Pam. Beat a grown man so badly at a video game he sold his fucking car."
+   ],
+   "bg": "arcade",
+   "stats": {
+    "attack": 5,
+    "defense": 6,
+    "health": 9,
+    "speed": 9,
+    "luck": 21
+   },
+   "gear": [
+    "pam_weapon",
+    "pam_armor",
+    "pam_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "gorm",
+   "name": "Gorm the Mighty",
+   "title": "Master of the Immediate Area",
+   "era": "A toy aisle, 1983",
+   "species": "Bison",
+   "rarity": "absurd",
+   "bio": "Came with a sword, a shield and a mail-in offer. Rules everything he can see, which without his glasses is about four feet. Shouts his own name before doing anything, including sitting down.",
+   "fact": "A bison weighs close to a tonne and can still run at about 55 kilometres an hour.",
+   "lines": [
+    "He is VERY big and VERY shouty!",
+    "Gorm the Mighty. By the power of whatever is nearest.",
+    "Gorm. All muscle, no shirt, and a sword he can't fucking lift above his own neck."
+   ],
+   "bg": "castle",
+   "stats": {
+    "attack": 23,
+    "defense": 42,
+    "health": 39,
+    "speed": 10,
+    "luck": 16
+   },
+   "gear": [
+    "gorm_weapon",
+    "gorm_armor",
+    "gorm_trinket"
+   ],
+   "place": "blackforest"
+  },
+  {
+   "id": "flap",
+   "name": "Commander Flap",
+   "title": "The Bird Who Finally Flew",
+   "era": "A movie serial, 1936",
+   "species": "Penguin",
+   "rarity": "rare",
+   "bio": "Spent thirty years watching other birds do it. Then he found a rocket, two straps and a helmet, and has not been seen below two hundred feet since. Landing remains a work in progress.",
+   "fact": "Emperor penguins can dive deeper than 500 metres and hold their breath for over twenty minutes.",
+   "lines": [
+    "A flying penguin! He did it! Hooray!",
+    "Commander Flap. Up is easy. Down is where the paperwork starts.",
+    "Flap. Strapped a bomb to his back out of pure spite and it fucking worked."
+   ],
+   "bg": "skyline",
+   "stats": {
+    "attack": 16,
+    "defense": 8,
+    "health": 12,
+    "speed": 29,
+    "luck": 11
+   },
+   "gear": [
+    "flap_weapon",
+    "flap_armor",
+    "flap_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "max",
+   "name": "Sgt. Max Carnage",
+   "title": "One-Rhino Army",
+   "era": "A jungle, 1985",
+   "species": "Rhino",
+   "rarity": "epic",
+   "bio": "Retired nine times. Each time somebody kidnapped a relative, a president or his boat. Carries a weapon nobody could lift and a one-liner for every occasion, most of them about the weather.",
+   "fact": "A rhino's horn is made of keratin, the same stuff as your fingernails.",
+   "lines": [
+    "He has a headband! He must be sporty!",
+    "Sgt. Max Carnage. Came out of retirement for this. Again.",
+    "Max. Walks away from explosions real slow because he's got a bad fucking knee."
+   ],
+   "bg": "jungle",
+   "stats": {
+    "attack": 31,
+    "defense": 15,
+    "health": 24,
+    "speed": 13,
+    "luck": 9
+   },
+   "gear": [
+    "max_weapon",
+    "max_armor",
+    "max_trinket"
+   ],
+   "place": "outback"
+  },
+  {
+   "id": "rex",
+   "name": "Rex Sizzle",
+   "title": "Voice of a Generation, He Says",
+   "era": "Sunset Strip, 1987",
+   "species": "Afghan Hound",
+   "rarity": "uncommon",
+   "bio": "Frontman of a band whose biggest hit is a ballad about his own hair. Uses more hairspray in a week than a small town. Has been on a farewell tour since the second album.",
+   "fact": "The Afghan hound is a sighthound: it hunts by spotting prey and outrunning it, not by scent.",
+   "lines": [
+    "His hair is so shiny! Like a pony!",
+    "Rex Sizzle. Three octaves, two chords, one mirror.",
+    "Rex. The hair's real, the leather's fake and the fucking ballad is nine minutes long."
+   ],
+   "bg": "stage",
+   "stats": {
+    "attack": 8,
+    "defense": 14,
+    "health": 17,
+    "speed": 12,
+    "luck": 11
+   },
+   "gear": [
+    "rex_weapon",
+    "rex_armor",
+    "rex_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "ajolote",
+   "name": "El Ajolote Dorado",
+   "title": "The Golden One",
+   "era": "Mexico City, 1955",
+   "species": "Axolotl",
+   "rarity": "legendary",
+   "bio": "Undefeated in nine hundred bouts and has never once removed the mask, including at his own wedding. Fights crime on weekdays, wrestles on Sundays, and sleeps in a fish tank.",
+   "fact": "An axolotl can regrow a lost limb, and keeps its feathery baby gills for its whole life.",
+   "lines": [
+    "A shiny wrestling man! With frilly ears!",
+    "El Ajolote Dorado. The mask stays on. Do not ask.",
+    "El Ajolote. Lose an arm in the ring and the bastard just grows another one."
+   ],
+   "bg": "ring",
+   "stats": {
+    "attack": 20,
+    "defense": 35,
+    "health": 33,
+    "speed": 9,
+    "luck": 13
+   },
+   "gear": [
+    "ajolote_armor",
+    "ajolote_weapon",
+    "ajolote_trinket"
+   ],
+   "place": "dock"
   }
  ],
  "places": [
@@ -2086,6 +2572,38 @@
     [
      "e_cleocatra_charm",
      0.03
+    ],
+    [
+     "ajolote_armor",
+     0.06
+    ],
+    [
+     "ajolote_weapon",
+     0.06
+    ],
+    [
+     "ajolote_trinket",
+     0.06
+    ],
+    [
+     "e_ajolote_weapon",
+     0.75
+    ],
+    [
+     "e_ajolote_head",
+     0.06
+    ],
+    [
+     "e_ajolote_body",
+     0.15
+    ],
+    [
+     "e_ajolote_feet",
+     0.375
+    ],
+    [
+     "e_ajolote_charm",
+     1.2
     ]
    ]
   },
@@ -2281,6 +2799,38 @@
     [
      "e_jacko_charm",
      0.15
+    ],
+    [
+     "jazzmin_armor",
+     0.75
+    ],
+    [
+     "jazzmin_weapon",
+     0.75
+    ],
+    [
+     "jazzmin_trinket",
+     0.75
+    ],
+    [
+     "e_jazzmin_weapon",
+     1.2
+    ],
+    [
+     "e_jazzmin_head",
+     1.2
+    ],
+    [
+     "e_jazzmin_body",
+     0.75
+    ],
+    [
+     "e_jazzmin_feet",
+     0.75
+    ],
+    [
+     "e_jazzmin_charm",
+     0.375
     ]
    ]
   },
@@ -2508,6 +3058,38 @@
     [
      "e_raspawtin_charm",
      0.012
+    ],
+    [
+     "flap_weapon",
+     0.375
+    ],
+    [
+     "flap_armor",
+     0.375
+    ],
+    [
+     "flap_trinket",
+     0.375
+    ],
+    [
+     "e_flap_weapon",
+     0.75
+    ],
+    [
+     "e_flap_head",
+     1.2
+    ],
+    [
+     "e_flap_body",
+     0.375
+    ],
+    [
+     "e_flap_feet",
+     0.75
+    ],
+    [
+     "e_flap_charm",
+     1.2
     ]
    ]
   },
@@ -2707,6 +3289,70 @@
     [
      "e_lola_charm",
      1.2
+    ],
+    [
+     "vesper_trinket",
+     0.15
+    ],
+    [
+     "vesper_weapon",
+     0.15
+    ],
+    [
+     "vesper_armor",
+     0.15
+    ],
+    [
+     "e_vesper_weapon",
+     0.75
+    ],
+    [
+     "e_vesper_head",
+     0.375
+    ],
+    [
+     "e_vesper_body",
+     0.15
+    ],
+    [
+     "e_vesper_feet",
+     0.75
+    ],
+    [
+     "e_vesper_charm",
+     1.2
+    ],
+    [
+     "roxy_weapon",
+     0.375
+    ],
+    [
+     "roxy_armor",
+     0.375
+    ],
+    [
+     "roxy_trinket",
+     0.375
+    ],
+    [
+     "e_roxy_weapon",
+     1.2
+    ],
+    [
+     "e_roxy_head",
+     0.75
+    ],
+    [
+     "e_roxy_body",
+     0.375
+    ],
+    [
+     "e_roxy_feet",
+     0.75
+    ],
+    [
+     "e_roxy_charm",
+     1.2
     ]
    ]
   },
@@ -2902,6 +3548,70 @@
     [
      "e_sable_charm",
      0.06
+    ],
+    [
+     "stella_weapon",
+     0.06
+    ],
+    [
+     "stella_armor",
+     0.06
+    ],
+    [
+     "stella_trinket",
+     0.06
+    ],
+    [
+     "e_stella_weapon",
+     0.06
+    ],
+    [
+     "e_stella_head",
+     0.375
+    ],
+    [
+     "e_stella_body",
+     0.15
+    ],
+    [
+     "e_stella_feet",
+     0.375
+    ],
+    [
+     "e_stella_charm",
+     0.75
+    ],
+    [
+     "rex_weapon",
+     0.75
+    ],
+    [
+     "rex_armor",
+     0.75
+    ],
+    [
+     "rex_trinket",
+     0.75
+    ],
+    [
+     "e_rex_weapon",
+     0.375
+    ],
+    [
+     "e_rex_head",
+     0.75
+    ],
+    [
+     "e_rex_body",
+     0.15
+    ],
+    [
+     "e_rex_feet",
+     0.75
+    ],
+    [
+     "e_rex_charm",
+     1.2
     ]
    ]
   },
@@ -3097,6 +3807,38 @@
     [
      "e_chad_charm",
      0.012
+    ],
+    [
+     "pam_weapon",
+     0.75
+    ],
+    [
+     "pam_armor",
+     0.75
+    ],
+    [
+     "pam_trinket",
+     0.75
+    ],
+    [
+     "e_pam_weapon",
+     0.75
+    ],
+    [
+     "e_pam_head",
+     1.2
+    ],
+    [
+     "e_pam_body",
+     0.375
+    ],
+    [
+     "e_pam_feet",
+     0.75
+    ],
+    [
+     "e_pam_charm",
+     0.15
     ]
    ]
   },
@@ -3324,6 +4066,38 @@
     [
      "e_madjack_charm",
      0.012
+    ],
+    [
+     "max_weapon",
+     0.15
+    ],
+    [
+     "max_armor",
+     0.15
+    ],
+    [
+     "max_trinket",
+     0.15
+    ],
+    [
+     "e_max_weapon",
+     0.375
+    ],
+    [
+     "e_max_head",
+     0.75
+    ],
+    [
+     "e_max_body",
+     1.2
+    ],
+    [
+     "e_max_feet",
+     0.75
+    ],
+    [
+     "e_max_charm",
+     0.15
     ]
    ]
   },
@@ -3519,6 +4293,38 @@
     [
      "e_morwenna_charm",
      0.03
+    ],
+    [
+     "gorm_weapon",
+     0.03
+    ],
+    [
+     "gorm_armor",
+     0.03
+    ],
+    [
+     "gorm_trinket",
+     0.03
+    ],
+    [
+     "e_gorm_weapon",
+     0.375
+    ],
+    [
+     "e_gorm_head",
+     0.15
+    ],
+    [
+     "e_gorm_body",
+     0.03
+    ],
+    [
+     "e_gorm_feet",
+     0.75
+    ],
+    [
+     "e_gorm_charm",
+     0.375
     ]
    ]
   }
@@ -4876,6 +5682,526 @@
    "equip": {
     "skill": "Digging",
     "speed": 16
+   }
+  },
+  "vesper_trinket": {
+   "id": "vesper_trinket",
+   "name": "Ankh of Eternal Sighing",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "vesper_trinket",
+   "flavor": "Symbol of eternal life. She finds the idea tiring.",
+   "owner": "vesper",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "vesper_weapon": {
+   "id": "vesper_weapon",
+   "name": "Crimping Iron of Doom",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "vesper_weapon",
+   "flavor": "Three hours a night. Hair like a startled crow.",
+   "owner": "vesper",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "vesper_armor": {
+   "id": "vesper_armor",
+   "name": "Fishnets (Third Pair Today)",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "vesper_armor",
+   "flavor": "Ripped on purpose. The second rip was not.",
+   "owner": "vesper",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "roxy_weapon": {
+   "id": "roxy_weapon",
+   "name": "Out-of-Tune Bass",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "roxy_weapon",
+   "flavor": "Tuned once, in 1976, by somebody else.",
+   "owner": "roxy",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "roxy_armor": {
+   "id": "roxy_armor",
+   "name": "Tartan Bondage Trousers",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "roxy_armor",
+   "flavor": "Forty zips. None of them do anything.",
+   "owner": "roxy",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "roxy_trinket": {
+   "id": "roxy_trinket",
+   "name": "Safety Pin (Structural)",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "roxy_trinket",
+   "flavor": "Remove it and the whole outfit falls off.",
+   "owner": "roxy",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 4
+   }
+  },
+  "jazzmin_armor": {
+   "id": "jazzmin_armor",
+   "name": "Leg Warmers of Fury",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "jazzmin_armor",
+   "flavor": "Her legs have never once been cold. Or stopped.",
+   "owner": "jazzmin",
+   "place": "bondi",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "jazzmin_weapon": {
+   "id": "jazzmin_weapon",
+   "name": "Two-Pound Dumbbells",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "jazzmin_weapon",
+   "flavor": "Small weights. Four thousand repetitions.",
+   "owner": "jazzmin",
+   "place": "bondi",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "jazzmin_trinket": {
+   "id": "jazzmin_trinket",
+   "name": "Signed Workout Tape",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "jazzmin_trinket",
+   "flavor": "Volume six. Volumes one to five were also this.",
+   "owner": "jazzmin",
+   "place": "bondi",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 2
+   }
+  },
+  "stella_weapon": {
+   "id": "stella_weapon",
+   "name": "Atomic Ray Pistol",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "stella_weapon",
+   "flavor": "Two settings: stun, and second take.",
+   "owner": "stella",
+   "place": "vault",
+   "stats": {
+    "attack": 22,
+    "speed": 10
+   },
+   "sell": 600
+  },
+  "stella_armor": {
+   "id": "stella_armor",
+   "name": "Bubble Helmet",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "legendary",
+   "icon": "stella_armor",
+   "flavor": "Fogs up when she laughs. She tries not to.",
+   "owner": "stella",
+   "place": "vault",
+   "stats": {
+    "defense": 16,
+    "health": 16
+   },
+   "sell": 600
+  },
+  "stella_trinket": {
+   "id": "stella_trinket",
+   "name": "Rocket Patrol Badge",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "legendary",
+   "icon": "stella_trinket",
+   "flavor": "Send in six box tops and you can have one too.",
+   "owner": "stella",
+   "place": "vault",
+   "stats": {
+    "speed": 13,
+    "luck": 19
+   },
+   "sell": 600,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 10
+   }
+  },
+  "pam_weapon": {
+   "id": "pam_weapon",
+   "name": "Roll of Quarters",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "pam_weapon",
+   "flavor": "Heavy in a sock. She has never needed the sock.",
+   "owner": "pam",
+   "place": "closet",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "pam_armor": {
+   "id": "pam_armor",
+   "name": "Satin Arcade Jacket",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "pam_armor",
+   "flavor": "Won in a tournament. She was nine.",
+   "owner": "pam",
+   "place": "closet",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "pam_trinket": {
+   "id": "pam_trinket",
+   "name": "Lucky Joystick Knob",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "pam_trinket",
+   "flavor": "Unscrewed from the machine that started it all.",
+   "owner": "pam",
+   "place": "closet",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "gorm_weapon": {
+   "id": "gorm_weapon",
+   "name": "Sword of Considerable Size",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "absurd",
+   "icon": "gorm_weapon",
+   "flavor": "Held aloft daily. Lightning optional.",
+   "owner": "gorm",
+   "place": "blackforest",
+   "stats": {
+    "attack": 29,
+    "speed": 13
+   },
+   "sell": 1500
+  },
+  "gorm_armor": {
+   "id": "gorm_armor",
+   "name": "Fur Trunks of Command",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "absurd",
+   "icon": "gorm_armor",
+   "flavor": "The whole outfit. He owns two pairs.",
+   "owner": "gorm",
+   "place": "blackforest",
+   "stats": {
+    "defense": 21,
+    "health": 21
+   },
+   "sell": 1500
+  },
+  "gorm_trinket": {
+   "id": "gorm_trinket",
+   "name": "Mail-In Power Amulet",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "absurd",
+   "icon": "gorm_trinket",
+   "flavor": "Allow six to eight weeks for power.",
+   "owner": "gorm",
+   "place": "blackforest",
+   "stats": {
+    "speed": 17,
+    "luck": 25
+   },
+   "sell": 1500,
+   "equip": {
+    "skill": "Digging",
+    "speed": 13
+   }
+  },
+  "flap_weapon": {
+   "id": "flap_weapon",
+   "name": "Twin-Tank Rocket Pack",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "flap_weapon",
+   "flavor": "Runs on kerosene and denial.",
+   "owner": "flap",
+   "place": "fjord",
+   "stats": {
+    "attack": 10,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "flap_armor": {
+   "id": "flap_armor",
+   "name": "Finned Flight Helmet",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "flap_armor",
+   "flavor": "The fin is for steering. He thinks.",
+   "owner": "flap",
+   "place": "fjord",
+   "stats": {
+    "defense": 7,
+    "health": 7
+   },
+   "sell": 80
+  },
+  "flap_trinket": {
+   "id": "flap_trinket",
+   "name": "Bent Altimeter",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "flap_trinket",
+   "flavor": "Reads 'up'. Has read 'up' since Tuesday.",
+   "owner": "flap",
+   "place": "fjord",
+   "stats": {
+    "speed": 6,
+    "luck": 8
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "max_weapon": {
+   "id": "max_weapon",
+   "name": "Rocket Launcher (Never Reloads)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "max_weapon",
+   "flavor": "Fired forty times. Loaded once.",
+   "owner": "max",
+   "place": "outback",
+   "stats": {
+    "attack": 15,
+    "speed": 7
+   },
+   "sell": 220
+  },
+  "max_armor": {
+   "id": "max_armor",
+   "name": "Red Headband",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "max_armor",
+   "flavor": "Tied on in slow motion, to music.",
+   "owner": "max",
+   "place": "outback",
+   "stats": {
+    "defense": 11,
+    "health": 11
+   },
+   "sell": 220
+  },
+  "max_trinket": {
+   "id": "max_trinket",
+   "name": "Dog Tags of a Fallen Buddy",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "max_trinket",
+   "flavor": "His buddy is fine. He just left them at Max's house.",
+   "owner": "max",
+   "place": "outback",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Digging",
+    "speed": 6
+   }
+  },
+  "rex_weapon": {
+   "id": "rex_weapon",
+   "name": "Keytar of Destiny",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "rex_weapon",
+   "flavor": "A piano you can wear. Nobody asked.",
+   "owner": "rex",
+   "place": "vault",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "rex_armor": {
+   "id": "rex_armor",
+   "name": "Leopard Spandex",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "rex_armor",
+   "flavor": "Getting them on takes two roadies.",
+   "owner": "rex",
+   "place": "vault",
+   "stats": {
+    "defense": 4,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "rex_trinket": {
+   "id": "rex_trinket",
+   "name": "Industrial Hairspray",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "rex_trinket",
+   "flavor": "Keep away from the pyrotechnics. He does not.",
+   "owner": "rex",
+   "place": "vault",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "ajolote_armor": {
+   "id": "ajolote_armor",
+   "name": "The Golden Mask",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "legendary",
+   "icon": "ajolote_armor",
+   "flavor": "He was born in it, according to him.",
+   "owner": "ajolote",
+   "place": "dock",
+   "stats": {
+    "defense": 16,
+    "health": 16
+   },
+   "sell": 600
+  },
+  "ajolote_weapon": {
+   "id": "ajolote_weapon",
+   "name": "Championship Belt",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "ajolote_weapon",
+   "flavor": "Defended nine hundred times. Used as a weapon twice.",
+   "owner": "ajolote",
+   "place": "dock",
+   "stats": {
+    "attack": 22,
+    "speed": 10
+   },
+   "sell": 600
+  },
+  "ajolote_trinket": {
+   "id": "ajolote_trinket",
+   "name": "Cape of Entrances",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "legendary",
+   "icon": "ajolote_trinket",
+   "flavor": "Worn for nine seconds per match. Worth it.",
+   "owner": "ajolote",
+   "place": "dock",
+   "stats": {
+    "speed": 13,
+    "luck": 19
+   },
+   "sell": 600,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 10
    }
   },
   "e_kevin_weapon": {
@@ -7243,6 +8569,916 @@
    },
    "place": "outback",
    "sell": 4000
+  },
+  "e_vesper_weapon": {
+   "id": "e_vesper_weapon",
+   "name": "Clove Cigarette Holder",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_vesper_weapon",
+   "flavor": "For pointing at things she disapproves of.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "vesper",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_vesper_head": {
+   "id": "e_vesper_head",
+   "name": "Backcombed Wig of Night",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_vesper_head",
+   "flavor": "Contains a comb lost in 1981.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "vesper",
+   "set": "set_vesper",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_vesper_body": {
+   "id": "e_vesper_body",
+   "name": "Velvet Frock Coat",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_vesper_body",
+   "flavor": "Once belonged to a vicar. He wants it back.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "vesper",
+   "set": "set_vesper",
+   "place": "speakeasy",
+   "sell": 220
+  },
+  "e_vesper_feet": {
+   "id": "e_vesper_feet",
+   "name": "Winklepicker Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_vesper_feet",
+   "flavor": "So pointed they arrive before she does.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "vesper",
+   "set": "set_vesper",
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_vesper_charm": {
+   "id": "e_vesper_charm",
+   "name": "Mixtape Labelled \"SAD\"",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_vesper_charm",
+   "flavor": "Side B is the same but slower.",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "vesper",
+   "special": {
+    "kind": "ink",
+    "amount": 0.05
+   },
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_roxy_weapon": {
+   "id": "e_roxy_weapon",
+   "name": "Microphone Stand (Bent)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_roxy_weapon",
+   "flavor": "Bent over somebody. He started it.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "roxy",
+   "special": {
+    "kind": "xp",
+    "amount": 0.06
+   },
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_roxy_head": {
+   "id": "e_roxy_head",
+   "name": "Studded Dog Collar",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_roxy_head",
+   "flavor": "Bought at a pet shop. The pet shop was confused.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "roxy",
+   "set": "set_roxy",
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_roxy_body": {
+   "id": "e_roxy_body",
+   "name": "Leather Jacket of Many Badges",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_roxy_body",
+   "flavor": "Seventy badges. She has heard of four of the bands.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "roxy",
+   "set": "set_roxy",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_roxy_feet": {
+   "id": "e_roxy_feet",
+   "name": "Eighteen-Hole Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_roxy_feet",
+   "flavor": "Take ten minutes to lace. Worth every one.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "roxy",
+   "set": "set_roxy",
+   "place": "speakeasy",
+   "sell": 30
+  },
+  "e_roxy_charm": {
+   "id": "e_roxy_charm",
+   "name": "Photocopied Fanzine",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_roxy_charm",
+   "flavor": "Issue one of one.",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "roxy",
+   "special": {
+    "kind": "luck",
+    "amount": 0.04
+   },
+   "place": "speakeasy",
+   "sell": 15
+  },
+  "e_jazzmin_weapon": {
+   "id": "e_jazzmin_weapon",
+   "name": "Jump Rope of Regret",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "common",
+   "icon": "e_jazzmin_weapon",
+   "flavor": "A hundred skips sounded fine at the time.",
+   "stats": {
+    "attack": 4,
+    "speed": 1
+   },
+   "era": "jazzmin",
+   "special": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_jazzmin_head": {
+   "id": "e_jazzmin_head",
+   "name": "Terry Sweatband",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_jazzmin_head",
+   "flavor": "Absorbs sweat and, somehow, doubt.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "jazzmin",
+   "set": "set_jazzmin",
+   "place": "bondi",
+   "sell": 15
+  },
+  "e_jazzmin_body": {
+   "id": "e_jazzmin_body",
+   "name": "Neon Leotard",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_jazzmin_body",
+   "flavor": "Visible from orbit.",
+   "stats": {
+    "defense": 3,
+    "health": 3
+   },
+   "era": "jazzmin",
+   "set": "set_jazzmin",
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_jazzmin_feet": {
+   "id": "e_jazzmin_feet",
+   "name": "High-Top Aerobic Trainers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_jazzmin_feet",
+   "flavor": "Squeak in time to the music.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "jazzmin",
+   "set": "set_jazzmin",
+   "place": "bondi",
+   "sell": 30
+  },
+  "e_jazzmin_charm": {
+   "id": "e_jazzmin_charm",
+   "name": "Step Counter (Clip-On)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "rare",
+   "icon": "e_jazzmin_charm",
+   "flavor": "Reads 40,000. It is not yet lunch.",
+   "stats": {
+    "luck": 7,
+    "health": 4
+   },
+   "era": "jazzmin",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_stella_weapon": {
+   "id": "e_stella_weapon",
+   "name": "Disintegrator Rifle",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "e_stella_weapon",
+   "flavor": "Disintegrates things. Mostly the prop budget.",
+   "stats": {
+    "attack": 26,
+    "speed": 9
+   },
+   "era": "stella",
+   "special": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "place": "vault",
+   "sell": 600
+  },
+  "e_stella_head": {
+   "id": "e_stella_head",
+   "name": "Antenna Skullcap",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_stella_head",
+   "flavor": "Picks up Mars and one polka station.",
+   "stats": {
+    "defense": 7,
+    "luck": 4
+   },
+   "era": "stella",
+   "set": "set_stella",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_stella_body": {
+   "id": "e_stella_body",
+   "name": "Silver Space Tunic",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_stella_body",
+   "flavor": "One size fits all species.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "stella",
+   "set": "set_stella",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_stella_feet": {
+   "id": "e_stella_feet",
+   "name": "Magnetic Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_stella_feet",
+   "flavor": "Wonderful on rockets. Awful near fridges.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "stella",
+   "set": "set_stella",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_stella_charm": {
+   "id": "e_stella_charm",
+   "name": "Decoder Ring",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "uncommon",
+   "icon": "e_stella_charm",
+   "flavor": "The secret message is always \"buy more cereal\".",
+   "stats": {
+    "luck": 4,
+    "health": 3
+   },
+   "era": "stella",
+   "special": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "place": "vault",
+   "sell": 30
+  },
+  "e_pam_weapon": {
+   "id": "e_pam_weapon",
+   "name": "Light Gun",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_pam_weapon",
+   "flavor": "Does nothing unless pointed at a screen. Then also nothing.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "pam",
+   "special": {
+    "kind": "xp",
+    "amount": 0.05
+   },
+   "place": "closet",
+   "sell": 30
+  },
+  "e_pam_head": {
+   "id": "e_pam_head",
+   "name": "Wraparound Visor Shades",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_pam_head",
+   "flavor": "Reflects the score back at the loser.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "pam",
+   "set": "set_pam",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_pam_body": {
+   "id": "e_pam_body",
+   "name": "Pocket Game Vest",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_pam_body",
+   "flavor": "Every pocket beeps.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "pam",
+   "set": "set_pam",
+   "place": "closet",
+   "sell": 80
+  },
+  "e_pam_feet": {
+   "id": "e_pam_feet",
+   "name": "Light-Up Trainers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_pam_feet",
+   "flavor": "Flash with every step. Stealth is not an option.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "pam",
+   "set": "set_pam",
+   "place": "closet",
+   "sell": 30
+  },
+  "e_pam_charm": {
+   "id": "e_pam_charm",
+   "name": "Cartridge You Blow On",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_pam_charm",
+   "flavor": "It does not help. Everyone does it anyway.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "pam",
+   "special": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "place": "closet",
+   "sell": 220
+  },
+  "e_gorm_weapon": {
+   "id": "e_gorm_weapon",
+   "name": "Battle Axe (Ages 5 and Up)",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_gorm_weapon",
+   "flavor": "Small parts. Not for children under three.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "gorm",
+   "special": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "place": "blackforest",
+   "sell": 80
+  },
+  "e_gorm_head": {
+   "id": "e_gorm_head",
+   "name": "Horned Helmet of the North",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_gorm_head",
+   "flavor": "Historically wrong. Looks great.",
+   "stats": {
+    "defense": 11,
+    "luck": 7
+   },
+   "era": "gorm",
+   "set": "set_gorm",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_gorm_body": {
+   "id": "e_gorm_body",
+   "name": "Chest Harness of Might",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "absurd",
+   "icon": "e_gorm_body",
+   "flavor": "Protects one square inch, heroically.",
+   "stats": {
+    "defense": 17,
+    "health": 17
+   },
+   "era": "gorm",
+   "set": "set_gorm",
+   "place": "blackforest",
+   "sell": 1500
+  },
+  "e_gorm_feet": {
+   "id": "e_gorm_feet",
+   "name": "Fur Boots of Stomping",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_gorm_feet",
+   "flavor": "Loud on any surface.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "gorm",
+   "set": "set_gorm",
+   "place": "blackforest",
+   "sell": 30
+  },
+  "e_gorm_charm": {
+   "id": "e_gorm_charm",
+   "name": "Tiny Sidekick Figure",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "rare",
+   "icon": "e_gorm_charm",
+   "flavor": "Sold separately. Comic relief included.",
+   "stats": {
+    "luck": 7,
+    "health": 4
+   },
+   "era": "gorm",
+   "special": {
+    "kind": "ink",
+    "amount": 0.05
+   },
+   "place": "blackforest",
+   "sell": 80
+  },
+  "e_flap_weapon": {
+   "id": "e_flap_weapon",
+   "name": "Flare Pistol",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_flap_weapon",
+   "flavor": "For signalling. And for when signalling fails.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "flap",
+   "special": {
+    "kind": "luck",
+    "amount": 0.06
+   },
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_flap_head": {
+   "id": "e_flap_head",
+   "name": "Leather Flying Cap",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_flap_head",
+   "flavor": "Smells of engine oil and courage.",
+   "stats": {
+    "defense": 2,
+    "luck": 2
+   },
+   "era": "flap",
+   "set": "set_flap",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_flap_body": {
+   "id": "e_flap_body",
+   "name": "Double-Breasted Flight Jacket",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_flap_body",
+   "flavor": "Singed at the back, as tradition demands.",
+   "stats": {
+    "defense": 6,
+    "health": 6
+   },
+   "era": "flap",
+   "set": "set_flap",
+   "place": "fjord",
+   "sell": 80
+  },
+  "e_flap_feet": {
+   "id": "e_flap_feet",
+   "name": "Asbestos Landing Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_flap_feet",
+   "flavor": "For landings. All of them so far.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "flap",
+   "set": "set_flap",
+   "place": "fjord",
+   "sell": 30
+  },
+  "e_flap_charm": {
+   "id": "e_flap_charm",
+   "name": "Cliffhanger Ticket Stub",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_flap_charm",
+   "flavor": "Admit one. To be continued.",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "flap",
+   "special": {
+    "kind": "speed",
+    "amount": 0.04
+   },
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_max_weapon": {
+   "id": "e_max_weapon",
+   "name": "Survival Knife with a Compass",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_max_weapon",
+   "flavor": "The compass points at trouble.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "max",
+   "special": {
+    "kind": "raid",
+    "amount": 0.06
+   },
+   "place": "outback",
+   "sell": 80
+  },
+  "e_max_head": {
+   "id": "e_max_head",
+   "name": "Mirrored Aviators",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_max_head",
+   "flavor": "Explosions look better in them.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "max",
+   "set": "set_max",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_max_body": {
+   "id": "e_max_body",
+   "name": "Tank Top (Pre-Torn)",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_max_body",
+   "flavor": "Comes torn. Tears more at dramatic moments.",
+   "stats": {
+    "defense": 2,
+    "health": 2
+   },
+   "era": "max",
+   "set": "set_max",
+   "place": "outback",
+   "sell": 15
+  },
+  "e_max_feet": {
+   "id": "e_max_feet",
+   "name": "Jungle Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_max_feet",
+   "flavor": "Have kicked down one hundred doors and a helicopter.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "max",
+   "set": "set_max",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_max_charm": {
+   "id": "e_max_charm",
+   "name": "Countdown Timer (0:01)",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "epic",
+   "icon": "e_max_charm",
+   "flavor": "It always stops here. Always.",
+   "stats": {
+    "luck": 11,
+    "health": 7
+   },
+   "era": "max",
+   "special": {
+    "kind": "speed",
+    "amount": 0.04
+   },
+   "place": "outback",
+   "sell": 220
+  },
+  "e_rex_weapon": {
+   "id": "e_rex_weapon",
+   "name": "Pointy Guitar",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "e_rex_weapon",
+   "flavor": "Shaped like an injury.",
+   "stats": {
+    "attack": 12,
+    "speed": 4
+   },
+   "era": "rex",
+   "special": {
+    "kind": "ink",
+    "amount": 0.06
+   },
+   "place": "vault",
+   "sell": 80
+  },
+  "e_rex_head": {
+   "id": "e_rex_head",
+   "name": "Bandana and Top Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_rex_head",
+   "flavor": "Two hats. One head. No regrets.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "rex",
+   "set": "set_rex",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_rex_body": {
+   "id": "e_rex_body",
+   "name": "Fringed Leather Jacket",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_rex_body",
+   "flavor": "The fringe has its own lighting cue.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "rex",
+   "set": "set_rex",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_rex_feet": {
+   "id": "e_rex_feet",
+   "name": "Snakeskin Cowboy Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_rex_feet",
+   "flavor": "The snake was a session musician.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "rex",
+   "set": "set_rex",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_rex_charm": {
+   "id": "e_rex_charm",
+   "name": "Backstage Pass",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_rex_charm",
+   "flavor": "Access all areas. Except the catering.",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "rex",
+   "special": {
+    "kind": "xp",
+    "amount": 0.04
+   },
+   "place": "vault",
+   "sell": 15
+  },
+  "e_ajolote_weapon": {
+   "id": "e_ajolote_weapon",
+   "name": "Folding Chair",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "e_ajolote_weapon",
+   "flavor": "The referee did not see it. He never does.",
+   "stats": {
+    "attack": 7,
+    "speed": 2
+   },
+   "era": "ajolote",
+   "special": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "place": "dock",
+   "sell": 30
+  },
+  "e_ajolote_head": {
+   "id": "e_ajolote_head",
+   "name": "Mask of the Silver Rival",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "legendary",
+   "icon": "e_ajolote_head",
+   "flavor": "Its owner lost the bet. Those are the rules.",
+   "stats": {
+    "defense": 15,
+    "luck": 10
+   },
+   "era": "ajolote",
+   "set": "set_ajolote",
+   "place": "dock",
+   "sell": 600
+  },
+  "e_ajolote_body": {
+   "id": "e_ajolote_body",
+   "name": "Sequined Entrance Robe",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_ajolote_body",
+   "flavor": "Takes longer to remove than the match lasts.",
+   "stats": {
+    "defense": 9,
+    "health": 9
+   },
+   "era": "ajolote",
+   "set": "set_ajolote",
+   "place": "dock",
+   "sell": 220
+  },
+  "e_ajolote_feet": {
+   "id": "e_ajolote_feet",
+   "name": "Tall Lace-Up Wrestling Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_ajolote_feet",
+   "flavor": "Built for the top rope.",
+   "stats": {
+    "speed": 8,
+    "luck": 3
+   },
+   "era": "ajolote",
+   "set": "set_ajolote",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_ajolote_charm": {
+   "id": "e_ajolote_charm",
+   "name": "Fight Poster",
+   "kind": "gear",
+   "slot": "charm",
+   "rarity": "common",
+   "icon": "e_ajolote_charm",
+   "flavor": "Sunday! Sunday! Sunday!",
+   "stats": {
+    "luck": 2,
+    "health": 2
+   },
+   "era": "ajolote",
+   "special": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "place": "dock",
+   "sell": 15
   },
   "bath_carp": {
    "id": "bath_carp",

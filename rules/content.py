@@ -164,6 +164,10 @@ HEROES = [
         ("Battle Bagpipes", "armor", "a set of tartan Scottish bagpipes with dark wooden drones", "Enemy morale drops forty percent. So does everyone else's."),
         ("War Longbow", "trinket", "an English yew longbow with a quiver of arrows", "The only confirmed longbow kill of 1940. He would like that on record.")]),
 ]
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import wave2 as _w2
+HEROES += _w2.HEROES
 
 # id, name, era, skill, level needed, tier, art prompt, blurb, general loot (name, art prompt, rarity, flavor)
 PLACES = [

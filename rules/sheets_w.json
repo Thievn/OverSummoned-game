@@ -1,0 +1,101 @@
+{
+ "w01": [
+  "vesper_trinket",
+  "vesper_weapon",
+  "vesper_armor",
+  "e_vesper_weapon",
+  "e_vesper_head",
+  "e_vesper_body",
+  "e_vesper_feet",
+  "e_vesper_charm",
+  "roxy_weapon"
+ ],
+ "w02": [
+  "roxy_armor",
+  "roxy_trinket",
+  "e_roxy_weapon",
+  "e_roxy_head",
+  "e_roxy_body",
+  "e_roxy_feet",
+  "e_roxy_charm",
+  "jazzmin_armor",
+  "jazzmin_weapon"
+ ],
+ "w03": [
+  "jazzmin_trinket",
+  "e_jazzmin_weapon",
+  "e_jazzmin_head",
+  "e_jazzmin_body",
+  "e_jazzmin_feet",
+  "e_jazzmin_charm",
+  "stella_weapon",
+  "stella_armor",
+  "stella_trinket"
+ ],
+ "w04": [
+  "e_stella_weapon",
+  "e_stella_head",
+  "e_stella_body",
+  "e_stella_feet",
+  "e_stella_charm",
+  "pam_weapon",
+  "pam_armor",
+  "pam_trinket",
+  "e_pam_weapon"
+ ],
+ "w05": [
+  "e_pam_head",
+  "e_pam_body",
+  "e_pam_feet",
+  "e_pam_charm",
+  "gorm_weapon",
+  "gorm_armor",
+  "gorm_trinket",
+  "e_gorm_weapon",
+  "e_gorm_head"
+ ],
+ "w06": [
+  "e_gorm_body",
+  "e_gorm_feet",
+  "e_gorm_charm",
+  "flap_weapon",
+  "flap_armor",
+  "flap_trinket",
+  "e_flap_weapon",
+  "e_flap_head",
+  "e_flap_body"
+ ],
+ "w07": [
+  "e_flap_feet",
+  "e_flap_charm",
+  "max_weapon",
+  "max_armor",
+  "max_trinket",
+  "e_max_weapon",
+  "e_max_head",
+  "e_max_body",
+  "e_max_feet"
+ ],
+ "w08": [
+  "e_max_charm",
+  "rex_weapon",
+  "rex_armor",
+  "rex_trinket",
+  "e_rex_weapon",
+  "e_rex_head",
+  "e_rex_body",
+  "e_rex_feet",
+  "e_rex_charm"
+ ],
+ "w09": [
+  "ajolote_armor",
+  "ajolote_weapon",
+  "ajolote_trinket",
+  "e_ajolote_weapon",
+  "e_ajolote_head",
+  "e_ajolote_body",
+  "e_ajolote_feet",
+  "e_ajolote_charm",
+  "_spare80"
+ ]
+}

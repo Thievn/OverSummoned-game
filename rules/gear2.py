@@ -188,3 +188,5 @@ def expand(budget):
             if slot == 'charm': it['special'] = dict(kind=ceff[0], amount=ceff[1])
             items.append(it)
     return items, sets
+import wave2 as _w2
+ERA.update(_w2.ERA)

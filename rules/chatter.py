@@ -30,6 +30,8 @@ C = {
  'raspawtin': (["I have been dead before. Overrated.", "Is there more cake?", "Look into my eyes. Good. Now fish.", "The river could not keep me.", "Poison? I assumed it was seasoning."], ["I foresaw that.", "It will not kill you. Trust me."]),
  'madjack': (["Any officer without a sword is improperly dressed.", "Shall I play something?", "Smashing weather for an invasion.", "I brought the bow. And the pipes.", "Jolly good show, otter."], ["Rather!", "Steady on, old chap."]),
 }
+import wave2 as _w2
+C.update(_w2.CHAT)
 if __name__ == '__main__':
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     json.dump({k: {'say': v[0], 'reply': v[1]} for k, v in C.items()}, open(os.path.join(root, 'data', 'chatter.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
