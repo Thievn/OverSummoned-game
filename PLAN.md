@@ -270,3 +270,12 @@ Status: [x] done, [~] partly done, [ ] not started.
 6. Collections/albums with set bonuses (the CUE idea)
 7. Wave three: ten more arrivals
 8. Open the doors (`os2_open`) when 1-4 are done
+
+## Desktop pet — 25 Nov
+- [x] Content brought up to date: all 36 heroes with puppets, 440 items and icons, facts on hero labels, rift treasure in crates, current rules; Places list layout fixed. Runs clean in Godot 4.3 (tested headless)
+- [x] New zip built: OverSummonedDesk-FableVersion.zip (run from the Godot editor)
+- [ ] **It is still a stand-alone game saved on the PC.** Next big step: sign in to the same account and use the server's rolls and saves, so pet and website are one game
+      - needs a decision: how the pet signs in (pairing code shown on the website is the cleanest; no password typed into the pet)
+- [ ] Crew of three, expeditions, bench, 8-slot cards (or: keep the pet small and send players to the website for those)
+- [ ] Windows .exe: needs Godot 4.3 export templates (Dean's PC, one click in the editor) or a build machine
+- [ ] Count keys while other apps have focus (small Windows add-on)

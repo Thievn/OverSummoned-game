@@ -15,11 +15,14 @@ one tug on his line, one turn of his pick or one push of his shovel.
 
 ## What is in it
 - 9 places, 4 trades (Summoning, Fishing, Lockpicking, Digging), unlocked by skill level.
-- 24 heroes as cards. Shadows until summoned. Duplicates raise the card level.
-- 139 items. Hover anything in the Bag or a place's Loot list for its label and odds.
+- 36 heroes as cards, each with a true fact on its label. Shadows until summoned. Duplicates raise the card level.
+- 440 items, including the era gear sets and the rift treasure from the neon decades. Hover anything in the Bag or a place's Loot list for its label and odds.
 - A rift crate after every 30 minutes of real typing.
 - Every number comes from `rules.json`, the same file the website uses.
 
 ## Limits of this build
+- This is the stand-alone typing game. It does not yet sign in to your OverSummoned account, so nothing here appears on the website and nothing from the website appears here.
+- No crew of three, expeditions, bench, eight gear slots, city or new card design yet. Those live on the website for now.
+- No Windows .exe yet: run it from the Godot editor.
 - Keys are counted while Smudge's window has focus. Counting in other apps needs a small Windows add-on that comes later.
 - Progress is saved on this PC only.

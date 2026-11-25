@@ -757,10 +757,15 @@ func _open_crate() -> void:
 	var c := _crate_pos()
 	var open_places: Array = []
 	for i in R["places"].size():
-		if _unlocked(i) and (R["places"][i]["loot"] as Array).size() > 0:
+		if _unlocked(i) and (R["places"][i]["loot"] as Array).size() > 0 and str(R["places"][i]["skill"]) != "Summoning":
 			open_places.append(R["places"][i])
+	# rift crates sometimes hold things from the neon decades (the Archive's own table)
+	var rift: Dictionary = R["places"][0]
+	var rift_chance := float(R.get("rift", {}).get("crate_chance", 0.0)) if (rift["loot"] as Array).size() > 0 else 0.0
+	if open_places.is_empty():
+		open_places.append(rift)
 	for i in int(R["crate"]["rolls"]):
-		var pl: Dictionary = open_places[randi() % open_places.size()]
+		var pl: Dictionary = rift if randf() < rift_chance else open_places[randi() % open_places.size()]
 		var id := _roll_loot(pl, str(pl["skill"]), float(R["crate"]["luck"]))
 		bag[id] = int(bag.get(id, 0)) + 1
 		_fly(loot_tex.get(id), c + Vector2(i * 26, -10), smudge.named_point("bag"), 60.0, 0.3 + i * 0.18, 0.4, 0.55, 60.0)
@@ -1501,6 +1506,8 @@ func _hero_tip(h: Dictionary) -> String:
 	for k in R["stats"]:
 		line += "%s %d   " % [str(k).capitalize().left(3), int(round(float(h["stats"][k]) * mult))]
 	s += line + "\n[color=#ffd35c]%s[/color]\n" % str(h["bio"])
+	if str(h.get("fact", "")) != "":
+		s += "[color=#9fd8ff]True fact: %s[/color]\n" % str(h["fact"])
 	var have := 0
 	for g in h["gear"]:
 		if bag.has(g):
@@ -1571,6 +1578,7 @@ func _refresh_places() -> void:
 		if here:
 			var hl := _note("Smudge is here")
 			hl.custom_minimum_size = Vector2(0, 0)
+			hl.autowrap_mode = TextServer.AUTOWRAP_OFF
 			hl.add_theme_color_override("font_color", Color("#5CE0C6"))
 			btns.add_child(hl)
 		elif open:
@@ -1580,11 +1588,13 @@ func _refresh_places() -> void:
 		else:
 			var lock := _note("Needs %s Lv %d" % [str(pl["skill"]), int(pl["level"])])
 			lock.custom_minimum_size = Vector2(0, 0)
+			lock.autowrap_mode = TextServer.AUTOWRAP_OFF
 			lock.add_theme_color_override("font_color", Color("#FF8C6B"))
 			btns.add_child(lock)
 		if (pl["loot"] as Array).size() > 0:
 			var lb := _button("Loot", _open_loot.bind(str(pl["id"])))
 			lb.add_theme_font_size_override("font_size", 12)
+			lb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			btns.add_child(lb)
 		_with_tip(card, func(): return "[b]%s[/b]\n[color=#ffd35c]%s[/color]" % [str(pl["name"]), str(pl["blurb"])])
 		places_box.add_child(card)

@@ -63,6 +63,11 @@ func _process(_d: float) -> bool:
 			main.crate_ready = true
 		"opencrate":
 			main._open_crate()
+		"all":
+			for h in main.R["heroes"]:
+				main.roster[str(h["id"])] = 1
+			main.bag["x_crate"] = 3
+			main._refresh_roster()
 		"menu":
 			main.menu.visible = true
 			main._show_tab(p[1])
