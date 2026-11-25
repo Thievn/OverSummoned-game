@@ -1,1 +1,1 @@
-{"name":"hero_kevin","imagePath":"hero_kevin_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":237,"height":430},{"name":"head","x":241,"y":2,"width":129,"height":115},{"name":"lid0","x":372,"y":2,"width":17,"height":18},{"name":"lid1","x":391,"y":2,"width":17,"height":18}]}
+{"name":"hero_kevin","imagePath":"hero_kevin_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":237,"height":430},{"name":"head","x":241,"y":2,"width":129,"height":115}]}

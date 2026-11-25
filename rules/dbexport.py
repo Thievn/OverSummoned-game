@@ -121,6 +121,7 @@ def build(pose='stamp', hero=False):
     # ---- face shapes (drawn here so they ride in the same atlas)
     face = rig.get('face') or {'fur': [0, 0, 0], 'eyes': [], 'mouth': [0, 0, 0, 0]}; has_tail = 'tail' in P
     fur = tuple(face['fur']); eyes = face['eyes']; mouth = face['mouth']
+    if hero: eyes = []      # hero eyelids are off: the recorded eye positions are not accurate enough, and a lid in the wrong place looks worse than no blink
     INK = (28, 20, 32, 255)
     def ellipse(w, h, col, lash=False):
         s = 4; e = Image.new('RGBA', (w * s, h * s), (0, 0, 0, 0)); d = ImageDraw.Draw(e)

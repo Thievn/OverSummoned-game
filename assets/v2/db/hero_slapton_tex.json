@@ -1,1 +1,1 @@
-{"name":"hero_slapton","imagePath":"hero_slapton_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":349,"height":430},{"name":"head","x":353,"y":2,"width":80,"height":102},{"name":"lid0","x":435,"y":2,"width":12,"height":9},{"name":"lid1","x":449,"y":2,"width":12,"height":9}]}
+{"name":"hero_slapton","imagePath":"hero_slapton_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":349,"height":430},{"name":"head","x":353,"y":2,"width":80,"height":102}]}
