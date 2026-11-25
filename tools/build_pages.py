@@ -61,7 +61,7 @@ def head(title, desc, path, image, ld, extra_css=""):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1125z">
+<link rel="stylesheet" href="/css/os.css?v=1126a">
 {extra_css}</head>
 <body>
 <header class="top"><div class="wrap">

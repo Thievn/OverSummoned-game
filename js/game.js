@@ -223,6 +223,17 @@
   $('gnav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v); });
   document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
   $('go-account').onclick = () => show('account');
+  // beta: a note straight to the owner
+  $('go-feedback').onclick = () => { const d = el('div', '');
+    d.innerHTML = `<div class="tag">Closed beta</div><h3 style="font-size:1.5rem;margin:.2rem 0 .4rem">Got an idea, or found something broken?</h3><p class="mut">It goes straight to the person who makes the game. Be as blunt as you like.</p>
+      <div class="seg" style="grid-template-columns:repeat(3,1fr);margin-top:.8rem"><button class="on" data-k="idea">An idea</button><button data-k="bug">Something broke</button><button data-k="other">Something else</button></div>
+      <textarea id="fb-body" rows="6" maxlength="2000" placeholder="What happened, or what would you add?" style="width:100%;font:inherit;color:#fff;background:#0b1020;border:2px solid var(--line);border-radius:12px;padding:.7em .8em"></textarea><p class="ferr" id="fb-err" role="alert"></p>`;
+    let kind = 'idea'; d.querySelectorAll('.seg button').forEach(b => b.onclick = () => { kind = b.dataset.k; d.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === b)); });
+    const row = el('div', 'row'); row.style.justifyContent = 'center';
+    row.appendChild(btn('', 'Send it', async e => { const body = d.querySelector('#fb-body').value.trim(), er = d.querySelector('#fb-err'); if (body.length < 3) { er.textContent = 'Write a little more than that.'; return; }
+      e.target.disabled = true; let r; try { const q = await Cloud.sb.rpc('os2_feedback_send', { p_kind: kind, p_body: body }); r = q.error ? { ok: false, why: 'The city is not answering.' } : q.data; } catch (x) { r = { ok: false, why: 'The city is not answering.' }; }
+      if (r && r.ok) { modal.close(); toast('Sent. Thank you. Smudge has filed it under Important.'); } else { er.textContent = (r && r.why) || 'That did not send.'; e.target.disabled = false; } }));
+    row.appendChild(btn('ghost', 'Never mind', () => modal.close())); d.appendChild(row); modal.open(d); };
   function renderTop() { $('r-ink').textContent = OS.num(S.ink); $('r-gold').textContent = OS.num(S.gold); $('r-energy').textContent = S.energy; }
 
   // ------------------------------------------------------------------ home (the dashboard)
@@ -690,7 +701,7 @@
     petList.forEach(d => { const row = el('div', 'frow', `<div><b>${esc(d.name)}</b><span class="mut">Linked ${new Date(d.linked).toLocaleDateString()}${d.seen ? ' · last seen ' + new Date(d.seen).toLocaleDateString() : ' · not used yet'}</span></div>`);
       row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
   function renderAccount() { renderPet();
-    $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>`;
+    $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>${me.profile.founder ? '<div class="kv"><span>Title</span><b>Founding Clerk</b></div>' : ''}`;
     const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv soon"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Coming soon'}</b></div>
       <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links through your browser, below.</p>`;
     const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;

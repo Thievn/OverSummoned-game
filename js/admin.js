@@ -67,7 +67,28 @@
     } catch (e) { $('m-err').textContent = e.message; } button.disabled = false; button.textContent = old; }
   $('m-copy').onclick = e => ai('copy', e.target); $('m-img').onclick = e => ai('image', e.target); $('m-clip').onclick = () => navigator.clipboard.writeText($('m-out').textContent).then(() => toast('Copied.'));
 
-  const renderers = { overview: renderOverview, players: renderPlayers, heroes: renderHeroes, items: renderItems, economy: renderEconomy, studio: renderStudio }; let cur = 'overview';
+
+  // ---- beta: the wishlist, invites, codes and what testers have sent
+  let BD = null, mailChecked = false; const hx = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])), day = t => t ? new Date(t).toLocaleDateString() : '';
+  async function beta(op, payload) { const { data, error } = await Cloud.sb.rpc('os2_admin_beta', { op, payload: payload || {} }); if (error) { toast('That did not work: ' + error.message); return null; } BD = data; return data; }
+  async function betaFn(body) { try { const s = await Cloud.session(); const r = await fetch('https://eresamyqxarlrdgudgrw.supabase.co/functions/v1/beta', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + s.access_token }, body: JSON.stringify(body) }); return await r.json(); } catch (e) { return { ok: false, msg: 'No answer.' }; } }
+  async function invite(email, button) { if (button) button.disabled = true; const r = await betaFn({ op: 'invite', email }); if (!r.ok) toast(r.msg || 'That did not work.'); else toast(r.mailed ? 'Invited. The email is on its way.' : 'Let in, but the email did NOT send. Tell them yourself.'); await beta('list'); paintBeta(); }
+  function paintBeta() { if (!BD) return; const w = BD.waitlist, inv = BD.invites, fb = BD.feedback;
+    tiles($('b-tiles'), [['On the wishlist', w.length], ['Waiting for an invite', w.filter(x => !x.allowed).length], ['Invited', inv.length], ['Joined', inv.filter(x => x.joined).length], ['New feedback', fb.filter(x => x.status === 'new').length]]); countUp();
+    $('b-wait').innerHTML = '<tr><th>Email</th><th>Signed up</th><th>Status</th><th></th></tr>' + (w.map(x => `<tr><td>${hx(x.email)}</td><td>${day(x.at)}</td><td>${x.joined ? 'Playing' : x.allowed ? 'Invited ' + day(x.invited_at) : 'Waiting'}</td><td>${x.allowed ? '' : `<button class="btn small" data-inv="${hx(x.email)}">Invite</button>`}</td></tr>`).join('') || '<tr><td colspan="4" class="mut">Nobody yet.</td></tr>');
+    $('b-codes').innerHTML = '<tr><th>Code</th><th>For</th><th>Used</th><th>Made</th><th></th></tr>' + (BD.codes.map(k => `<tr><td><b>${hx(k.code)}</b></td><td>${hx(k.note)}</td><td>${k.uses} of ${k.max_uses}</td><td>${day(k.created_at)}</td><td>${k.revoked ? 'Switched off' : `<button class="btn small ghost" data-copy="${hx(k.code)}">Copy</button> <button class="btn small ghost" data-rev="${hx(k.code)}">Switch off</button>`}</td></tr>`).join('') || '<tr><td colspan="5" class="mut">No codes yet.</td></tr>');
+    $('b-feed').innerHTML = '<tr><th>When</th><th>Who</th><th>Kind</th><th>What they said</th><th></th></tr>' + (fb.map(f => `<tr><td>${day(f.at)}</td><td>${hx(f.username || '')}<br><span class="mut">${hx(f.email || '')}</span></td><td>${hx(f.kind)}</td><td style="white-space:pre-wrap;max-width:34rem">${hx(f.body)}</td><td>${f.status === 'done' ? 'Done' : `<button class="btn small ghost" data-fb="${f.id}" data-st="${f.status === 'new' ? 'seen' : 'done'}">${f.status === 'new' ? 'Mark read' : 'Mark done'}</button>`}</td></tr>`).join('') || '<tr><td colspan="5" class="mut">Nothing yet.</td></tr>'); }
+  async function renderBeta() { await beta('list'); paintBeta();
+    if (!mailChecked) { mailChecked = true; const c = await betaFn({ op: 'check' }); $('b-mail').textContent = !c.ok ? 'Could not check email.' : c.key ? 'Email is ready. Sending as ' + c.from : 'Email is NOT set up: add RESEND_API_KEY to the Edge Function secrets in Supabase.'; } }
+  $('a-beta').addEventListener('click', async e => { const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.inv) return invite(b.dataset.inv, b);
+    if (b.dataset.copy) return navigator.clipboard.writeText(b.dataset.copy).then(() => toast('Copied.'));
+    if (b.dataset.rev) { if (confirm('Switch this code off? People who already used it keep their place.')) { await beta('code_revoke', { code: b.dataset.rev }); paintBeta(); } return; }
+    if (b.dataset.fb) { await beta('feedback_status', { id: +b.dataset.fb, status: b.dataset.st }); paintBeta(); return; }
+    if (b.id === 'b-invite') { const v = $('b-email').value.trim(); if (v) { await invite(v, b); b.disabled = false; $('b-email').value = ''; } return; }
+    if (b.id === 'b-code') { const d = await beta('code_new', { note: $('b-note').value, max_uses: +$('b-uses').value || 1 }); if (d && d.made) { toast('Made ' + d.made); $('b-note').value = ''; } paintBeta(); } });
+
+  const renderers = { overview: renderOverview, players: renderPlayers, heroes: renderHeroes, items: renderItems, economy: renderEconomy, studio: renderStudio, beta: renderBeta }; let cur = 'overview';
   function show(t) { cur = t; document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'a-' + t)); document.querySelectorAll('#atabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); renderers[t](); }
   $('atabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.t); });
   $('p-search').addEventListener('input', renderPlayers); $('i-kind').onchange = renderItems; $('i-place').onchange = renderItems; R.places.forEach(p => $('i-place').appendChild(new Option(p.name, p.id)));

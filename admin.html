@@ -16,12 +16,12 @@
 <!-- seo:end -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1125z"></head>
+<link rel="stylesheet" href="/css/os.css?v=1126a"></head>
 <body class="game admin">
-<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1125z" alt=""><p>Unlocking the office…</p></div>
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126a" alt=""><p>Unlocking the office…</p></div>
 <header class="gbar"><div class="wrap"><a class="brand" href="/play" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a><span class="crown">Owner's office</span><div class="res"><button class="btn small ghost" id="refresh">Refresh</button><a class="btn small" href="/play">Back to the game</a></div></div></header>
 <main class="wrap">
-  <nav class="atabs" id="atabs"><button class="on" data-t="overview">Overview</button><button data-t="players">Players</button><button data-t="heroes">Characters</button><button data-t="items">Items</button><button data-t="economy">Economy</button><button data-t="studio">Marketing studio</button></nav>
+  <nav class="atabs" id="atabs"><button class="on" data-t="overview">Overview</button><button data-t="players">Players</button><button data-t="heroes">Characters</button><button data-t="items">Items</button><button data-t="economy">Economy</button><button data-t="beta">Beta</button><button data-t="studio">Marketing studio</button></nav>
   <section class="view on" id="a-overview">
     <div class="statrow six" id="o-tiles"></div>
     <div class="grid2 even">
@@ -39,6 +39,12 @@
   <section class="view" id="a-economy"><h2 style="margin-bottom:.8rem">Economy</h2><div class="statrow" id="e-tiles"></div>
     <div class="grid2 even"><div class="panel"><h3>Summon odds</h3><p class="mut">What the rulebook says players get.</p><div class="odds" id="e-odds"></div></div><div class="panel"><h3>What players did</h3><p class="mut">Last 7 days.</p><div id="e-events"></div></div>
     <div class="panel" style="grid-column:1/-1;overflow:auto"><h3>Pacing, from the rulebook</h3><table class="atable" id="e-pace"></table></div></div></section>
+  <section class="view" id="a-beta"><div class="spread" style="margin-bottom:.8rem"><h2>Beta</h2><span class="mut" id="b-mail">Checking email…</span></div>
+    <div class="statrow" id="b-tiles"></div>
+    <div class="panel" style="margin-bottom:1rem"><div class="spread" style="margin-bottom:.6rem"><h3>Wishlist</h3><div class="row"><input type="email" id="b-email" placeholder="Invite any email directly"><button class="btn small" id="b-invite">Invite</button></div></div><div style="overflow:auto;max-height:420px"><table class="atable" id="b-wait"></table></div></div>
+    <div class="panel" style="margin-bottom:1rem"><div class="spread" style="margin-bottom:.6rem"><h3>Codes</h3><div class="row"><input type="text" id="b-note" placeholder="What is it for? e.g. X giveaway" maxlength="120"><input type="number" id="b-uses" min="1" max="1000" value="1" style="width:6rem" title="How many people can use it"><button class="btn small" id="b-code">Make a code</button></div></div><table class="atable" id="b-codes"></table></div>
+    <div class="panel"><h3 style="margin-bottom:.6rem">Feedback</h3><div style="overflow:auto;max-height:520px"><table class="atable" id="b-feed"></table></div></div>
+  </section>
   <section class="view" id="a-studio"><h2>Marketing studio</h2><p class="mut" style="margin-bottom:1rem">Pick something to talk about and where it is going. Grok writes it and paints it. Nothing is posted for you: copy the words, save the picture.</p>
     <div class="grid2"><div class="panel"><div class="tag">What is it about</div><select id="m-what" style="width:100%;margin:.3rem 0 .8rem"></select>
       <div class="tag">Where is it going</div><div class="seg three" id="m-plat"><button class="on" data-p="tiktok">TikTok</button><button data-p="x">X</button><button data-p="short">Video script</button></div>

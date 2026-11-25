@@ -37,3 +37,15 @@ The city still opens. Skills, hustles, and delves run on this device and stay in
 ## Art notes
 
 Sign lettering on the modern street and the Chicago awning was painted out of the backgrounds and the three card-back loops that used them. Maya's delve sprite is turned to face the fight. Edith's mining scene still plays her attack cycle. There is no pickaxe animation in the sheets, so that pose is the one the screens were drawn with.
+
+## Closed beta (25 Nov)
+
+`supabase/os2_beta.sql` (applied). The gate is unchanged: `den_allow` is still what `den_block_signup` and `os2_allowed()` read.
+
+- `os2_beta_code`, `os2_beta_invite`, `os2_feedback`: RLS on, no policies, reached only through functions.
+- `os2_admin_beta(op, payload)`: owner only. Lists the wishlist, invites, codes and feedback; makes and switches off codes; marks feedback.
+- `os2_feedback_send(kind, body)`: any allowed player, ten a day.
+- `os2_profile.founder`: set by a trigger when a profile is made while `os2_open` is not true; cannot be changed from the client.
+- Edge function `beta`: `redeem` (anyone, rate limited) turns a code into a `den_allow` row; `invite` and `check` are owner only and decided by the caller's own sign-in.
+- Edge function `waitlist`: unchanged behaviour, plus a confirmation to the person and a notice to `BETA_NOTIFY_TO` on a first signup.
+- Mail goes through Resend and needs the `RESEND_API_KEY` Edge Function secret. `BETA_MAIL_FROM` and `BETA_NOTIFY_TO` are optional and default to hello@oversummoned.com. A missing key never breaks a signup; the Beta tab says so.
