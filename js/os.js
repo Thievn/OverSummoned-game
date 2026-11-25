@@ -3,13 +3,14 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
+  OS.VER = '?v=1124c';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
-    const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json').then(r => r.json())));
+    const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
     R.heroes.forEach(h => OS.heroes[h.id] = h);
     return OS;
   };
-  OS.img = (kind, id) => A + kind + '/' + id + '.webp';
+  OS.img = (kind, id) => A + kind + '/' + id + '.webp' + OS.VER;
   OS.el = function (tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   OS.cap = s => s.charAt(0).toUpperCase() + s.slice(1);
   OS.num = n => Math.floor(n).toLocaleString('en-US');

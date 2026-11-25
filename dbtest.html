@@ -35,9 +35,9 @@
     <label><input type="checkbox" id="bBones"> Show bones</label>
   </div>
 </div>
-<script src="js/os.js"></script>
+<script src="js/os.js?v=1124c"></script>
 <script src="js/vendor/dragonBones.core.js"></script>
-<script src="js/dbcanvas.js"></script>
+<script src="js/dbcanvas.js?v=1124c"></script>
 <script>
 (async function () {
   const H = 420, S = 0.62, $ = id => document.getElementById(id);
@@ -45,7 +45,7 @@
   // ---- current rig
   let old = null;
   try {
-    OS.rig = await (await fetch('data/rig.json')).json();
+    OS.rig = await (await fetch('data/rig.json' + OS.VER)).json();
     const host = $('old'); old = new OS.Puppet(host, 'stamp', S); old.place(host.clientWidth / 2 + 10, H * 0.9);
   } catch (e) { console.error(e); note($('old'), 'Could not load the current rig: ' + e.message); }
 
@@ -53,8 +53,8 @@
   let over = () => null, bones = false;
   try {
     const host = $('new'), cv = document.createElement('canvas'), ctx = cv.getContext('2d'); host.appendChild(cv);
-    const img = new Image(); img.src = 'assets/v2/db/smudge_tex.webp';
-    const [ske, tex] = await Promise.all([fetch('assets/v2/db/smudge_ske.json').then(r => r.json()), fetch('assets/v2/db/smudge_tex.json').then(r => r.json()), img.decode()]);
+    const img = new Image(); img.src = 'assets/v2/db/smudge_tex.webp' + OS.VER;
+    const [ske, tex] = await Promise.all([fetch('assets/v2/db/smudge_ske.json' + OS.VER).then(r => r.json()), fetch('assets/v2/db/smudge_tex.json' + OS.VER).then(r => r.json()), img.decode()]);
     const f = new DBCanvas.Factory(); f.parseDragonBonesData(ske); f.parseTextureAtlasData(tex, img);
     const p = f.build('stamp', 'smudge'), an = p.animation; an.play('idle', 0);
     over = (name, times, layer) => { const s = an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s; };
