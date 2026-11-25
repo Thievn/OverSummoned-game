@@ -128,7 +128,7 @@ for h in HEROES:
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)
 import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import gear2
+import gear2, junk
 era_items, gear_sets = gear2.expand(C["gear"]["budget"])
 hero_place = {h["id"]: h["place"] for h in HEROES}
 for it in era_items:
@@ -146,6 +146,12 @@ for p in PLACES:
         iid = art if old else f"{p['id']}_{n}"
         items[iid] = dict(id=iid, name=name, kind="loot", rarity=rarity, icon=iid, flavor=flavor, place=p["id"], sell=C["loot"]["sell"][rarity])
         table.append([iid, C["loot"]["weight"][rarity]])
+    # junk: only sells. Local junk at a modest weight, rift junk rarely, and nothing in the cabinet.
+    for k, wgt in ((p["id"], 6), ("rift", 1.2)):
+        for i, (jn, gold, _art, fl) in enumerate(junk.JUNK.get(k, []) if p["skill"] != "Summoning" else []):
+            jid = f"j_{k}_{i + 1}"
+            items[jid] = dict(id=jid, name=jn, kind="loot", junk=True, rarity="common" if gold < 10 else "uncommon" if gold < 25 else "rare", icon=jid, flavor=fl, place=(p["id"] if k != "rift" else "archive"), sell=gold)
+            table.append([jid, wgt if gold < 10 else wgt / 3 if gold < 25 else wgt / 12])
     for h in heroes:
         if h["place"] == p["id"]:
             for g in h["gear"]:

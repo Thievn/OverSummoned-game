@@ -1801,6 +1801,62 @@
      1
     ],
     [
+     "j_dock_1",
+     6
+    ],
+    [
+     "j_dock_2",
+     6
+    ],
+    [
+     "j_dock_3",
+     6
+    ],
+    [
+     "j_dock_4",
+     6
+    ],
+    [
+     "j_dock_5",
+     6
+    ],
+    [
+     "j_dock_6",
+     6
+    ],
+    [
+     "j_dock_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
+    ],
+    [
      "brokk_weapon",
      0.75
     ],
@@ -1940,6 +1996,62 @@
      1
     ],
     [
+     "j_bondi_1",
+     6
+    ],
+    [
+     "j_bondi_2",
+     6
+    ],
+    [
+     "j_bondi_3",
+     6
+    ],
+    [
+     "j_bondi_4",
+     6
+    ],
+    [
+     "j_bondi_5",
+     6
+    ],
+    [
+     "j_bondi_6",
+     2.0
+    ],
+    [
+     "j_bondi_7",
+     2.0
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
+    ],
+    [
      "bella_weapon",
      0.375
     ],
@@ -2077,6 +2189,62 @@
     [
      "fjord_8",
      1
+    ],
+    [
+     "j_fjord_1",
+     6
+    ],
+    [
+     "j_fjord_2",
+     6
+    ],
+    [
+     "j_fjord_3",
+     6
+    ],
+    [
+     "j_fjord_4",
+     6
+    ],
+    [
+     "j_fjord_5",
+     6
+    ],
+    [
+     "j_fjord_6",
+     6
+    ],
+    [
+     "j_fjord_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
     ],
     [
      "blackbear_weapon",
@@ -2254,6 +2422,62 @@
      1
     ],
     [
+     "j_speakeasy_1",
+     6
+    ],
+    [
+     "j_speakeasy_2",
+     6
+    ],
+    [
+     "j_speakeasy_3",
+     6
+    ],
+    [
+     "j_speakeasy_4",
+     6
+    ],
+    [
+     "j_speakeasy_5",
+     6
+    ],
+    [
+     "j_speakeasy_6",
+     6
+    ],
+    [
+     "j_speakeasy_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
+    ],
+    [
      "vincenzo_weapon",
      0.15
     ],
@@ -2391,6 +2615,62 @@
     [
      "vault_8",
      1
+    ],
+    [
+     "j_vault_1",
+     6
+    ],
+    [
+     "j_vault_2",
+     6
+    ],
+    [
+     "j_vault_3",
+     6
+    ],
+    [
+     "j_vault_4",
+     6
+    ],
+    [
+     "j_vault_5",
+     6
+    ],
+    [
+     "j_vault_6",
+     6
+    ],
+    [
+     "j_vault_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
     ],
     [
      "napoleon_weapon",
@@ -2532,6 +2812,62 @@
      1
     ],
     [
+     "j_closet_1",
+     6
+    ],
+    [
+     "j_closet_2",
+     6
+    ],
+    [
+     "j_closet_3",
+     6
+    ],
+    [
+     "j_closet_4",
+     6
+    ],
+    [
+     "j_closet_5",
+     6
+    ],
+    [
+     "j_closet_6",
+     6
+    ],
+    [
+     "j_closet_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
+    ],
+    [
      "kevin_weapon",
      0.75
     ],
@@ -2669,6 +3005,62 @@
     [
      "outback_8",
      1
+    ],
+    [
+     "j_outback_1",
+     6
+    ],
+    [
+     "j_outback_2",
+     6
+    ],
+    [
+     "j_outback_3",
+     6
+    ],
+    [
+     "j_outback_4",
+     6
+    ],
+    [
+     "j_outback_5",
+     6
+    ],
+    [
+     "j_outback_6",
+     6
+    ],
+    [
+     "j_outback_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
     ],
     [
      "maya_weapon",
@@ -2840,6 +3232,62 @@
     [
      "blackforest_8",
      1
+    ],
+    [
+     "j_blackforest_1",
+     6
+    ],
+    [
+     "j_blackforest_2",
+     6
+    ],
+    [
+     "j_blackforest_3",
+     6
+    ],
+    [
+     "j_blackforest_4",
+     6
+    ],
+    [
+     "j_blackforest_5",
+     6
+    ],
+    [
+     "j_blackforest_6",
+     6
+    ],
+    [
+     "j_blackforest_7",
+     0.5
+    ],
+    [
+     "j_rift_1",
+     1.2
+    ],
+    [
+     "j_rift_2",
+     1.2
+    ],
+    [
+     "j_rift_3",
+     1.2
+    ],
+    [
+     "j_rift_4",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_5",
+     0.39999999999999997
+    ],
+    [
+     "j_rift_6",
+     1.2
+    ],
+    [
+     "j_rift_7",
+     0.09999999999999999
     ],
     [
      "albrecht_weapon",
@@ -6751,6 +7199,160 @@
    "place": "dock",
    "sell": 150
   },
+  "j_dock_1": {
+   "id": "j_dock_1",
+   "name": "Sprat",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_1",
+   "flavor": "The smallest fish in the empire. It knows.",
+   "place": "dock",
+   "sell": 2
+  },
+  "j_dock_2": {
+   "id": "j_dock_2",
+   "name": "Bream",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_2",
+   "flavor": "Perfectly average. Rome was built on bream.",
+   "place": "dock",
+   "sell": 3
+  },
+  "j_dock_3": {
+   "id": "j_dock_3",
+   "name": "Tiber Mullet",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_3",
+   "flavor": "Senators paid fortunes for these. This one is small.",
+   "place": "dock",
+   "sell": 4
+  },
+  "j_dock_4": {
+   "id": "j_dock_4",
+   "name": "Left Sandal",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_4",
+   "flavor": "There is never a right one.",
+   "place": "dock",
+   "sell": 1
+  },
+  "j_dock_5": {
+   "id": "j_dock_5",
+   "name": "Cracked Amphora Handle",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_5",
+   "flavor": "The rest of it is somebody else's problem.",
+   "place": "dock",
+   "sell": 2
+  },
+  "j_dock_6": {
+   "id": "j_dock_6",
+   "name": "Fish Sauce (Aged 1,900 Years)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_dock_6",
+   "flavor": "It was already rotten on purpose.",
+   "place": "dock",
+   "sell": 9
+  },
+  "j_dock_7": {
+   "id": "j_dock_7",
+   "name": "Senator's Lost Toga Pin",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_dock_7",
+   "flavor": "Somewhere a senator is holding his toga up by hand.",
+   "place": "dock",
+   "sell": 25
+  },
+  "j_rift_1": {
+   "id": "j_rift_1",
+   "name": "Sock From No Particular Century",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_rift_1",
+   "flavor": "Time travel's only reliable product.",
+   "place": "archive",
+   "sell": 1
+  },
+  "j_rift_2": {
+   "id": "j_rift_2",
+   "name": "Half a Sandwich",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_rift_2",
+   "flavor": "It fell through a hole in time. Still better than the canteen.",
+   "place": "archive",
+   "sell": 2
+  },
+  "j_rift_3": {
+   "id": "j_rift_3",
+   "name": "Receipt in an Unknown Language",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_rift_3",
+   "flavor": "Someone, somewhen, wants a refund.",
+   "place": "archive",
+   "sell": 1
+  },
+  "j_rift_4": {
+   "id": "j_rift_4",
+   "name": "Tomorrow's Newspaper",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "uncommon",
+   "icon": "j_rift_4",
+   "flavor": "The crossword is already done. In your handwriting.",
+   "place": "archive",
+   "sell": 15
+  },
+  "j_rift_5": {
+   "id": "j_rift_5",
+   "name": "Small Dinosaur Tooth",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "uncommon",
+   "icon": "j_rift_5",
+   "flavor": "Small for a dinosaur. Still a dinosaur.",
+   "place": "archive",
+   "sell": 12
+  },
+  "j_rift_6": {
+   "id": "j_rift_6",
+   "name": "Slightly Cursed Teaspoon",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_rift_6",
+   "flavor": "Stirs clockwise. Only clockwise. Forever.",
+   "place": "archive",
+   "sell": 6
+  },
+  "j_rift_7": {
+   "id": "j_rift_7",
+   "name": "A Second, Smaller Ledger",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_rift_7",
+   "flavor": "It hums. Smudge will not look at it.",
+   "place": "archive",
+   "sell": 50
+  },
   "bondi_1": {
    "id": "bondi_1",
    "name": "Lost Thong",
@@ -6831,6 +7433,83 @@
    "place": "bondi",
    "sell": 150
   },
+  "j_bondi_1": {
+   "id": "j_bondi_1",
+   "name": "Whiting",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_bondi_1",
+   "flavor": "Beach-caught and unimpressed.",
+   "place": "bondi",
+   "sell": 2
+  },
+  "j_bondi_2": {
+   "id": "j_bondi_2",
+   "name": "Flathead",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_bondi_2",
+   "flavor": "Looks stepped on. Was born that way.",
+   "place": "bondi",
+   "sell": 3
+  },
+  "j_bondi_3": {
+   "id": "j_bondi_3",
+   "name": "Blue Swimmer Crab",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_bondi_3",
+   "flavor": "Pinches first, asks nothing.",
+   "place": "bondi",
+   "sell": 5
+  },
+  "j_bondi_4": {
+   "id": "j_bondi_4",
+   "name": "Single Thong",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_bondi_4",
+   "flavor": "Australia's most common fossil.",
+   "place": "bondi",
+   "sell": 1
+  },
+  "j_bondi_5": {
+   "id": "j_bondi_5",
+   "name": "Sunscreen Lid",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_bondi_5",
+   "flavor": "The bottle is at the bottom of the rock pool, open.",
+   "place": "bondi",
+   "sell": 1
+  },
+  "j_bondi_6": {
+   "id": "j_bondi_6",
+   "name": "Tourist's Waterproof Camera",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "uncommon",
+   "icon": "j_bondi_6",
+   "flavor": "Eleven photos of a thumb.",
+   "place": "bondi",
+   "sell": 12
+  },
+  "j_bondi_7": {
+   "id": "j_bondi_7",
+   "name": "Message in a Bottle (It Is a Bill)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "uncommon",
+   "icon": "j_bondi_7",
+   "flavor": "Even the ocean sends invoices.",
+   "place": "bondi",
+   "sell": 20
+  },
   "fjord_1": {
    "id": "fjord_1",
    "name": "Skrei Cod",
@@ -6910,6 +7589,83 @@
    "flavor": "It let go. Be grateful.",
    "place": "fjord",
    "sell": 150
+  },
+  "j_fjord_1": {
+   "id": "j_fjord_1",
+   "name": "Herring",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_1",
+   "flavor": "There are a billion of these. This is one.",
+   "place": "fjord",
+   "sell": 2
+  },
+  "j_fjord_2": {
+   "id": "j_fjord_2",
+   "name": "Cod",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_2",
+   "flavor": "Built a civilisation. Got no thanks.",
+   "place": "fjord",
+   "sell": 4
+  },
+  "j_fjord_3": {
+   "id": "j_fjord_3",
+   "name": "Arctic Char",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_3",
+   "flavor": "Cold, pink, and judging you.",
+   "place": "fjord",
+   "sell": 6
+  },
+  "j_fjord_4": {
+   "id": "j_fjord_4",
+   "name": "Frozen Mitten",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_4",
+   "flavor": "The hand is not inside. You checked.",
+   "place": "fjord",
+   "sell": 1
+  },
+  "j_fjord_5": {
+   "id": "j_fjord_5",
+   "name": "Lump of Ice Shaped Like Nothing",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_5",
+   "flavor": "People keep saying it looks like a bear. It does not.",
+   "place": "fjord",
+   "sell": 1
+  },
+  "j_fjord_6": {
+   "id": "j_fjord_6",
+   "name": "Oar Fragment",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_fjord_6",
+   "flavor": "Somebody rowed very angrily.",
+   "place": "fjord",
+   "sell": 3
+  },
+  "j_fjord_7": {
+   "id": "j_fjord_7",
+   "name": "Whale Song (Bottled)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_fjord_7",
+   "flavor": "Uncork it and the neighbours complain.",
+   "place": "fjord",
+   "sell": 30
   },
   "easy_chips": {
    "id": "easy_chips",
@@ -7001,6 +7757,83 @@
    "place": "speakeasy",
    "sell": 150
   },
+  "j_speakeasy_1": {
+   "id": "j_speakeasy_1",
+   "name": "Bent Hairpin",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_1",
+   "flavor": "The previous burglar's whole toolkit.",
+   "place": "speakeasy",
+   "sell": 1
+  },
+  "j_speakeasy_2": {
+   "id": "j_speakeasy_2",
+   "name": "Cigar Stub",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_2",
+   "flavor": "Still warm. That is concerning.",
+   "place": "speakeasy",
+   "sell": 1
+  },
+  "j_speakeasy_3": {
+   "id": "j_speakeasy_3",
+   "name": "IOU From \"A Friend\"",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_3",
+   "flavor": "The friend is no longer in town. Or anywhere.",
+   "place": "speakeasy",
+   "sell": 2
+  },
+  "j_speakeasy_4": {
+   "id": "j_speakeasy_4",
+   "name": "Empty Hip Flask",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_4",
+   "flavor": "Emptied in a hurry, by the dents.",
+   "place": "speakeasy",
+   "sell": 4
+  },
+  "j_speakeasy_5": {
+   "id": "j_speakeasy_5",
+   "name": "Loaded Dice",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_5",
+   "flavor": "They roll sixes. They only roll sixes. People notice.",
+   "place": "speakeasy",
+   "sell": 8
+  },
+  "j_speakeasy_6": {
+   "id": "j_speakeasy_6",
+   "name": "Jazz Record (Scratched)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_speakeasy_6",
+   "flavor": "Plays the same four bars forever. Some call that jazz.",
+   "place": "speakeasy",
+   "sell": 6
+  },
+  "j_speakeasy_7": {
+   "id": "j_speakeasy_7",
+   "name": "Photograph of the Mayor at the Bar",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_speakeasy_7",
+   "flavor": "Worth nothing to you. Worth a great deal to the mayor.",
+   "place": "speakeasy",
+   "sell": 35
+  },
   "vault_1": {
    "id": "vault_1",
    "name": "Gold Ducat",
@@ -7080,6 +7913,83 @@
    "flavor": "Whoever wore it was never seen again. By choice.",
    "place": "vault",
    "sell": 150
+  },
+  "j_vault_1": {
+   "id": "j_vault_1",
+   "name": "Carnival Confetti",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_1",
+   "flavor": "It gets everywhere. It will be in your fur in March.",
+   "place": "vault",
+   "sell": 1
+  },
+  "j_vault_2": {
+   "id": "j_vault_2",
+   "name": "Glass Bead",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_2",
+   "flavor": "One. The necklace is in a canal.",
+   "place": "vault",
+   "sell": 2
+  },
+  "j_vault_3": {
+   "id": "j_vault_3",
+   "name": "Pigeon Feather",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_3",
+   "flavor": "St Mark's Square has several million more.",
+   "place": "vault",
+   "sell": 1
+  },
+  "j_vault_4": {
+   "id": "j_vault_4",
+   "name": "Wax Seal (Somebody Else's)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_4",
+   "flavor": "Do not use this. Do not be seen with this.",
+   "place": "vault",
+   "sell": 3
+  },
+  "j_vault_5": {
+   "id": "j_vault_5",
+   "name": "Guard's Lunch",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_5",
+   "flavor": "He hid it in the strongbox. He trusts nobody.",
+   "place": "vault",
+   "sell": 4
+  },
+  "j_vault_6": {
+   "id": "j_vault_6",
+   "name": "Counterfeit Ducat",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_vault_6",
+   "flavor": "The lion is smiling. Real lions do not smile.",
+   "place": "vault",
+   "sell": 7
+  },
+  "j_vault_7": {
+   "id": "j_vault_7",
+   "name": "Deed to a Bridge",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_vault_7",
+   "flavor": "Somebody sold the Rialto. Somebody bought it.",
+   "place": "vault",
+   "sell": 40
   },
   "closet_1": {
    "id": "closet_1",
@@ -7161,6 +8071,83 @@
    "place": "closet",
    "sell": 150
   },
+  "j_closet_1": {
+   "id": "j_closet_1",
+   "name": "Dried-Up Highlighter",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_1",
+   "flavor": "Highlights nothing. Like the meeting.",
+   "place": "closet",
+   "sell": 1
+  },
+  "j_closet_2": {
+   "id": "j_closet_2",
+   "name": "Mystery Key",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_2",
+   "flavor": "Opens nothing in this building. Nobody will throw it out.",
+   "place": "closet",
+   "sell": 1
+  },
+  "j_closet_3": {
+   "id": "j_closet_3",
+   "name": "Toner Cartridge (Empty)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_3",
+   "flavor": "It said \"low\" for nine months and then this.",
+   "place": "closet",
+   "sell": 2
+  },
+  "j_closet_4": {
+   "id": "j_closet_4",
+   "name": "Lanyard From a 2014 Conference",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_4",
+   "flavor": "Synergy Summit. Nobody remembers it. Everyone has the lanyard.",
+   "place": "closet",
+   "sell": 2
+  },
+  "j_closet_5": {
+   "id": "j_closet_5",
+   "name": "Someone's Labelled Lunch",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_5",
+   "flavor": "The label says DO NOT TOUCH. It has been touched.",
+   "place": "closet",
+   "sell": 5
+  },
+  "j_closet_6": {
+   "id": "j_closet_6",
+   "name": "Box of 5,000 Staples",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_closet_6",
+   "flavor": "Counted by nobody. Trusted by all.",
+   "place": "closet",
+   "sell": 6
+  },
+  "j_closet_7": {
+   "id": "j_closet_7",
+   "name": "The Good Stapler",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_closet_7",
+   "flavor": "The one that works. Wars have started over less.",
+   "place": "closet",
+   "sell": 30
+  },
   "outback_1": {
    "id": "outback_1",
    "name": "Spent Casing",
@@ -7241,6 +8228,83 @@
    "place": "outback",
    "sell": 150
   },
+  "j_outback_1": {
+   "id": "j_outback_1",
+   "name": "Bottle Cap",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_1",
+   "flavor": "Legal tender in some pubs.",
+   "place": "outback",
+   "sell": 1
+  },
+  "j_outback_2": {
+   "id": "j_outback_2",
+   "name": "Emu Feather",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_2",
+   "flavor": "Shed in victory.",
+   "place": "outback",
+   "sell": 2
+  },
+  "j_outback_3": {
+   "id": "j_outback_3",
+   "name": "Spent Cartridge",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_3",
+   "flavor": "One of ten thousand. They all missed.",
+   "place": "outback",
+   "sell": 1
+  },
+  "j_outback_4": {
+   "id": "j_outback_4",
+   "name": "Tin of Bully Beef",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_4",
+   "flavor": "Use by: never. Eat by: only if you must.",
+   "place": "outback",
+   "sell": 4
+  },
+  "j_outback_5": {
+   "id": "j_outback_5",
+   "name": "Boot With a Spider In",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_5",
+   "flavor": "Check your boots. This is why.",
+   "place": "outback",
+   "sell": 3
+  },
+  "j_outback_6": {
+   "id": "j_outback_6",
+   "name": "Boomerang That Did Not Come Back",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_outback_6",
+   "flavor": "It came back to you instead, technically.",
+   "place": "outback",
+   "sell": 8
+  },
+  "j_outback_7": {
+   "id": "j_outback_7",
+   "name": "Major's Resignation Letter",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_outback_7",
+   "flavor": "It just says \"birds\" forty times.",
+   "place": "outback",
+   "sell": 35
+  },
   "blackforest_1": {
    "id": "blackforest_1",
    "name": "Toadstool",
@@ -7320,6 +8384,83 @@
    "flavor": "Blooms once a century. You are welcome.",
    "place": "blackforest",
    "sell": 150
+  },
+  "j_blackforest_1": {
+   "id": "j_blackforest_1",
+   "name": "Acorn",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_1",
+   "flavor": "A squirrel is going to be furious.",
+   "place": "blackforest",
+   "sell": 1
+  },
+  "j_blackforest_2": {
+   "id": "j_blackforest_2",
+   "name": "Toadstool (Do Not)",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_2",
+   "flavor": "The name is the instruction.",
+   "place": "blackforest",
+   "sell": 2
+  },
+  "j_blackforest_3": {
+   "id": "j_blackforest_3",
+   "name": "Owl Pellet",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_3",
+   "flavor": "Contains one mouse, rearranged.",
+   "place": "blackforest",
+   "sell": 1
+  },
+  "j_blackforest_4": {
+   "id": "j_blackforest_4",
+   "name": "Crooked Spoon",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_4",
+   "flavor": "Bent by magic or by soup. Hard to say.",
+   "place": "blackforest",
+   "sell": 2
+  },
+  "j_blackforest_5": {
+   "id": "j_blackforest_5",
+   "name": "Witch's Shopping List",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_5",
+   "flavor": "Eye of newt. Milk. More newt.",
+   "place": "blackforest",
+   "sell": 4
+  },
+  "j_blackforest_6": {
+   "id": "j_blackforest_6",
+   "name": "Gingerbread Roof Tile",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "common",
+   "icon": "j_blackforest_6",
+   "flavor": "Somebody is living in a house with a hole in it.",
+   "place": "blackforest",
+   "sell": 9
+  },
+  "j_blackforest_7": {
+   "id": "j_blackforest_7",
+   "name": "Wolf's Dentures",
+   "kind": "loot",
+   "junk": true,
+   "rarity": "rare",
+   "icon": "j_blackforest_7",
+   "flavor": "All the better to be sold with.",
+   "place": "blackforest",
+   "sell": 30
   },
   "x_crate": {
    "id": "x_crate",

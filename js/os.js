@@ -113,7 +113,7 @@ window.OS = (function () {
       if (it.special) s += `<div class="eq">Special: +${Math.round(it.special.amount * 100)}% ${FX[it.special.kind]}.</div>`;
       if (it.set) { const st = R.gear_sets[it.set], k = Object.keys(st.two)[0]; s += `<div class="eq">${st.name} set · 2 worn: +${st.two[k]} ${OS.statWord[k]} · all 3: +${Math.round(st.three.amount * 100)}% ${FX[st.three.kind]}.</div>`; }
       if (it.owner) s += `<div class="sig">Only ${OS.heroes[it.owner].name} can wear this.</div>`;
-    } else s += `<div class="sub"><span>Treasure</span><span>${OS.cap(it.rarity)}</span></div>`;
+    } else s += `<div class="sub"><span>${it.junk ? 'Junk' : 'Treasure'}</span><span>${it.junk ? 'sells only' : OS.cap(it.rarity)}</span></div>`;
     s += `<div class="fl">"${it.flavor}"</div>`;
     const pl = R.places.find(p => p.id === it.place);
     if (pl) s += `<div class="src">Found at ${pl.name}, by ${pl.skill.toLowerCase()}${opt.chance ? ' · ' + opt.chance : ''}</div>`;

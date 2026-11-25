@@ -96,7 +96,7 @@
       <p class="mut" style="font-size:.85rem">Every duplicate summon gives ${SH.per_dupe} shard. Weekly contracts pay shards too.</p>`;
     const b = btn('', have >= cost ? `Call them by name (${cost} shards)` : `${cost - have} more shards needed`, () => callByName(id)); b.disabled = have < cost; d.appendChild(b); modal.open(d);
   }
-  const treasures = Object.values(OS.items).filter(i => i.kind === 'loot' && i.id.indexOf('x_') !== 0);
+  const treasures = Object.values(OS.items).filter(i => i.kind === 'loot' && !i.junk && i.id.indexOf('x_') !== 0);
   const inkBonus = () => 1 + Object.keys(S.cabinet || {}).length * CAB.ink_per + rebirthTotal() * RB.ink_per;
   const cabSet = pid => { const set = treasures.filter(i => i.place === pid); return set.length > 0 && set.every(i => S.cabinet[i.id]); };
   const cabReady = () => treasures.filter(i => !S.cabinet[i.id] && S.bag[i.id] > 0);
@@ -373,11 +373,11 @@
   }
   function drink(id) { const t = R.tonics.find(x => x.id === id); if (!t || !(S.bag[id] > 0)) return; bump('tonics'); S.bag[id]--; S.tonics[t.effect] = Math.max(now(), S.tonics[t.effect] || 0) + t.minutes * 60000; save(true); render(); toast(`${t.name}: ${t.text}`); }
   $('b-sell').onclick = () => { rollDay(); let room = sellCap() - S.sold, earned = 0;
-    Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot') return; while (S.bag[id] > 1 && earned + it.sell <= room) { S.bag[id]--; earned += it.sell; } });
-    S.gold += earned; S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(earned ? `Sold the spares for ${earned} gold.` : room <= 0 ? 'The market has had enough of you today.' : 'No spare treasure to sell. One of each is kept.'); };
+    Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot') return; while (S.bag[id] > (it.junk ? 0 : 1) && earned + it.sell <= room) { S.bag[id]--; earned += it.sell; } });
+    S.gold += earned; S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(earned ? `Sold the spares for ${earned} gold.` : room <= 0 ? 'The market has had enough of you today.' : 'Nothing to sell. Junk all goes; one of each treasure is kept.'); };
 
   // ------------------------------------------------------------------ workshop
-  const spare = rar => Object.keys(S.bag).filter(id => OS.items[id] && OS.items[id].kind === 'loot' && OS.items[id].rarity === rar && id !== 'x_shard').reduce((a, id) => a + Math.max(0, S.bag[id] - 1), 0);
+  const spare = rar => Object.keys(S.bag).filter(id => OS.items[id] && OS.items[id].kind === 'loot' && !OS.items[id].junk && OS.items[id].rarity === rar && id !== 'x_shard').reduce((a, id) => a + Math.max(0, S.bag[id] - 1), 0);
   function renderWorkshop() {
     const tb = $('w-tonics'); tb.innerHTML = '';
     R.tonics.forEach(t => { const have = spare(t.cost.rarity), row = el('div', 'exrow'); row.innerHTML = `<div class="slot has r-uncommon"><img src="${OS.img('loot', t.id)}" alt=""></div><div><b>${t.name}</b><div class="mut" style="font-size:.85rem">${t.text} Costs ${t.cost.n} spare ${t.cost.rarity} treasures. You have ${have} spare.</div></div>`;
