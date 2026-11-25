@@ -52,9 +52,9 @@
     <div class="dbstage" id="d_big"><b>DragonBones</b></div>
   </div>
 </div>
-<script src="js/os.js?v=1124h"></script>
+<script src="js/os.js?v=1124i"></script>
 <script src="js/vendor/dragonBones.core.js"></script>
-<script src="js/dbcanvas.js?v=1124h"></script>
+<script src="js/dbcanvas.js?v=1124i"></script>
 <script>
 (async function () {
   const $ = id => document.getElementById(id), opt = (x, y) => ({ x, y, ver: OS.VER });
@@ -66,7 +66,7 @@
   });
   let old = null;
   try {
-    OS.rig = await (await fetch('data/rig.json' + OS.VER)).json();
+    OS.rig = await (await fetch('data/rig.json' + OS.VER)).json(); OS.noBones = true;      // the comparison panel below wants the old rig
     Object.keys(OS.rig).filter(k => k.indexOf('h_') === 0).forEach(k => {
       const id = k.slice(2), e = OS.rig[k], st = document.createElement('div'); st.className = 'dbstage'; st.innerHTML = '<b>' + id + '</b>'; $('heroes').appendChild(st);
       const sc = Math.min(165 / e.size[1], 118 / e.size[0]);

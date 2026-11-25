@@ -57,6 +57,25 @@ def keys(seq, key='rotate'):
     return out
 
 
+def grid(w, h, origin, NX, NY, weigh):
+    """A picture as a soft mesh: weigh(px, py) -> [(bone index, weight), ...] for each grid point."""
+    verts = []; uvs = []; weights = []; tris = []
+    for j in range(NY):
+        for i in range(NX):
+            px, py = w * i / (NX - 1), h * j / (NY - 1)
+            verts += [r2(origin[0] + px), r2(origin[1] + py)]; uvs += [round(px / w, 4), round(py / h, 4)]
+            ws = [(b, round(v, 3)) for b, v in weigh(px, py) if v > 0.001]
+            weights += [len(ws)] + [v for bw in ws for v in bw]
+    for j in range(NY - 1):
+        for i in range(NX - 1):
+            a = j * NX + i; tris += [a, a + 1, a + NX, a + 1, a + NX + 1, a + NX]
+    return verts, uvs, tris, weights
+
+
+# Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
+CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (140, 222, 32), 'lola': (272, 205, 28), 'troffea': (206, 240, 24)}
+
+
 def build(pose='stamp', hero=False):
     """pose: one of Smudge's poses, or with hero=True a hero id (parts in art2/hpuppet, rig key h_<id>)."""
     name = f'hero_{pose}' if hero else f'smudge_{pose}'
@@ -113,6 +132,9 @@ def build(pose='stamp', hero=False):
         bones.append({'name': 'tail1', 'parent': 'body', 'length': r2(seg), 'transform': {'x': r2(tp[0] - body[0]), 'y': r2(tp[1] - body[1]), 'skX': r2(ang), 'skY': r2(ang)}})
         bones.append({'name': 'tail2', 'parent': 'tail1', 'length': r2(seg), 'transform': {'x': r2(seg)}})
         bones.append({'name': 'tail3', 'parent': 'tail2', 'length': r2(seg), 'transform': {'x': r2(seg)}})
+    chest = CHEST.get(pose) if hero else None
+    if chest:
+        cp = A(chest[:2]); bones.append({'name': 'chest', 'parent': 'body', 'transform': {'x': r2(cp[0] - body[0]), 'y': r2(cp[1] - body[1])}})
     idx = {b['name']: i for i, b in enumerate(bones)}
     for i, (cx, cy, rx, ry) in enumerate(eyes):
         ex, ey = A((cx, cy - int(ry * 2.6) / 2)); bones.append({'name': f'lid{i}', 'parent': 'head', 'transform': {'x': r2(ex - hp[0]), 'y': r2(ey - hp[1]), 'scY': 0.01}})
@@ -156,7 +178,16 @@ def build(pose='stamp', hero=False):
         else: add(n, n, image(n, pos[n]))
     for p in parts:
         if p['mode'] == 'behind': part(p)
-    add('base', 'body', image('base', body))
+    if chest:       # the body picture becomes a soft mesh so the bust can lag and settle; everything else stays rigid
+        bw_, bh_ = img['base'].size
+        def wchest(px, py):
+            v = math.exp(-(((px - chest[0]) / chest[2]) ** 2 + ((py - chest[1]) / (chest[2] * 0.8)) ** 2) / 2); v = max(0.0, (v - 0.12) / 0.88)
+            return [(idx['body'], 1 - v), (idx['chest'], v)]
+        NX = max(8, bw_ // 22); NY = max(10, bh_ // 22)
+        v_, u_, t_, w_ = grid(bw_, bh_, A((0, 0)), NX, NY, wchest)
+        add('base', 'root', {'type': 'mesh', 'name': 'base', 'width': bw_, 'height': bh_, 'vertices': v_, 'uvs': u_, 'triangles': t_, 'weights': w_,
+                             'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': [idx['body'], 1, 0, 0, 1, body[0], body[1], idx['chest'], 1, 0, 0, 1, r2(cp[0]), r2(cp[1])]})
+    else: add('base', 'body', image('base', body))
     for p in parts:
         if p['mode'] != 'behind': part(p)
     for i in range(len(eyes)): add(f'lid{i}', f'lid{i}', {'name': f'lid{i}', 'transform': {'y': r2(img[f'lid{i}'].size[1] / 2)}})
@@ -209,6 +240,11 @@ def build(pose='stamp', hero=False):
             {'name': 'tail2', 'rotateFrame': keys([(0, 0), (8, -8), (15, 8), (20, 0)])},
             {'name': 'tail3', 'rotateFrame': keys([(0, 0), (9, -14), (16, 14), (20, 0)])}])
     else: act = (12, [{'name': 'head', 'rotateFrame': keys([(0, 0), (5, 5), (12, 0)])}])
+    bounce = None
+    if chest:
+        idle.append({'name': 'chest', 'translateFrame': wave(96, 6, lambda p: 0.7 * S(T * 2 * p - 0.9), 'y')})
+        act[1].append({'name': 'chest', 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (3, {'x': 0, 'y': -1.6}), (6, {'x': 0, 'y': 3.2}), (9, {'x': 0, 'y': -1.8}), (11, {'x': 0, 'y': 0.9}), (14, {'x': 0, 'y': 0})])})
+        bounce = {'name': 'chest', 'translateFrame': wave(12, 2, lambda p: 2.4 * S(T * p - 1.1), 'y')}
     names = {b['name'] for b in bones}
     drop = lambda bl: [b for b in bl if b['name'] in names]            # heroes without a tail simply skip the tail lines
     idle = drop(idle); act = (act[0], drop(act[1]))
@@ -221,7 +257,7 @@ def build(pose='stamp', hero=False):
             {'name': 'tail2', 'rotateFrame': wave(12, 2, lambda p: 16 * S(T * p - 1.0))},
             {'name': 'tail3', 'rotateFrame': wave(12, 2, lambda p: 24 * S(T * p - 2.0))},
             {'name': 'head', 'rotateFrame': wave(12, 2, lambda p: 3 * S(T * p))},
-        ]) + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
+        ] + ([bounce] if bounce else [])) + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
         {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
             {'name': n, 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for n in lids]},
     ]
@@ -284,18 +320,6 @@ def build_sleep():
         zx, zy = A(zp); bones.append({'name': f'z{i}', 'parent': 'root', 'transform': {'x': r2(zx), 'y': r2(zy)}})
     idx = {b['name']: i for i, b in enumerate(bones)}
 
-    def grid(w, h, origin, NX, NY, weigh):
-        verts = []; uvs = []; weights = []; tris = []
-        for j in range(NY):
-            for i in range(NX):
-                px, py = w * i / (NX - 1), h * j / (NY - 1)
-                verts += [r2(origin[0] + px), r2(origin[1] + py)]; uvs += [round(px / w, 4), round(py / h, 4)]
-                ws = [(b, round(v, 3)) for b, v in weigh(px, py) if v > 0.001]
-                weights += [len(ws)] + [v for bw in ws for v in bw]
-        for j in range(NY - 1):
-            for i in range(NX - 1):
-                a = j * NX + i; tris += [a, a + 1, a + NX, a + 1, a + NX + 1, a + NX]
-        return verts, uvs, tris, weights
     # body picture: weights fall off smoothly from each of the three little bones
     bw, bh = img['base'].size
     def wbody(px, py):

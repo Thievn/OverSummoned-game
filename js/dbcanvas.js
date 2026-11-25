@@ -148,13 +148,16 @@
     constructor(host, pose, scale, opt) {
       opt = opt || {}; this.host = host; this.pose = pose; this.scale = scale; this.fx = opt.x == null ? 0.5 : opt.x; this.fy = opt.y == null ? 0.9 : opt.y;
       this.stem = opt.hero ? 'hero_' + pose : 'smudge_' + pose;          // which files: smudge_<pose> or hero_<id>
+      this.px = opt.px || null;                                            // [x, y] in host pixels for the feet, instead of the fractions
+      // the canvas goes in straight away, so anything added to the host later sits on top of him
+      const cv = this.cv = document.createElement('canvas'); cv.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none'; host.appendChild(cv);
       this.bones = false; this.dead = false; this.ready = this.load(opt.base || '/assets/v2/db/', opt.ver || '');
     }
     async load(base, ver) {
       const d = await fetchPose(this.stem, base, ver); if (this.dead) return;
       const f = this.factory = new Factory(); f.parseDragonBonesData(d.ske); f.parseTextureAtlasData(d.tex, d.img);
       this.p = f.build(this.pose, this.stem); this.an = this.p.animation; this.an.play('idle', 0);
-      const cv = this.cv = document.createElement('canvas'), ctx = cv.getContext('2d'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none'; this.host.appendChild(cv);
+      const cv = this.cv, ctx = cv.getContext('2d');
       const blink = () => { if (this.dead) return; this.over('blink', 1, 3); this.bt = setTimeout(blink, 2200 + Math.random() * 3300); }; blink();
       // little fidgets some poses have (a sleeping snout twitch, now and then a dream)
       const fidget = () => { if (this.dead) return; if (Math.random() < 0.22) this.over('act', 1, 1); else this.over('twitch', 1, 5); this.ft = setTimeout(fidget, 3500 + Math.random() * 5500); };
@@ -166,7 +169,7 @@
         const w = this.host.clientWidth, h = this.host.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
         if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-        draw(ctx, this.p, w * this.fx, h * this.fy, this.scale, { bones: this.bones });
+        draw(ctx, this.p, this.px ? this.px[0] : w * this.fx, this.px ? this.px[1] : h * this.fy, this.scale, { bones: this.bones });
         this.raf = requestAnimationFrame(frame);
       };
       this.raf = requestAnimationFrame(frame);
