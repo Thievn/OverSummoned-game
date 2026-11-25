@@ -219,3 +219,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] New 80s/90s treasure for the loot pool (pocket pet egg, brick phone, slap bracelet...) and maybe a new place to find it
 - [ ] Sunglasses icons (Pam's visor, Max's aviators) had their green lenses keyed out and were patched; regenerate with non-green lenses
 - [ ] Desktop pet: new hero art and rules copied, puppets not wired
+
+## Card stats — 24 Nov
+- [x] Every card now has its own stat spread: seeded by the hero's id (never changes between builds), no number repeated on a card, no two cards alike,
+      archetype sets the shape, rarity sets the size (totals: common 48-53, uncommon 56-67, rare 73-78, epic 87-99, legendary 108-114, absurd 124-126, unhinged 159-164)
+- [x] Wave two and the new stats pushed live (main = fable)

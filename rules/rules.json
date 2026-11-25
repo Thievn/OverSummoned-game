@@ -1336,10 +1336,10 @@
    ],
    "bg": "office",
    "stats": {
-    "attack": 9,
-    "defense": 16,
-    "health": 15,
-    "speed": 4,
+    "attack": 8,
+    "defense": 12,
+    "health": 19,
+    "speed": 3,
     "luck": 6
    },
    "gear": [
@@ -1366,10 +1366,10 @@
    "bg": "city",
    "stats": {
     "attack": 11,
-    "defense": 5,
-    "health": 8,
-    "speed": 19,
-    "luck": 7
+    "defense": 4,
+    "health": 9,
+    "speed": 22,
+    "luck": 5
    },
    "gear": [
     "marco_weapon",
@@ -1394,10 +1394,10 @@
    ],
    "bg": "city",
    "stats": {
-    "attack": 8,
-    "defense": 14,
-    "health": 17,
-    "speed": 12,
+    "attack": 6,
+    "defense": 15,
+    "health": 18,
+    "speed": 17,
     "luck": 11
    },
    "gear": [
@@ -1423,11 +1423,11 @@
    ],
    "bg": "iceage",
    "stats": {
-    "attack": 21,
-    "defense": 10,
-    "health": 16,
+    "attack": 15,
+    "defense": 7,
+    "health": 20,
     "speed": 9,
-    "luck": 6
+    "luck": 5
    },
    "gear": [
     "brokk_weapon",
@@ -1452,11 +1452,11 @@
    ],
    "bg": "rome",
    "stats": {
-    "attack": 14,
-    "defense": 24,
-    "health": 23,
-    "speed": 6,
-    "luck": 9
+    "attack": 9,
+    "defense": 25,
+    "health": 27,
+    "speed": 7,
+    "luck": 6
    },
    "gear": [
     "gaius_weapon",
@@ -1481,11 +1481,11 @@
    ],
    "bg": "london",
    "stats": {
-    "attack": 9,
+    "attack": 10,
     "defense": 17,
-    "health": 21,
-    "speed": 15,
-    "luck": 14
+    "health": 24,
+    "speed": 19,
+    "luck": 8
    },
    "gear": [
     "edith_weapon",
@@ -1510,11 +1510,11 @@
    ],
    "bg": "medieval",
    "stats": {
-    "attack": 23,
-    "defense": 9,
-    "health": 12,
-    "speed": 12,
-    "luck": 20
+    "attack": 21,
+    "defense": 7,
+    "health": 13,
+    "speed": 10,
+    "luck": 26
    },
    "gear": [
     "albrecht_weapon",
@@ -1540,10 +1540,10 @@
    "bg": "chicago",
    "stats": {
     "attack": 24,
-    "defense": 7,
-    "health": 13,
-    "speed": 24,
-    "luck": 24
+    "defense": 9,
+    "health": 15,
+    "speed": 25,
+    "luck": 26
    },
    "gear": [
     "vincenzo_weapon",
@@ -1568,10 +1568,10 @@
    ],
    "bg": "hollywood",
    "stats": {
-    "attack": 24,
-    "defense": 20,
-    "health": 22,
-    "speed": 22,
+    "attack": 20,
+    "defense": 19,
+    "health": 24,
+    "speed": 23,
     "luck": 22
    },
    "gear": [
@@ -1597,11 +1597,11 @@
    ],
    "bg": "france",
    "stats": {
-    "attack": 17,
-    "defense": 29,
+    "attack": 20,
+    "defense": 25,
     "health": 28,
-    "speed": 7,
-    "luck": 11
+    "speed": 6,
+    "luck": 17
    },
    "gear": [
     "napoleon_weapon",
@@ -1626,11 +1626,11 @@
    ],
    "bg": "egypt",
    "stats": {
-    "attack": 24,
-    "defense": 20,
-    "health": 22,
-    "speed": 22,
-    "luck": 22
+    "attack": 22,
+    "defense": 18,
+    "health": 26,
+    "speed": 25,
+    "luck": 20
    },
    "gear": [
     "cleocatra_weapon",
@@ -1655,11 +1655,11 @@
    ],
    "bg": "caribbean",
    "stats": {
-    "attack": 31,
-    "defense": 15,
-    "health": 24,
-    "speed": 13,
-    "luck": 9
+    "attack": 34,
+    "defense": 10,
+    "health": 29,
+    "speed": 8,
+    "luck": 11
    },
    "gear": [
     "blackbear_weapon",
@@ -1684,10 +1684,10 @@
    ],
    "bg": "norway",
    "stats": {
-    "attack": 25,
-    "defense": 12,
-    "health": 20,
-    "speed": 11,
+    "attack": 27,
+    "defense": 16,
+    "health": 13,
+    "speed": 12,
     "luck": 8
    },
    "gear": [
@@ -1713,11 +1713,11 @@
    ],
    "bg": "japan",
    "stats": {
-    "attack": 16,
-    "defense": 8,
-    "health": 12,
-    "speed": 29,
-    "luck": 11
+    "attack": 22,
+    "defense": 6,
+    "health": 10,
+    "speed": 25,
+    "luck": 15
    },
    "gear": [
     "kenji_weapon",
@@ -1742,11 +1742,11 @@
    ],
    "bg": "outback",
    "stats": {
-    "attack": 29,
+    "attack": 33,
     "defense": 13,
-    "health": 21,
-    "speed": 49,
-    "luck": 18
+    "health": 26,
+    "speed": 40,
+    "luck": 14
    },
    "gear": [
     "emu_weapon",
@@ -1771,11 +1771,11 @@
    ],
    "bg": "medieval",
    "stats": {
-    "attack": 13,
-    "defense": 6,
-    "health": 10,
-    "speed": 24,
-    "luck": 9
+    "attack": 18,
+    "defense": 8,
+    "health": 7,
+    "speed": 17,
+    "luck": 10
    },
    "gear": [
     "troffea_weapon",
@@ -1800,11 +1800,11 @@
    ],
    "bg": "amsterdam",
    "stats": {
-    "attack": 7,
-    "defense": 7,
-    "health": 11,
-    "speed": 11,
-    "luck": 26
+    "attack": 4,
+    "defense": 5,
+    "health": 12,
+    "speed": 10,
+    "luck": 31
    },
    "gear": [
     "joost_weapon",
@@ -1829,11 +1829,11 @@
    ],
    "bg": "office",
    "stats": {
-    "attack": 5,
-    "defense": 6,
-    "health": 9,
-    "speed": 9,
-    "luck": 21
+    "attack": 6,
+    "defense": 4,
+    "health": 8,
+    "speed": 10,
+    "luck": 25
    },
    "gear": [
     "chad_weapon",
@@ -1859,10 +1859,10 @@
    "bg": "beach",
    "stats": {
     "attack": 17,
-    "defense": 14,
-    "health": 15,
-    "speed": 15,
-    "luck": 15
+    "defense": 16,
+    "health": 13,
+    "speed": 12,
+    "luck": 20
    },
    "gear": [
     "bella_weapon",
@@ -1887,11 +1887,11 @@
    ],
    "bg": "beach",
    "stats": {
-    "attack": 44,
-    "defense": 21,
-    "health": 34,
-    "speed": 18,
-    "luck": 13
+    "attack": 36,
+    "defense": 24,
+    "health": 38,
+    "speed": 14,
+    "luck": 12
    },
    "gear": [
     "florida_weapon",
@@ -1916,11 +1916,11 @@
    ],
    "bg": "paris",
    "stats": {
-    "attack": 24,
-    "defense": 7,
-    "health": 13,
-    "speed": 24,
-    "luck": 24
+    "attack": 21,
+    "defense": 6,
+    "health": 20,
+    "speed": 23,
+    "luck": 26
    },
    "gear": [
     "lola_weapon",
@@ -1945,11 +1945,11 @@
    ],
    "bg": "forest",
    "stats": {
-    "attack": 23,
-    "defense": 9,
-    "health": 12,
-    "speed": 12,
-    "luck": 20
+    "attack": 21,
+    "defense": 7,
+    "health": 10,
+    "speed": 14,
+    "luck": 24
    },
    "gear": [
     "morwenna_weapon",
@@ -1974,11 +1974,11 @@
    ],
    "bg": "venice",
    "stats": {
-    "attack": 19,
-    "defense": 6,
-    "health": 11,
+    "attack": 26,
+    "defense": 4,
+    "health": 7,
     "speed": 20,
-    "luck": 20
+    "luck": 18
    },
    "gear": [
     "sable_weapon",
@@ -2004,10 +2004,10 @@
    "bg": "beach",
    "stats": {
     "attack": 8,
-    "defense": 14,
-    "health": 17,
-    "speed": 12,
-    "luck": 11
+    "defense": 13,
+    "health": 19,
+    "speed": 9,
+    "luck": 10
    },
    "gear": [
     "jacko_weapon",
@@ -2032,11 +2032,11 @@
    ],
    "bg": "russia",
    "stats": {
-    "attack": 46,
-    "defense": 19,
-    "health": 25,
-    "speed": 25,
-    "luck": 40
+    "attack": 45,
+    "defense": 18,
+    "health": 21,
+    "speed": 33,
+    "luck": 42
    },
    "gear": [
     "raspawtin_weapon",
@@ -2061,11 +2061,11 @@
    ],
    "bg": "normandy",
    "stats": {
-    "attack": 52,
-    "defense": 25,
-    "health": 40,
-    "speed": 22,
-    "luck": 16
+    "attack": 60,
+    "defense": 22,
+    "health": 47,
+    "speed": 26,
+    "luck": 9
    },
    "gear": [
     "madjack_weapon",
@@ -2090,11 +2090,11 @@
    ],
    "bg": "gothclub",
    "stats": {
-    "attack": 27,
+    "attack": 23,
     "defense": 11,
-    "health": 15,
-    "speed": 15,
-    "luck": 24
+    "health": 16,
+    "speed": 24,
+    "luck": 18
    },
    "gear": [
     "vesper_trinket",
@@ -2119,11 +2119,11 @@
    ],
    "bg": "punkclub",
    "stats": {
-    "attack": 25,
-    "defense": 12,
-    "health": 20,
-    "speed": 11,
-    "luck": 8
+    "attack": 24,
+    "defense": 10,
+    "health": 23,
+    "speed": 7,
+    "luck": 9
    },
    "gear": [
     "roxy_weapon",
@@ -2148,10 +2148,10 @@
    ],
    "bg": "gym",
    "stats": {
-    "attack": 13,
-    "defense": 6,
-    "health": 10,
-    "speed": 24,
+    "attack": 12,
+    "defense": 8,
+    "health": 6,
+    "speed": 26,
     "luck": 9
    },
    "gear": [
@@ -2177,11 +2177,11 @@
    ],
    "bg": "rocketship",
    "stats": {
-    "attack": 24,
-    "defense": 20,
-    "health": 22,
-    "speed": 22,
-    "luck": 22
+    "attack": 32,
+    "defense": 18,
+    "health": 23,
+    "speed": 27,
+    "luck": 14
    },
    "gear": [
     "stella_weapon",
@@ -2207,9 +2207,9 @@
    "bg": "arcade",
    "stats": {
     "attack": 5,
-    "defense": 6,
-    "health": 9,
-    "speed": 9,
+    "defense": 7,
+    "health": 12,
+    "speed": 6,
     "luck": 21
    },
    "gear": [
@@ -2235,11 +2235,11 @@
    ],
    "bg": "castle",
    "stats": {
-    "attack": 23,
-    "defense": 42,
-    "health": 39,
-    "speed": 10,
-    "luck": 16
+    "attack": 36,
+    "defense": 30,
+    "health": 37,
+    "speed": 9,
+    "luck": 14
    },
    "gear": [
     "gorm_weapon",
@@ -2264,11 +2264,11 @@
    ],
    "bg": "skyline",
    "stats": {
-    "attack": 16,
-    "defense": 8,
-    "health": 12,
-    "speed": 29,
-    "luck": 11
+    "attack": 13,
+    "defense": 6,
+    "health": 16,
+    "speed": 25,
+    "luck": 14
    },
    "gear": [
     "flap_weapon",
@@ -2293,11 +2293,11 @@
    ],
    "bg": "jungle",
    "stats": {
-    "attack": 31,
-    "defense": 15,
-    "health": 24,
-    "speed": 13,
-    "luck": 9
+    "attack": 38,
+    "defense": 13,
+    "health": 14,
+    "speed": 16,
+    "luck": 6
    },
    "gear": [
     "max_weapon",
@@ -2322,11 +2322,11 @@
    ],
    "bg": "stage",
    "stats": {
-    "attack": 8,
-    "defense": 14,
-    "health": 17,
-    "speed": 12,
-    "luck": 11
+    "attack": 5,
+    "defense": 15,
+    "health": 14,
+    "speed": 9,
+    "luck": 16
    },
    "gear": [
     "rex_weapon",
@@ -2351,10 +2351,10 @@
    ],
    "bg": "ring",
    "stats": {
-    "attack": 20,
-    "defense": 35,
-    "health": 33,
-    "speed": 9,
+    "attack": 17,
+    "defense": 27,
+    "health": 45,
+    "speed": 8,
     "luck": 13
    },
    "gear": [

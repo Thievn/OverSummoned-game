@@ -122,6 +122,21 @@ def spread(total, weights):
     vals[0] += total - sum(vals)
     return dict(zip(C["stats"], vals))
 
+def hero_stats(hid, rarity, weights):
+    """A card's own numbers. Seeded by the hero's id, so they never change between builds, but no two cards share a
+    spread and no card repeats a number: the archetype decides the shape, the dice decide the rest, rarity decides the size."""
+    import random
+    rng = random.Random("stats:" + hid)
+    total = round(C["card"]["hero_total"][rarity] * rng.uniform(0.95, 1.07))
+    w = [max(x, 0.06) * rng.uniform(0.62, 1.42) for x in weights]
+    vals = [max(3, round(total * x / sum(w))) for x in w]
+    for _ in range(40):                                   # no two stats on a card may match
+        dup = [i for i in range(5) if vals.count(vals[i]) > 1]
+        if not dup: break
+        vals[rng.choice(dup)] += rng.choice((-2, -1, 1, 2, 3))
+        vals = [max(3, v) for v in vals]
+    return dict(zip(C["stats"], vals))
+
 SLOT_SPREAD = {"weapon": (0.7, 0, 0, 0.3, 0), "armor": (0, 0.5, 0.5, 0, 0), "trinket": (0, 0, 0, 0.4, 0.6)}
 place_by_id = {p["id"]: p for p in PLACES}
 items, heroes = {}, []
@@ -138,7 +153,7 @@ for h in HEROES:
         items[iid] = it
         gear_ids.append(iid)
     heroes.append(dict(id=h["id"], name=h["name"], title=h["title"], era=h["era"], species=h["species"], rarity=h["rarity"],
-                       bio=h["bio"], fact=h.get("fact", ""), lines=h["lines"], bg=BG[h["id"]], stats=spread(C["card"]["hero_total"][h["rarity"]], ARCH[h["arch"]]),
+                       bio=h["bio"], fact=h.get("fact", ""), lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
                        gear=gear_ids, place=h["place"]))
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)
