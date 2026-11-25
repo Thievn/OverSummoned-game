@@ -25,7 +25,7 @@ HEAD = [(262,5),(282,5),(302,12),(325,26),(345,40),(362,56),(374,78),(382,102),(
         (161,177),(158,160),(159,140),(164,122),(175,104),(183,86),(185,76),(177,66),(166,56),(169,45),(190,34),(215,22),(240,10)]
 ARM = [(336,255),(352,258),(380,238),(402,225),(420,217),(434,190),(438,165),(453,148),(478,143),(502,163),(508,215),(508,278),
        (462,283),(444,289),(427,301),(400,301),(360,293),(336,287)]
-OVER = [(300,200),(410,214),(426,232),(386,247),(353,263),(341,263),(341,293),(318,293),(318,263),(300,263)]
+OVER = [(300,200),(410,214),(426,232),(386,247),(353,263),(341,263),(341,281),(318,281),(318,263),(300,263)]
 HAND = [(413,224),(424,215),(436,190),(438,165),(453,148),(478,143),(502,163),(508,215),(508,278),(462,283),(440,265),(412,247)]
 HEAD_PIVOT, ARM_PIVOT, TAIL_PIVOT, WRIST = (275, 212), (346, 270), (445, 425), (442, 238)
 
@@ -96,7 +96,11 @@ def run():
     arm = ndimage.binary_closing(arm, iterations=2) & ap
     piece = a.copy(); piece[~arm] = 0
     # a round fur shoulder under the cloak so no gap opens when the arm turns
-    disc = ((xx - ARM_PIVOT[0]) ** 2 + (yy - ARM_PIVOT[1]) ** 2 <= 21 ** 2) & ~arm & ((yy <= 285) | (xx < 340))
+    # a round shoulder: everything behind the joint is trimmed to a circle and filled with fur, so the
+    # arm shows a smooth cap (not the square end of the cut) when it swings down
+    R = 17; rr = (xx - ARM_PIVOT[0]) ** 2 + (yy - ARM_PIVOT[1]) ** 2 <= R * R
+    piece[(xx < ARM_PIVOT[0]) & ~rr] = 0
+    disc = rr & (piece[..., 3] == 0) & ~((xx < 336) & (yy > 281))
     furfill = cv2.inpaint(np.ascontiguousarray(piece[..., :3]), (~(arm & ~dark)).astype(np.uint8) * 255, 4, cv2.INPAINT_TELEA)
     piece[..., :3][disc] = furfill[disc]; piece[..., 3][disc] = 255
     parts.append(dict(name='arm', mode='front', pivot=list(ARM_PIVOT), offset=crop_save(piece, 'arm')))
@@ -124,8 +128,9 @@ def run():
             if ok: base[y, x, :3] = base[sy, x, :3]
             else: miss[y, x] = True
             base[y, x, 3] = 255
+    miss |= behind & (xx < 352)            # right at the shoulder, grow the chest and strap in sideways (not the lining from below)
     if miss.any(): base[..., :3] = cv2.inpaint(np.ascontiguousarray(base[..., :3]), miss.astype(np.uint8) * 255, 4, cv2.INPAINT_TELEA)
-    blur = cv2.GaussianBlur(base[..., :3], (0, 0), 2.2); base[..., :3][behind] = (blur[behind] * 0.9).astype(np.uint8)
+    blur = cv2.GaussianBlur(base[..., :3], (0, 0), 3.6); base[..., :3][behind] = (blur[behind] * 0.9).astype(np.uint8)
     base[..., 3][hole & ~behind] = 0
     ink = behind & ndimage.binary_dilation(hole & ~behind, iterations=3)          # ink line down the cloak's new edge
     base[..., :3][ink] = (16, 22, 42)
