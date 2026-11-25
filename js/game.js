@@ -7,7 +7,7 @@
   const places = {}; R.places.forEach(p => places[p.id] = p);
   const workPlaces = R.places.filter(p => p.skill !== 'Summoning');
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
-    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, cabinet: {}, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
+    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
 
   // ------------------------------------------------------------------ rules
@@ -47,19 +47,54 @@
   // ---- the cabinet: one of each treasure on display. Every piece makes all ink worth a little more, for good;
   //      finish a place's set and everybody works faster there.
   const CAB = R.cabinet || { ink_per: 0.005, set_speed: 0.1 };
+  // ---- pacing: fresh crew, rebirth, shards, weekly contracts
+  const REST = R.rested || { hours: 4, mult: 2, base: 0.65 }, RB = R.rebirth || { max: 10, xp_per: 0.1, ink_per: 0.03 }, SH = R.shards, CT = R.contracts;
+  const rebirths = sk => (S.rebirth && S.rebirth[sk]) || 0, rebirthTotal = () => R.skills.reduce((a, k) => a + rebirths(k), 0);
+  function freshUp() { const d = new Date().toISOString().slice(0, 10); if (S.restDay !== d) { S.restDay = d; S.rest = REST.hours * 3600; } }
+  // how much work `dt` seconds is worth: double while the crew is fresh, plain after
+  function worked(dt) { freshUp(); if (!S.jobs.some(j => j)) return 0; const f = Math.min(dt, S.rest || 0); S.rest -= f; return (f * REST.mult + (dt - f)) * REST.base; }
+  function rebirth(sk) {
+    if (level(sk) < 99 || rebirths(sk) >= RB.max) return;
+    if (!confirm(`Rebirth ${sk}? It goes back to level 1 and its places lock again until you re-earn them. In return: +${RB.xp_per * 100}% ${sk} xp and +${RB.ink_per * 100}% ink, for good.`)) return;
+    S.rebirth[sk] = rebirths(sk) + 1; S.xp[sk] = 0;
+    S.jobs.forEach((j, i) => { if (j && places[j.place] && !unlocked(places[j.place])) { const o = openPlaces().find(p => p.skill === sk) || openPlaces()[0]; if (o) j.place = o.id; else S.jobs[i] = null; } });
+    Cloud.log('rebirth', sk); save(true); render(); toast(`${sk} reborn. That is rebirth ${S.rebirth[sk]}. The book pretends not to be impressed.`);
+  }
+  const week = () => { const d = new Date(); const t = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()); return Math.floor((t / 86400000 + 3) / 7); };
+  function contracts() {
+    const w = week(); if (S.contracts && S.contracts.week === w) return S.contracts.list;
+    const open = workPlaces.filter(unlocked), list = []; let seed = w * 7919 + 13; const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    for (let i = 0; i < CT.count && open.length; i++) { const p = open.splice(Math.floor(rnd() * open.length), 1)[0]; list.push({ place: p.id, need: CT.need[i % CT.need.length], have: 0, paid: false, shards: CT.shards[i % CT.shards.length] }); }
+    S.contracts = { week: w, list }; return list;
+  }
+  function claim(i) { const c = contracts()[i]; if (!c || c.paid || c.have < c.need) return; c.paid = true; give('x_shard', c.shards); give('x_crate'); save(true); render(); toast(`Contract done: ${c.shards} shards and a crate.`); }
+  function callByName(id) {
+    const h = OS.heroes[id], cost = SH.cost[h.rarity], have = S.bag.x_shard || 0; if (S.roster[id] || have < cost) return;
+    S.bag.x_shard = have - cost; S.roster[id] = 1; Cloud.log('shard_call', id); save(true); modal.close(); render();
+    const d = el('div', 'reveal'); d.innerHTML = `<div class="tag" style="font-size:1rem;color:${R.rarity_color[h.rarity]}">Called by name · ${OS.cap(h.rarity)}</div>`; d.appendChild(OS.card(h, { level: 1, stats: heroStats(id) })); d.appendChild(el('p', '', `<b>Smudge:</b> “${h.lines[MODES.indexOf(S.mode)]}”`)); d.appendChild(btn('', 'Find them somewhere to stand', modal.close)); modal.open(d);
+  }
+  function lockedSheet(id) {
+    const h = OS.heroes[id], cost = SH.cost[h.rarity], have = S.bag.x_shard || 0, d = el('div', '');
+    d.innerHTML = `<h3 style="font-size:1.5rem">Somebody you have not met</h3><p class="mut">A ${OS.cap(h.rarity)} stranger. Summoning might turn them up. Or spend shards and call them by name: the book hates that, but it works.</p>
+      <div class="kv"><span>Shards needed</span><b>${cost}</b></div><div class="kv"><span>Shards you have</span><b>${have}</b></div>
+      <p class="mut" style="font-size:.85rem">Every duplicate summon gives ${SH.per_dupe} shard. Weekly contracts pay shards too.</p>`;
+    const b = btn('', have >= cost ? `Call them by name (${cost} shards)` : `${cost - have} more shards needed`, () => callByName(id)); b.disabled = have < cost; d.appendChild(b); modal.open(d);
+  }
   const treasures = Object.values(OS.items).filter(i => i.kind === 'loot' && i.id.indexOf('x_') !== 0);
-  const inkBonus = () => 1 + Object.keys(S.cabinet || {}).length * CAB.ink_per;
+  const inkBonus = () => 1 + Object.keys(S.cabinet || {}).length * CAB.ink_per + rebirthTotal() * RB.ink_per;
   const cabSet = pid => { const set = treasures.filter(i => i.place === pid); return set.length > 0 && set.every(i => S.cabinet[i.id]); };
   const cabReady = () => treasures.filter(i => !S.cabinet[i.id] && S.bag[i.id] > 0);
   function fillCabinet() { const add = cabReady(); add.forEach(i => { S.bag[i.id]--; S.cabinet[i.id] = 1; }); if (add.length) { save(true); render(); toast(`${add.length} new ${add.length === 1 ? 'piece' : 'pieces'} on display. Ink is now worth ${Math.round((inkBonus() - 1) * 1000) / 10}% more.`); } }
   const owns = id => (S.bag[id] || 0) > 0 || Object.values(S.equip).some(e => e.includes(id));
   function gainXP(sk, n, quiet) {
-    const b = level(sk); S.xp[sk] = (S.xp[sk] || 0) + n; const a = level(sk);
+    const b = level(sk); S.xp[sk] = (S.xp[sk] || 0) + Math.round(n * (1 + rebirths(sk) * RB.xp_per)); const a = level(sk);
+    if (a >= 99 && b < 99 && !quiet && rebirths(sk) < RB.max) toast(`${sk} has hit 99. Rebirth is open in your account.`);
     if (a > b && !quiet) { toast(`${sk} is now level ${a}`); R.perks.forEach(p => { if (p.level > b && p.level <= a) toast(`New perk: ${p.name}. ${p.text}.`); }); R.places.forEach(p => { if (p.skill === sk && p.level > b && p.level <= a) toast(`New place open: ${p.name}`); }); }
   }
   // one finished action of one job
   function doAction(j, quiet) {
     const p = places[j.place], t = R.tier[p.tier], drops = [];
+    if (CT) contracts().forEach(c => { if (c.place === j.place && c.have < c.need) c.have++; });
     S.actions++; S.ink += t.ink * R.web.ink_mult * inkBonus(); gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp'))), quiet);
     const m = S.mastery[j.hero] || (S.mastery[j.hero] = {}); m[p.skill] = (m[p.skill] || 0) + R.jobs.mastery_xp;
     if (Math.random() < R.web.loot_chance) { const n = Math.random() < perk(p.skill, 'double') ? 2 : 1; for (let i = 0; i < n; i++) { const id = rollLoot(p, jobLuck(j)); give(id); drops.push(id); } }
@@ -89,11 +124,11 @@
     const t = R.raids.regen_minutes * 60000; while (S.tickets < R.raids.tickets && now() - S.ticketT >= t) { S.tickets++; S.ticketT += t; } if (S.tickets >= R.raids.tickets) S.ticketT = now();
   }
   function advance(dt, quiet) {
-    const found = [];
+    const found = [], wdt = worked(dt);
     S.jobs.forEach((j, i) => { if (!j || !S.roster[j.hero] || !places[j.place]) return;
       // standing orders: Wander moves on every so often, Hunt goes where the missing things are
       if (j.order && j.order !== 'stay') { j.since = (j.since || 0) + dt; let hops = 0; while (j.since >= WANDER && hops++ < 400) { j.since -= WANDER; const to = j.order === 'wander' ? nextPlace(j) : huntPlace(j); if (to && to !== j.place) { j.place = to; jobsMoved = true; } } }
-      const t = jobTime(j); j.prog = (j.prog || 0) + dt; let g = 0; while (j.prog >= t && g++ < 20000) { j.prog -= t; doAction(j, quiet).forEach(id => found.push([i, id])); } });
+      const t = jobTime(j); j.prog = (j.prog || 0) + wdt; let g = 0; while (j.prog >= t && g++ < 20000) { j.prog -= t; doAction(j, quiet).forEach(id => found.push([i, id])); } });
     S.crateT += dt; const every = R.crate.minutes * 60; while (S.crateT >= every) { S.crateT -= every; if (S.autoCrate && !quiet) openCrate(true); else give('x_crate'); if (!quiet) toast(line('crate')); }
     if (S.autoSummon) autoSummon(quiet);
     tickMeters(); return found;
@@ -135,6 +170,11 @@
     const g = $('guide'), left = GUIDE.filter(s => !s[3]()); g.hidden = !left.length;
     if (left.length) { g.innerHTML = '<div class="tag">Getting started</div>' + GUIDE.map((s, i) => `<div class="gstep ${s[3]() ? 'done' : ''}"><i>${s[3]() ? '✓' : i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div><button class="btn small ${s[3]() ? 'ghost' : ''}" data-go="${s[2]}">${s[3]() ? 'Done' : 'Go'}</button></div>`).join(''); }
     $('h-stats').innerHTML = [['Arrivals', Object.keys(S.roster).length + ' / ' + R.heroes.length], ['Total level', totalLevel()], ['Hauls', OS.num(S.actions)], ['Raid tickets', S.tickets + ' / ' + R.raids.tickets], ['Crates', S.bag.x_crate || 0]].map(([a, b]) => `<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
+    freshUp(); let pc = $('h-pace'); if (!pc) { pc = el('div', 'panel'); pc.id = 'h-pace'; pc.style.marginBottom = '1rem'; $('h-stats').after(pc); pc.addEventListener('click', e => { const b = e.target.closest('[data-claim]'); if (b) claim(+b.dataset.claim); }); }
+    const fr = S.rest > 0, list = CT ? contracts() : [];
+    pc.innerHTML = `<div class="spread"><h3 style="margin:0">${fr ? 'The crew is fresh' : 'The crew is at a steady pace'}</h3><span class="mut">${fr ? 'double speed for ' + fmt(S.rest) + ' more of work' : 'fresh again tomorrow'}</span></div>
+      <div class="bar" style="margin:.5rem 0 .9rem"><i style="width:${pct(S.rest, REST.hours * 3600)}"></i></div>
+      <div class="tag">This week's contracts</div>` + (list.length ? list.map((c, i) => `<div class="spread" style="margin-top:.45rem;gap:.8rem"><span style="flex:1"><b style="color:#fff">${Math.min(c.have, c.need)} / ${c.need}</b> hauls at ${places[c.place].name}<div class="bar" style="margin-top:.25rem"><i style="width:${pct(c.have, c.need)}"></i></div></span>${c.paid ? '<span class="mut">Paid</span>' : `<button class="btn small" data-claim="${i}" ${c.have < c.need ? 'disabled' : ''}>${c.shards} shards + crate</button>`}</div>`).join('') : '<p class="mut">Contracts open once a work place is unlocked.</p>');
     const box = $('h-jobs'); box.innerHTML = '';
     const act = S.jobs.filter(j => j); if (!act.length) box.appendChild(el('p', 'mut', 'Nobody is working. The arrivals are standing around eating your snacks.'));
     S.jobs.forEach((j, i) => { if (!j) return; const p = places[j.place], h = OS.heroes[j.hero], row = el('div', 'hjob');
@@ -214,7 +254,7 @@
     const cost = summonCost(); S.ink -= cost; S.summons++; const w = R.summon.weights; let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0), rar = 'common'; for (const k of RAR) { r -= w[k]; if (r <= 0) { rar = k; break; } }
     let pool = R.heroes.filter(h => h.rarity === rar); if (!pool.length) pool = R.heroes.filter(h => h.rarity === 'common');
     const h = pool[Math.floor(Math.random() * pool.length)], had = S.roster[h.id] || 0, before = cardLevel(had || 1);
-    S.roster[h.id] = had + 1; if (had && before >= R.card.max_level) give('x_shard'); gainXP('Summoning', Math.round(cost * R.summon.xp_per_ink), quiet); Cloud.log('summon', h.id);
+    S.roster[h.id] = had + 1; if (had) give('x_shard', SH.per_dupe + (before >= R.card.max_level ? 1 : 0)); gainXP('Summoning', Math.round(cost * R.summon.xp_per_ink), quiet); Cloud.log('summon', h.id);
     return { h, had, before, rar, cost };
   }
   function summon() {
@@ -239,7 +279,8 @@
 
   // ------------------------------------------------------------------ arrivals
   function renderHeroes() { const g = $('hgrid'); g.innerHTML = ''; $('h-count').textContent = `${Object.keys(S.roster).length} of ${R.heroes.length} met, and counting`;
-    R.heroes.slice().sort((a, b) => rr(b.rarity) - rr(a.rarity)).forEach(h => { const n = S.roster[h.id] || 0, c = OS.card(h, { owned: n > 0, mini: true, level: cardLevel(n) }); if (n) c.onclick = () => heroSheet(h.id); g.appendChild(c); }); }
+    R.heroes.slice().sort((a, b) => rr(b.rarity) - rr(a.rarity)).forEach(h => { const n = S.roster[h.id] || 0, c = OS.card(h, { owned: n > 0, mini: true, level: cardLevel(n) }); c.onclick = () => n ? heroSheet(h.id) : lockedSheet(h.id); g.appendChild(c); });
+    $('h-count').textContent += ` · ${S.bag.x_shard || 0} shards`; }
   function heroSheet(id) {
     const h = OS.heroes[id], n = S.roster[id], lv = cardLevel(n), st = heroStats(id), eq = S.equip[id] || (S.equip[id] = [null, null, null]);
     const d = el('div', 'herosheet'), left = el('div'), right = el('div'), job = S.jobs.find(j => j && j.hero === id);
@@ -360,8 +401,9 @@
     sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
     const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
     const as = el('label', 'kv', '<span>Smudge summons by himself when the ink is full</span>'), ab = el('input'); ab.type = 'checkbox'; ab.checked = !!S.autoSummon; ab.onchange = () => { S.autoSummon = ab.checked; save(true); }; as.appendChild(ab); st.appendChild(as);
-    $('ac-stats').innerHTML = R.skills.map(s => `<div class="kv"><span>${s}</span><b>Level ${level(s)}</b></div>`).join('') + `<div class="kv"><span>Hauls</span><b>${OS.num(S.actions)}</b></div><div class="kv"><span>Summons</span><b>${S.summons}</b></div>`;
+    $('ac-stats').innerHTML = R.skills.map(s => `<div class="kv"><span>${s}${rebirths(s) ? ' ' + '★'.repeat(rebirths(s)) : ''}</span><b>Level ${level(s)}${level(s) >= 99 && rebirths(s) < RB.max ? ` <button class="btn small" data-rb="${s}">Rebirth</button>` : ''}</b></div>`).join('') + `<div class="kv"><span>Hauls</span><b>${OS.num(S.actions)}</b></div><div class="kv"><span>Summons</span><b>${S.summons}</b></div>`;
   }
+  $('ac-stats').addEventListener('click', e => { const b = e.target.closest('[data-rb]'); if (b) rebirth(b.dataset.rb); });
   $('ac-out').onclick = async () => { await save(true); Cloud.signOut(); };
   $('ac-reset').onclick = async () => { if (confirm('Wipe this ledger and start again? This cannot be undone.')) { S = fresh(); await Cloud.save(S, summary()); location.reload(); } };
 
@@ -385,5 +427,5 @@
   addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const away = (now() - S.last) / 1000; if (away > 5) advance(Math.min(away, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home'); requestAnimationFrame(frame);
-  window.__os = { S: () => S, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
+  window.__os = { S: () => S, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
 })();

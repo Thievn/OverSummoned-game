@@ -64,6 +64,15 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15},
+    # ---- pacing. Fresh crew: the first hours of work each day run at double speed, then the plain rate.
+    #      The plain rate is lower than it used to be, so daily players gain and round-the-clock idlers lose a little.
+    rested={"hours": 4, "mult": 2.0, "base": 0.65},
+    # every duplicate summon gives a shard; shards call a missing hero by name. The odds themselves never change.
+    shards={"per_dupe": 1, "cost": {"common": 2, "uncommon": 4, "rare": 8, "epic": 15, "legendary": 30, "absurd": 45, "unhinged": 80}},
+    # rebirth: at 99, start the skill again at 1 for a permanent bonus
+    rebirth={"max": 10, "xp_per": 0.10, "ink_per": 0.03},
+    # weekly contracts: three hauling goals, new every Monday
+    contracts={"count": 3, "need": [120, 250, 400], "shards": [2, 3, 5]},
     # the cabinet: one of each treasure on display. Each piece makes all ink worth a bit more; a finished place set speeds work there
     cabinet={"ink_per": 0.005, "set_speed": 0.10},
     energy={"max": 100, "regen_seconds": 180, "train_cost": 10, "cap_base": 10, "cap_per_card_level": 5},

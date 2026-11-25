@@ -114,6 +114,15 @@ Status: [x] done, [~] partly done, [ ] not started.
 - Built pages marked [~] are written and tested with sample data, but not yet against the live database.
 - A leaderboard exists; friends, gifts, crews and chat do not yet.
 
+## Pacing (testing)
+- [x] Fresh crew: first 4 hours of work each day at double speed, then the plain rate (plain rate is 65% of the old one). Shown on the dashboard
+- [x] Shards: every duplicate summon gives one; spend them in Arrivals to call a missing hero by name (2 / 4 / 8 / 15 / 30 / 45 / 80 by rarity). Published odds unchanged
+- [x] Rebirth: at 99 a skill can restart at 1 for +10% xp in it and +3% ink, for good, up to 10 times; stars show beside the skill in the account
+- [x] Weekly contracts: three hauling goals, new each week, paying shards and a crate
+- [ ] Estimates: days to 99 for one skill go 929 -> 714 (2 h a day), 170 -> 175 (8 h), 57 -> 75 (round the clock). Whole collection drops from about 4,000 summons to about 290
+- [ ] These run in the web game only; the desktop pet has the numbers but not the features
+- [ ] Still slow for light players (2 h a day is about two years to 99); decide whether to speed the early levels
+
 ## Tuning
 - [ ] Cabinet bonus fills fast (44 of 66 pieces in two hours of testing): check +0.5% per piece is not too generous
 - [ ] Hunt order tends to park a hero at the place with their own signature gear; decide if that is wanted
