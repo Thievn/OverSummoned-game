@@ -12,7 +12,7 @@
     const w = crew.clientWidth, h = crew.clientHeight; if (!w || !rig) return;
     cast.forEach(m => m.p.destroy()); cast = [];
     // the scene picture sits whole on the right of the strip, and everybody stands where the stage says (js/stage.js)
-    const r = OS.Stage.rect(PLACE, w, h, w > 720 ? .68 : .5), lay = OS.Stage.layout(PLACE, r), bg = $('desk-bg');
+    const r = OS.Stage.rect(PLACE, w, h, w > 900 ? .68 : .5), lay = OS.Stage.layout(PLACE, r), bg = $('desk-bg');
     bg.style.cssText = `left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`;
     const all = CREW.map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, b) => a.q.at[1] - b.q.at[1]);
     all.forEach(m => {

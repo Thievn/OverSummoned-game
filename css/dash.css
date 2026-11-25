@@ -100,3 +100,4 @@
 
 @media(max-width:1100px){.dashgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.mid{grid-column:1/-1;order:-1}}
 @media(max-width:720px){.dashgrid{grid-template-columns:1fr}.skills{grid-template-columns:repeat(2,1fr)}.rooms{grid-template-columns:1fr}.desk-top{flex-direction:column}.desk-pace{justify-items:start}}
+@media(max-width:900px){.desk-over{position:static;gap:.8rem}.desk-top{flex-direction:column}.desk-pace{justify-items:start}}
