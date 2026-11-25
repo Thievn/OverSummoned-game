@@ -18,7 +18,7 @@ h1{font:400 1.6rem "Lilita One";margin:0 0 .2em;text-align:center}p.lead{color:#
 .ft{top:389px;height:30px;font:800 .7rem Nunito}.ft b{font:400 1rem "Lilita One"}
 .dots{display:flex;gap:3px;align-items:center}.dots i{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1.5px #0b1020}.dots u{width:1.5px;height:15px;background:#8a7a56;margin:0 2px}.dots i.o{border-radius:50%}
 .ib{width:24px;height:24px;border-radius:50%;background:#221708;color:#f3ead2;font:400 .9rem "Lilita One";display:flex;align-items:center;justify-content:center}
-.doll{top:57px;height:236px;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px #5a2aa8;background:#0d1430 center/cover;cursor:pointer}
+.doll{top:57px;height:236px;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px #5a2aa8;background:#0d1430 center/cover;}
 .doll::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,11,28,.88),rgba(8,11,28,.25) 30%,rgba(8,11,28,.25) 70%,rgba(8,11,28,.88))}
 .live{position:absolute;inset:0}
 .col{position:absolute;top:8px;bottom:8px;width:50px;display:grid;grid-template-rows:repeat(4,1fr);gap:5px;z-index:2}.col.l{left:8px}.col.r{right:8px}
@@ -34,7 +34,7 @@ h1{font:400 1.6rem "Lilita One";margin:0 0 .2em;text-align:center}p.lead{color:#
 .lv{display:flex;align-items:center;gap:6px}.lv i{display:block;width:62px;height:7px;border-radius:4px;background:#b9a57a;overflow:hidden}.lv i b{display:block;width:66%;height:100%;background:#7a35d6}
 .acts{display:flex;gap:10px;justify-content:center;margin-top:18px}
 </style></head><body>
-<h1>A living card</h1><p class=lead>The front is a still picture. On the back she stands idle: she sways, her tail curls and her fans and watch move. Tap her and she reacts.</p>
+<h1>A living card</h1><p class=lead>The front is a still picture. On the back she stands idle: she sways, her tail curls and her fans and watch move.</p>
 <div class=rowm id=r></div>
 <script src="/js/os.js?v=1124s"></script><script src="/js/vendor/dragonBones.core.min.js"></script><script src="/js/dbcanvas.js?v=1124s"></script>
 <script>OS.load().then(()=>{const h=OS.heroes.lola,I=n=>OS.img('loot',OS.items[n].icon),g=id=>OS.heroes[id].gear,C={r:'#4f8dff',e:'#b06bff',l:'#ffb13b'};
@@ -53,5 +53,5 @@ document.getElementById('r').innerHTML=`<div><p class=cap>Front</p><div class=c>
 <div class="pb ft"><span>Power <b>62</b></span><span class=lv>Lv 3 <i><b></b></i> 2 / 3 copies</span></div></div></div>`;
 const mk=(id,frac)=>{const host=document.getElementById(id),e=OS.rig.h_lola;return new DBCanvas.Puppet(host,'lola',host.clientHeight*frac/e.size[1],{hero:true,x:.5,y:.995,ver:OS.VER});};
 const ps=[mk('lb',.92)];window.PS=ps;
-document.querySelector('.doll').onclick=()=>ps[0].act();
+
 });</script></body></html>
