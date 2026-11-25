@@ -95,7 +95,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Heroes: extra moving parts where it earns it (arms, wings, capes, weapons). Head outlines are still the first coarse ones, so a hat brim or a weapon beside the head moves with it
 - [x] Game and landing page now draw Smudge and the job-screen heroes with the DragonBones player (`OS.Puppet` hands over to it when `dbcanvas.js` is on the page; old rig stays as fallback)
 - [x] Soft chest bone with bounce-and-settle on Cleocatra, Astrid, Bella, Lola and Frau Troffea (`CHEST` in `rules/dbexport.py`)
-- [ ] Shrink the player download (core is about 680 KB unminified) and load it after first paint on the landing page
+- [x] Player download halved: comments stripped from the core (680 KB to 328 KB before compression)
+- [ ] Proper minify of the player and loading it after first paint (needs a build tool; none in the workspace)
 - [ ] Godot desktop pet: play the same files (add-on if one works on 4.3, otherwise a small player on Godot's built-in Skeleton2D)
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
 
