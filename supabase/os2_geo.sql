@@ -1,6 +1,6 @@
 -- Where visits come from (country, city, the city's coordinates rounded to 0.1 degree; never an IP address),
 -- the owner's map query, and removing an email from the wishlist.
--- NOT YET APPLIED on 25 Nov: Supabase asked the owner to confirm and the question timed out.
+-- Applied 25 Nov.
 
 alter table public.os2_hit
   add column if not exists country text,
