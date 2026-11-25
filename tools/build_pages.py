@@ -164,7 +164,7 @@ def hero_page(h):
     </div>
   </div>
 
-  <section class="hsec"><h2>True, and nothing to do with {E(name.split()[0])}</h2>
+  <section class="hsec"><h2>True, and nothing to do with {E(name)}</h2>
     <p class="factbox">{E(h.get('fact',''))}</p></section>
 
   {lore_html}
@@ -174,7 +174,7 @@ def hero_page(h):
     <p class="mut small">Every stat counts in a fight and on a job. Speed sets the pace, Luck picks the haul.</p>
   </section>
 
-  <section class="hsec"><h2>The three things {E(name.split()[0])} lost on the way</h2>
+  <section class="hsec"><h2>The three things {E(name)} lost on the way</h2>
     <p class="mut">Gear works for anyone, and half again as well in the paws it was made for.</p>
     <div class="gearwall">{"".join(gear_card(g) for g in gear)}</div>
   </section>
@@ -183,7 +183,7 @@ def hero_page(h):
   {kin_html}
 
   <section class="hsec cta-end">
-    <h2>Meet {E(name.split()[0])} in the ledger</h2>
+    <h2>Meet {E(name)} in the ledger</h2>
     <p class="mut">OverSummoned is free to play in your browser. Nothing to install.</p>
     <a class="btn" href="/play">Play now</a>
   </section>
