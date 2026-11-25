@@ -93,7 +93,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Recut Smudge parts and rig copied into the desktop pet (`desktop-fable/`); arm swings from the shoulder there too. Runs clean in the headless test. It still uses the simple rig (no bending tail yet)
 - [x] All 26 heroes exported on the shared skeleton (`python3 rules/dbexport.py heroes` -> `assets/v2/db/hero_<id>_*`), bending tail on the seven that have one; `DBCanvas.Puppet(host, id, scale, {hero:true})`
 - [x] Every hero's head recut (`rules/hero_cut.py`): lower edge feathered into the body, neck and collar painted in underneath, so heads tilt with no slit and no stuck copy
-- [ ] Heroes: extra moving parts where it earns it (arms, wings, capes, weapons). Head outlines are still the first coarse ones, so a hat brim or a weapon beside the head moves with it
+- [x] Soft moving spots on 24 heroes (`SOFT` in `rules/dbexport.py`): props, wings, bags, extra tails sway or bob with no cut, so no seams. Placed by eye from stills; not yet reviewed in motion
+- [ ] Heroes: properly cut arms and weapons for bigger moves (hand work per hero). Head outlines are still the first coarse ones, so a hat brim or a weapon beside the head moves with it
 - [x] Game and landing page now draw Smudge and the job-screen heroes with the DragonBones player (`OS.Puppet` hands over to it when `dbcanvas.js` is on the page; old rig stays as fallback)
 - [x] Soft chest bone with bounce-and-settle on Cleocatra, Astrid, Bella, Lola and Frau Troffea (`CHEST` in `rules/dbexport.py`)
 - [x] Player download halved: comments stripped from the core (680 KB to 328 KB before compression)
