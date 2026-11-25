@@ -198,3 +198,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Keep it in step with this file: move a card up a stage whenever the feature ships
 - [ ] Optional: let signed-in players vote for what they want most
 - Promises made on the page (change the page if Dean disagrees): shop is looks only; monthly arrivals; nothing resets cards; missed daily stamp keeps your place
+
+## Live — 24 Nov
+- [x] oversummoned.com now runs this version (main fast-forwarded to fable at 1af472e; previous live commit was 140c617 if a rollback is ever needed)
+- Still invite-only: only allow-listed emails can play until `os2_open` is switched on
+- From here: fable = preview, main = live; push to main only when Dean says
