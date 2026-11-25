@@ -1,0 +1,57 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noindex>
+<title>Living card test · OverSummoned</title><link rel=stylesheet href="/css/os.css?v=1124r">
+<style>
+body{background:#0b1020;margin:0;padding:22px 16px 40px;font-family:Nunito,sans-serif;color:#e8edfb}
+h1{font:400 1.6rem "Lilita One";margin:0 0 .2em;text-align:center}p.lead{color:#aab6d6;text-align:center;margin:0 auto 1.2em;max-width:560px;line-height:1.45}
+.rowm{display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
+.cap{font:800 .8rem Nunito;letter-spacing:.12em;text-transform:uppercase;color:#3fe0c5;margin:0 0 8px}
+.c{--rc:#b06bff;width:300px;height:432px;border-radius:16px;position:relative;background:linear-gradient(160deg,#d9b8ff,#7a35d6 45%,#4a1c94);box-shadow:0 12px 30px rgba(0,0,0,.6)}
+.c::before{content:"";position:absolute;inset:4px;border-radius:12px;background:#10162c}
+.c>*{position:absolute;left:15px;right:15px}
+.pb{background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020,0 0 0 1.5px #5a2aa8;border-radius:7px;color:#221708;display:flex;align-items:center;justify-content:space-between;padding:0 9px}
+.nb{top:13px;height:36px;font:400 1.2rem "Lilita One"}.nb small{font:800 .68rem Nunito;background:#221708;color:#fff;border-radius:99px;padding:.3em .65em}
+.win{top:57px;height:228px;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px #5a2aa8;background:#0d1430 center/cover}
+.tl{top:293px;height:26px;font:800 .72rem Nunito}.gem{flex:none;width:11px;height:11px;margin-right:3px;rotate:45deg;background:var(--rc);box-shadow:0 0 0 1.5px #0b1020,inset 2px 2px 0 rgba(255,255,255,.45)}
+.st{top:327px;height:54px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.st div{background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020;border-radius:6px;text-align:center;color:#221708;padding-top:5px}
+.st b{display:block;font:400 1.25rem/1 "Lilita One"}.st span{font:800 .52rem Nunito;letter-spacing:.08em;text-transform:uppercase;color:#7a5a2a}
+.ft{top:389px;height:30px;font:800 .7rem Nunito}.ft b{font:400 1rem "Lilita One"}
+.dots{display:flex;gap:3px;align-items:center}.dots i{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1.5px #0b1020}.dots u{width:1.5px;height:15px;background:#8a7a56;margin:0 2px}.dots i.o{border-radius:50%}
+.ib{width:24px;height:24px;border-radius:50%;background:#221708;color:#f3ead2;font:400 .9rem "Lilita One";display:flex;align-items:center;justify-content:center}
+.doll{top:57px;height:236px;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px #5a2aa8;background:#0d1430 center/cover;cursor:pointer}
+.doll::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,11,28,.88),rgba(8,11,28,.25) 30%,rgba(8,11,28,.25) 70%,rgba(8,11,28,.88))}
+.live{position:absolute;inset:0}
+.col{position:absolute;top:8px;bottom:8px;width:50px;display:grid;grid-template-rows:repeat(4,1fr);gap:5px;z-index:2}.col.l{left:8px}.col.r{right:8px}
+.s2{min-height:0;background:rgba(20,28,62,.92);border-radius:7px;box-shadow:inset 0 0 0 2px var(--q,#2a3761);position:relative;display:flex;align-items:center;justify-content:center}
+.s2 img{max-width:72%;max-height:64%;object-fit:contain;margin-top:7px}.s2 u{position:absolute;left:0;right:0;top:2px;text-align:center;font:800 .42rem Nunito;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:#aab6d6}
+.s2 em{position:absolute;right:3px;bottom:1px;font:400 .6rem "Lilita One";font-style:normal;color:#fff;text-shadow:0 1px 2px #000}
+.s2.own{background:linear-gradient(180deg,rgba(52,38,90,.95),rgba(20,28,62,.92));box-shadow:inset 0 0 0 2px var(--q,#5a2aa8),0 0 0 1.5px rgba(243,185,48,.6)}
+.s2.lock{opacity:.6}.s2.lock::after{content:"Lv 5";font:400 .74rem "Lilita One";color:#8894b8;margin-top:8px}
+.tag2{position:absolute;bottom:6px;font:800 .46rem Nunito;letter-spacing:.1em;text-transform:uppercase;color:#cfd8f3;text-shadow:0 1px 2px #000;z-index:2}.tag2.l{left:64px}.tag2.r{right:64px;color:#f3b930}
+.bon{top:300px;height:50px;border-radius:7px;background:#161d3d;box-shadow:inset 0 0 0 1.5px #2a3761;padding:4px 8px;font:700 .58rem/1.42 Nunito;color:#cfd8f3;white-space:nowrap;overflow:hidden}.bon b{color:#3fe0c5}.bon s{text-decoration:none;color:#69759c}.bon i{font-style:normal;color:#f3b930;font-weight:800}
+.strip{top:356px;height:27px;border-radius:7px;background:#161d3d;box-shadow:inset 0 0 0 1.5px #2a3761;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;text-align:center;font:800 .5rem Nunito;letter-spacing:.06em;text-transform:uppercase;color:#8894b8}
+.strip b{font:400 .92rem "Lilita One";color:#fff;letter-spacing:0;margin-left:3px}.strip em{font-style:normal;color:#3fe0c5;letter-spacing:0;font-size:.52rem;margin-left:2px}
+.lv{display:flex;align-items:center;gap:6px}.lv i{display:block;width:62px;height:7px;border-radius:4px;background:#b9a57a;overflow:hidden}.lv i b{display:block;width:66%;height:100%;background:#7a35d6}
+.acts{display:flex;gap:10px;justify-content:center;margin-top:18px}
+</style></head><body>
+<h1>A living card</h1><p class=lead>Both sides of Lola's card, with her standing idle on each: she sways, blinks, her tail and fans move. Tap either picture and she reacts.</p>
+<div class=rowm id=r></div><div class=acts><button class=btn id=bAct>React</button><button class=btn id=bCheer>Cheer</button></div>
+<script src="/js/os.js?v=1124r"></script><script src="/js/vendor/dragonBones.core.min.js"></script><script src="/js/dbcanvas.js?v=1124r"></script>
+<script>OS.load().then(()=>{const h=OS.heroes.lola,I=n=>OS.img('loot',OS.items[n].icon),g=id=>OS.heroes[id].gear,C={r:'#4f8dff',e:'#b06bff',l:'#ffb13b'};
+document.getElementById('r').innerHTML=`<div><p class=cap>Front</p><div class=c><div class="pb nb"><span>Lola Vixen</span><small>Lv 3</small></div>
+<div class="win doll2" style="background-image:url(/assets/v2/bg/${h.bg}.webp);cursor:pointer"><div class=live id=lf></div></div>
+<div class="pb tl"><span>Fox · Cabaret Star · Paris, 1895</span><i class=gem></i></div>
+<div class=st><div><b>31</b><span>Attack</span></div><div><b>12</b><span>Defense</span></div><div><b>19</b><span>Health</span></div><div><b>30</b><span>Speed</span></div><div><b>33</b><span>Luck</span></div></div>
+<div class="pb ft"><span>Power <b>62</b></span><span class=dots><i style="background:${C.l}"></i><i style="background:${C.r}"></i><i style="background:${C.r}"></i><i style="background:#3a3320"></i><i class=o style="background:#3a3320"></i><u></u><i style="background:${C.e}"></i><i style="background:${C.e}"></i><i style="background:#3a3320"></i></span></div></div></div>
+<div><p class=cap>Back</p><div class=c><div class="pb nb"><span>Lola Vixen</span><span class=ib>i</span></div>
+<div class=doll style="background-image:url(/assets/v2/bg/${h.bg}.webp)"><div class=live id=lb></div>
+<div class="col l"><div class=s2 style="--q:${C.l}"><u>Weapon</u><img src="${I(g('gaius')[0])}"><em>+2</em></div><div class=s2 style="--q:${C.r}"><u>Head</u><img src="${I(g('napoleon')[1])}"></div><div class=s2 style="--q:${C.r}"><u>Body</u><img src="${I(g('astrid')[1])}"></div><div class=s2><u>Feet</u></div></div>
+<div class="col r"><div class="s2 lock"><u>Charm</u></div><div class="s2 own" style="--q:${C.e}"><u>Fans</u><img src="${I(g('lola')[0])}"></div><div class="s2 own" style="--q:${C.e}"><u>Corset</u><img src="${I(g('lola')[1])}"></div><div class="s2 own" style="--q:#3a3360"><u>Watch</u><img src="${I(g('lola')[2])}" style="filter:brightness(0) opacity(.4)"></div></div>
+<span class="tag2 l">Anyone’s gear</span><span class="tag2 r">Lola’s own</span></div>
+<div class=bon><b>Cabaret set 2 / 3</b> · +8 Speed &nbsp;<s>3 / 3 · +15% Luck at jobs</s><br><b>Gladius of the Ninth</b> · Legendary · hits twice in raids<br><i>Lola’s kit 2 / 3</i> · +10% all stats &nbsp;<s>3 / 3 · Encore re-roll</s></div>
+<div class=strip>${[['Atk',31,9],['Def',12,2],['Hp',19,3],['Spd',30,12],['Lck',33,9]].map(([n,t,x])=>`<span>${n}<b>${t}</b><em>+${x}</em></span>`).join('')}</div>
+<div class="pb ft"><span>Power <b>62</b></span><span class=lv>Lv 3 <i><b></b></i> 2 / 3 copies</span></div></div></div>`;
+const mk=(id,frac)=>{const host=document.getElementById(id),e=OS.rig.h_lola;return new DBCanvas.Puppet(host,'lola',host.clientHeight*frac/e.size[1],{hero:true,x:.5,y:.995,ver:OS.VER});};
+const ps=[mk('lf',.96),mk('lb',.92)];window.PS=ps;
+document.querySelectorAll('.doll,.doll2').forEach((d,i)=>d.onclick=()=>ps[i].act());
+document.getElementById('bAct').onclick=()=>ps.forEach(p=>p.act());document.getElementById('bCheer').onclick=()=>ps.forEach(p=>p.cheer(3));});</script></body></html>
