@@ -515,3 +515,14 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .sbtn.soon,.sbtn.soon:hover{background:#161d33;color:#6f7b99;border-color:#232d4d;cursor:not-allowed;transform:none;filter:none}.sbtn.soon svg{opacity:.35;filter:grayscale(1)}
 .kv.soon b{color:var(--mut);font-weight:700}
 .howlink{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--line);border-radius:12px;background:rgba(11,16,32,.6);font-size:.9rem;color:#aab5d6;line-height:1.5}.howlink b{color:#e9eefb;font-weight:800}.howlink ol{margin:.5rem 0 .5rem 1.2rem;padding:0}.howlink p{margin:0}.howlink i{font-style:normal;color:var(--gold)}
+
+/* FAQ */
+.faq{display:grid;gap:.7rem;max-width:52em}
+.faq-q{background:rgba(255,255,255,.035);border:2px solid rgba(255,255,255,.09);border-radius:14px;padding:.85rem 1.1rem}
+.faq-q[open]{background:rgba(255,255,255,.06);border-color:var(--teal)}
+.faq-q summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:.6rem}
+.faq-q summary::-webkit-details-marker{display:none}
+.faq-q summary::after{content:"+";margin-left:auto;font:400 1.5rem "Lilita One",sans-serif;color:var(--teal);line-height:1}
+.faq-q[open] summary::after{content:"\2212"}
+.faq-q summary h3{margin:0;font-size:1.05rem}
+.faq-q p{margin:.7rem 0 .15rem;color:var(--mut);max-width:46em}
