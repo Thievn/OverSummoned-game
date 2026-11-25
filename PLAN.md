@@ -126,14 +126,18 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] RULE for every new hero: also add their three own pieces plus five era pieces (weapon, head, body, feet, charm) to `rules/gear2.py`, generate icons on green screen, rebuild
 - [ ] Hero eyelids are off (eye positions inaccurate); place by hand per hero to bring blinking back
 - [ ] Balance check for era gear: stat budgets and the special percentages are first guesses
-- [ ] Making skills that turn treasure into things for cards: Cooking (meals before raids), Tinkering (gear upgrades), Restoring (cabinet pieces)
-- [ ] Mastery per treasure, and one completion percentage on the dashboard
+- [x] The bench in the Workshop, three making skills with levels and bars: Cooking (fish to energy or a raid ticket), Tinkering (junk to spare parts, which gear upgrades now need), Restoring (junk to a missing cabinet piece, treasure to a card shard)
+- [x] Completion percentage on the dashboard (heroes, cabinet, gear, bosses, levels)
+- [x] Card backs come to rest flat after the flip so they are drawn sharp
+- [ ] Mastery per treasure
 - [ ] Crews, market, per-skill leaderboards (needs database approval)
 
 ## Loot
 - [x] Junk loot (`rules/junk.py`): 63 sell-only finds (local fish, lost property, daft things; 7 per place plus 7 that fall out of the rift anywhere). Mostly 1 to 9 gold, a few worth 20 to 50. Not part of the cabinet. "Sell spare treasure" sells all junk
 - [ ] Gold needs more to spend on (today: gear upgrades). Ideas: market, shard purchases, cosmetics
-- [ ] OPEN DESIGN QUESTION (Dean, 24 Nov): heroes doing Smudge's hands-on jobs does not make sense. Proposal: Smudge does fishing / lockpicking / digging himself (animated), a few heroes stand by as his crew for bonuses, the rest go on timed expeditions shown as a card with a bar
+- [x] DECIDED and built: Smudge does the work himself, one place at a time, animated. Up to three heroes stand behind him as crew (slots at total level 0, 15, 45) and add speed, luck, gear bonuses and mastery. Standing orders (Stay, Wander, Hunt) are Smudge's
+- [x] Expeditions: heroes not in the crew go home to their own era for 1, 4 or 8 hours and bring back loot, ink and mastery; can be called back early for less
+- [x] No daily sell cap; treasure sells for less (4 / 10 / 24 / 60 gold)
 - [x] Job scenes: each place has a standing spot on solid ground for the hero
 
 ## Pacing (testing)
@@ -146,6 +150,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Still slow for light players (2 h a day is about two years to 99); decide whether to speed the early levels
 
 ## Tuning
+- [ ] Re-run pacing now that only Smudge works (x3 base speed as a stand-in) and expeditions exist; check bench times and recipe costs; check 3 crew at high stats is not too fast
+- [ ] Desktop pet still uses the old hero-jobs-free model; bring crew bonuses in line with the web
 - [ ] Cabinet bonus fills fast (44 of 66 pieces in two hours of testing): check +0.5% per piece is not too generous
 - [ ] Hunt order tends to park a hero at the place with their own signature gear; decide if that is wanted
 - [ ] Web game running around the clock levels too fast (about 4 weeks to 99)

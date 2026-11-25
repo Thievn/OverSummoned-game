@@ -139,10 +139,10 @@
    "epic": 1
   },
   "sell": {
-   "common": 5,
-   "uncommon": 18,
-   "rare": 45,
-   "epic": 150
+   "common": 4,
+   "uncommon": 10,
+   "rare": 24,
+   "epic": 60
   },
   "luck_per_level": 0.01
  },
@@ -262,7 +262,135 @@
   "mastery_xp": 10,
   "mastery_speed": 0.01,
   "mastery_cap": 50,
-  "wander_minutes": 15
+  "wander_minutes": 15,
+  "crew_slots": [
+   0,
+   15,
+   45
+  ],
+  "crew_speed_div": 150,
+  "crew_luck_div": 150,
+  "solo_mult": 3.0
+ },
+ "exped": {
+  "slots": [
+   0,
+   0,
+   30,
+   80,
+   150
+  ],
+  "hours": [
+   1,
+   4,
+   8
+  ],
+  "rolls_per_hour": 7,
+  "ink_per_hour": 260,
+  "mastery_per_hour": 30
+ },
+ "making": {
+  "skills": [
+   "Cooking",
+   "Tinkering",
+   "Restoring"
+  ],
+  "recipes": [
+   {
+    "id": "supper",
+    "skill": "Cooking",
+    "level": 1,
+    "name": "Fish supper",
+    "text": "Three fish, fried. Gives back 15 energy for training.",
+    "need": {
+     "fish": 3
+    },
+    "seconds": 60,
+    "xp": 30,
+    "gives": {
+     "energy": 15
+    }
+   },
+   {
+    "id": "feast",
+    "skill": "Cooking",
+    "level": 15,
+    "name": "Raid feast",
+    "text": "A proper spread. Gives one raid ticket.",
+    "need": {
+     "fish": 8,
+     "treasure": 1
+    },
+    "seconds": 600,
+    "xp": 220,
+    "gives": {
+     "ticket": 1
+    }
+   },
+   {
+    "id": "scrap",
+    "skill": "Tinkering",
+    "level": 1,
+    "name": "Strip for parts",
+    "text": "Five bits of junk become one spare part. Parts go into gear upgrades.",
+    "need": {
+     "junk": 5
+    },
+    "seconds": 90,
+    "xp": 40,
+    "gives": {
+     "parts": 1
+    }
+   },
+   {
+    "id": "fine",
+    "skill": "Tinkering",
+    "level": 20,
+    "name": "Fine parts",
+    "text": "Two spare treasures become three parts.",
+    "need": {
+     "treasure": 2
+    },
+    "seconds": 300,
+    "xp": 150,
+    "gives": {
+     "parts": 3
+    }
+   },
+   {
+    "id": "restore",
+    "skill": "Restoring",
+    "level": 1,
+    "name": "Restore a relic",
+    "text": "Six bits of junk and 30 gold, cleaned up into a cabinet piece you are missing.",
+    "need": {
+     "junk": 6,
+     "gold": 30
+    },
+    "seconds": 240,
+    "xp": 90,
+    "gives": {
+     "cabinet": 1
+    }
+   },
+   {
+    "id": "shard",
+    "skill": "Restoring",
+    "level": 25,
+    "name": "Piece a card together",
+    "text": "Four spare treasures and 150 gold become one card shard.",
+    "need": {
+     "treasure": 4,
+     "gold": 150
+    },
+    "seconds": 900,
+    "xp": 300,
+    "gives": {
+     "shard": 1
+    }
+   }
+  ],
+  "speed_per_level": 0.01
  },
  "kit": {
   "two": 0.1,
@@ -357,11 +485,18 @@
   "max": 5,
   "per_level": 0.15,
   "gold": [
-   100,
-   250,
-   600,
-   1500,
-   4000
+   60,
+   150,
+   350,
+   800,
+   2000
+  ],
+  "parts": [
+   1,
+   2,
+   4,
+   7,
+   12
   ]
  },
  "raids": {
@@ -7117,7 +7252,7 @@
    "icon": "bath_carp",
    "flavor": "A fish so fancy it has a pension.",
    "place": "dock",
-   "sell": 5
+   "sell": 4
   },
   "bath_eel": {
    "id": "bath_eel",
@@ -7127,7 +7262,7 @@
    "icon": "bath_eel",
    "flavor": "Slipped through a crack in time. Still slippery.",
    "place": "dock",
-   "sell": 5
+   "sell": 4
   },
   "bath_coin": {
    "id": "bath_coin",
@@ -7137,7 +7272,7 @@
    "icon": "bath_coin",
    "flavor": "A day's pay for a legionary. He will want it back.",
    "place": "dock",
-   "sell": 5
+   "sell": 4
   },
   "bath_scroll": {
    "id": "bath_scroll",
@@ -7147,7 +7282,7 @@
    "icon": "bath_scroll",
    "flavor": "Probably a tax bill. It is always a tax bill.",
    "place": "dock",
-   "sell": 5
+   "sell": 4
   },
   "bath_strigil": {
    "id": "bath_strigil",
@@ -7157,7 +7292,7 @@
    "icon": "bath_strigil",
    "flavor": "Romans scraped the sweat off with this. Enjoy.",
    "place": "dock",
-   "sell": 18
+   "sell": 10
   },
   "bath_lamp": {
    "id": "bath_lamp",
@@ -7167,7 +7302,7 @@
    "icon": "bath_lamp",
    "flavor": "Two thousand years old and still works first time.",
    "place": "dock",
-   "sell": 18
+   "sell": 10
   },
   "bath_vial": {
    "id": "bath_vial",
@@ -7177,7 +7312,7 @@
    "icon": "bath_vial",
    "flavor": "Smells of roses, money, and bad decisions.",
    "place": "dock",
-   "sell": 45
+   "sell": 24
   },
   "bath_wreath": {
    "id": "bath_wreath",
@@ -7187,7 +7322,7 @@
    "icon": "bath_wreath",
    "flavor": "Someone won a race and lost a hat.",
    "place": "dock",
-   "sell": 45
+   "sell": 24
   },
   "bath_nose": {
    "id": "bath_nose",
@@ -7197,7 +7332,7 @@
    "icon": "bath_nose",
    "flavor": "This explains every Roman statue you have ever seen.",
    "place": "dock",
-   "sell": 150
+   "sell": 60
   },
   "j_dock_1": {
    "id": "j_dock_1",
@@ -7361,7 +7496,7 @@
    "icon": "bondi_1",
    "flavor": "One of a pair. The sea kept the other.",
    "place": "bondi",
-   "sell": 5
+   "sell": 4
   },
   "bondi_2": {
    "id": "bondi_2",
@@ -7371,7 +7506,7 @@
    "icon": "bondi_2",
    "flavor": "Somebody is squinting right now.",
    "place": "bondi",
-   "sell": 5
+   "sell": 4
   },
   "bondi_3": {
    "id": "bondi_3",
@@ -7381,7 +7516,7 @@
    "icon": "bondi_3",
    "flavor": "A seagull is about to be furious.",
    "place": "bondi",
-   "sell": 5
+   "sell": 4
   },
   "bondi_4": {
    "id": "bondi_4",
@@ -7391,7 +7526,7 @@
    "icon": "bondi_4",
    "flavor": "Pinches first. Pinches later too.",
    "place": "bondi",
-   "sell": 5
+   "sell": 4
   },
   "bondi_5": {
    "id": "bondi_5",
@@ -7401,7 +7536,7 @@
    "icon": "bondi_5",
    "flavor": "The shark did not donate it.",
    "place": "bondi",
-   "sell": 18
+   "sell": 10
   },
   "bondi_6": {
    "id": "bondi_6",
@@ -7411,7 +7546,7 @@
    "icon": "bondi_6",
    "flavor": "Still playing the same three songs.",
    "place": "bondi",
-   "sell": 18
+   "sell": 10
   },
   "bondi_7": {
    "id": "bondi_7",
@@ -7421,7 +7556,7 @@
    "icon": "bondi_7",
    "flavor": "It says 'send more beer'.",
    "place": "bondi",
-   "sell": 45
+   "sell": 24
   },
   "bondi_8": {
    "id": "bondi_8",
@@ -7431,7 +7566,7 @@
    "icon": "bondi_8",
    "flavor": "The oyster worked on it for years. You found it in an afternoon.",
    "place": "bondi",
-   "sell": 150
+   "sell": 60
   },
   "j_bondi_1": {
    "id": "j_bondi_1",
@@ -7518,7 +7653,7 @@
    "icon": "fjord_1",
    "flavor": "Dinner for six Vikings or one Brokk.",
    "place": "fjord",
-   "sell": 5
+   "sell": 4
   },
   "fjord_2": {
    "id": "fjord_2",
@@ -7528,7 +7663,7 @@
    "icon": "fjord_2",
    "flavor": "Thaw before use. Or throw it.",
    "place": "fjord",
-   "sell": 5
+   "sell": 4
   },
   "fjord_3": {
    "id": "fjord_3",
@@ -7538,7 +7673,7 @@
    "icon": "fjord_3",
    "flavor": "Viking loose change.",
    "place": "fjord",
-   "sell": 5
+   "sell": 4
   },
   "fjord_4": {
    "id": "fjord_4",
@@ -7548,7 +7683,7 @@
    "icon": "fjord_4",
    "flavor": "It says 'Olaf was here'.",
    "place": "fjord",
-   "sell": 18
+   "sell": 10
   },
   "fjord_5": {
    "id": "fjord_5",
@@ -7558,7 +7693,7 @@
    "icon": "fjord_5",
    "flavor": "Somebody's bad day, fifty million years ago.",
    "place": "fjord",
-   "sell": 18
+   "sell": 10
   },
   "fjord_6": {
    "id": "fjord_6",
@@ -7568,7 +7703,7 @@
    "icon": "fjord_6",
    "flavor": "Vikings were surprisingly vain about their hair.",
    "place": "fjord",
-   "sell": 45
+   "sell": 24
   },
   "fjord_7": {
    "id": "fjord_7",
@@ -7578,7 +7713,7 @@
    "icon": "fjord_7",
    "flavor": "No horns. They never had horns. Let it go.",
    "place": "fjord",
-   "sell": 45
+   "sell": 24
   },
   "fjord_8": {
    "id": "fjord_8",
@@ -7588,7 +7723,7 @@
    "icon": "fjord_8",
    "flavor": "It let go. Be grateful.",
    "place": "fjord",
-   "sell": 150
+   "sell": 60
   },
   "j_fjord_1": {
    "id": "j_fjord_1",
@@ -7675,7 +7810,7 @@
    "icon": "easy_chips",
    "flavor": "Lost the honest way. By cheating.",
    "place": "speakeasy",
-   "sell": 5
+   "sell": 4
   },
   "easy_moonshine": {
    "id": "easy_moonshine",
@@ -7685,7 +7820,7 @@
    "icon": "easy_moonshine",
    "flavor": "Strips paint. Also memories.",
    "place": "speakeasy",
-   "sell": 5
+   "sell": 4
   },
   "easy_bills": {
    "id": "easy_bills",
@@ -7695,7 +7830,7 @@
    "icon": "easy_bills",
    "flavor": "Dirty money. Sticky, even.",
    "place": "speakeasy",
-   "sell": 5
+   "sell": 4
   },
   "easy_envelope": {
    "id": "easy_envelope",
@@ -7705,7 +7840,7 @@
    "icon": "easy_envelope",
    "flavor": "Somebody is being blackmailed.",
    "place": "speakeasy",
-   "sell": 5
+   "sell": 4
   },
   "easy_knuckles": {
    "id": "easy_knuckles",
@@ -7715,7 +7850,7 @@
    "icon": "easy_knuckles",
    "flavor": "For negotiations.",
    "place": "speakeasy",
-   "sell": 18
+   "sell": 10
   },
   "easy_fedora": {
    "id": "easy_fedora",
@@ -7725,7 +7860,7 @@
    "icon": "easy_fedora",
    "flavor": "Very gangster. Not otter-sized.",
    "place": "speakeasy",
-   "sell": 18
+   "sell": 10
   },
   "easy_watch": {
    "id": "easy_watch",
@@ -7735,7 +7870,7 @@
    "icon": "easy_watch",
    "flavor": "Fitting, for a time thief.",
    "place": "speakeasy",
-   "sell": 45
+   "sell": 24
   },
   "easy_pearls": {
    "id": "easy_pearls",
@@ -7745,7 +7880,7 @@
    "icon": "easy_pearls",
    "flavor": "Somebody's wife is going to be furious.",
    "place": "speakeasy",
-   "sell": 45
+   "sell": 24
   },
   "easy_ring": {
    "id": "easy_ring",
@@ -7755,7 +7890,7 @@
    "icon": "easy_ring",
    "flavor": "Somebody had a very bad night.",
    "place": "speakeasy",
-   "sell": 150
+   "sell": 60
   },
   "j_speakeasy_1": {
    "id": "j_speakeasy_1",
@@ -7842,7 +7977,7 @@
    "icon": "vault_1",
    "flavor": "The dollar of 1610. Heavier.",
    "place": "vault",
-   "sell": 5
+   "sell": 4
   },
   "vault_2": {
    "id": "vault_2",
@@ -7852,7 +7987,7 @@
    "icon": "vault_2",
    "flavor": "Made on an island nobody was allowed to leave.",
    "place": "vault",
-   "sell": 5
+   "sell": 4
   },
   "vault_3": {
    "id": "vault_3",
@@ -7862,7 +7997,7 @@
    "icon": "vault_3",
    "flavor": "For secrets. Venice ran on secrets.",
    "place": "vault",
-   "sell": 5
+   "sell": 4
   },
   "vault_4": {
    "id": "vault_4",
@@ -7872,7 +8007,7 @@
    "icon": "vault_4",
    "flavor": "Took six months to make. For noses.",
    "place": "vault",
-   "sell": 5
+   "sell": 4
   },
   "vault_5": {
    "id": "vault_5",
@@ -7882,7 +8017,7 @@
    "icon": "vault_5",
    "flavor": "Worth more than the gold. Truly.",
    "place": "vault",
-   "sell": 18
+   "sell": 10
   },
   "vault_6": {
    "id": "vault_6",
@@ -7892,7 +8027,7 @@
    "icon": "vault_6",
    "flavor": "Somebody's boat is steering badly tonight.",
    "place": "vault",
-   "sell": 18
+   "sell": 10
   },
   "vault_7": {
    "id": "vault_7",
@@ -7902,7 +8037,7 @@
    "icon": "vault_7",
    "flavor": "Stamps laws. Also very good for cheese.",
    "place": "vault",
-   "sell": 45
+   "sell": 24
   },
   "vault_8": {
    "id": "vault_8",
@@ -7912,7 +8047,7 @@
    "icon": "vault_8",
    "flavor": "Whoever wore it was never seen again. By choice.",
    "place": "vault",
-   "sell": 150
+   "sell": 60
   },
   "j_vault_1": {
    "id": "j_vault_1",
@@ -7999,7 +8134,7 @@
    "icon": "closet_1",
    "flavor": "Not the cheap ones. The GOOD ones.",
    "place": "closet",
-   "sell": 5
+   "sell": 4
   },
   "closet_2": {
    "id": "closet_2",
@@ -8009,7 +8144,7 @@
    "icon": "closet_2",
    "flavor": "Each one says 'URGENT'. None of them are.",
    "place": "closet",
-   "sell": 5
+   "sell": 4
   },
   "closet_3": {
    "id": "closet_3",
@@ -8019,7 +8154,7 @@
    "icon": "closet_3",
    "flavor": "Worth more per ounce than gold. Look it up.",
    "place": "closet",
-   "sell": 5
+   "sell": 4
   },
   "closet_4": {
    "id": "closet_4",
@@ -8029,7 +8164,7 @@
    "icon": "closet_4",
    "flavor": "Squeezed flat by one hundred Mondays.",
    "place": "closet",
-   "sell": 5
+   "sell": 4
   },
   "closet_5": {
    "id": "closet_5",
@@ -8039,7 +8174,7 @@
    "icon": "closet_5",
    "flavor": "Requested in 2019. Approved today.",
    "place": "closet",
-   "sell": 18
+   "sell": 10
   },
   "closet_6": {
    "id": "closet_6",
@@ -8049,7 +8184,7 @@
    "icon": "closet_6",
    "flavor": "It has labelled itself. 'LABEL MAKER'.",
    "place": "closet",
-   "sell": 18
+   "sell": 10
   },
   "closet_7": {
    "id": "closet_7",
@@ -8059,7 +8194,7 @@
    "icon": "closet_7",
    "flavor": "There was only ever one. Wars have been fought.",
    "place": "closet",
-   "sell": 45
+   "sell": 24
   },
   "closet_8": {
    "id": "closet_8",
@@ -8069,7 +8204,7 @@
    "icon": "closet_8",
    "flavor": "It was in the closet. Of course it was in the closet.",
    "place": "closet",
-   "sell": 150
+   "sell": 60
   },
   "j_closet_1": {
    "id": "j_closet_1",
@@ -8156,7 +8291,7 @@
    "icon": "outback_1",
    "flavor": "Ten thousand fired. Almost none hit.",
    "place": "outback",
-   "sell": 5
+   "sell": 4
   },
   "outback_2": {
    "id": "outback_2",
@@ -8166,7 +8301,7 @@
    "icon": "outback_2",
    "flavor": "Dropped mid-victory lap.",
    "place": "outback",
-   "sell": 5
+   "sell": 4
   },
   "outback_3": {
    "id": "outback_3",
@@ -8176,7 +8311,7 @@
    "icon": "outback_3",
    "flavor": "Best before 1933. Still better than the alternative.",
    "place": "outback",
-   "sell": 5
+   "sell": 4
   },
   "outback_4": {
    "id": "outback_4",
@@ -8186,7 +8321,7 @@
    "icon": "outback_4",
    "flavor": "Makes tea that tastes like campfire.",
    "place": "outback",
-   "sell": 5
+   "sell": 4
   },
   "outback_5": {
    "id": "outback_5",
@@ -8196,7 +8331,7 @@
    "icon": "outback_5",
    "flavor": "It reads: 'The emus have won.'",
    "place": "outback",
-   "sell": 18
+   "sell": 10
   },
   "outback_6": {
    "id": "outback_6",
@@ -8206,7 +8341,7 @@
    "icon": "outback_6",
    "flavor": "It was never emu-proof.",
    "place": "outback",
-   "sell": 18
+   "sell": 10
   },
   "outback_7": {
    "id": "outback_7",
@@ -8216,7 +8351,7 @@
    "icon": "outback_7",
    "flavor": "The outback keeps its colors underground.",
    "place": "outback",
-   "sell": 45
+   "sell": 24
   },
   "outback_8": {
    "id": "outback_8",
@@ -8226,7 +8361,7 @@
    "icon": "outback_8",
    "flavor": "Somebody dug here for years and missed it by a foot.",
    "place": "outback",
-   "sell": 150
+   "sell": 60
   },
   "j_outback_1": {
    "id": "j_outback_1",
@@ -8313,7 +8448,7 @@
    "icon": "blackforest_1",
    "flavor": "Do not eat. Do not even look hungry near it.",
    "place": "blackforest",
-   "sell": 5
+   "sell": 4
   },
   "blackforest_2": {
    "id": "blackforest_2",
@@ -8323,7 +8458,7 @@
    "icon": "blackforest_2",
    "flavor": "Wards off evil. And guests.",
    "place": "blackforest",
-   "sell": 5
+   "sell": 4
   },
   "blackforest_3": {
    "id": "blackforest_3",
@@ -8333,7 +8468,7 @@
    "icon": "blackforest_3",
    "flavor": "Somebody tried to dig their way out with it.",
    "place": "blackforest",
-   "sell": 5
+   "sell": 4
   },
   "blackforest_4": {
    "id": "blackforest_4",
@@ -8343,7 +8478,7 @@
    "icon": "blackforest_4",
    "flavor": "Burned for something. Nobody says what.",
    "place": "blackforest",
-   "sell": 5
+   "sell": 4
   },
   "blackforest_5": {
    "id": "blackforest_5",
@@ -8353,7 +8488,7 @@
    "icon": "blackforest_5",
    "flavor": "Screams when pulled. Wear earmuffs.",
    "place": "blackforest",
-   "sell": 18
+   "sell": 10
   },
   "blackforest_6": {
    "id": "blackforest_6",
@@ -8363,7 +8498,7 @@
    "icon": "blackforest_6",
    "flavor": "Every stitch you sew comes undone by morning.",
    "place": "blackforest",
-   "sell": 18
+   "sell": 10
   },
   "blackforest_7": {
    "id": "blackforest_7",
@@ -8373,7 +8508,7 @@
    "icon": "blackforest_7",
    "flavor": "The recipe is for soup. The soup is the problem.",
    "place": "blackforest",
-   "sell": 45
+   "sell": 24
   },
   "blackforest_8": {
    "id": "blackforest_8",
@@ -8383,7 +8518,7 @@
    "icon": "blackforest_8",
    "flavor": "Blooms once a century. You are welcome.",
    "place": "blackforest",
-   "sell": 150
+   "sell": 60
   },
   "j_blackforest_1": {
    "id": "j_blackforest_1",

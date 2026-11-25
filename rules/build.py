@@ -35,7 +35,7 @@ C = dict(
           "drop_weight": {"common": 1.2, "uncommon": 0.75, "rare": 0.375, "epic": 0.15, "legendary": 0.06, "absurd": 0.03, "unhinged": 0.012},
           "sell": {"common": 15, "uncommon": 30, "rare": 80, "epic": 220, "legendary": 600, "absurd": 1500, "unhinged": 4000}},
     loot={"weight": {"common": 20, "uncommon": 9, "rare": 4, "epic": 1},
-          "sell": {"common": 5, "uncommon": 18, "rare": 45, "epic": 150},
+          "sell": {"common": 4, "uncommon": 10, "rare": 24, "epic": 60},
           "luck_per_level": 0.01},   # each skill level: +1% weight on everything above common
     # ---- crew (web)
     crew={"slots": 3, "speed_div": 400, "speed_cap": 0.75, "luck_div": 300, "offline_hours": 12},
@@ -63,7 +63,20 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           cleocatra="egypt", blackbear="caribbean", astrid="norway", kenji="japan", emu="outback", troffea="medieval", joost="amsterdam", chad="office", bella="beach", florida="beach",
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 C.update(
-    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15},
+    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15,
+          # Smudge does the work, one place at a time; up to three heroes stand behind him as crew
+          "crew_slots": [0, 15, 45], "crew_speed_div": 150, "crew_luck_div": 150, "solo_mult": 3.0},
+    # everybody else can be sent home to their own era for a while and comes back with whatever they found
+    exped={"slots": [0, 0, 30, 80, 150], "hours": [1, 4, 8], "rolls_per_hour": 7, "ink_per_hour": 260, "mastery_per_hour": 30},
+    # making skills: turn what comes up into something a card can use
+    making={"skills": ["Cooking", "Tinkering", "Restoring"], "recipes": [
+        {"id": "supper", "skill": "Cooking", "level": 1, "name": "Fish supper", "text": "Three fish, fried. Gives back 15 energy for training.", "need": {"fish": 3}, "seconds": 60, "xp": 30, "gives": {"energy": 15}},
+        {"id": "feast", "skill": "Cooking", "level": 15, "name": "Raid feast", "text": "A proper spread. Gives one raid ticket.", "need": {"fish": 8, "treasure": 1}, "seconds": 600, "xp": 220, "gives": {"ticket": 1}},
+        {"id": "scrap", "skill": "Tinkering", "level": 1, "name": "Strip for parts", "text": "Five bits of junk become one spare part. Parts go into gear upgrades.", "need": {"junk": 5}, "seconds": 90, "xp": 40, "gives": {"parts": 1}},
+        {"id": "fine", "skill": "Tinkering", "level": 20, "name": "Fine parts", "text": "Two spare treasures become three parts.", "need": {"treasure": 2}, "seconds": 300, "xp": 150, "gives": {"parts": 3}},
+        {"id": "restore", "skill": "Restoring", "level": 1, "name": "Restore a relic", "text": "Six bits of junk and 30 gold, cleaned up into a cabinet piece you are missing.", "need": {"junk": 6, "gold": 30}, "seconds": 240, "xp": 90, "gives": {"cabinet": 1}},
+        {"id": "shard", "skill": "Restoring", "level": 25, "name": "Piece a card together", "text": "Four spare treasures and 150 gold become one card shard.", "need": {"treasure": 4, "gold": 150}, "seconds": 900, "xp": 300, "gives": {"shard": 1}}],
+        "speed_per_level": 0.01},
     # a hero wearing their own signature pieces: two gives a little, all three is "the full kit"
     kit={"two": 0.10, "three": 0.25, "speed": 0.10},
     # ---- pacing. Fresh crew: the first hours of work each day run at double speed, then the plain rate.
@@ -81,7 +94,7 @@ C.update(
     tonics=[{"id": "x_tonic_speed", "name": "Quickstep Tonic", "effect": "speed", "amount": 0.25, "minutes": 60, "cost": {"rarity": "common", "n": 8}, "text": "Every job runs 25% faster for an hour."},
             {"id": "x_tonic_luck", "name": "Lucky Dip Tonic", "effect": "luck", "amount": 0.5, "minutes": 60, "cost": {"rarity": "uncommon", "n": 4}, "text": "Better finds everywhere for an hour."},
             {"id": "x_tonic_xp", "name": "Bookworm Tonic", "effect": "xp", "amount": 0.5, "minutes": 60, "cost": {"rarity": "rare", "n": 2}, "text": "Half again as much skill xp for an hour."}],
-    gear_up={"max": 5, "per_level": 0.15, "gold": [100, 250, 600, 1500, 4000]},
+    gear_up={"max": 5, "per_level": 0.15, "gold": [60, 150, 350, 800, 2000], "parts": [1, 2, 4, 7, 12]},
     raids={"tickets": 3, "regen_minutes": 120, "hp_mult": 8, "rounds": 20, "loot_rolls": 3, "loot_luck": 2.0,
            "bosses": [
              {"id": "tiber", "name": "The Tiber Thing", "place": "dock", "hp": 300, "attack": 35, "defense": 10, "gold": 120, "text": "Nobody has seen all of it. The part with the teeth is enough."},

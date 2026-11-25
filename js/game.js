@@ -7,8 +7,10 @@
   const places = {}; R.places.forEach(p => places[p.id] = p);
   const workPlaces = R.places.filter(p => p.skill !== 'Summoning');
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
-    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
+    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, crew: [null, null, null], exped: [], parts: 0, make: null, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
+  // older ledgers had heroes holding jobs. Now Smudge works one place and heroes stand crew: keep the first place, move the workers into the crew.
+  if (!S.work3) { const old = (S.jobs || []).filter(j => j && j.place); S.crew = [0, 1, 2].map(i => (old[i] && old[i].hero) || null); S.jobs = old.length ? [{ place: old[0].place, prog: 0, order: old[0].order || 'stay', since: 0 }] : []; S.work3 = 1; }
 
   // ------------------------------------------------------------------ rules
   const level = sk => { let l = 1; const x = S.xp[sk] || 0; while (l < 99 && x >= R.xp_table[l]) l++; return l; };
@@ -19,7 +21,10 @@
   const unlocked = p => level(p.skill) >= p.level;
   const summonCost = () => R.summon.base_ink + R.summon.per_unique * Object.keys(S.roster).length;
   const totalLevel = () => R.skills.reduce((a, s) => a + level(s), 0);
-  const jobSlots = () => R.jobs.slots.filter(t => totalLevel() >= t).length;
+  const crewSlots = () => R.jobs.crew_slots.filter(t => totalLevel() >= t).length;
+  const crew = () => (S.crew || []).slice(0, crewSlots()).filter(id => id && S.roster[id]);
+  const expSlots = () => R.exped.slots.filter(t => totalLevel() >= t).length;
+  const away = id => S.exped.some(e => e.hero === id);
   const sellCap = () => R.gold.daily_sell_cap_base + R.gold.daily_sell_cap_per_level * totalLevel();
   const rollDay = () => { const d = new Date().toISOString().slice(0, 10); if (S.day !== d) { S.day = d; S.sold = 0; } };
   const tonic = eff => (S.tonics[eff] || 0) > now() ? R.tonics.find(t => t.effect === eff).amount : 0;
@@ -50,12 +55,14 @@
   const power = id => { const s = heroStats(id); return s.attack + s.defense + s.health; };
   const mastery = (id, sk) => Math.min(R.jobs.mastery_cap, lvlOf(((S.mastery[id] || {})[sk]) || 0) - 1);
   function jobSpeed(j) {
-    const p = places[j.place], st = heroStats(j.hero); let gear = 0;
-    (S.equip[j.hero] || []).forEach(g => { const it = g && OS.items[g]; if (it && it.equip && it.equip.skill === p.skill) gear += it.equip.speed * gearMult(g, j.hero) / 100; });
-    return 1 + st.speed / R.jobs.speed_div + mastery(j.hero, p.skill) * R.jobs.mastery_speed + perk(p.skill, 'speed') + tonic('speed') + gear + (cabSet(p.id) ? CAB.set_speed : 0) + (kitCount(j.hero) >= 3 ? KIT.speed : 0) + fx(j.hero, 'speed');
+    const p = places[j.place]; let sp = 0;
+    crew().forEach(id => { sp += heroStats(id).speed / R.jobs.crew_speed_div + mastery(id, p.skill) * R.jobs.mastery_speed + fx(id, 'speed') + (kitCount(id) >= 3 ? KIT.speed : 0);
+      (S.equip[id] || []).forEach(g => { const it = g && OS.items[g]; if (it && it.equip && it.equip.skill === p.skill) sp += it.equip.speed * gearMult(g, id) / 100; }); });
+    return (1 + sp + perk(p.skill, 'speed') + tonic('speed') + (cabSet(p.id) ? CAB.set_speed : 0)) * R.jobs.solo_mult;
   }
   const jobTime = j => R.tier[places[j.place].tier].seconds / jobSpeed(j);
-  const jobLuck = j => heroStats(j.hero).luck / R.jobs.luck_div + tonic('luck') + fx(j.hero, 'luck');
+  const jobLuck = () => crew().reduce((t, id) => t + heroStats(id).luck / R.jobs.crew_luck_div + fx(id, 'luck'), 0) + tonic('luck');
+  const crewFx = kind => crew().reduce((t, id) => t + fx(id, kind), 0);
   function weights(p, extra) { const luck = level(p.skill) * R.loot.luck_per_level + perk(p.skill, 'luck') + extra; return p.loot.map(([id, w]) => OS.items[id].rarity === 'common' ? w : w * (1 + luck)); }
   function rollLoot(p, extra) { const ws = weights(p, extra), tot = ws.reduce((a, b) => a + b, 0); let r = Math.random() * tot; for (let i = 0; i < ws.length; i++) { r -= ws[i]; if (r <= 0) return p.loot[i][0]; } return p.loot[0][0]; }
   const dropChance = (p, id, extra) => { const ws = weights(p, extra || 0), c = ws[p.loot.findIndex(r => r[0] === id)] / ws.reduce((a, b) => a + b, 0) * 100; return (c >= 1 ? c.toFixed(1) : c.toFixed(2)) + '% of finds'; };
@@ -111,9 +118,9 @@
   function doAction(j, quiet) {
     const p = places[j.place], t = R.tier[p.tier], drops = [];
     if (CT) contracts().forEach(c => { if (c.place === j.place && c.have < c.need) c.have++; });
-    const inkGot = t.ink * R.web.ink_mult * inkBonus() * (1 + fx(j.hero, 'ink')); bump('hauls_' + p.skill); bump('ink', inkGot);
-    S.actions++; S.ink += inkGot; gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp') + fx(j.hero, 'xp'))), quiet);
-    const m = S.mastery[j.hero] || (S.mastery[j.hero] = {}); m[p.skill] = (m[p.skill] || 0) + R.jobs.mastery_xp;
+    const inkGot = t.ink * R.web.ink_mult * inkBonus() * (1 + crewFx('ink')); bump('hauls_' + p.skill); bump('ink', inkGot);
+    S.actions++; S.ink += inkGot; gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp') + crewFx('xp'))), quiet);
+    crew().forEach(id => { const m = S.mastery[id] || (S.mastery[id] = {}); m[p.skill] = (m[p.skill] || 0) + R.jobs.mastery_xp; });
     if (Math.random() < R.web.loot_chance) { const n = Math.random() < perk(p.skill, 'double') ? 2 : 1; for (let i = 0; i < n; i++) { const id = rollLoot(p, jobLuck(j)); give(id); drops.push(id); bump('finds'); bump('finds_' + OS.items[id].rarity); if (OS.items[id].kind === 'gear') bump('gear_found'); } }
     return drops;
   }
@@ -124,7 +131,7 @@
   const owned = id => S.cabinet[id] || owns(id);
   function huntPlace(j) {
     let best = j.place, top = 0;
-    openPlaces().forEach(p => { const luck = jobLuck({ hero: j.hero, place: p.id }); let sc = 0; p.loot.forEach(([id]) => { if (OS.items[id] && !owned(id)) sc += dropChance(p, id, luck) * (OS.items[id].owner === j.hero ? 3 : 1); }); if (sc > top + 1e-9) { top = sc; best = p.id; } });
+    openPlaces().forEach(p => { const luck = jobLuck(); let sc = 0; p.loot.forEach(([id]) => { const it = OS.items[id]; if (it && !it.junk && !owned(id)) sc += dropChance(p, id, luck) * (it.owner && S.roster[it.owner] ? 3 : 1); }); if (sc > top + 1e-9) { top = sc; best = p.id; } });
     return best;
   }
   // when the ink is full, Smudge goes home and summons on his own (a setting)
@@ -142,10 +149,11 @@
   }
   function advance(dt, quiet) {
     const found = [], wdt = worked(dt);
-    S.jobs.forEach((j, i) => { if (!j || !S.roster[j.hero] || !places[j.place]) return;
+    S.jobs.forEach((j, i) => { if (!j || !places[j.place]) return;
       // standing orders: Wander moves on every so often, Hunt goes where the missing things are
       if (j.order && j.order !== 'stay') { j.since = (j.since || 0) + dt; let hops = 0; while (j.since >= WANDER && hops++ < 400) { j.since -= WANDER; const to = j.order === 'wander' ? nextPlace(j) : huntPlace(j); if (to && to !== j.place) { j.place = to; jobsMoved = true; } } }
       const t = jobTime(j); j.prog = (j.prog || 0) + wdt; let g = 0; while (j.prog >= t && g++ < 20000) { j.prog -= t; doAction(j, quiet).forEach(id => found.push([i, id])); } });
+    tickMake(dt, quiet);
     S.crateT += dt; const every = R.crate.minutes * 60; while (S.crateT >= every) { S.crateT -= every; if (S.autoCrate && !quiet) openCrate(true); else give('x_crate'); if (!quiet) toast(line('crate')); }
     if (S.autoSummon) autoSummon(quiet);
     tickMeters(); return found;
@@ -178,8 +186,8 @@
 
   // ------------------------------------------------------------------ home (the dashboard)
   const GUIDE = [['Summon somebody', 'Smudge has enough ink for one stranger. Go to the Archive and press Summon.', 'summon', () => S.summons > 0],
-    ['Give them a job', 'Open Jobs, pick an empty slot and send an arrival somewhere.', 'jobs', () => S.jobs.some(j => j)],
-    ['Dress them', 'When gear turns up, open an arrival from Arrivals and tap a slot under Wearing.', 'heroes', () => Object.values(S.equip).some(e => e.some(g => g))]];
+    ['Put Smudge to work', 'Open Work, send Smudge somewhere, and stand an arrival behind him as crew.', 'jobs', () => S.jobs.some(j => j)],
+    ['Dress them', 'When gear turns up, open an arrival from Arrivals and tap a glowing slot on the back of their card.', 'heroes', () => Object.values(S.equip).some(e => e.some(g => g)) || Object.values(S.gear).some(g => Object.values(g).some(x => x))]];
   function renderHome() {
     const hr = new Date().getHours(); $('h-day').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
     $('h-hi').textContent = (hr < 12 ? 'Morning' : hr < 18 ? 'Afternoon' : 'Evening') + ', ' + me.profile.username; $('h-sub').textContent = line('idle');
@@ -187,15 +195,18 @@
     const g = $('guide'), left = GUIDE.filter(s => !s[3]()); g.hidden = !left.length;
     if (left.length) { g.innerHTML = '<div class="tag">Getting started</div>' + GUIDE.map((s, i) => `<div class="gstep ${s[3]() ? 'done' : ''}"><i>${s[3]() ? '✓' : i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div><button class="btn small ${s[3]() ? 'ghost' : ''}" data-go="${s[2]}">${s[3]() ? 'Done' : 'Go'}</button></div>`).join(''); }
     $('h-stats').innerHTML = [['Arrivals', Object.keys(S.roster).length + ' / ' + R.heroes.length], ['Total level', totalLevel()], ['Hauls', OS.num(S.actions)], ['Raid tickets', S.tickets + ' / ' + R.raids.tickets], ['Crates', S.bag.x_crate || 0]].map(([a, b]) => `<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
+    const comp = (() => { const g = Object.values(OS.items).filter(i => i.kind === 'gear'), parts = [[Object.keys(S.roster).length, R.heroes.length], [Object.keys(S.cabinet).length, treasures.length], [g.filter(i => owns(i.id)).length, g.length], [Object.keys(S.raids).length, R.raids.bosses.length], [Math.min(99 * 4, totalLevel()), 99 * 4]]; return parts.reduce((t, [a, b]) => t + a / b, 0) / parts.length * 100; })();
+    let cp = $('h-comp'); if (!cp) { cp = el('div', 'panel'); cp.id = 'h-comp'; cp.style.marginBottom = '1rem'; $('h-stats').after(cp); }
+    cp.innerHTML = `<div class="spread"><h3 style="margin:0">The whole ledger</h3><b style="font:400 1.5rem 'Lilita One';color:#f3b930">${comp.toFixed(1)}%</b></div><div class="bar" style="margin-top:.5rem"><i style="width:${comp}%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div><p class="mut" style="margin:.4rem 0 0;font-size:.85rem">Heroes met, cabinet, gear found, bosses beaten and levels, all in one number.</p>`;
     freshUp(); let pc = $('h-pace'); if (!pc) { pc = el('div', 'panel'); pc.id = 'h-pace'; pc.style.marginBottom = '1rem'; $('h-stats').after(pc); pc.addEventListener('click', e => { const b = e.target.closest('[data-claim]'); if (b) claim(+b.dataset.claim); }); }
     const fr = S.rest > 0, list = CT ? contracts() : [];
     pc.innerHTML = `<div class="spread"><h3 style="margin:0">${fr ? 'The crew is fresh' : 'The crew is at a steady pace'}</h3><span class="mut">${fr ? 'double speed for ' + fmt(S.rest) + ' more of work' : 'fresh again tomorrow'}</span></div>
       <div class="bar" style="margin:.5rem 0 .9rem"><i style="width:${pct(S.rest, REST.hours * 3600)}"></i></div>
       <div class="tag">This week's contracts</div>` + (list.length ? list.map((c, i) => `<div class="spread" style="margin-top:.45rem;gap:.8rem"><span style="flex:1"><b style="color:#fff">${Math.min(c.have, c.need)} / ${c.need}</b> hauls at ${places[c.place].name}<div class="bar" style="margin-top:.25rem"><i style="width:${pct(c.have, c.need)}"></i></div></span>${c.paid ? '<span class="mut">Paid</span>' : `<button class="btn small" data-claim="${i}" ${c.have < c.need ? 'disabled' : ''}>${c.shards} shards + crate</button>`}</div>`).join('') : '<p class="mut">Contracts open once a work place is unlocked.</p>');
     const box = $('h-jobs'); box.innerHTML = '';
-    const act = S.jobs.filter(j => j); if (!act.length) box.appendChild(el('p', 'mut', 'Nobody is working. The arrivals are standing around eating your snacks.'));
-    S.jobs.forEach((j, i) => { if (!j) return; const p = places[j.place], h = OS.heroes[j.hero], row = el('div', 'hjob');
-      row.innerHTML = `<img src="${OS.img('heroes', j.hero)}" alt=""><div><b>${h.name}</b><span class="mut">${p.skill} at ${p.name}</span><div class="bar"><i data-job="${i}"></i></div></div>`; box.appendChild(row); });
+    const jw = S.jobs[0]; if (!jw) box.appendChild(el('p', 'mut', 'Smudge is not working. He is reading. That is not the same thing.'));
+    else { const p = places[jw.place], row = el('div', 'hjob'); row.innerHTML = `<img src="/assets/v2/smudge/stamp.webp${OS.VER}" alt=""><div><b>Smudge</b><span class="mut">${p.skill} at ${p.name} · crew of ${crew().length}</span><div class="bar"><i data-job="0"></i></div></div>`; box.appendChild(row); }
+    S.exped.forEach(e => { const h = OS.heroes[e.hero], row = el('div', 'hjob'), left = (e.end - now()) / 1000; row.innerHTML = `<img src="${OS.img('heroes', e.hero)}" alt=""><div><b>${h.name}</b><span class="mut">${left > 0 ? 'Away in ' + h.era + ' · back in ' + fmt(left) : 'Back from ' + h.era + ', with things'}</span><div class="bar"><i style="width:${pct(e.dur - Math.max(0, left), e.dur)}"></i></div></div>`; box.appendChild(row); });
     const cost = summonCost(); $('h-inkbar').style.width = pct(S.ink, cost); $('h-inkpct').textContent = Math.floor(Math.min(1, S.ink / cost) * 100) + '%';
     $('h-inktext').textContent = S.ink >= cost ? 'The bottle is full. Somebody is about to have a very strange day.' : `${OS.num(cost - S.ink)} more ink until the next stranger.`;
     const tl = R.tonics.filter(t => (S.tonics[t.effect] || 0) > now()); $('h-tonics').innerHTML = tl.length ? tl.map(t => `<div class="spread"><span><b style="color:#fff">${t.name}</b> · ${t.text}</span><b>${fmt((S.tonics[t.effect] - now()) / 1000)}</b></div>`).join('') : 'None. Brew one in the Workshop.';
@@ -203,51 +214,94 @@
   }
 
   // ------------------------------------------------------------------ jobs
+  const POSE = { Fishing: 'fish', Lockpicking: 'pick', Digging: 'dig' };
   function renderJobs() {
-    const n = jobSlots(), box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; const pending = []; box.innerHTML = ''; $('j-slots').textContent = `${S.jobs.filter(j => j).length} of ${n} slots working`;
-    for (let i = 0; i < R.jobs.slots.length; i++) {
-      const j = S.jobs[i], card = el('div', 'job');
-      if (i >= n) { card.classList.add('lock'); card.innerHTML = `<div class="jl"><b>Locked slot</b><span class="mut">Opens at total level ${R.jobs.slots[i]}. You are at ${totalLevel()}.</span></div>`; }
-      else if (!j) { card.classList.add('empty'); card.innerHTML = `<div class="jl"><b>Empty slot</b><span class="mut">Tap to send somebody to work.</span></div>`; card.onclick = () => jobSheet(i); }
-      else {
-        const p = places[j.place], h = OS.heroes[j.hero], t = jobTime(j);
-        card.innerHTML = `<div class="jscene"><img class="sc" src="${OS.img('scenes', p.id)}" alt=""><div class="who" data-who="${i}" role="img" aria-label="${h.name}"></div><div class="jpop" data-pop="${i}"></div></div>
-          <div class="jl"><div class="tag">${p.era} · ${p.skill}${j.order === 'wander' ? ' · wandering' : j.order === 'hunt' ? ' · hunting' : ''}</div><b>${h.name} at ${p.name}</b><div class="bar"><i data-job="${i}"></i></div>
-          <div class="spread mut"><span>one haul every ${t.toFixed(1)}s · mastery ${mastery(j.hero, p.skill)}</span><span data-next="${i}"></span></div></div>`;
-        card.onclick = () => jobSheet(i); pending.push([i, j.hero]);
-      }
+    const box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; box.innerHTML = ''; const j = S.jobs[0], n = crewSlots();
+    $('j-slots').textContent = j ? `crew ${crew().length} of ${n} · away ${S.exped.length} of ${expSlots()}` : 'Smudge is idle';
+    // ---- Smudge at work
+    const card = el('div', 'job work');
+    if (!j) { card.classList.add('empty'); card.innerHTML = `<div class="jl"><b>Smudge is not working</b><span class="mut">Tap to send him somewhere. He does the fishing, the lockpicking and the digging himself, one place at a time.</span></div>`; card.onclick = placeSheet; box.appendChild(card); }
+    else {
+      const p = places[j.place], t = jobTime(j);
+      card.innerHTML = `<div class="jscene big"><img class="sc" src="${OS.img('scenes', p.id)}" alt=""><div class="who" data-who="0"></div><div class="jpop" data-pop="0"></div></div>
+        <div class="jl"><div class="tag">${p.era} · ${p.skill}${j.order === 'wander' ? ' · wandering' : j.order === 'hunt' ? ' · hunting' : ''}</div><b>Smudge at ${p.name}</b><div class="bar"><i data-job="0"></i></div>
+        <div class="spread mut"><span>one haul every ${t.toFixed(1)}s${S.rest > 0 ? ' · crew is fresh' : ''}</span><span data-next="0"></span></div>
+        <div class="row" style="margin-top:.6rem;flex-wrap:wrap"></div></div>`;
+      const r = card.querySelector('.row'); r.append(btn('small', 'Move him', placeSheet), btn('small ghost', 'What drops here', () => lootSheet(p, modal.close)), btn('small ghost', 'Bring him home', () => { S.jobs = []; save(true); render(); }));
       box.appendChild(card);
+      const host = card.querySelector('.who'), sp = STAND[p.id] || [.5, .8, 2], H = host.clientHeight, sh = H * 1.12, gx = host.clientWidth / 2 + (sp[0] - .5) * sh * sp[2], gy = -H * .06 + sp[1] * sh;
+      crew().forEach((id, k) => { const e = OS.rig['h_' + id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, id, hh); if (pp) { pp.place(gx - sh * (.14 + k * .1) * (k === 1 ? -1.1 : 1) + (k === 2 ? -sh * .1 : 0), gy - H * (.035 + .015 * k)); jobPups.push(pp); } });
+      const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, H * .5 / se.size[1]); sm.place(gx + (se.foot[0] - se.size[0] / 2) * 0, gy + H * .03); jobPups.unshift(sm);
     }
-    // each scene has a spot of solid ground for the worker to stand on: [x, y, picture width / height] as fractions of the scene picture
-    pending.forEach(([i, id]) => { const host = box.querySelector(`[data-who="${i}"]`), sp = STAND[S.jobs[i].place] || [.5, .8, 2], H = host.clientHeight, sh = H * 1.12, e = OS.rig['h_' + id];
-      const pp = jobPups[i] = OS.heroPuppet(host, id, Math.min(H * .5, H * .62 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .12)); if (pp) pp.place(host.clientWidth / 2 + (sp[0] - .5) * sh * sp[2], -H * .06 + sp[1] * sh); });
+    // ---- the crew
+    const cw = el('div', 'panel crewp'); cw.innerHTML = `<div class="spread"><h3 style="margin:0">Crew</h3><span class="mut">They stand behind him. They do not do the work; they make him better at it.</span></div><div class="cw3"></div>`;
+    const cr = cw.querySelector('.cw3');
+    R.jobs.crew_slots.forEach((need, i) => { const id = S.crew[i], open = i < n, c = el('button', 'cwslot' + (open ? '' : ' lock')); c.type = 'button';
+      if (!open) c.innerHTML = `<span class="mut">Opens at total level ${need}</span>`;
+      else if (id && S.roster[id]) { const h = OS.heroes[id], st = heroStats(id), pl = j && places[j.place]; c.classList.add('r-' + h.rarity);
+        c.innerHTML = `<img src="${OS.img('heroes', id)}" alt=""><span><b>${h.name}</b><em>+${Math.round(st.speed / R.jobs.crew_speed_div * 100)}% speed · +${Math.round(st.luck / R.jobs.crew_luck_div * 100)}% luck${pl ? ' · mastery ' + mastery(id, pl.skill) : ''}</em></span>`; }
+      else c.innerHTML = `<i>+</i><span><b>Empty</b><em>Tap to stand somebody here</em></span>`;
+      if (open) c.onclick = () => crewSheet(i); cr.appendChild(c); });
+    box.appendChild(cw);
+    // ---- expeditions
+    const ex = el('div', 'panel'); ex.innerHTML = `<div class="spread"><h3 style="margin:0">Expeditions</h3><span class="mut">${S.exped.length} of ${expSlots()} away</span></div><p class="mut" style="margin:.3rem 0 .7rem;font-size:.9rem">Anybody not in the crew can go home to their own time for a while and bring back whatever they find there.</p><div class="exlist"></div>`;
+    const xl = ex.querySelector('.exlist');
+    S.exped.forEach((e, i) => { const h = OS.heroes[e.hero], left = (e.end - now()) / 1000, row = el('div', 'exrow2 r-' + h.rarity);
+      row.innerHTML = `<img src="${OS.img('heroes', e.hero)}" alt=""><div><b>${h.name}</b><span class="mut">${left > 0 ? h.era + ' · back in <span data-exleft="' + i + '">' + fmt(left) + '</span>' : 'Back from ' + h.era}</span><div class="bar"><i data-ex="${i}" style="width:${pct(e.dur - Math.max(0, left), e.dur)}"></i></div></div>`;
+      const b = btn('small' + (left > 0 ? ' ghost' : ''), left > 0 ? 'Call back' : 'See what they found', () => left > 0 ? recall(i) : collect(i)); row.appendChild(b); xl.appendChild(row); });
+    if (!expSlots()) xl.appendChild(el('p', 'mut', `Opens at total level ${R.exped.slots.find(t => t > 0)}.`));
+    else if (S.exped.length < expSlots()) { const r = el('div', 'row'); r.appendChild(btn('small', 'Send somebody', expedSheet)); xl.appendChild(r); }
+    box.appendChild(ex);
   }
   let jobPups = [];
   const STAND = { dock: [.45, .6, 1.99], bondi: [.3, .54, 1.99], fjord: [.42, .64, 2.12], speakeasy: [.42, .8, 1.28], vault: [.42, .8, 1.91], closet: [.42, .8, 1.87], outback: [.3, .74, 2.05], blackforest: [.36, .78, 1.95] };
-  function jobSheet(i) {
-    const j = S.jobs[i] || { hero: null, place: null, prog: 0 }, d = el('div', '', `<h3 style="font-size:1.5rem">${S.jobs[i] ? 'Change this job' : 'Send somebody to work'}</h3>`);
-    d.appendChild(el('div', 'tag', 'Who'));
-    const hs = el('div', 'heroes pick'), busy = id => S.jobs.some((x, k) => x && k !== i && x.hero === id);
-    Object.keys(S.roster).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) }); if (busy(id)) c.classList.add('busy'); if (j.hero === id) c.classList.add('sel'); c.onclick = () => { if (busy(id)) return; j.hero = id; upd(); }; c.dataset.id = id; hs.appendChild(c); });
-    d.appendChild(hs); d.appendChild(el('div', 'tag', 'Where')).style.marginTop = '1rem';
+  function placeSheet() {
+    const j = Object.assign({ place: null, prog: 0, order: 'stay', since: 0 }, S.jobs[0] || {}), d = el('div', '', `<h3 style="font-size:1.5rem">Where should Smudge work?</h3>`);
     const ps = el('div', 'plist');
     workPlaces.forEach(p => { const open = unlocked(p), row = el('div', 'prow' + (open ? '' : ' lock'));
       row.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt=""><div><div class="tag">${p.era} · ${p.skill}</div><h3>${p.name}</h3><p>${open ? p.blurb : 'Needs ' + p.skill + ' level ' + p.level + '.'}</p></div>`;
-      const acts = el('div', 'row acts'); acts.appendChild(btn('small ghost', 'What drops here', e => { e.stopPropagation(); lootSheet(p, () => jobSheet(i)); })); row.appendChild(acts);
+      const acts = el('div', 'row acts'); acts.appendChild(btn('small ghost', 'What drops here', e => { e.stopPropagation(); lootSheet(p, placeSheet); })); row.appendChild(acts);
       if (open) row.onclick = () => { j.place = p.id; upd(); }; row.dataset.id = p.id; ps.appendChild(row); });
     d.appendChild(ps);
-    d.appendChild(el('div', 'tag', 'Orders')).style.marginTop = '1rem';
-    const os = el('div', 'orders'), oh = el('p', 'mut', ''); oh.style.cssText = 'margin:.4rem 0 0;font-size:.9rem';
+    d.appendChild(el('div', 'tag', 'Standing orders')).style.marginTop = '1rem';
+    const os = el('div', 'orders'), oh = el('p', 'mut', ''); oh.style.cssText = 'margin:.4rem 0 0;font-size:.9rem'; os.style.cssText = 'display:flex;gap:.5rem;flex-wrap:wrap';
     Object.keys(ORDERS).forEach(k => { const b = el('button', 'btn small ghost', ORDERS[k][0]); b.type = 'button'; b.dataset.o = k; b.onclick = () => { j.order = k; upd(); }; os.appendChild(b); });
-    os.style.cssText = 'display:flex;gap:.5rem;flex-wrap:wrap'; d.append(os, oh);
-    const info = el('p', 'mut', ''), row = el('div', 'row'), go = btn('', 'Start', () => { if (!j.hero || !j.place) return; j.prog = 0; j.since = 0; if (j.order === 'hunt') j.place = huntPlace(j); S.jobs[i] = j; save(true); modal.close(); render(); toast(`${OS.heroes[j.hero].name} is off to ${places[j.place].name}.`); });
-    row.appendChild(go); if (S.jobs[i]) row.appendChild(btn('ghost', 'Call them home', () => { S.jobs[i] = null; save(true); modal.close(); render(); }));
-    d.append(info, row);
+    d.append(os, oh);
+    const go = btn('', 'Send him', () => { if (!j.place) return; j.prog = 0; j.since = 0; if (j.order === 'hunt') j.place = huntPlace(j); S.jobs = [j]; save(true); modal.close(); render(); toast(`Smudge is off to ${places[j.place].name}.`); }), row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(go); d.appendChild(row);
     function upd() { const ord = j.order || 'stay'; os.querySelectorAll('button').forEach(b => { const on = b.dataset.o === ord; b.classList.toggle('ghost', !on); b.setAttribute('aria-pressed', on); }); oh.textContent = ORDERS[ord][1];
-      hs.querySelectorAll('.card').forEach(c => c.classList.toggle('sel', c.dataset.id === j.hero)); ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !(j.hero && j.place);
-      info.innerHTML = j.hero && j.place ? `One haul every <b style="color:#fff">${jobTime(j).toFixed(1)}s</b> · +${Math.round(jobLuck(j) * 100)}% luck from ${OS.heroes[j.hero].name}` : 'Pick who, then where.'; }
+      ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !j.place; }
     upd(); modal.open(d);
   }
+  function heroPick(title, sub, ok, onPick, extra) {
+    const d = el('div', '', `<h3 style="font-size:1.5rem">${title}</h3><p class="mut">${sub}</p>`), hs = el('div', 'heroes pick');
+    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) }), why = ok(id); if (why) { c.classList.add('busy'); c.title = why; } c.onclick = () => { if (!why) onPick(id); else toast(why); }; hs.appendChild(c); });
+    d.appendChild(hs); if (extra) d.appendChild(extra); modal.open(d);
+  }
+  function crewSheet(i) {
+    const cur = S.crew[i], row = el('div', 'row'); row.style.marginTop = '1rem'; if (cur) row.appendChild(btn('small ghost', 'Stand them down', () => { S.crew[i] = null; save(true); modal.close(); render(); }));
+    heroPick('Who stands here?', 'Speed makes Smudge faster. Luck brings up better things. Their gear bonuses count, and they get better at each trade the longer they stand at it.',
+      id => away(id) ? 'Away on an expedition.' : S.crew.some((x, k) => x === id && k !== i) ? 'Already in the crew.' : '', id => { S.crew[i] = id; save(true); modal.close(); render(); }, row);
+  }
+  function expedSheet() {
+    let hours = R.exped.hours[1]; const row = el('div', 'row'); row.style.cssText = 'margin-top:1rem;flex-wrap:wrap;gap:.5rem';
+    R.exped.hours.forEach(h => { const b = btn('small' + (h === hours ? '' : ' ghost'), h + (h === 1 ? ' hour' : ' hours'), () => { hours = h; row.querySelectorAll('button').forEach(x => x.classList.toggle('ghost', x !== b)); }); row.appendChild(b); });
+    heroPick('Send somebody home for a while', 'They go back to their own time and return with treasure, junk and gear from there. Longer trips bring more. Luck helps.',
+      id => S.crew.includes(id) ? 'In the crew. Stand them down first.' : away(id) ? 'Already away.' : '', id => { const dur = hours * 3600; S.exped.push({ hero: id, end: now() + dur * 1000, dur }); save(true); modal.close(); render(); toast(`${OS.heroes[id].name} has gone back to ${OS.heroes[id].era}.`); }, row);
+  }
+  function haul(e, frac) {
+    const h = OS.heroes[e.hero], p = places[h.place], hrs = e.dur / 3600 * frac, st = heroStats(e.hero), luck = st.luck / R.jobs.luck_div + fx(e.hero, 'luck'), got = [];
+    const n = Math.max(frac >= 1 ? 1 : 0, Math.round(hrs * R.exped.rolls_per_hour * (1 + st.speed / 200))); for (let i = 0; i < n; i++) { const id = rollLoot(p, luck); give(id); got.push(id); bump('finds'); }
+    const ink = Math.round(hrs * R.exped.ink_per_hour * inkBonus() * (1 + fx(e.hero, 'ink'))); S.ink += ink; bump('ink', ink); bump('expeditions');
+    const m = S.mastery[e.hero] || (S.mastery[e.hero] = {}); m[p.skill] = (m[p.skill] || 0) + Math.round(hrs * R.exped.mastery_per_hour);
+    return { got, ink, h, p };
+  }
+  function showHaul(r, early) {
+    const d = el('div', '', `<h3 style="font-size:1.5rem">${r.h.name} is back from ${r.h.era}</h3><p class="mut">${early ? 'Called back early, so a lighter load. ' : ''}${r.got.length} things and ${OS.num(r.ink)} ink.</p>`), g = el('div', 'itemrow'), cnt = {};
+    r.got.forEach(id => cnt[id] = (cnt[id] || 0) + 1); Object.keys(cnt).sort((a, c) => rr(OS.items[c].rarity) - rr(OS.items[a].rarity) || (OS.items[a].junk ? 1 : 0) - (OS.items[c].junk ? 1 : 0)).forEach(id => g.appendChild(OS.slot(id, { count: cnt[id] })));
+    d.appendChild(g); const row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(btn('', 'Good', modal.close)); d.appendChild(row); modal.open(d);
+  }
+  function collect(i) { const e = S.exped[i]; if (!e || e.end > now()) return; S.exped.splice(i, 1); const r = haul(e, 1); save(true); render(); showHaul(r); }
+  function recall(i) { const e = S.exped[i]; if (!e) return; const frac = Math.max(0, 1 - (e.end - now()) / 1000 / e.dur) * .8; S.exped.splice(i, 1); const r = haul(e, frac); save(true); render(); showHaul(r, true); }
   function lootSheet(p, back) {
     const d = el('div', '', `<div class="tag">${p.era} · ${p.skill}</div><h3 style="font-size:1.6rem">${p.name}</h3><p class="mut">Everything that can turn up here. Things you have not found yet stay in shadow. Skill level, perks, a lucky arrival and the right tonic all push the odds toward the good stuff.</p>`);
     ['Treasure', 'Signature gear'].forEach((title, gi) => { const rows = p.loot.filter(([id]) => (OS.items[id].kind === 'gear') === !!gi); if (!rows.length) return; d.appendChild(el('div', 'tag', title)); const g = el('div', 'itemrow'); g.style.margin = '.4rem 0 1rem'; rows.forEach(([id]) => g.appendChild(OS.slot(id, { dim: !owns(id), chance: dropChance(p, id), have: S.bag[id] }))); d.appendChild(g); });
@@ -317,12 +371,12 @@
     return { g, own: eq.map((x, i) => x === h.gear[i] ? x : null), has: owns, avail, lines, charmOpen: charmOpen(id), power: power(id), copies: lv < R.card.max_level ? [n, copiesFor(lv)] : null };
   }
   function heroSheet(id, back) {
-    const h = OS.heroes[id], n = S.roster[id], lv = cardLevel(n), st = heroStats(id), job = S.jobs.find(j => j && j.hero === id);
+    const h = OS.heroes[id], n = S.roster[id], lv = cardLevel(n), st = heroStats(id), job = S.crew.includes(id) && S.jobs[0] ? S.jobs[0] : null, gone = away(id);
     const eq = S.equip[id] || (S.equip[id] = [null, null, null]); eq.forEach((x, i) => { if (x && x !== h.gear[i]) { give(x); eq[i] = null; } });      // older saves: anything that was not their own piece goes back to the armory
     const d = el('div', 'herosheet2'), card = OS.card(h, { level: lv, stats: st, base: baseStats(id), load: cardLoad(id), live: true, back: back !== false, onSlot: k => gearPicker(id, k) });
     const side = el('div', 'hs-side');
     side.innerHTML = `<div class="tag r-${h.rarity}" style="color:var(--rc)">${h.rarity} · ${h.species} · ${h.era}</div><h3 style="font-size:1.6rem;margin:.1rem 0 .3rem">${h.name}</h3>
-      <p class="mut" style="font-size:.9rem;margin:0 0 .8rem">${job ? 'Working at ' + places[job.place].name + '.' : 'Not working.'} Tap a slot on the card to change what is in it. A glowing slot means something in your armory fits.</p>`;
+      <p class="mut" style="font-size:.9rem;margin:0 0 .8rem">${gone ? 'Away on an expedition.' : job ? 'Standing crew at ' + places[job.place].name + '.' : S.crew.includes(id) ? 'In the crew.' : 'At a loose end.'} Tap a slot on the card to change what is in it. A glowing slot means something in your armory fits.</p>`;
     const row = el('div', 'row'); row.style.flexWrap = 'wrap';
     row.append(btn('small', 'Flip the card', () => card.click()), btn('small ghost', 'Train', () => { modal.close(); show('training'); }), btn('small ghost', 'Armory', () => { modal.close(); show('bag'); }));
     side.appendChild(row); d.append(card, side); modal.open(d);
@@ -357,7 +411,7 @@
     const ag = arm.querySelector('.armgrid'); if (!pick.length) ag.appendChild(el('p', 'mut', 'Nothing here yet.'));
     pick.forEach(it => { const row = el('div', 'armrow r-' + it.rarity), sl = OS.slot(it.id, { count: S.bag[it.id] }); row.appendChild(sl);
       row.appendChild(el('div', '', `<b style="color:var(--rc)">${it.name}</b><span class="mut">${OS.cap(it.rarity)} · ${it.owner ? OS.heroes[it.owner].name + ' only' : OS.cap(it.slot)}${it.set ? ' · ' + R.gear_sets[it.set].name + ' set' : ''}</span><span class="mut">${wearer[it.id] ? 'Worn by ' + OS.heroes[wearer[it.id]].name + (S.bag[it.id] > 0 ? ' · ' + S.bag[it.id] + ' spare' : '') : 'In the armory' + (S.bag[it.id] > 1 ? ' · ' + S.bag[it.id] : '')}</span>`)); ag.appendChild(row); });
-    $('b-cap').textContent = `Sold today: ${OS.num(S.sold)} of ${OS.num(sellCap())} gold`;
+    $('b-cap').textContent = `${OS.num(Object.keys(S.bag).reduce((t, id) => { const it = OS.items[id]; return t + (it && it.kind === 'loot' && id !== 'x_shard' ? Math.max(0, S.bag[id] - (it.junk ? 0 : 1)) * it.sell : 0); }, 0))} gold of junk and spares`;
     let cab = $('cabinet'); if (!cab) { cab = el('div', 'panel'); cab.id = 'cabinet'; cab.style.marginTop = '1rem'; g.parentNode.parentNode.appendChild(cab); }
     const shown = Object.keys(S.cabinet).length, ready = cabReady().length;
     cab.innerHTML = `<div class="spread"><h3 style="margin:0">The cabinet</h3><span class="mut">${shown} of ${treasures.length} on display · ink worth +${Math.round((inkBonus() - 1) * 1000) / 10}%</span></div>
@@ -375,21 +429,50 @@
     const row = el('div', 'row'); if (S.bag.x_crate > 0) row.appendChild(btn('', `Open another (${S.bag.x_crate} left)`, () => openCrate())); row.appendChild(btn('ghost', 'Into the bag', modal.close)); d.appendChild(row); modal.open(d); render();
   }
   function drink(id) { const t = R.tonics.find(x => x.id === id); if (!t || !(S.bag[id] > 0)) return; bump('tonics'); S.bag[id]--; S.tonics[t.effect] = Math.max(now(), S.tonics[t.effect] || 0) + t.minutes * 60000; save(true); render(); toast(`${t.name}: ${t.text}`); }
-  $('b-sell').onclick = () => { rollDay(); let room = sellCap() - S.sold, earned = 0;
+  $('b-sell').onclick = () => { let room = Infinity, earned = 0;
     Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot') return; while (S.bag[id] > (it.junk ? 0 : 1) && earned + it.sell <= room) { S.bag[id]--; earned += it.sell; } });
-    S.gold += earned; S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(earned ? `Sold the spares for ${earned} gold.` : room <= 0 ? 'The market has had enough of you today.' : 'Nothing to sell. Junk all goes; one of each treasure is kept.'); };
+    S.gold += earned; S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(earned ? `Sold the spares for ${earned} gold.` : false ? 'The market has had enough of you today.' : 'Nothing to sell. Junk all goes; one of each treasure is kept.'); };
 
   // ------------------------------------------------------------------ workshop
   const spare = rar => Object.keys(S.bag).filter(id => OS.items[id] && OS.items[id].kind === 'loot' && !OS.items[id].junk && OS.items[id].rarity === rar && id !== 'x_shard').reduce((a, id) => a + Math.max(0, S.bag[id] - 1), 0);
+  // ---- making: Cooking, Tinkering, Restoring. One thing on the bench at a time, with a bar.
+  const MK = R.making, isFish = id => /^j_(dock|bondi|fjord)_[123]$/.test(id);
+  const stock = kind => Object.keys(S.bag).reduce((t, id) => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || id === 'x_shard' || !(S.bag[id] > 0)) return t;
+    return t + (kind === 'fish' ? (isFish(id) ? S.bag[id] : 0) : kind === 'junk' ? (it.junk ? S.bag[id] : 0) : (!it.junk ? Math.max(0, S.bag[id] - 1) : 0)); }, 0);
+  function spend(kind, n) { Object.keys(S.bag).sort((a, c) => (OS.items[a] ? OS.items[a].sell : 0) - (OS.items[c] ? OS.items[c].sell : 0)).forEach(id => { const it = OS.items[id]; if (n <= 0 || !it || it.kind !== 'loot' || id === 'x_shard') return;
+    const can = kind === 'fish' ? (isFish(id) ? S.bag[id] : 0) : kind === 'junk' ? (it.junk ? S.bag[id] : 0) : (!it.junk ? Math.max(0, S.bag[id] - 1) : 0), use = Math.min(n, can); S.bag[id] -= use; n -= use; }); }
+  const canMake = r => level(r.skill) >= r.level && Object.keys(r.need).every(k => k === 'gold' ? S.gold >= r.need.gold : stock(k) >= r.need[k]) && (!r.gives.cabinet || treasures.some(i => !S.cabinet[i.id]));
+  const makeTime = r => r.seconds / (1 + (level(r.skill) - 1) * MK.speed_per_level);
+  function startMake(id) { const r = MK.recipes.find(x => x.id === id); if (!r || S.make || !canMake(r)) return false; Object.keys(r.need).forEach(k => k === 'gold' ? S.gold -= r.need.gold : spend(k, r.need[k])); S.make = { id, t: 0, need: makeTime(r) }; save(true); render(); return true; }
+  function finishMake(quiet) {
+    const r = MK.recipes.find(x => x.id === S.make.id); S.make = null; if (!r) return; gainXP(r.skill, r.xp, quiet); bump('made'); let msg = r.name + ' done.';
+    if (r.gives.energy) { S.energy = Math.min(R.energy.max, S.energy + r.gives.energy); msg = `Supper is served. +${r.gives.energy} energy.`; }
+    if (r.gives.ticket) { S.tickets = Math.min(R.raids.tickets + 2, S.tickets + 1); msg = 'The feast is laid. One raid ticket.'; }
+    if (r.gives.parts) { S.parts += r.gives.parts; msg = `+${r.gives.parts} spare ${r.gives.parts > 1 ? 'parts' : 'part'}.`; }
+    if (r.gives.shard) { give('x_shard', r.gives.shard); msg = 'One card shard, pieced together.'; }
+    if (r.gives.cabinet) { const miss = treasures.filter(i => !S.cabinet[i.id]); if (miss.length) { const it = miss[Math.floor(Math.random() * miss.length)]; S.cabinet[it.id] = 1; msg = `Restored: ${it.name}. It is in the cabinet.`; } }
+    if (!quiet) { toast(msg); if (current === 'workshop') render(); }
+  }
+  function tickMake(dt, quiet) { if (!S.make) return; S.make.t += dt; if (S.make.t >= S.make.need) finishMake(quiet); }
+  const NEEDW = { fish: 'fish', junk: 'junk', treasure: 'spare treasure', gold: 'gold' };
+  function renderMaking() {
+    let mk = $('w-making'); if (!mk) { mk = el('div', 'panel'); mk.id = 'w-making'; mk.style.marginBottom = '.9rem'; $('w-tonics').parentNode.before(mk); mk.addEventListener('click', e => { const b = e.target.closest('[data-mk]'); if (b) startMake(b.dataset.mk); }); }
+    const cur = S.make && MK.recipes.find(x => x.id === S.make.id);
+    mk.innerHTML = `<div class="spread"><h3 style="margin:0">The bench</h3><span class="mut">${S.parts} spare parts · ${stock('fish')} fish · ${stock('junk')} junk · ${stock('treasure')} spare treasure</span></div>
+      <div class="mkskills">${MK.skills.map(k => { const l = level(k), a = R.xp_table[l - 1] || 0, b = R.xp_table[l] || a + 1; return `<div><span>${k}</span><b>${l}</b><div class="bar"><i style="width:${pct((S.xp[k] || 0) - a, b - a)}"></i></div></div>`; }).join('')}</div>
+      ${cur ? `<div class="mknow"><b>${cur.name}</b><div class="bar"><i id="mk-bar" style="width:${pct(S.make.t, S.make.need)}"></i></div><span class="mut" id="mk-left">${fmt(Math.max(0, S.make.need - S.make.t))}</span></div>` : ''}
+      <div class="mklist">${MK.recipes.map(r => { const ok = canMake(r), locked = level(r.skill) < r.level; return `<div class="mkrow${locked ? ' lock' : ''}"><div><div class="tag">${r.skill}${locked ? ' · level ' + r.level : ''}</div><b>${r.name}</b><span class="mut">${r.text}</span><span class="mut">Needs ${Object.keys(r.need).map(k => r.need[k] + ' ' + NEEDW[k]).join(', ')} · ${fmt(makeTime(r))}</span></div><button class="btn small" data-mk="${r.id}" ${ok && !S.make ? '' : 'disabled'}>${locked ? 'Locked' : S.make ? 'Busy' : 'Make'}</button></div>`; }).join('')}</div>`;
+  }
   function renderWorkshop() {
+    renderMaking();
     const tb = $('w-tonics'); tb.innerHTML = '';
     R.tonics.forEach(t => { const have = spare(t.cost.rarity), row = el('div', 'exrow'); row.innerHTML = `<div class="slot has r-uncommon"><img src="${OS.img('loot', t.id)}" alt=""></div><div><b>${t.name}</b><div class="mut" style="font-size:.85rem">${t.text} Costs ${t.cost.n} spare ${t.cost.rarity} treasures. You have ${have} spare.</div></div>`;
       const b = btn('small', 'Brew', () => { let need = t.cost.n; Object.keys(S.bag).sort((a, b) => S.bag[b] - S.bag[a]).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || it.rarity !== t.cost.rarity || id === 'x_shard') return; const use = Math.min(need, Math.max(0, S.bag[id] - 1)); S.bag[id] -= use; need -= use; }); give(t.id); save(true); render(); toast(`Brewed a ${t.name}. It is in the bag.`); }); b.disabled = have < t.cost.n; row.appendChild(b); tb.appendChild(row); });
-    const gb = $('w-gear'); gb.innerHTML = ''; const all = new Set(); Object.keys(S.bag).forEach(id => { if (S.bag[id] > 0 && OS.items[id] && OS.items[id].kind === 'gear') all.add(id); }); Object.values(S.equip).forEach(e => e.forEach(g => g && all.add(g)));
+    const gb = $('w-gear'); gb.innerHTML = ''; const all = new Set(); Object.keys(S.bag).forEach(id => { if (S.bag[id] > 0 && OS.items[id] && OS.items[id].kind === 'gear') all.add(id); }); Object.values(S.equip).forEach(e => e.forEach(g => g && all.add(g))); Object.values(S.gear).forEach(w => Object.values(w).forEach(g => g && all.add(g)));
     if (!all.size) gb.appendChild(el('p', 'mut', 'No gear yet. It turns up at jobs and falls out of raid bosses.'));
-    [...all].sort((a, b) => rr(OS.items[b].rarity) - rr(OS.items[a].rarity)).forEach(id => { const it = OS.items[id], lv = S.gearLv[id] || 0, worn = Object.values(S.equip).some(e => e.includes(id)), copies = (S.bag[id] || 0) - (worn ? 0 : 1), cost = R.gear_up.gold[lv], row = el('div', 'exrow');
-      row.appendChild(OS.slot(id)); row.appendChild(el('div', '', `<b style="color:${R.rarity_color[it.rarity]}">${it.name}${lv ? ' +' + lv : ''}</b><div class="mut" style="font-size:.85rem">${lv >= R.gear_up.max ? 'As good as it gets.' : `Next level: 1 spare copy and ${OS.num(cost)} gold. Spare copies: ${Math.max(0, copies)}.`}</div>`));
-      const b = btn('small', 'Upgrade', () => { S.bag[id]--; S.gold -= cost; S.gearLv[id] = lv + 1; save(true); render(); toast(`${it.name} is now +${lv + 1}.`); }); b.disabled = lv >= R.gear_up.max || copies < 1 || S.gold < cost; row.appendChild(b); gb.appendChild(row); });
+    [...all].sort((a, b) => rr(OS.items[b].rarity) - rr(OS.items[a].rarity)).forEach(id => { const it = OS.items[id], lv = S.gearLv[id] || 0, worn = Object.values(S.equip).some(e => e.includes(id)) || Object.values(S.gear).some(w => Object.values(w).includes(id)), copies = (S.bag[id] || 0) - (worn ? 0 : 1), cost = R.gear_up.gold[lv], pts = R.gear_up.parts[lv], row = el('div', 'exrow');
+      row.appendChild(OS.slot(id)); row.appendChild(el('div', '', `<b style="color:${R.rarity_color[it.rarity]}">${it.name}${lv ? ' +' + lv : ''}</b><div class="mut" style="font-size:.85rem">${lv >= R.gear_up.max ? 'As good as it gets.' : `Next level: ${pts} spare ${pts > 1 ? 'parts' : 'part'} and ${OS.num(cost)} gold. You have ${S.parts} parts.`}</div>`));
+      const b = btn('small', 'Upgrade', () => { S.parts -= pts; S.gold -= cost; S.gearLv[id] = lv + 1; save(true); render(); toast(`${it.name} is now +${lv + 1}.`); }); b.disabled = lv >= R.gear_up.max || S.parts < pts || S.gold < cost; row.appendChild(b); gb.appendChild(row); });
   }
 
   // ------------------------------------------------------------------ training
@@ -454,7 +537,7 @@
     const gearOwned = Object.values(OS.items).filter(i => i.kind === 'gear' && owns(i.id)).length, gearAll = Object.values(OS.items).filter(i => i.kind === 'gear').length, kits = Object.keys(S.roster).filter(id => kitCount(id) >= 3).length;
     const groups = [
       ['Collection', [['Heroes met', Object.keys(S.roster).length + ' / ' + R.heroes.length], ['Cards at top level', Object.keys(S.roster).filter(id => cardLevel(S.roster[id]) >= R.card.max_level).length], ['Cabinet pieces', Object.keys(S.cabinet).length + ' / ' + treasures.length], ['Gear found', gearOwned + ' / ' + gearAll], ['Full kits worn', kits], ['Duplicate summons', L.dupes || 0], ['Shards in hand', S.bag.x_shard || 0]]],
-      ['Work', [['Total level', totalLevel()], ['Rebirths', rebirthTotal()], ['Hauls', OS.num(S.actions)]].concat(R.skills.filter(k => k !== 'Summoning').map(k => [k + ' hauls', OS.num(L['hauls_' + k] || 0)])).concat([['Things found', OS.num(L.finds || 0)], ['Rare or better found', OS.num(RAR.slice(2).reduce((t, r) => t + (L['finds_' + r] || 0), 0))], ['Mastery levels', mTot], ['Contracts done', L.contracts || 0]])],
+      ['Work', [['Total level', totalLevel()], ['Rebirths', rebirthTotal()], ['Hauls', OS.num(S.actions)]].concat(R.skills.filter(k => k !== 'Summoning').map(k => [k + ' hauls', OS.num(L['hauls_' + k] || 0)])).concat([['Things found', OS.num(L.finds || 0)], ['Expeditions', L.expeditions || 0], ['Things made', L.made || 0]].concat(MK.skills.map(k => [k, 'Level ' + level(k)])).concat([ ['Rare or better found', OS.num(RAR.slice(2).reduce((t, r) => t + (L['finds_' + r] || 0), 0))], ['Mastery levels', mTot], ['Contracts done', L.contracts || 0]]))],
       ['Ink and gold', [['Ink earned', OS.num(L.ink || 0)], ['Ink spent summoning', OS.num(L.ink_spent || 0)], ['Ink bonus', '+' + Math.round((inkBonus() - 1) * 1000) / 10 + '%'], ['Stamps', OS.num(L.stamps || 0)], ['Summons', S.summons], ['Gold earned', OS.num(L.gold || 0)], ['Gold from selling', OS.num(L.gold_sold || 0)]]],
       ['Fights and extras', [['Raids won', L.raids_won || 0], ['Bosses beaten', Object.keys(S.raids).length + ' / ' + R.raids.bosses.length], ['Strongest hero', best ? OS.heroes[best].name + ' (' + power(best) + ')' : 'nobody'], ['Crates opened', L.crates || 0], ['Tonics drunk', L.tonics || 0], ['Time played', fmt(L.seconds || 0)]]]];
     $('ac-stats').innerHTML += groups.map(([t, rows]) => `<div class="tag" style="margin-top:.9rem">${t}</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin-top:.4rem">${rows.map(([a, v]) => `<div class="stat" style="padding:.55rem .6rem"><b style="font-size:1.05rem">${v}</b><span>${a}</span></div>`).join('')}</div>`).join('') + '<p class="mut" style="font-size:.8rem;margin-top:.7rem">Counting started when this page was added, so older ledgers begin part-way.</p>';
@@ -467,21 +550,23 @@
   function render() { renderTop(); renderers[current](); }
 
   // ------------------------------------------------------------------ the clock
-  (function offline() { const away = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (away > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(away, true); toast(`While you were away (${fmt(away)}): ${got.length} finds` + (autoGot.length ? `, and Smudge summoned ${autoGot.length} (${autoGot.slice(0, 4).join(', ')}${autoGot.length > 4 ? '…' : ''}).` : ` and ${OS.num(S.ink - ink0)} ink.`)); autoGot = []; } else tickMeters(); })();
+  (function offline() { const gone = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (gone > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(gone, true); toast(`While you were away (${fmt(gone)}): ${got.length} finds` + (autoGot.length ? `, and Smudge summoned ${autoGot.length} (${autoGot.slice(0, 4).join(', ')}${autoGot.length > 4 ? '…' : ''}).` : ` and ${OS.num(S.ink - ink0)} ink.`)); autoGot = []; } else tickMeters(); })();
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; bump('seconds', dt); const got = advance(dt, false);
     if (jobsMoved) { jobsMoved = false; if (current === 'jobs' && !$('modal').classList.contains('on')) renderJobs(); }
-    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[i]; if (pp) { pp.kick('head', 1.6); pp.kick('tail', 6); pp.cheer(1.2); }
-      if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } if (rr(it.rarity) >= 2) toast(`${OS.heroes[S.jobs[i].hero].name} found: ${it.name}`); });
+    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[0]; if (pp) pp.kick('arm', 30);
+      if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } if (rr(it.rarity) >= 2 && !it.junk) toast(`Smudge found: ${it.name}`); });
     uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
+      if (S.make && $('mk-bar')) { $('mk-bar').style.width = pct(S.make.t, S.make.need); $('mk-left').textContent = fmt(Math.max(0, S.make.need - S.make.t)); }
+      if (current === 'jobs') S.exped.forEach((e, i) => { const left = (e.end - now()) / 1000, b = document.querySelector(`[data-ex="${i}"]`), tx = document.querySelector(`[data-exleft="${i}"]`); if (b) b.style.width = pct(e.dur - Math.max(0, left), e.dur); if (tx) { if (left > 0) tx.textContent = fmt(left); else if (!$('modal').classList.contains('on')) renderJobs(); } });
       if (current === 'summon') renderSummon(); slow -= .1; if (slow <= 0) { slow = 1; if (['training', 'raids', 'home'].includes(current) && !$('modal').classList.contains('on')) renderers[current](); if (got.length && current === 'bag') renderBag(); } }
     requestAnimationFrame(frame);
   }
   addEventListener('keydown', e => { if (e.repeat || e.metaKey || e.ctrlKey || $('modal').classList.contains('on') || (e.target.closest && e.target.closest('input,select,textarea'))) return; if (current === 'summon') stamp(); });
   setInterval(() => { if (dirty) save(true); }, 20000);
-  addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const away = (now() - S.last) / 1000; if (away > 5) advance(Math.min(away, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
+  addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home'); requestAnimationFrame(frame);
-  window.__os = { S: () => S, heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
+  window.__os = { S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
 })();

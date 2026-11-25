@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1125c';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1125e';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -212,8 +212,10 @@ window.OS = (function () {
       const wake = () => { if (!opt.live || c._pup || !window.DBCanvas || !OS.rig['h_' + h.id]) return; const host = c.querySelector('.live'), e = OS.rig['h_' + h.id]; if (!host.clientHeight) return;
         const sc = Math.min(host.clientHeight * 0.92 / e.size[1], host.clientWidth * 0.62 / e.size[0]); host.innerHTML = ''; c._pup = new DBCanvas.Puppet(host, h.id, sc, { hero: true, x: 0.5 - (e.size[0] / 2 - e.foot[0]) * sc / host.clientWidth, y: 0.995, ver: OS.VER }); };
       c.wake = wake; c.sleep = () => { if (c._pup) { c._pup.destroy(); c._pup = null; } };
-      if (!opt.noflip && owned) c.addEventListener('click', e => { if (e.target.closest('.gs,.ib')) return; c.classList.toggle('flip'); if (c.classList.contains('flip')) setTimeout(wake, 350); });
-      if (opt.back) { c.classList.add('flip'); setTimeout(wake, 60); }
+      if (!opt.noflip && owned) c.addEventListener('click', e => { if (e.target.closest('.gs,.ib')) return; clearTimeout(c._ft);
+        if (c.classList.contains('flip')) { c.classList.remove('flat'); void c.offsetWidth; c.classList.remove('flip'); }
+        else { c.classList.add('flip'); setTimeout(wake, 350); c._ft = setTimeout(() => c.classList.add('flat'), 720); } });
+      if (opt.back) { c.classList.add('flip', 'flat'); setTimeout(wake, 60); }
     }
     return c;
   };
