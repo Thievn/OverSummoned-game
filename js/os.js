@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1126b';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1126c';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -166,13 +166,13 @@ window.OS = (function () {
      back), onSlot(key), noflip. */
   OS.card = function (h, opt) {
     opt = opt || {}; const owned = opt.owned !== false, R = OS.R, L = opt.load || {}, g = L.g || {}, own = L.own || [null, null, null];
-    const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : ''));
+    const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : '') + (OS.founder && owned ? ' founder' : ''));
     const stats = opt.stats || h.stats, base = opt.base || stats, power = L.power != null ? L.power : stats.attack + stats.defense + stats.health;
     const col = id => id && OS.items[id] ? R.rarity_color[OS.items[id].rarity] : '';
     const GS = R.slots.general, keys = GS.concat(['own0', 'own1', 'own2']), at = k => k.indexOf('own') === 0 ? own[+k[3]] : g[k];
     const dots = keys.map((k, i) => (i === 5 ? '<u></u>' : '') + `<i class="${k === 'charm' ? 'o' : ''}" style="${at(k) ? 'background:' + col(at(k)) : ''}"></i>`).join('');
     const lv = opt.level > 1 ? `<span class="lv">Lv ${opt.level}</span>` : '';
-    let front = `<div class="face front tcg">
+    let front = `<div class="face front tcg">${OS.founder && owned ? '<span class="seal" title="Founding Clerk: this ledger was opened during the closed beta">FC</span>' : ''}
       <div class="nbar"><span class="nm">${owned ? h.name : '???'}</span>${lv}</div>
       <div class="win"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>
         <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div></div>

@@ -644,3 +644,12 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 @keyframes geoin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .xbtn{font:800 1rem/1 Nunito;color:var(--mut);background:transparent;border:2px solid var(--line);border-radius:8px;width:1.9rem;height:1.9rem;cursor:pointer;vertical-align:middle}
 .xbtn:hover{color:#fff;border-color:var(--ember);background:rgba(255,140,74,.15)}
+/* ---- the Founding Clerk mark: only for ledgers opened during the closed beta ---- */
+.card.founder .face::after{content:"";position:absolute;inset:6px;border-radius:13px;pointer-events:none;z-index:4;
+  box-shadow:inset 0 0 0 1px rgba(255,241,184,.85),inset 0 0 14px rgba(242,185,53,.35)}
+.card.mini.founder .face::after{inset:4px;border-radius:9px}
+.card.founder .front .seal{position:absolute;right:8px;top:8px;z-index:5;width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ffe9a8,#f2b935 45%,#9c6a10);border:2px solid rgba(5,8,20,.8);
+  display:grid;place-items:center;font:400 .62rem "Lilita One";color:#4a3520;text-shadow:0 1px 0 rgba(255,255,255,.4)}
+.card.mini.founder .front .seal{width:16px;height:16px;font-size:.5rem;right:6px;top:6px}
+.founder-note{display:inline-flex;align-items:center;gap:.4rem;font:800 .72rem Nunito;letter-spacing:.08em;text-transform:uppercase;color:#f3b930}

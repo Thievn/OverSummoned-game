@@ -222,6 +222,7 @@
   }
   $('gnav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v); });
   document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
+  OS.founder = !!(me.profile && me.profile.founder);   // the beta mark, worn on every card
   $('go-account').onclick = () => show('account');
   // beta: a note straight to the owner
   $('go-feedback').onclick = () => { const d = el('div', '');
