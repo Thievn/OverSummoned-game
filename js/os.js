@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1125j';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1125k';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -197,7 +197,7 @@ window.OS = (function () {
         <div class="bon">${lines.slice(0, 3).join('<br>')}</div>
         <div class="strip">${R.stats.map(k => `<span>${SW[k]}<b>${stats[k]}</b>${stats[k] > base[k] ? `<em>+${stats[k] - base[k]}</em>` : ''}</span>`).join('')}</div>
         <div class="foot"><span>Power <b>${power}</b></span>${cp}</div>
-        <div class="story"><h4>${h.title} · ${h.era}</h4><p>${h.bio}</p><h4>Smudge says</h4><p>“${h.lines[1]}”</p></div></div>`;
+        <div class="story"><h4>${h.title} · ${h.era}</h4><p>${h.bio}</p>${h.fact ? `<h4>True fact</h4><p>${h.fact}</p>` : ''}<h4>Smudge says</h4><p>“${h.lines[1]}”</p></div></div>`;
     }
     c.innerHTML = front + back;
     if (!opt.mini) {

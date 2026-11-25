@@ -203,3 +203,19 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] oversummoned.com now runs this version (main fast-forwarded to fable at 1af472e; previous live commit was 140c617 if a rollback is ever needed)
 - Still invite-only: only allow-listed emails can play until `os2_open` is switched on
 - From here: fable = preview, main = live; push to main only when Dean says
+
+## Wave two — ten new arrivals, built 24 Nov (on the preview, not yet live)
+- [x] Vesper Nightshade (bat, goth), Roxy Riot (skunk, punk), Jazzmin Sweat (poodle, aerobics), Captain Stella Comet (snow leopard, pulp space),
+      Pixel Pam (red panda, arcade), Gorm the Mighty (bison, barbarian), Commander Flap (penguin, jetpack), Sgt. Max Carnage (rhino, action movie),
+      Rex Sizzle (Afghan hound, hair metal), El Ajolote Dorado (axolotl, luchador). Roster is now 36.
+- [x] Per the rule: 3 own pieces + 5-piece era set + crew lines + icons each (80 new gear pieces, 422 items in all), 10 new card backdrops
+- [x] Animated puppets for all ten (head; Pam's tail; soft chest motion on Vesper, Roxy, Jazzmin, Stella)
+- [x] New: every card can carry one true fact, shown on the story page (idea borrowed from Cards, the Universe and Everything). Only the new ten have one so far
+- [x] Server item list reloaded so saves accept the new heroes and gear
+- Everything is in `rules/wave2.py`; art jobs in `rules/artjobs_w.py`. Copy that pattern for wave three
+- [ ] Facts for the first 26 heroes
+- [ ] Tails for Roxy and Stella (they cross behind the legs, need a careful cut)
+- [ ] Collections/albums (group cards by theme with a bonus for finishing a set), another CUE idea
+- [ ] New 80s/90s treasure for the loot pool (pocket pet egg, brick phone, slap bracelet...) and maybe a new place to find it
+- [ ] Sunglasses icons (Pam's visor, Max's aviators) had their green lenses keyed out and were patched; regenerate with non-green lenses
+- [ ] Desktop pet: new hero art and rules copied, puppets not wired
