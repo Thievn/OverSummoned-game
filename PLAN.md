@@ -132,6 +132,11 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Mastery per treasure
 - [ ] Crews, market, per-skill leaderboards (needs database approval)
 
+## Voices
+- [x] Crew chatter: each hero has five lines and two replies in their own voice (`rules/chatter.py` -> `data/chatter.json`, 182 lines, written by hand). One speaks every 11 to 21 seconds; sometimes one other answers. Never two at once. A crew member reacts when Smudge finds treasure
+- [ ] Grok voices: have Grok write a bigger set per hero ONCE, from the owner's office, and store it in the database for everyone. Never per player or per visit, so credits are spent once per hero. Needs database approval
+- [ ] RULE for every new hero: add their lines to `rules/chatter.py`
+
 ## Loot
 - [x] Junk loot (`rules/junk.py`): 63 sell-only finds (local fish, lost property, daft things; 7 per place plus 7 that fall out of the rift anywhere). Mostly 1 to 9 gold, a few worth 20 to 50. Not part of the cabinet. "Sell spare treasure" sells all junk
 - [ ] Gold needs more to spend on (today: gear upgrades). Ideas: market, shard purchases, cosmetics

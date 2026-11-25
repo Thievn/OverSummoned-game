@@ -493,3 +493,6 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .card.flat .front{visibility:hidden}
 .card.flat .back,.card.flat .back.bk{transform:none!important}
 .panel>.spread{flex-wrap:wrap;gap:.2rem .8rem}
+
+.crewsay{position:absolute;z-index:6;max-width:44%;background:#fff;color:#1e2a47;border:2.5px solid #1e2a47;border-radius:12px 12px 12px 3px;padding:.3em .65em;font:700 .8rem/1.25 Nunito,sans-serif;opacity:0;transform:translateY(6px) scale(.85);transform-origin:10% 100%;transition:opacity .18s,transform .22s cubic-bezier(.3,1.6,.5,1);pointer-events:none;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.crewsay.r{border-radius:12px 12px 3px 12px;transform-origin:90% 100%}.crewsay.on{opacity:1;transform:none}

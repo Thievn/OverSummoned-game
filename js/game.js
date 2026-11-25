@@ -216,7 +216,7 @@
   // ------------------------------------------------------------------ jobs
   const POSE = { Fishing: 'fish', Lockpicking: 'pick', Digging: 'dig' };
   function renderJobs() {
-    const box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; box.innerHTML = ''; const j = S.jobs[0], n = crewSlots();
+    const box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; crewPups = []; box.innerHTML = ''; const j = S.jobs[0], n = crewSlots();
     $('j-slots').textContent = j ? `crew ${crew().length} of ${n} · away ${S.exped.length} of ${expSlots()}` : 'Smudge is idle';
     // ---- Smudge at work
     const card = el('div', 'job work');
@@ -230,7 +230,7 @@
       const r = card.querySelector('.row'); r.append(btn('small', 'Move him', placeSheet), btn('small ghost', 'What drops here', () => lootSheet(p, modal.close)), btn('small ghost', 'Bring him home', () => { S.jobs = []; save(true); render(); }));
       box.appendChild(card);
       const host = card.querySelector('.who'), sp = STAND[p.id] || [.5, .8, 2], H = host.clientHeight, sh = H * 1.12, gx = host.clientWidth / 2 + (sp[0] - .5) * sh * sp[2], gy = -H * .06 + sp[1] * sh;
-      crew().forEach((id, k) => { const e = OS.rig['h_' + id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, id, hh); if (pp) { pp.place(gx - sh * (.14 + k * .1) * (k === 1 ? -1.1 : 1) + (k === 2 ? -sh * .1 : 0), gy - H * (.035 + .015 * k)); jobPups.push(pp); } });
+      crew().forEach((id, k) => { const e = OS.rig['h_' + id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, id, hh); if (pp) { pp.place(gx - sh * (.14 + k * .1) * (k === 1 ? -1.1 : 1) + (k === 2 ? -sh * .1 : 0), gy - H * (.035 + .015 * k)); jobPups.push(pp); pp.id = id; pp.tall = hh; crewPups.push(pp); } });
       const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, H * .5 / se.size[1]); sm.place(gx + (se.foot[0] - se.size[0] / 2) * 0, gy + H * .03); jobPups.unshift(sm);
     }
     // ---- the crew
@@ -253,7 +253,21 @@
     else if (S.exped.length < expSlots()) { const r = el('div', 'row'); r.appendChild(btn('small', 'Send somebody', expedSheet)); xl.appendChild(r); }
     box.appendChild(ex);
   }
-  let jobPups = [];
+  let jobPups = [], crewPups = [], chatT = 6;
+  // ---- crew chatter: one voice at a time. Somebody says a line; now and then one other answers. Never a pile-up.
+  let CHAT = {}; fetch('/data/chatter.json' + OS.VER).then(r => r.json()).then(j => CHAT = j).catch(() => { });
+  const pickLine = (id, kind) => { const l = (CHAT[id] || {})[kind]; return l && l.length ? l[Math.floor(Math.random() * l.length)] : null; };
+  function crewSay(pp, text, hold) {
+    const host = document.querySelector('[data-who="0"]'); if (!host || !text) return; const b = el('div', 'crewsay', text), right = pp.x > host.clientWidth / 2;
+    b.style.cssText = `${right ? 'right:' + Math.max(4, host.clientWidth - pp.x - 70) + 'px' : 'left:' + Math.max(4, pp.x - 30) + 'px'};bottom:${Math.max(6, host.clientHeight - pp.y + pp.tall + 6)}px`; if (right) b.classList.add('r');
+    host.appendChild(b); requestAnimationFrame(() => b.classList.add('on')); if (pp.kick) pp.kick('arm', 30);
+    setTimeout(() => { b.classList.remove('on'); setTimeout(() => b.remove(), 250); }, hold || 3200);
+  }
+  function chatter(dt) {
+    if (current !== 'jobs' || !crewPups.length || $('modal').classList.contains('on')) return; chatT -= dt; if (chatT > 0) return; chatT = 11 + Math.random() * 10;
+    const a = crewPups[Math.floor(Math.random() * crewPups.length)]; crewSay(a, pickLine(a.id, 'say'));
+    const others = crewPups.filter(x => x !== a); if (others.length && Math.random() < 0.45) { const b = others[Math.floor(Math.random() * others.length)]; setTimeout(() => { if (current === 'jobs') crewSay(b, pickLine(b.id, 'reply'), 2600); }, 2700); chatT += 3; }
+  }
   const STAND = { dock: [.45, .6, 1.99], bondi: [.3, .54, 1.99], fjord: [.42, .64, 2.12], speakeasy: [.42, .8, 1.28], vault: [.42, .8, 1.91], closet: [.42, .8, 1.87], outback: [.3, .74, 2.05], blackforest: [.36, .78, 1.95] };
   function placeSheet() {
     const j = Object.assign({ place: null, prog: 0, order: 'stay', since: 0 }, S.jobs[0] || {}), d = el('div', '', `<h3 style="font-size:1.5rem">Where should Smudge work?</h3>`);
@@ -554,8 +568,9 @@
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; bump('seconds', dt); const got = advance(dt, false);
+    chatter(dt);
     if (jobsMoved) { jobsMoved = false; if (current === 'jobs' && !$('modal').classList.contains('on')) renderJobs(); }
-    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[0]; if (pp) pp.kick('arm', 30);
+    got.forEach(([i, id]) => { const pop = document.querySelector(`[data-pop="${i}"]`), who = document.querySelector(`[data-who="${i}"]`), it = OS.items[id]; const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (crewPups.length && !OS.items[id].junk) { const c = crewPups[Math.floor(Math.random() * crewPups.length)]; c.kick('arm', 30); }
       if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } if (rr(it.rarity) >= 2 && !it.junk) toast(`Smudge found: ${it.name}`); });
     uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
       if (S.make && $('mk-bar')) { $('mk-bar').style.width = pct(S.make.t, S.make.need); $('mk-left').textContent = fmt(Math.max(0, S.make.need - S.make.t)); }
