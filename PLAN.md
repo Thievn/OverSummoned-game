@@ -238,3 +238,14 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Gear stats still follow a fixed pattern per slot
 - [x] Bella redrawn with two legs (Dean picked the one with black claws); puppet rebuilt
 - [x] Fixed the broken bar across the top of every page: the guild progress bar had been given the same class name as the game's header (`.gbar`), now `.guildbar`
+
+## Night of 24 Nov — while Dean was out
+- [x] Checked: everything about a player is already in Supabase, one row per account (`os2_save`, `os2_profile`, plus the city tables). The only things kept in the browser are an anonymous visitor-count id and my local test save
+- [x] Roxy's tail moves (live)
+- [x] Gear stats: every piece has its own seeded roll, no repeated number, sometimes a small third stat (live)
+- [x] Stamp: a key pressed before Smudge finished loading no longer throws an error (live)
+- [x] **Server-rolled loot and summons — built, on the PREVIEW only.** Hauls, expeditions, crates, raid prizes and summons are all drawn by the server and added to its copy of the ledger; the game shows what comes back. Server side tested in a rolled-back block (see `supabase/os2_server_rolls.md`); game side tested locally with pretend rolls
+- [ ] **Dean: play the preview signed in** — work a place for a minute, open a crate, summon, collect an expedition. Then say "push it live"
+- [ ] After that goes live: tighten the save check so nothing can be added except by the server (closes the last cheat)
+- [ ] Still decided in the browser: whether a haul finds anything at all, raid win/lose, bench crafting, calling a hero by name with shards, gold from selling. All are capped by the server's limits; move them over next
+- [ ] Finds now arrive in small batches about every second and a half, not the instant a haul lands

@@ -54,6 +54,9 @@ window.Cloud = (function () {
   C.marketList = (item, qty, price) => rpc('os2_market_list', { p_item: item, p_qty: qty, p_price: price }, () => { fake.mine.push({ id: ++fake.n, item, qty, price }); return dbag(item, -qty); });
   C.marketCancel = id => rpc('os2_market_cancel', { p_id: id }, () => { const l = fake.mine.find(x => x.id === id); fake.mine = fake.mine.filter(x => x.id !== id); return l ? dbag(l.item, l.qty) : null; });
   C.marketBuy = id => rpc('os2_market_buy', { p_id: id }, () => { const l = fake.open.find(x => x.id === id); fake.open = fake.open.filter(x => x.id !== id); if (!l) return { r: 'Somebody got there first.' }; const o = dbag(l.item, l.qty); o.set.gold = C.devS().gold - l.price; o.item = l.item; return o; });
+  // the server rolls loot and summons (local testing rolls in the game itself)
+  C.roll = (list, cost) => rpc('os2_roll', { p_rolls: list, p_cost: cost || null });
+  C.summon = n => rpc('os2_summon', { p_n: n });
   C.boardSkill = sk => rpc('os2_board_skill', { p_skill: sk }, () => [{ username: 'Pemberton', xp: 1.4e7, rebirth: 1 }, { username: 'DevOtter', xp: 90000, rebirth: 0 }]);
   C.setProfile = async patch => DEV ? true : !(await sb.from('os2_profile').update(patch).eq('id', C.user.id)).error;
   C.signOut = async () => { if (!DEV) await sb.auth.signOut(); location.href = '/'; };
