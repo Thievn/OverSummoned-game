@@ -68,6 +68,13 @@ func _process(_d: float) -> bool:
 				main.roster[str(h["id"])] = 1
 			main.bag["x_crate"] = 3
 			main._refresh_roster()
+		"link":
+			main.cloud.fake = _fake_server
+			main.cloud.token = "test"
+			main.cloud.username = "DevOtter"
+			main._cloud_load()
+		"cloudsave":
+			main._cloud_save()
 		"menu":
 			main.menu.visible = true
 			main._show_tab(p[1])
@@ -86,3 +93,37 @@ func _process(_d: float) -> bool:
 		"shot":
 			root.get_texture().get_image().save_png("/tmp/os_shots/%s.png" % p[1])
 	return false
+
+
+# a pretend server for the linked path: same answers the real one gives
+var srv := {"rev": 3, "data": {"v": 3, "ink": 9000.0, "gold": 12.0, "xp": {"Fishing": 5000000.0, "Summoning": 100.0}, "bag": {"bath_carp": 2.0, "x_shard": 1.0}, "roster": {"kevin": 1.0, "lola": 2.0}, "actions": 10.0, "crew": ["lola", null, null]}}
+func _fake_server(fn: String, body: Dictionary):
+	if fn != "os2_pet":
+		return {"r": "ok", "token": "test", "username": "DevOtter"}
+	var a: Dictionary = body["p_args"]
+	match str(body["p_op"]):
+		"load":
+			return {"r": "ok", "data": srv["data"], "rev": srv["rev"], "username": "DevOtter"}
+		"save":
+			if int(a["rev"]) != int(srv["rev"]):
+				return {"r": "ok", "ok": false, "why": "stale", "data": srv["data"], "rev": srv["rev"]}
+			srv["data"] = a["data"]
+			srv["rev"] = int(srv["rev"]) + 1
+			print("FAKE save ok rev ", srv["rev"], " bag ", (a["data"]["bag"] as Dictionary).size(), " crew kept ", a["data"].has("crew"))
+			return {"r": "ok", "ok": true, "rev": srv["rev"]}
+		"roll":
+			var add := {}
+			for e in a["rolls"]:
+				add["bath_eel" if str(e["place"]) == "dock" else "archive_7"] = int(e["n"])
+			srv["rev"] = int(srv["rev"]) + 1
+			print("FAKE roll ", a["rolls"])
+			return {"r": "ok", "add": add, "list": [], "rev": srv["rev"]}
+		"summon":
+			srv["rev"] = int(srv["rev"]) + 1
+			print("FAKE summon")
+			return {"r": "ok", "got": [{"id": "vesper", "had": 0, "cost": 3800, "rarity": "epic"}], "set": {"ink": 5200, "roster": {"kevin": 1, "lola": 2, "vesper": 1}, "summons": 1, "shards": 1, "sxp": 1050}, "rev": srv["rev"]}
+		"sell":
+			srv["rev"] = int(srv["rev"]) + 1
+			print("FAKE sell ", a["items"])
+			return {"r": "ok", "earned": 8, "set": {"bag": {"bath_eel": 1}, "gold": 20}, "rev": srv["rev"]}
+	return {"r": "bad"}

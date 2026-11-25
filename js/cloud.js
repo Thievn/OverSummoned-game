@@ -57,6 +57,10 @@ window.Cloud = (function () {
   // the server rolls loot and summons (local testing rolls in the game itself)
   C.roll = (list, cost) => rpc('os2_roll', { p_rolls: list, p_cost: cost || null });
   C.summon = n => rpc('os2_summon', { p_n: n });
+  // linking the desktop pet
+  C.pairNew = () => rpc('os2_pair_new', null, () => 'DEV0CODE12');
+  C.devices = () => rpc('os2_devices', null, () => [{ id: 'd1', name: "Dean's PC", linked: new Date().toISOString(), seen: null }]);
+  C.deviceDrop = id => rpc('os2_device_drop', { p_id: id }, () => null);
   C.sell = items => rpc('os2_sell', { p_items: items });
   C.call = hero => rpc('os2_call', { p_hero: hero });
   C.boardSkill = sk => rpc('os2_board_skill', { p_skill: sk }, () => [{ username: 'Pemberton', xp: 1.4e7, rebirth: 1 }, { username: 'DevOtter', xp: 90000, rebirth: 0 }]);

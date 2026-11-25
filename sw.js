@@ -1,6 +1,6 @@
 // OverSummoned app shell. Pages and code come from the network first (so updates show at once) and
 // fall back to the last copy when offline; pictures are kept, since their links carry a version.
-const V = 'os-1125t';
+const V = 'os-1125u';
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(V).then(c => c.addAll(['/offline', '/css/os.css', '/assets/fonts/LilitaOne.ttf', '/assets/fonts/Nunito.ttf']).catch(() => { }))); });
 self.addEventListener('activate', e => e.waitUntil((async () => { for (const k of await caches.keys()) if (k !== V) await caches.delete(k); await self.clients.claim(); })()));
 self.addEventListener('fetch', e => {

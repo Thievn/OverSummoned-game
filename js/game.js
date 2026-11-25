@@ -677,7 +677,14 @@
     d.appendChild(btn('', 'Put it on the stall', async () => { const v = note(); if (v < 1 || v > 100000 || !(S.bag[id] > 0)) return; const r = await srv(() => Cloud.marketList(id, 1, v)); if (r.r !== 'ok') toast(r.r); else bump('market_lists'); modal.close(); render(); cityAgain(); }));
     d.appendChild(btn('ghost', 'Never mind', modal.close)); modal.open(d); d.querySelector('#ls-price').oninput = note; note(); }
   function renderShop() { if ($('shoplist').children.length) return; [['A dry hood', 'An outfit for Smudge.'], ['Gilded frames', 'A card frame set.'], ['Midnight Archive', 'A new look for the cellar.'], ['Supporter badge', 'Next to your name in the city.']].forEach(([a, b]) => $('shoplist').appendChild(el('div', 'tile soon', `<b>${a}</b><span>${b}</span><em>Opening soon</em>`))); }
-  function renderAccount() {
+  // the desktop pet: a code to type into it once, and the list of pets already linked
+  let petCode = null, petList = null, petAt = 0;
+  async function renderPet(force) { const box = $('ac-pet'); if (!box) return; if (force || !petList || now() - petAt > 30000) { try { petList = await Cloud.devices() || []; } catch (e) { petList = petList || []; } petAt = now(); }
+    box.innerHTML = ''; if (petCode) box.appendChild(el('div', 'petcode', `<b>${esc(petCode)}</b><span class="mut">Type this into the pet within ten minutes. It works once.</span>`));
+    box.appendChild(btn('small', petCode ? 'Get a new code' : 'Link a desktop pet', async () => { try { petCode = await Cloud.pairNew(); } catch (e) { toast('The city is not answering.'); } renderPet(); }));
+    petList.forEach(d => { const row = el('div', 'frow', `<div><b>${esc(d.name)}</b><span class="mut">Linked ${new Date(d.linked).toLocaleDateString()}${d.seen ? ' · last seen ' + new Date(d.seen).toLocaleDateString() : ' · not used yet'}</span></div>`);
+      row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
+  function renderAccount() { renderPet();
     $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>`;
     const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Not connected'}</b></div>
       <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet and Steam items stay switched off for this account, and nothing else is affected.</p>`;

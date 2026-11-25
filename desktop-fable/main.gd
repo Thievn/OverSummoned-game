@@ -7,6 +7,7 @@ extends Node2D
 const Voice = preload("res://voice.gd")
 const OverlayScript = preload("res://overlay.gd")
 const PuppetScript = preload("res://puppet.gd")
+const CloudScript = preload("res://cloud.gd")
 const SceneShader = preload("res://shaders/scene.gdshader")
 
 const WIN := Vector2(640, 380)
@@ -129,6 +130,18 @@ var menu_drag := false
 var menu_drag_from := Vector2.ZERO
 var loot_view := ""          # place id whose loot list is showing in the Places tab
 var reset_armed := false
+# ---- the link to the player's account (see cloud.gd). When linked, the server rolls every find and summon and keeps the ledger.
+var cloud
+var cloud_data := {}          # the whole ledger as the server last sent it; the pet only touches a few fields of it
+var cloud_rev := 0
+var cloud_busy := false
+var cloud_save_t := 20.0
+var pend := {}                # finds waiting to be rolled by the server: "place|luck" -> how many
+var roll_timer := 0.0
+var summon_wait := 0.0
+var hauls_unsent := 0
+var link_code: LineEdit
+var link_status: Label
 
 # ============================================================ setup
 
@@ -177,6 +190,9 @@ func _ready() -> void:
 	ambience = AudioStreamPlayer.new()
 	ambience.volume_db = -16.0
 	add_child(ambience)
+	if cloud == null:
+		cloud = CloudScript.new()
+		add_child(cloud)
 	http = HTTPRequest.new()
 	http.timeout = 15.0
 	http.request_completed.connect(_on_ai_reply)
@@ -184,6 +200,8 @@ func _ready() -> void:
 
 	_enter_place(false)
 	get_tree().auto_accept_quit = false
+	if cloud.linked():
+		_cloud_load()
 
 func _load_art() -> void:
 	for p in R["places"]:
@@ -425,6 +443,16 @@ func _process(delta: float) -> void:
 	overlay_top.queue_redraw()
 	_update_passthrough()
 
+	if cloud.linked():
+		roll_timer -= delta
+		summon_wait -= delta
+		cloud_save_t -= delta
+		if roll_timer <= 0.0 and not pend.is_empty() and not cloud_busy:
+			roll_timer = 1.0
+			_cloud_roll()
+		elif cloud_save_t <= 0.0 and not cloud_busy:
+			cloud_save_t = 20.0
+			_cloud_save()
 	save_timer -= delta
 	if save_timer <= 0.0:
 		save_timer = 10.0
@@ -604,8 +632,11 @@ func _tap() -> void:
 	if skill == "Summoning":
 		ink += amount
 		if ink >= _summon_cost():
-			ink -= _summon_cost()
-			_summon()
+			if cloud.linked():
+				_cloud_summon()
+			else:
+				ink -= _summon_cost()
+				_summon()
 	else:
 		var before := int(progress / _need() * float(R["lock_pins"]))
 		progress += amount
@@ -626,15 +657,23 @@ func _action() -> void:
 	var from := _loot_from()
 	var n := 2 if randf() < _perk(skill, "double") else 1
 	var best := ""
-	for i in n:
-		var id := _roll_loot(_place(), skill, 0.0)
-		bag[id] = int(bag.get(id, 0)) + 1
-		_fly(loot_tex.get(id), from + Vector2(i * 22, 0), smudge.named_point("bag"), 64.0, 0.35 + i * 0.12, 0.35, 0.55, 50.0)
-		if best == "" or R["rarities"].find(str(items[id]["rarity"])) > R["rarities"].find(str(items[best]["rarity"])):
-			best = id
+	if cloud.linked():
+		# the server decides what was found; it arrives a moment later (see _cloud_roll)
+		var lk := snappedf(float(_level(skill)) * float(R["loot"]["luck_per_level"]) + _perk(skill, "luck"), 0.01)
+		var key := "%s|%s" % [_pid(), str(lk)]
+		pend[key] = int(pend.get(key, 0)) + n
+		hauls_unsent += 1
+	else:
+		for i in n:
+			var id := _roll_loot(_place(), skill, 0.0)
+			bag[id] = int(bag.get(id, 0)) + 1
+			_fly(loot_tex.get(id), from + Vector2(i * 22, 0), smudge.named_point("bag"), 64.0, 0.35 + i * 0.12, 0.35, 0.55, 50.0)
+			if best == "" or R["rarities"].find(str(items[id]["rarity"])) > R["rarities"].find(str(items[best]["rarity"])):
+				best = id
 	ink += float(tier["ink"])
-	var it: Dictionary = items[best]
-	_float_text(str(it["name"]), from + Vector2(0, -74), Color(str(R["rarity_color"][str(it["rarity"])])), 14)
+	var it: Dictionary = items[best] if best != "" else {"name": "", "rarity": "common", "flavor": ""}
+	if best != "":
+		_float_text(str(it["name"]), from + Vector2(0, -74), Color(str(R["rarity_color"][str(it["rarity"])])), 14)
 	match skill:
 		"Fishing":
 			bobber_dip = 9.0
@@ -652,7 +691,7 @@ func _action() -> void:
 	var rare := str(it["rarity"]) != "common"
 	if rare:
 		smudge.cheer(1.4)
-	if rare or randf() < 0.25:
+	if best != "" and (rare or randf() < 0.25):
 		_say_text(str(it["flavor"]))
 	if ink >= _summon_cost() and not ink_told:
 		ink_told = true
@@ -728,9 +767,13 @@ func _summon() -> void:
 		if str(h["rarity"]) == rarity:
 			pool.append(h)
 	var hero: Dictionary = pool[randi() % pool.size()]
+	roster[str(hero["id"])] = int(roster.get(str(hero["id"]), 0)) + 1
+	_summon_show(hero, int(roster[str(hero["id"])]) - 1, cost, true)
+
+# the arrival itself: the card climbs out of the circle. local = this PC decided it (not linked), so it also hands out the shard and xp
+func _summon_show(hero: Dictionary, had: int, cost: float, local: bool) -> void:
 	var id := str(hero["id"])
-	var had := int(roster.get(id, 0))
-	roster[id] = had + 1
+	var rarity := str(hero["rarity"])
 	ink_told = false
 	circle_flash = 1.0
 	_play("summon", 1.0, -4.0)
@@ -740,12 +783,13 @@ func _summon() -> void:
 	if had > 0:
 		var lv := _card_level(had + 1)
 		label += "  Lv %d" % lv if lv > _card_level(had) else "  +1 copy"
-		if _card_level(had) >= int(R["card"]["max_level"]):
+		if local and _card_level(had) >= int(R["card"]["max_level"]):
 			bag["x_shard"] = int(bag.get("x_shard", 0)) + 1
 	else:
 		label = "NEW: " + label
 	_float_text(label, Vector2(c.x, minf(c.y + 40.0, WIN.y - 10.0)), Color(str(R["rarity_color"][rarity])), 16)
-	_gain("Summoning", int(cost * float(R["summon"]["xp_per_ink"])))
+	if local:
+		_gain("Summoning", int(cost * float(R["summon"]["xp_per_ink"])))
 	if rarity in ["rare", "epic", "legendary", "absurd", "unhinged"] or had == 0:
 		smudge.cheer(1.8)
 	var i := ["sweet", "salty", "unhinged"].find(mode)
@@ -766,6 +810,10 @@ func _open_crate() -> void:
 		open_places.append(rift)
 	for i in int(R["crate"]["rolls"]):
 		var pl: Dictionary = rift if randf() < rift_chance else open_places[randi() % open_places.size()]
+		if cloud.linked():
+			var ck := "%s|%s" % [str(pl["id"]), str(snappedf(float(R["crate"]["luck"]), 0.01))]
+			pend[ck] = int(pend.get(ck, 0)) + 1
+			continue
 		var id := _roll_loot(pl, str(pl["skill"]), float(R["crate"]["luck"]))
 		bag[id] = int(bag.get(id, 0)) + 1
 		_fly(loot_tex.get(id), c + Vector2(i * 26, -10), smudge.named_point("bag"), 60.0, 0.3 + i * 0.18, 0.4, 0.55, 60.0)
@@ -781,6 +829,9 @@ func _open_crate() -> void:
 	_save_game()
 
 func _sell_extras() -> void:
+	if cloud.linked():
+		_cloud_sell()
+		return
 	_roll_day()
 	var room := _sell_cap() - sold_today
 	var earned := 0
@@ -1325,6 +1376,22 @@ func _build_menu() -> void:
 	settings.add_theme_constant_override("separation", 4)
 	pages.add_child(settings)
 	tab_boxes["Settings"] = settings
+	var lt := _label(14, false, true)
+	lt.text = "Your account"
+	lt.add_theme_color_override("font_color", Color("#F2B935"))
+	settings.add_child(lt)
+	link_status = _note("")
+	settings.add_child(link_status)
+	var lrow := HBoxContainer.new()
+	link_code = LineEdit.new()
+	link_code.placeholder_text = "Code from oversummoned.com"
+	link_code.max_length = 12
+	link_code.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	lrow.add_child(link_code)
+	lrow.add_child(_button("Link", _link_now))
+	lrow.add_child(_button("Unlink", _unlink))
+	settings.add_child(lrow)
+	_refresh_link()
 	settings.add_child(_section("Sound"))
 	settings.add_child(_check("Sound", sound_on, _set_sound))
 	settings.add_child(_check("Key click sounds", key_sounds, func(on): key_sounds = on))
@@ -1803,12 +1870,19 @@ func _save_game() -> void:
 	cfg.set_value("ai", "provider", api_provider)
 	cfg.set_value("ai", "model", api_model)
 	cfg.set_value("ai", "key", api_key)
+	cfg.set_value("link", "token", cloud.token if cloud != null else "")
+	cfg.set_value("link", "name", cloud.username if cloud != null else "")
 	cfg.save_encrypted_pass(SAVE_PATH, OS.get_unique_id())
 
 func _load_game() -> void:
+	if cloud == null:
+		cloud = CloudScript.new()
+		add_child(cloud)
 	var cfg := ConfigFile.new()
 	if cfg.load_encrypted_pass(SAVE_PATH, OS.get_unique_id()) != OK:
 		return
+	cloud.token = str(cfg.get_value("link", "token", ""))
+	cloud.username = str(cfg.get_value("link", "name", ""))
 	var want := str(cfg.get_value("game", "place", "archive"))
 	for i in R["places"].size():
 		if str(R["places"][i]["id"]) == want:
@@ -1845,3 +1919,245 @@ func _load_game() -> void:
 	api_provider = int(cfg.get_value("ai", "provider", 0))
 	api_model = str(cfg.get_value("ai", "model", ""))
 	api_key = str(cfg.get_value("ai", "key", ""))
+
+
+# ============================================================ the account link
+func _refresh_link() -> void:
+	if link_status == null:
+		return
+	if cloud.linked():
+		link_status.text = "Linked to %s. Everything here is the same ledger as the website." % (cloud.username if cloud.username != "" else "your account")
+	else:
+		link_status.text = "Not linked. On oversummoned.com open Account, press Link a desktop pet, and type the code here."
+
+func _link_now() -> void:
+	var code := link_code.text.strip_edges()
+	if code == "" or cloud_busy:
+		return
+	cloud_busy = true
+	link_status.text = "Asking the ledger."
+	var r = await cloud.claim(code, "Desktop pet on %s" % OS.get_name())
+	cloud_busy = false
+	if not (r is Dictionary):
+		link_status.text = "Could not reach oversummoned.com. Check the internet and try again."
+		return
+	if str(r.get("r", "")) != "ok":
+		link_status.text = str(r.get("r", "That did not work."))
+		return
+	cloud.token = str(r["token"])
+	cloud.username = str(r.get("username", ""))
+	link_code.text = ""
+	_save_game()
+	_refresh_link()
+	await _cloud_load()
+
+func _unlink() -> void:
+	cloud.token = ""
+	cloud.username = ""
+	cloud_data = {}
+	pend.clear()
+	_save_game()
+	_refresh_link()
+
+func _cloud_note(text: String) -> void:
+	if link_status != null:
+		link_status.text = text
+
+# put the server's ledger on screen. With no ledger yet, start from the same blank page the website would
+func _cloud_take(d) -> void:
+	if d is Dictionary:
+		cloud_data = d
+	else:
+		cloud_data = {"v": 3, "ink": float(R["summon"]["base_ink"]) + float(R["summon"]["per_unique"]), "gold": 0, "xp": {}, "bag": {}, "roster": {"kevin": 1}}
+	ink = float(cloud_data.get("ink", 0.0))
+	gold = int(cloud_data.get("gold", 0))
+	for k in xp:
+		xp[k] = 0
+	var x = cloud_data.get("xp", {})
+	if x is Dictionary:
+		for k in x:
+			if xp.has(str(k)):
+				xp[str(k)] = int(x[k])
+	bag = {}
+	var b = cloud_data.get("bag", {})
+	if b is Dictionary:
+		for k in b:
+			if items.has(str(k)) and int(b[k]) > 0:
+				bag[str(k)] = int(b[k])
+	roster = {}
+	var ro = cloud_data.get("roster", {})
+	if ro is Dictionary:
+		for k in ro:
+			if heroes_by_id.has(str(k)):
+				roster[str(k)] = int(ro[k])
+	hauls_unsent = 0
+	if place_index >= R["places"].size() or not _unlocked(place_index):
+		place_index = 0
+		_enter_place(false)
+	_refresh_places()
+	_refresh_roster()
+	_refresh_bag()
+	_refresh_link()
+
+func _cloud_load() -> void:
+	cloud_busy = true
+	var r = await cloud.pet("load")
+	cloud_busy = false
+	if not (r is Dictionary):
+		_cloud_note("Could not reach the ledger. Nothing is saved until it answers.")
+		return
+	if str(r.get("r", "")) == "unlinked":
+		_cloud_note("This pet was unlinked on the website.")
+		cloud.token = ""
+		_save_game()
+		return
+	if str(r.get("r", "")) != "ok":
+		_cloud_note(str(r.get("r", "")))
+		return
+	cloud.username = str(r.get("username", cloud.username))
+	cloud_rev = int(r.get("rev", 0))
+	_cloud_take(r.get("data"))
+
+func _cloud_save() -> void:
+	if not cloud.linked() or cloud_busy:
+		return
+	cloud_busy = true
+	var d: Dictionary = cloud_data.duplicate(true)
+	d["v"] = 3
+	d["ink"] = ink
+	d["gold"] = gold
+	d["xp"] = xp.duplicate()
+	d["bag"] = bag.duplicate()
+	d["roster"] = roster.duplicate()
+	d["actions"] = int(d.get("actions", 0)) + hauls_unsent
+	d["last"] = Time.get_unix_time_from_system() * 1000.0
+	var sent := hauls_unsent
+	var r = await cloud.pet("save", {"data": d, "rev": cloud_rev})
+	cloud_busy = false
+	if not (r is Dictionary):
+		return
+	if str(r.get("r", "")) == "unlinked":
+		_unlink()
+		return
+	if bool(r.get("ok", false)):
+		cloud_rev = int(r.get("rev", cloud_rev))
+		cloud_data = d
+		hauls_unsent = maxi(0, hauls_unsent - sent)
+	elif r.get("data") != null:
+		# the website (or another pet) wrote a newer page, or the server refused this one: take the server's page
+		cloud_rev = int(r.get("rev", 0))
+		_cloud_take(r["data"])
+
+func _cloud_roll() -> void:
+	if cloud_busy or pend.is_empty():
+		return
+	cloud_busy = true
+	var took: Dictionary = pend.duplicate()
+	pend.clear()
+	var rolls: Array = []
+	for key in took:
+		var parts: PackedStringArray = str(key).split("|")
+		rolls.append({"place": parts[0], "luck": float(parts[1]), "n": int(took[key])})
+	var r = await cloud.pet("roll", {"rolls": rolls})
+	cloud_busy = false
+	if not (r is Dictionary):
+		for key in took:
+			pend[key] = int(pend.get(key, 0)) + int(took[key])
+		roll_timer = 15.0
+		return
+	if str(r.get("r", "")) == "unlinked":
+		_unlink()
+		return
+	if str(r.get("r", "")) != "ok":
+		return
+	cloud_rev = int(r.get("rev", cloud_rev))
+	var add = r.get("add", {})
+	var from := _loot_from()
+	var best := ""
+	var shown := 0
+	if add is Dictionary:
+		for id in add:
+			var sid := str(id)
+			if not items.has(sid):
+				continue
+			bag[sid] = int(bag.get(sid, 0)) + int(add[id])
+			if shown < 4:
+				_fly(loot_tex.get(sid), from + Vector2(shown * 22, 0), smudge.named_point("bag"), 64.0, 0.35 + shown * 0.12, 0.35, 0.55, 50.0)
+				shown += 1
+			if best == "" or R["rarities"].find(str(items[sid]["rarity"])) > R["rarities"].find(str(items[best]["rarity"])):
+				best = sid
+	if best != "":
+		var it: Dictionary = items[best]
+		_float_text(str(it["name"]), from + Vector2(0, -74), Color(str(R["rarity_color"][str(it["rarity"])])), 14)
+		if str(it["rarity"]) != "common":
+			smudge.cheer(1.4)
+			_say_text(str(it["flavor"]))
+	_refresh_bag()
+
+func _cloud_summon() -> void:
+	if cloud_busy or summon_wait > 0.0:
+		return
+	summon_wait = 4.0
+	await _cloud_save()          # the server has to know about the ink first
+	if cloud_busy:
+		return
+	cloud_busy = true
+	var r = await cloud.pet("summon", {"n": 1})
+	cloud_busy = false
+	if not (r is Dictionary) or str(r.get("r", "")) != "ok":
+		summon_wait = 20.0
+		if r is Dictionary and str(r.get("r", "")) == "unlinked":
+			_unlink()
+		return
+	cloud_rev = int(r.get("rev", cloud_rev))
+	var st: Dictionary = r["set"]
+	ink = float(st.get("ink", ink))
+	bag["x_shard"] = int(st.get("shards", bag.get("x_shard", 0)))
+	xp["Summoning"] = int(st.get("sxp", xp["Summoning"]))
+	cloud_data["summons"] = int(st.get("summons", 0))
+	var ro = st.get("roster", {})
+	if ro is Dictionary:
+		for k in ro:
+			if heroes_by_id.has(str(k)):
+				roster[str(k)] = int(ro[k])
+	var got: Array = r.get("got", [])
+	if got.size() > 0 and heroes_by_id.has(str(got[0]["id"])):
+		_summon_show(heroes_by_id[str(got[0]["id"])], int(got[0]["had"]), float(got[0]["cost"]), false)
+	_refresh_bag()
+
+func _cloud_sell() -> void:
+	if cloud_busy:
+		return
+	var map := {}
+	for id in bag.keys():
+		var sid := str(id)
+		if str(items[sid]["kind"]) != "loot" or sid == "x_shard":
+			continue
+		var spare := int(bag[sid]) - (0 if bool(items[sid].get("junk", false)) else 1)
+		if spare > 0:
+			map[sid] = spare
+	if map.is_empty():
+		_say_text("Nothing extra to sell yet.")
+		return
+	await _cloud_save()
+	if cloud_busy:
+		return
+	cloud_busy = true
+	var r = await cloud.pet("sell", {"items": map})
+	cloud_busy = false
+	if not (r is Dictionary) or str(r.get("r", "")) != "ok":
+		_say_text("The market is not answering.")
+		return
+	cloud_rev = int(r.get("rev", cloud_rev))
+	var st: Dictionary = r["set"]
+	gold = int(st.get("gold", gold))
+	var sb = st.get("bag", {})
+	if sb is Dictionary:
+		for k in sb:
+			if int(sb[k]) > 0:
+				bag[str(k)] = int(sb[k])
+			else:
+				bag.erase(str(k))
+	_refresh_bag()
+	_play("sparkle", 1.0, -6.0)
+	_say_text("Sold the extras for %d gold." % int(r.get("earned", 0)))

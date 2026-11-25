@@ -279,3 +279,16 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Crew of three, expeditions, bench, 8-slot cards (or: keep the pet small and send players to the website for those)
 - [ ] Windows .exe: needs Godot 4.3 export templates (Dean's PC, one click in the editor) or a build machine
 - [ ] Count keys while other apps have focus (small Windows add-on)
+
+## Desktop pet linked to the account — 25 Nov
+- [x] Server: pairing codes and pet secrets (`os2_pair_new`, `os2_pair_claim`, `os2_pet`), tested in a rolled-back block
+- [x] Website: Account > Desktop pet shows a one-time code and lists linked pets with Unlink (live)
+- [x] Pet: Settings > Your account takes the code. Once linked it loads the server's ledger on start, saves to it every 20 seconds,
+      and asks the server for every find, summon and sale. Other parts of the ledger (crew, gear, jobs) are kept untouched
+- [x] Tested against a pretend server inside Godot: load, 7 server-rolled finds, save, summon, settings. **Not yet tested against the real server** (my workspace cannot reach it from Godot)
+- [x] A brand-new ledger must now start from the blank page under the strict rules (a first save can no longer bring items in)
+- [ ] Dean: open the zip in Godot 4.3, link with a code from the live site, type for a minute, check the website shows the same bag
+- [ ] One-click linking without typing a code: the pet opens the website, you press Yes, done
+- [ ] **Steam: automatic, no code at all.** The Steam build signs in with the player's Steam identity; the website gets "Sign in with Steam"; same Steam id = same ledger.
+      Needs: a Steam app id, a Steam Web API key (Dean's Steamworks account), the GodotSteam add-on, one small server function to check Steam tickets
+- [ ] Pet still lacks crew, expeditions, bench, 8-slot cards; .exe needs export templates
