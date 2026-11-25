@@ -136,6 +136,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Crew chatter: each hero has five lines and two replies in their own voice (`rules/chatter.py` -> `data/chatter.json`, 182 lines, written by hand). One speaks every 11 to 21 seconds; sometimes one other answers. Never two at once. A crew member reacts when Smudge finds treasure
 - [ ] Grok voices: have Grok write a bigger set per hero ONCE, from the owner's office, and store it in the database for everyone. Never per player or per visit, so credits are spent once per hero. Needs database approval
 - [ ] RULE for every new hero: add their lines to `rules/chatter.py`
+- [ ] RULE when any picture is redrawn: bump the asset version and `V` in `sw.js`, rebuild the X banner with `python3 tools/x_banner.py`, copy the art and rig entry into `desktop-fable/`
 
 ## Loot
 - [x] Junk loot (`rules/junk.py`): 63 sell-only finds (local fish, lost property, daft things; 7 per place plus 7 that fall out of the rift anywhere). Mostly 1 to 9 gold, a few worth 20 to 50. Not part of the cabinet. "Sell spare treasure" sells all junk
