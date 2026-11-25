@@ -599,3 +599,27 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .story-pg .lede{margin:0 0 1.6rem;max-width:40em}
 .story-pg .hsec p{color:#cfd7ee;font-size:1.04rem;max-width:44em}
 .story-pg .hsec a{color:var(--teal)}
+
+/* ---- 25 Nov fixes ---- */
+/* buttons in the header keep their dark ink (the nav link colour was winning) */
+.top nav a.btn,.top nav a.btn:hover{color:#141c33}
+/* item cards are flex items, so the tooltip z-index applied and put them over the sticky header */
+.tip.tipcard{z-index:auto}
+/* place tiles are links now */
+a.place{display:block;text-decoration:none;color:inherit}
+a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
+/* arrivals grid: same box for every character, text tight underneath */
+.hcard{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.12rem;padding:.7rem .6rem .85rem}
+.hcard img{width:100%;max-width:none;aspect-ratio:1/1;object-fit:contain;margin-bottom:.35rem}
+.hcard b{font-size:1.06rem}
+/* wishlist */
+.wishband{padding:2.2rem 0;background:linear-gradient(135deg,#17224a,#101936);border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.wishwrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1.6rem;align-items:center}
+.wishwrap h2{font-size:clamp(1.4rem,3.4vw,2rem);margin:.3rem 0 .4rem}
+.wish{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center}
+.wish input[type=email]{min-width:0;font:700 1rem Nunito;color:#fff;background:#0b1020;border:2px solid var(--line);border-radius:12px;padding:.75em .9em}
+.wish input[type=email]:focus{outline:none;border-color:var(--teal)}
+.wish .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.wish-msg{grid-column:1/-1;margin:0;min-height:1.3em;font-weight:700;font-size:.92rem;color:var(--mut)}
+.wish-msg.ok{color:var(--teal)}.wish-msg.bad{color:var(--ember)}
+@media(max-width:760px){.wishwrap{grid-template-columns:1fr}.wish{grid-template-columns:1fr}}

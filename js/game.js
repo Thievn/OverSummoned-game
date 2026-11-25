@@ -683,17 +683,16 @@
     const row = el('div', 'row'); row.style.justifyContent = 'center';
     row.appendChild(btn('', 'Yes, link it', async () => { let r; try { r = await Cloud.linkApprove(req, 'Desktop pet'); } catch (e) { r = 'The city is not answering.'; } Cloud.petDone(); modal.close(); toast(r === 'ok' ? 'Linked. The pet will pick it up in a moment.' : r); renderPet(true); }));
     row.appendChild(btn('ghost', 'No', () => { Cloud.petDone(); modal.close(); })); d.appendChild(row); modal.open(d); }
-  // the desktop pet: a code to type into it once, and the list of pets already linked
+  // the desktop pet: linked from the pet itself through the browser; here, the list of pets already linked
   let petCode = null, petList = null, petAt = 0;
   async function renderPet(force) { const box = $('ac-pet'); if (!box) return; if (force || !petList || now() - petAt > 30000) { try { petList = await Cloud.devices() || []; } catch (e) { petList = petList || []; } petAt = now(); }
-    box.innerHTML = ''; if (petCode) box.appendChild(el('div', 'petcode', `<b>${esc(petCode)}</b><span class="mut">Type this into the pet within ten minutes. It works once.</span>`));
-    box.appendChild(btn('small', petCode ? 'Get a new code' : 'Link a desktop pet', async () => { try { petCode = await Cloud.pairNew(); } catch (e) { toast('The city is not answering.'); } renderPet(); }));
+    box.innerHTML = ''; box.appendChild(el('p', 'mut', 'To link a desktop pet, open its Settings and press <i>Link in browser</i>. This page will ask you to confirm.'));
     petList.forEach(d => { const row = el('div', 'frow', `<div><b>${esc(d.name)}</b><span class="mut">Linked ${new Date(d.linked).toLocaleDateString()}${d.seen ? ' · last seen ' + new Date(d.seen).toLocaleDateString() : ' · not used yet'}</span></div>`);
       row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
   function renderAccount() { renderPet();
     $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>`;
     const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv soon"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Coming soon'}</b></div>
-      <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links with a code, below.</p>`;
+      <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links through your browser, below.</p>`;
     const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
     sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
     const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);

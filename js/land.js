@@ -70,7 +70,7 @@
 
   // ---------------------------------------------------------------- places
   R.places.forEach(p => {
-    const d = OS.el('div', 'place rv');
+    const d = OS.el('a', 'place rv'); d.href = '/places/' + p.id;
     d.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt="${p.name}"><div class="era">${p.era} · ${p.skill}</div><h3>${p.name}</h3><p>${p.blurb}</p>`;
     $('placelist').appendChild(d); io.observe(d);
   });

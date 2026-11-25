@@ -61,7 +61,7 @@ def head(title, desc, path, image, ld, extra_css=""):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1125y">
+<link rel="stylesheet" href="/css/os.css?v=1125z">
 {extra_css}</head>
 <body>
 <header class="top"><div class="wrap">
@@ -69,8 +69,11 @@ def head(title, desc, path, image, ld, extra_css=""):
   <nav>
     <a class="hide-s" href="/heroes">The arrivals</a>
     <a class="hide-s" href="/places">Places</a>
-    <a class="hide-s" href="/roadmap">What's coming</a>
-    <a class="btn small" href="/play">Play now</a>
+    <a class="hide-s" href="/story">The story</a>
+    <a class="hide-s" href="/desktop-pet">Desktop pet</a>
+    <a class="hide-s" href="https://x.com/OverSummonedHQ" target="_blank" rel="noopener">Follow on X</a>
+    <a class="hide-s" href="/play">Sign in</a>
+    <a class="btn small" href="/#wishlist">Join the wishlist</a>
   </nav>
 </div></header>
 <main>
@@ -79,7 +82,7 @@ def head(title, desc, path, image, ld, extra_css=""):
 FOOT = """</main>
 <footer><div class="wrap">
   <span>OverSummoned. Made by one human and one very patient otter.</span>
-  <span><a href="/heroes">Arrivals</a> · <a href="/places">Places</a> · <a href="/story">The story</a> · <a href="/roadmap">What's coming</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
+  <span><a href="/heroes">Arrivals</a> · <a href="/places">Places</a> · <a href="/story">The story</a> · <a href="/desktop-pet">Desktop pet</a> · <a href="/roadmap">What's coming</a> · <a href="https://x.com/OverSummonedHQ" target="_blank" rel="noopener">@OverSummonedHQ on X</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
 </div></footer>
 </body>
 </html>
@@ -135,13 +138,13 @@ def hero_page(h):
                      % (E(name), "".join("<p>%s</p>" % E(p) for p in lore['history'])))
     kin_html = ""
     if kin:
-        kin_html = ('<section class="hsec"><h2>Others who turn up at %s</h2><div class="kinrow">%s</div></section>'
+        kin_html = ('<section class="hsec"><h2>Others whose things wash up at %s</h2><div class="kinrow">%s</div></section>'
                     % (E(place['name'] if place else 'the same place'),
-                       "".join('<a class="kin" href="/heroes/%s"><img src="/assets/v2/heroes/%s.webp" alt="%s" loading="lazy" width="96" height="96"><span>%s</span></a>'
+                       "".join('<a class="kin" href="/heroes/%s"><img src="/assets/v2/heroes/thumb/%s.webp" alt="%s" loading="lazy" width="96" height="96"><span>%s</span></a>'
                                % (k['id'], k['id'], E(k['name']), E(k['name'])) for k in kin)))
     placep = ""
     if place:
-        placep = ('<p class="wherep">Found at <a href="/places/%s"><b>%s</b></a> — %s</p>'
+        placep = ('<p class="wherep">Their lost things wash up at <a href="/places/%s"><b>%s</b></a>. %s</p>'
                   % (place['id'], E(place['name']), E(place['blurb'])))
     body = f"""<article class="hero-pg" style="--c:{col}">
 <div class="wrap">
@@ -155,12 +158,12 @@ def hero_page(h):
       <ul class="facts">
         <li><span>Era</span><b>{E(h['era'])}</b></li>
         <li><span>Species</span><b>{E(h['species'])}</b></li>
-        <li><span>Works at</span><b>{E(place['name']) if place else '—'}</b></li>
-        <li><span>Trade</span><b>{E(place['skill']) if place else '—'}</b></li>
+        <li><span>Lost things at</span><b>{E(place['name']) if place else '—'}</b></li>
+        <li><span>Found by</span><b>{E(place['skill']) if place else '—'}</b></li>
       </ul>
       <p class="bio">{E(h['bio'])}</p>
       {saying}
-      <a class="btn" href="/play">Summon them yourself</a>
+      <a class="btn" href="/#wishlist">Join the wishlist</a>
     </div>
   </div>
 
@@ -184,8 +187,8 @@ def hero_page(h):
 
   <section class="hsec cta-end">
     <h2>Meet {E(name)} in the ledger</h2>
-    <p class="mut">OverSummoned is free to play in your browser. Nothing to install.</p>
-    <a class="btn" href="/play">Play now</a>
+    <p class="mut">OverSummoned is in closed beta. Join the wishlist and Smudge will write when a seat opens.</p>
+    <a class="btn" href="/#wishlist">Join the wishlist</a>
   </section>
 </div>
 </article>
@@ -203,7 +206,7 @@ def place_page(p):
          "url": "%s/places/%s" % (SITE, pid), "name": title, "description": desc,
          "inLanguage": "en", "isPartOf": {"@id": SITE + "/#website"}},
         crumbs([("Home", "/"), ("Places", "/places"), (p['name'], "/places/" + pid)])]}
-    folk = "".join('<a class="kin" href="/heroes/%s"><img src="/assets/v2/heroes/%s.webp" alt="%s" loading="lazy" width="96" height="96"><span>%s</span></a>'
+    folk = "".join('<a class="kin" href="/heroes/%s"><img src="/assets/v2/heroes/thumb/%s.webp" alt="%s" loading="lazy" width="96" height="96"><span>%s</span></a>'
                    % (h['id'], h['id'], E(h['name']), E(h['name'])) for h in here)
     body = f"""<article class="place-pg">
 <div class="wrap">
@@ -212,11 +215,11 @@ def place_page(p):
   <p class="htitle">{E(p['era'])} · {E(p['skill'])}</p>
   <img class="pscene" src="{img}" alt="{E(p['name'])} in OverSummoned" width="910" height="459">
   <p class="bio">{E(p['blurb'])}</p>
-  <section class="hsec"><h2>Who turns up here</h2>
-    {'<div class="kinrow">' + folk + '</div>' if folk else '<p class="mut">Nobody is stationed here yet.</p>'}
+  <section class="hsec"><h2>Whose lost things wash up here</h2>
+    {'<div class="kinrow">' + folk + '</div>' if folk else '<p class="mut">Nothing with a name on it has washed up here yet.</p>'}
   </section>
-  <section class="hsec cta-end"><h2>Put them to work</h2>
-    <p class="mut">Free to play in your browser.</p><a class="btn" href="/play">Play now</a></section>
+  <section class="hsec cta-end"><h2>Go looking yourself</h2>
+    <p class="mut">OverSummoned is in closed beta.</p><a class="btn" href="/#wishlist">Join the wishlist</a></section>
 </div>
 </article>
 """
@@ -228,7 +231,7 @@ def hub(kind):
         desc = "Every stranger the cursed ledger has pulled out of history so far — %d collectible arrivals, each with their own era, stats and three lost items." % len(HEROES)
         items = sorted(HEROES, key=lambda h: h['name'])
         cards = "".join(
-            '<a class="hcard" href="/heroes/%s" style="--c:%s"><img src="/assets/v2/heroes/%s.webp" alt="%s" loading="lazy" width="200" height="200"><b>%s</b><i>%s</i><span>%s</span></a>'
+            '<a class="hcard" href="/heroes/%s" style="--c:%s"><img src="/assets/v2/heroes/thumb/%s.webp" alt="%s" loading="lazy" width="200" height="200"><b>%s</b><i>%s</i><span>%s</span></a>'
             % (h['id'], RC.get(h['rarity'], '#9aa3b8'), h['id'], E(h['name']), E(h['name']), E(h['title']), E(h['era']))
             for h in items)
         path, image = "/heroes", "/assets/og-share.jpg"
@@ -261,6 +264,26 @@ def write(path, text):
     if d and not os.path.isdir(d):
         os.makedirs(d)
     io.open(path, 'w', encoding='utf-8').write(text)
+
+def thumbs():
+    """Card art comes with uneven empty space around it. Trim each to its drawing
+    and stand it on the same square so the grid is uniform."""
+    try:
+        from PIL import Image
+    except ImportError:
+        print("WARNING Pillow missing: thumbnails not rebuilt"); return
+    os.makedirs('assets/v2/heroes/thumb', exist_ok=True)
+    for h in HEROES:
+        src = 'assets/v2/heroes/%s.webp' % h['id']; dst = 'assets/v2/heroes/thumb/%s.webp' % h['id']
+        if not os.path.exists(src): continue
+        if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src): continue
+        im = Image.open(src).convert('RGBA'); box = im.getchannel('A').point(lambda a: 255 if a > 12 else 0).getbbox()
+        if box: im = im.crop(box)
+        S, pad = 400, 14; k = min((S - 2 * pad) / im.width, (S - 2 * pad) / im.height)
+        im = im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS)
+        cv = Image.new('RGBA', (S, S), (0, 0, 0, 0)); cv.alpha_composite(im, ((S - im.width) // 2, S - pad - im.height))
+        cv.save(dst, 'WEBP', quality=88, method=6)
+thumbs()
 
 n = 0
 for h in HEROES:

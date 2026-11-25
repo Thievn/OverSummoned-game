@@ -304,3 +304,13 @@ Status: [x] done, [~] partly done, [ ] not started.
 - Rule from Dean: no plain, flat wording anywhere in the game. Messages should sound like Smudge and be fun, while still telling the player what to do
 - [ ] Sweep the website and the pet for flat system wording ("Could not reach the ledger", "Linked", "Not enough gold") and give it the same treatment
 - [ ] Sound: Pixel Lab refused sound effects and music (Dean's plan is Tier 1; they need Tier 2). Options: upgrade Pixel Lab, or Dean downloads a free pack (Kenney, Freesound) and hands the files over
+
+## Later: a text adventure layer (idea, 25 Nov)
+
+Dean wants a text-based RPG strand that gives the game more depth: short written
+adventures for the arrivals, with the story text generated (Grok or Claude writes
+it from a prompt we control) so it feels alive rather than canned. Not designed
+yet. To be planned after the quick fixes, the beta invites and the dashboard
+redesign. Open questions: where it lives (expeditions are the natural home), what
+it costs per player per day, and how generated text is kept inside the game's
+voice and the 13+ default.
