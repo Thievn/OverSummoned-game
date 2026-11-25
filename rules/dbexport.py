@@ -57,19 +57,22 @@ def keys(seq, key='rotate'):
     return out
 
 
-def build(pose='stamp'):
-    name = f'smudge_{pose}'
-    rig = json.load(open(os.path.join(ROOT, 'data', 'rig.json')))[pose]
+def build(pose='stamp', hero=False):
+    """pose: one of Smudge's poses, or with hero=True a hero id (parts in art2/hpuppet, rig key h_<id>)."""
+    name = f'hero_{pose}' if hero else f'smudge_{pose}'
+    SRC = os.path.join(ROOT, 'art2', 'hpuppet') if hero else globals()['SRC']; pre = f'h_{pose}' if hero else pose
+    rig = json.load(open(os.path.join(ROOT, 'data', 'rig.json')))[pre]
     foot = rig['foot']; parts = rig['parts']; P = {p['name']: dict(p) for p in parts}
-    img = {n: Image.open(os.path.join(SRC, f'{pose}_{n}.png')).convert('RGBA') for n in ['base'] + list(P)}
+    img = {n: Image.open(os.path.join(SRC, f'{pre}_{n}.png')).convert('RGBA') for n in ['base'] + list(P)}
     P['base'] = {'offset': [0, 0]}
     DBX = rig.get('db', {})                      # stamp pose: the arm in two pieces, forearm + fist
-    for n, v in DBX.items(): P[n] = v; img[n] = Image.open(os.path.join(SRC, f'{pose}_{n}.png')).convert('RGBA')
+    for n, v in DBX.items(): P[n] = v; img[n] = Image.open(os.path.join(SRC, f'{pre}_{n}.png')).convert('RGBA')
     if DBX: del img['arm']
     A = lambda pt: (pt[0] - foot[0], pt[1] - foot[1])           # picture point -> armature space
 
     # ---- face shapes (drawn here so they ride in the same atlas)
-    fur = tuple(rig['face']['fur']); eyes = rig['face']['eyes']; mouth = rig['face']['mouth']
+    face = rig.get('face') or {'fur': [0, 0, 0], 'eyes': [], 'mouth': [0, 0, 0, 0]}; has_tail = 'tail' in P
+    fur = tuple(face['fur']); eyes = face['eyes']; mouth = face['mouth']
     INK = (28, 20, 32, 255)
     def ellipse(w, h, col, lash=False):
         s = 4; e = Image.new('RGBA', (w * s, h * s), (0, 0, 0, 0)); d = ImageDraw.Draw(e)
@@ -83,6 +86,7 @@ def build(pose='stamp'):
 
     # ---- atlas (simple shelves, 2px gutters)
     order = sorted(img, key=lambda n: -img[n].size[1]); W = 1024; x = y = 2; rowh = 0; sub = []
+    while max(i.size[0] for i in img.values()) + 4 > W: W *= 2
     for n in order:
         w, h = img[n].size
         if x + w + 2 > W: x = 2; y += rowh + 2; rowh = 0
@@ -93,7 +97,7 @@ def build(pose='stamp'):
     for s in sub: atlas.paste(img[s['name']], (s['x'], s['y']))
 
     # ---- bones: the shared set (root, body, head, tail1-3, lids, mouth) plus one per extra moving part
-    body = (0, -90); pos = {}
+    body = (0, -round(rig['size'][1] * 0.3)) if hero else (0, -90); pos = {}
     bones = [{'name': 'root'}, {'name': 'body', 'parent': 'root', 'transform': {'x': body[0], 'y': body[1]}}]
     def joint(n, parent='body', ppos=body, length=60, pivot=None):
         px, py = A(pivot or P[n]['pivot']); bones.append({'name': n, 'parent': parent, 'length': length, 'transform': {'x': r2(px - ppos[0]), 'y': r2(py - ppos[1])}})
@@ -102,38 +106,40 @@ def build(pose='stamp'):
     hp = joint('head')
     for n in extras: joint(n)
     if DBX: joint('hand', 'arm', pos['arm'], 40, DBX['hand']['pivot'])
-    # tail: three bones in a chain along the tail
-    tp = A(P['tail']['pivot']); tl = (P['tail']['pivot'][0] - P['tail']['offset'][0], P['tail']['pivot'][1] - P['tail']['offset'][1])
-    (dx, dy), L = tail_axis(img['tail'], tl); ang = math.degrees(math.atan2(dy, dx)); seg = L / 3
-    bones.append({'name': 'tail1', 'parent': 'body', 'length': r2(seg), 'transform': {'x': r2(tp[0] - body[0]), 'y': r2(tp[1] - body[1]), 'skX': r2(ang), 'skY': r2(ang)}})
-    bones.append({'name': 'tail2', 'parent': 'tail1', 'length': r2(seg), 'transform': {'x': r2(seg)}})
-    bones.append({'name': 'tail3', 'parent': 'tail2', 'length': r2(seg), 'transform': {'x': r2(seg)}})
+    if has_tail:
+        # tail: three bones in a chain along the tail
+        tp = A(P['tail']['pivot']); tl = (P['tail']['pivot'][0] - P['tail']['offset'][0], P['tail']['pivot'][1] - P['tail']['offset'][1])
+        (dx, dy), L = tail_axis(img['tail'], tl); ang = math.degrees(math.atan2(dy, dx)); seg = L / 3
+        bones.append({'name': 'tail1', 'parent': 'body', 'length': r2(seg), 'transform': {'x': r2(tp[0] - body[0]), 'y': r2(tp[1] - body[1]), 'skX': r2(ang), 'skY': r2(ang)}})
+        bones.append({'name': 'tail2', 'parent': 'tail1', 'length': r2(seg), 'transform': {'x': r2(seg)}})
+        bones.append({'name': 'tail3', 'parent': 'tail2', 'length': r2(seg), 'transform': {'x': r2(seg)}})
     idx = {b['name']: i for i, b in enumerate(bones)}
     for i, (cx, cy, rx, ry) in enumerate(eyes):
         ex, ey = A((cx, cy - int(ry * 2.6) / 2)); bones.append({'name': f'lid{i}', 'parent': 'head', 'transform': {'x': r2(ex - hp[0]), 'y': r2(ey - hp[1]), 'scY': 0.01}})
     if mouth[2]:
         mx, my = A((mouth[0], mouth[1])); bones.append({'name': 'mouth', 'parent': 'head', 'transform': {'x': r2(mx - hp[0]), 'y': r2(my - hp[1]), 'scY': 0.01}})
 
-    # ---- tail mesh, weighted across the three tail bones
-    tw, th = img['tail'].size; NX, NY = 7, 7; verts = []; uvs = []; weights = []; tris = []
-    to = A(P['tail']['offset'])
-    for j in range(NY):
-        for i in range(NX):
-            px, py = tw * i / (NX - 1), th * j / (NY - 1)
-            verts += [r2(to[0] + px), r2(to[1] + py)]; uvs += [round(px / tw, 4), round(py / th, 4)]
-            u = ((px - tl[0]) * dx + (py - tl[1]) * dy) / L * 3 - 0.5           # 0 = middle of bone 1, 2 = middle of bone 3
-            u = max(0.0, min(2.0, u)); k = min(1, int(u)); f = u - k
-            f = f * f * (3 - 2 * f)
-            ws = [(idx[f'tail{k + 1}'], 1 - f), (idx[f'tail{k + 2}'], f)]
-            ws = [(b, round(w, 3)) for b, w in ws if w > 0.001]
-            weights += [len(ws)] + [v for bw in ws for v in bw]
-    for j in range(NY - 1):
-        for i in range(NX - 1):
-            a = j * NX + i; tris += [a, a + 1, a + NX, a + 1, a + NX + 1, a + NX]
-    bp = []
-    for k in range(3): bp += [idx[f'tail{k + 1}']] + mat(ang, tp[0] + dx * seg * k, tp[1] + dy * seg * k)
-    tail_mesh = {'type': 'mesh', 'name': 'tail', 'width': tw, 'height': th, 'vertices': verts, 'uvs': uvs, 'triangles': tris,
-                 'weights': weights, 'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp}
+    if has_tail:
+        # ---- tail mesh, weighted across the three tail bones
+        tw, th = img['tail'].size; NX, NY = 7, 7; verts = []; uvs = []; weights = []; tris = []
+        to = A(P['tail']['offset'])
+        for j in range(NY):
+            for i in range(NX):
+                px, py = tw * i / (NX - 1), th * j / (NY - 1)
+                verts += [r2(to[0] + px), r2(to[1] + py)]; uvs += [round(px / tw, 4), round(py / th, 4)]
+                u = ((px - tl[0]) * dx + (py - tl[1]) * dy) / L * 3 - 0.5           # 0 = middle of bone 1, 2 = middle of bone 3
+                u = max(0.0, min(2.0, u)); k = min(1, int(u)); f = u - k
+                f = f * f * (3 - 2 * f)
+                ws = [(idx[f'tail{k + 1}'], 1 - f), (idx[f'tail{k + 2}'], f)]
+                ws = [(b, round(w, 3)) for b, w in ws if w > 0.001]
+                weights += [len(ws)] + [v for bw in ws for v in bw]
+        for j in range(NY - 1):
+            for i in range(NX - 1):
+                a = j * NX + i; tris += [a, a + 1, a + NX, a + 1, a + NX + 1, a + NX]
+        bp = []
+        for k in range(3): bp += [idx[f'tail{k + 1}']] + mat(ang, tp[0] + dx * seg * k, tp[1] + dy * seg * k)
+        tail_mesh = {'type': 'mesh', 'name': 'tail', 'width': tw, 'height': th, 'vertices': verts, 'uvs': uvs, 'triangles': tris,
+                     'weights': weights, 'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp}
 
     # ---- slots in draw order: behind parts, body, front parts, face
     def image(n, bonepos, tex=None):
@@ -164,7 +170,11 @@ def build(pose='stamp'):
         {'name': 'tail3', 'rotateFrame': wave(96, 6, lambda p: 11 * S(T * p - 1.8) + 3 * S(T * 2 * p - 0.6))},
         {'name': 'head', 'rotateFrame': wave(96, 8, lambda p: 1.6 * S(T * p + 0.5))},
     ]
-    if pose == 'stamp':
+    if hero:
+        act = (14, [{'name': 'head', 'rotateFrame': keys([(0, 0), (3, -2.5), (7, 3.5), (14, 0)])},
+                    {'name': 'tail2', 'rotateFrame': keys([(0, 0), (5, 9), (10, -4), (14, 0)])},
+                    {'name': 'tail3', 'rotateFrame': keys([(0, 0), (6, 16), (11, -7), (14, 0)])}])
+    elif pose == 'stamp':
         act = (14, [
             {'name': 'arm', 'rotateFrame': keys([(0, 0), (3, -12), (7, 97), (9, 97), (14, 0)]),
              'scaleFrame': keys([(0, {'x': 1, 'y': 1}), (3, {'x': 0.96, 'y': 1}), (7, {'x': 1.16, 'y': 1}), (9, {'x': 1.16, 'y': 1}), (14, {'x': 1, 'y': 1})]),
@@ -200,16 +210,18 @@ def build(pose='stamp'):
             {'name': 'tail3', 'rotateFrame': keys([(0, 0), (9, -14), (16, 14), (20, 0)])}])
     else: act = (12, [{'name': 'head', 'rotateFrame': keys([(0, 0), (5, 5), (12, 0)])}])
     names = {b['name'] for b in bones}
+    drop = lambda bl: [b for b in bl if b['name'] in names]            # heroes without a tail simply skip the tail lines
+    idle = drop(idle); act = (act[0], drop(act[1]))
     lids = [f'lid{i}' for i in range(len(eyes))]
     anims = [
         {'duration': 96, 'playTimes': 0, 'name': 'idle', 'bone': idle},
         {'duration': act[0], 'playTimes': 1, 'name': 'act', 'bone': act[1]},
-        {'duration': 12, 'playTimes': 0, 'name': 'cheer', 'bone': [
+        {'duration': 12, 'playTimes': 0, 'name': 'cheer', 'bone': drop([
             {'name': 'tail1', 'rotateFrame': wave(12, 2, lambda p: 9 * S(T * p))},
             {'name': 'tail2', 'rotateFrame': wave(12, 2, lambda p: 16 * S(T * p - 1.0))},
             {'name': 'tail3', 'rotateFrame': wave(12, 2, lambda p: 24 * S(T * p - 2.0))},
             {'name': 'head', 'rotateFrame': wave(12, 2, lambda p: 3 * S(T * p))},
-        ] + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
+        ]) + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
         {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
             {'name': n, 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for n in lids]},
     ]
@@ -229,7 +241,7 @@ def build(pose='stamp'):
     json.dump(ske, open(os.path.join(OUT, f'{name}_ske.json'), 'w'), separators=(',', ':'))
     json.dump(tex, open(os.path.join(OUT, f'{name}_tex.json'), 'w'), separators=(',', ':'))
     atlas.save(os.path.join(OUT, f'{name}_tex.webp'), quality=92, method=6)
-    print(f'{name}: {len(bones)} bones, {len(slots)} slots, tail {ang:.0f} deg x {L:.0f}px, atlas {W}x{H}')
+    print(f'{name}: {len(bones)} bones, {len(slots)} slots, ' + (f'tail {ang:.0f} deg x {L:.0f}px, ' if has_tail else 'no tail, ') + f'atlas {W}x{H}')
 
 
 def build_sleep():
@@ -339,4 +351,9 @@ def build_sleep():
 
 
 if __name__ == '__main__':
-    for pose in (sys.argv[1:] or ['stamp', 'fish', 'pick', 'dig', 'sleep']): build_sleep() if pose == 'sleep' else build(pose)
+    args = sys.argv[1:]
+    if args[:1] == ['heroes']:
+        ids = args[1:] or sorted(k[2:] for k in json.load(open(os.path.join(ROOT, 'data', 'rig.json'))) if k.startswith('h_'))
+        for h in ids: build(h, hero=True)
+    else:
+        for pose in (args or ['stamp', 'fish', 'pick', 'dig', 'sleep']): build_sleep() if pose == 'sleep' else build(pose)

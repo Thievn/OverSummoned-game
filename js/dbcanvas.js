@@ -132,11 +132,12 @@
 
   // ------------------------------------------------------------------ a ready-made Smudge
   // new DBCanvas.Puppet(host, 'fish', 0.5, { x: 0.5, y: 0.9 })  ->  .act() .cheer(sec) .say(sec) .bones = true
+  // new DBCanvas.Puppet(host, 'kevin', 0.4, { hero: true })      ->  any hero, same moves
   const files = {};
-  function fetchPose(pose, base, ver) {
-    const k = base + pose;
+  function fetchPose(stem, base, ver) {
+    const k = base + stem;
     if (!files[k]) {
-      const u = base + 'smudge_' + pose, img = new Image(); img.src = u + '_tex.webp' + ver;
+      const u = base + stem, img = new Image(); img.src = u + '_tex.webp' + ver;
       files[k] = Promise.all([fetch(u + '_ske.json' + ver).then(r => r.json()), fetch(u + '_tex.json' + ver).then(r => r.json()), img.decode()]).then(([ske, tex]) => ({ ske, tex, img }));
     }
     return files[k];
@@ -144,12 +145,13 @@
   class Puppet {
     constructor(host, pose, scale, opt) {
       opt = opt || {}; this.host = host; this.pose = pose; this.scale = scale; this.fx = opt.x == null ? 0.5 : opt.x; this.fy = opt.y == null ? 0.9 : opt.y;
+      this.stem = opt.hero ? 'hero_' + pose : 'smudge_' + pose;          // which files: smudge_<pose> or hero_<id>
       this.bones = false; this.dead = false; this.ready = this.load(opt.base || '/assets/v2/db/', opt.ver || '');
     }
     async load(base, ver) {
-      const d = await fetchPose(this.pose, base, ver); if (this.dead) return;
+      const d = await fetchPose(this.stem, base, ver); if (this.dead) return;
       const f = this.factory = new Factory(); f.parseDragonBonesData(d.ske); f.parseTextureAtlasData(d.tex, d.img);
-      this.p = f.build(this.pose, 'smudge_' + this.pose); this.an = this.p.animation; this.an.play('idle', 0);
+      this.p = f.build(this.pose, this.stem); this.an = this.p.animation; this.an.play('idle', 0);
       const cv = this.cv = document.createElement('canvas'), ctx = cv.getContext('2d'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none'; this.host.appendChild(cv);
       const blink = () => { if (this.dead) return; this.over('blink', 1, 3); this.bt = setTimeout(blink, 2200 + Math.random() * 3300); }; blink();
       // little fidgets some poses have (a sleeping snout twitch, now and then a dream)

@@ -90,7 +90,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] `DBCanvas.Puppet` in `js/dbcanvas.js`: drop-in Smudge player (act / cheer / say), loads each pose on demand
 - [x] Sleeping pose as a DragonBones rig: back rises and falls, snout and paw twitches at random, tail tip curls, three Zs ripple one after another
 - [ ] Copy the recut parts into the desktop pet (`desktop-fable/`)
-- [ ] Shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
+- [x] All 26 heroes exported on the shared skeleton (`python3 rules/dbexport.py heroes` -> `assets/v2/db/hero_<id>_*`), bending tail on the seven that have one; `DBCanvas.Puppet(host, id, scale, {hero:true})`
+- [ ] Heroes still use their first, rough head cuts (big polygons). Recut each one carefully like Smudge, and add extra bones where it earns it (wings, capes, weapons, arms)
 - [ ] Swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)
 - [ ] Godot desktop pet: play the same files (add-on if one works on 4.3, otherwise a small player on Godot's built-in Skeleton2D)
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later

@@ -13,6 +13,9 @@
   p{color:#aab6d6;margin:.3em 0 1em;line-height:1.45}
   .dbrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
   .dbrow.two{grid-template-columns:1fr 1fr}
+  .dbrow.dbheroes{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+  .dbrow.dbheroes .dbstage{height:200px}
+  .dbrow.dbheroes .dbstage b{font-size:.75rem;left:8px;top:6px;text-transform:capitalize}
   @media(max-width:820px){.dbrow{grid-template-columns:1fr 1fr}}
   @media(max-width:460px){.dbrow,.dbrow.two{grid-template-columns:1fr}}
   .dbstage{position:relative;height:340px;border:2px solid #1f2b52;border-radius:16px;background:radial-gradient(ellipse at 50% 88%,#24335f 0,#111936 60%);overflow:hidden}
@@ -39,6 +42,9 @@
     <button class="btn" id="bTalk">Talk</button>
     <label><input type="checkbox" id="bBones"> Show bones</label>
   </div>
+  <h1 style="margin-top:1.2em">Heroes</h1>
+  <p>All 26 on the same skeleton and the same moves. The seven with tails get the bending tail. These still use their first, rougher head cuts.</p>
+  <div class="dbrow dbheroes" id="heroes"></div>
   <h1 style="margin-top:1.2em">Old rig, for comparison</h1>
   <p>The stamping pose on the rig the game still uses. Same new cuts, but the tail swings as one stiff piece and there is no wrist.</p>
   <div class="dbrow two">
@@ -46,9 +52,9 @@
     <div class="dbstage" id="d_big"><b>DragonBones</b></div>
   </div>
 </div>
-<script src="js/os.js?v=1124f"></script>
+<script src="js/os.js?v=1124g"></script>
 <script src="js/vendor/dragonBones.core.js"></script>
-<script src="js/dbcanvas.js?v=1124f"></script>
+<script src="js/dbcanvas.js?v=1124g"></script>
 <script>
 (async function () {
   const $ = id => document.getElementById(id), opt = (x, y) => ({ x, y, ver: OS.VER });
@@ -61,6 +67,11 @@
   let old = null;
   try {
     OS.rig = await (await fetch('data/rig.json' + OS.VER)).json();
+    Object.keys(OS.rig).filter(k => k.indexOf('h_') === 0).forEach(k => {
+      const id = k.slice(2), e = OS.rig[k], st = document.createElement('div'); st.className = 'dbstage'; st.innerHTML = '<b>' + id + '</b>'; $('heroes').appendChild(st);
+      const sc = Math.min(165 / e.size[1], 118 / e.size[0]);
+      const p = new DBCanvas.Puppet(st, id, sc, { hero: true, x: 0.5 - (e.size[0] / 2 - e.foot[0]) * sc / 130, y: 0.96, ver: OS.VER }); all.push(p);
+    });
     const host = $('old'); old = new OS.Puppet(host, 'stamp', 0.62); old.place(host.clientWidth * 0.52, 420 * 0.9);
   } catch (e) { console.error(e); note($('old'), 'Could not load the current rig: ' + e.message); }
   $('bAct').onclick = () => { all.forEach(p => p.act()); if (old) { old.kick('arm', 22); old.kick('head', 2); } };
