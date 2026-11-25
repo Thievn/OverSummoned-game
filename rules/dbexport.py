@@ -75,6 +75,15 @@ def grid(w, h, origin, NX, NY, weigh):
 # Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
 CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (140, 222, 32), 'lola': (272, 205, 28), 'troffea': (206, 240, 24)}
 
+# Other soft spots on a hero's body picture that move without being cut out (so no seams, ever):
+# (bone name, centre x, centre y, radius x, radius y, kind).  kind: 'sway' rocks, 'bob' rides up and down.
+SOFT = {
+    'kevin': [('mug', 175, 190, 42, 40, 'bob')],
+    'lola': [('fan_a', 420, 70, 70, 60, 'sway'), ('fan_b', 120, 330, 70, 70, 'sway'), ('watch', 395, 235, 22, 30, 'sway')],
+    'florida': [('cup', 155, 290, 36, 50, 'bob')],
+    'raspawtin': [('hand', 55, 170, 45, 45, 'sway'), ('cake', 305, 270, 52, 40, 'bob')],
+}
+
 
 def build(pose='stamp', hero=False):
     """pose: one of Smudge's poses, or with hero=True a hero id (parts in art2/hpuppet, rig key h_<id>)."""
@@ -133,8 +142,10 @@ def build(pose='stamp', hero=False):
         bones.append({'name': 'tail2', 'parent': 'tail1', 'length': r2(seg), 'transform': {'x': r2(seg)}})
         bones.append({'name': 'tail3', 'parent': 'tail2', 'length': r2(seg), 'transform': {'x': r2(seg)}})
     chest = CHEST.get(pose) if hero else None
-    if chest:
-        cp = A(chest[:2]); bones.append({'name': 'chest', 'parent': 'body', 'transform': {'x': r2(cp[0] - body[0]), 'y': r2(cp[1] - body[1])}})
+    soft = list(SOFT.get(pose, [])) if hero else []
+    if chest: soft.append(('chest', chest[0], chest[1], chest[2], chest[2] * 0.8, 'bounce'))
+    for sn, sx, sy, srx, sry, kind in soft:
+        cp = A((sx, sy)); pos[sn] = cp; bones.append({'name': sn, 'parent': 'body', 'transform': {'x': r2(cp[0] - body[0]), 'y': r2(cp[1] - body[1])}})
     idx = {b['name']: i for i, b in enumerate(bones)}
     for i, (cx, cy, rx, ry) in enumerate(eyes):
         ex, ey = A((cx, cy - int(ry * 2.6) / 2)); bones.append({'name': f'lid{i}', 'parent': 'head', 'transform': {'x': r2(ex - hp[0]), 'y': r2(ey - hp[1]), 'scY': 0.01}})
@@ -178,15 +189,21 @@ def build(pose='stamp', hero=False):
         else: add(n, n, image(n, pos[n]))
     for p in parts:
         if p['mode'] == 'behind': part(p)
-    if chest:       # the body picture becomes a soft mesh so the bust can lag and settle; everything else stays rigid
+    if soft:        # the body picture becomes a soft mesh so these spots can move; everything else stays rigid
         bw_, bh_ = img['base'].size
-        def wchest(px, py):
-            v = math.exp(-(((px - chest[0]) / chest[2]) ** 2 + ((py - chest[1]) / (chest[2] * 0.8)) ** 2) / 2); v = max(0.0, (v - 0.12) / 0.88)
-            return [(idx['body'], 1 - v), (idx['chest'], v)]
-        NX = max(8, bw_ // 22); NY = max(10, bh_ // 22)
-        v_, u_, t_, w_ = grid(bw_, bh_, A((0, 0)), NX, NY, wchest)
+        def wsoft(px, py):
+            ws = []
+            for sn, sx, sy, srx, sry, kind in soft:
+                v = math.exp(-(((px - sx) / srx) ** 2 + ((py - sy) / sry) ** 2) / 2); ws.append((idx[sn], max(0.0, (v - 0.12) / 0.88)))
+            t = sum(w for _, w in ws)
+            if t > 1: ws = [(b, w / t) for b, w in ws]; t = 1
+            return [(idx['body'], 1 - t)] + ws
+        NX = max(8, bw_ // 20); NY = max(10, bh_ // 20)
+        v_, u_, t_, w_ = grid(bw_, bh_, A((0, 0)), NX, NY, wsoft)
+        bp_ = [idx['body'], 1, 0, 0, 1, body[0], body[1]]
+        for sn, *_ in soft: bp_ += [idx[sn], 1, 0, 0, 1, r2(pos[sn][0]), r2(pos[sn][1])]
         add('base', 'root', {'type': 'mesh', 'name': 'base', 'width': bw_, 'height': bh_, 'vertices': v_, 'uvs': u_, 'triangles': t_, 'weights': w_,
-                             'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': [idx['body'], 1, 0, 0, 1, body[0], body[1], idx['chest'], 1, 0, 0, 1, r2(cp[0]), r2(cp[1])]})
+                             'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp_})
     else: add('base', 'body', image('base', body))
     for p in parts:
         if p['mode'] != 'behind': part(p)
@@ -240,11 +257,21 @@ def build(pose='stamp', hero=False):
             {'name': 'tail2', 'rotateFrame': keys([(0, 0), (8, -8), (15, 8), (20, 0)])},
             {'name': 'tail3', 'rotateFrame': keys([(0, 0), (9, -14), (16, 14), (20, 0)])}])
     else: act = (12, [{'name': 'head', 'rotateFrame': keys([(0, 0), (5, 5), (12, 0)])}])
-    bounce = None
-    if chest:
-        idle.append({'name': 'chest', 'translateFrame': wave(96, 6, lambda p: 0.7 * S(T * 2 * p - 0.9), 'y')})
-        act[1].append({'name': 'chest', 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (3, {'x': 0, 'y': -1.6}), (6, {'x': 0, 'y': 3.2}), (9, {'x': 0, 'y': -1.8}), (11, {'x': 0, 'y': 0.9}), (14, {'x': 0, 'y': 0})])})
-        bounce = {'name': 'chest', 'translateFrame': wave(12, 2, lambda p: 2.4 * S(T * p - 1.1), 'y')}
+    bounce = []
+    for n_, (sn, sx, sy, srx, sry, kind) in enumerate(soft):
+        ph = n_ * 1.7
+        if kind == 'bounce':
+            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p: 0.7 * S(T * 2 * p - 0.9), 'y')})
+            act[1].append({'name': sn, 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (3, {'x': 0, 'y': -1.6}), (6, {'x': 0, 'y': 3.2}), (9, {'x': 0, 'y': -1.8}), (11, {'x': 0, 'y': 0.9}), (14, {'x': 0, 'y': 0})])})
+            bounce.append({'name': sn, 'translateFrame': wave(12, 2, lambda p: 2.4 * S(T * p - 1.1), 'y')})
+        elif kind == 'sway':
+            idle.append({'name': sn, 'rotateFrame': wave(96, 6, lambda p, ph=ph: 3.2 * S(T * p + ph) + 1.2 * S(T * 3 * p + ph))})
+            act[1].append({'name': sn, 'rotateFrame': keys([(0, 0), (4, -7), (8, 6), (11, -2), (14, 0)])})
+            bounce.append({'name': sn, 'rotateFrame': wave(12, 2, lambda p, ph=ph: 7 * S(T * p + ph))})
+        else:
+            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p, ph=ph: 1.6 * S(T * p + ph), 'y')})
+            act[1].append({'name': sn, 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (4, {'x': 0, 'y': -5}), (8, {'x': 0, 'y': 1.5}), (14, {'x': 0, 'y': 0})])})
+            bounce.append({'name': sn, 'translateFrame': wave(12, 2, lambda p, ph=ph: 3 * S(T * p + ph), 'y')})
     names = {b['name'] for b in bones}
     drop = lambda bl: [b for b in bl if b['name'] in names]            # heroes without a tail simply skip the tail lines
     idle = drop(idle); act = (act[0], drop(act[1]))
@@ -257,7 +284,7 @@ def build(pose='stamp', hero=False):
             {'name': 'tail2', 'rotateFrame': wave(12, 2, lambda p: 16 * S(T * p - 1.0))},
             {'name': 'tail3', 'rotateFrame': wave(12, 2, lambda p: 24 * S(T * p - 2.0))},
             {'name': 'head', 'rotateFrame': wave(12, 2, lambda p: 3 * S(T * p))},
-        ] + ([bounce] if bounce else [])) + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
+        ] + bounce) + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
         {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
             {'name': n, 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for n in lids]},
     ]
