@@ -1389,7 +1389,7 @@ func _build_menu() -> void:
 	pages.add_child(settings)
 	tab_boxes["Settings"] = settings
 	var lt := _label(14, false, true)
-	lt.text = "Your account"
+	lt.text = "Whose otter is this?"
 	lt.add_theme_color_override("font_color", Color("#F2B935"))
 	settings.add_child(lt)
 	link_status = _note("")
@@ -1939,25 +1939,25 @@ func _refresh_link() -> void:
 	if link_status == null:
 		return
 	if link_req != "":
-		link_status.text = "Your browser has opened oversummoned.com. Sign in if it asks, check it shows %s, and press Yes. Waiting." % link_req.left(4).to_upper()
+		link_status.text = "Smudge has run off to the website to ask about you. Sign in if it asks, check it shows %s, and tell him Yes." % link_req.left(4).to_upper()
 	elif cloud.linked():
-		link_status.text = "Linked to %s. Everything here is the same ledger as the website." % (cloud.username if cloud.username != "" else "your account")
+		link_status.text = "Smudge knows you, %s. Whatever he drags home here turns up on the website too." % (cloud.username if cloud.username != "" else "boss")
 	else:
-		link_status.text = "Not linked. Press Link in browser, or get a code on oversummoned.com (Account, Link a desktop pet) and type it here. Once per computer. On Steam neither will be needed."
+		link_status.text = "Smudge has no idea whose ledger this is. Press Link in browser, or fetch a code from oversummoned.com (Account, Link a desktop pet) and type it here. Once per computer. On Steam he will just know."
 
 func _link_now() -> void:
 	var code := link_code.text.strip_edges()
 	if code == "" or cloud_busy:
 		return
 	cloud_busy = true
-	link_status.text = "Asking the ledger."
+	link_status.text = "Smudge is reading the code out loud. Slowly."
 	var r = await cloud.claim(code, "Desktop pet on %s" % OS.get_name())
 	cloud_busy = false
 	if not (r is Dictionary):
-		link_status.text = "Could not reach oversummoned.com. Check the internet and try again."
+		link_status.text = "Smudge cannot find the internet. Check it is still plugged in and try again."
 		return
 	if str(r.get("r", "")) != "ok":
-		link_status.text = str(r.get("r", "That did not work."))
+		link_status.text = str(r.get("r", "Smudge shrugged. That did not work."))
 		return
 	cloud.token = str(r["token"])
 	cloud.username = str(r.get("username", ""))
@@ -2045,10 +2045,10 @@ func _cloud_load() -> void:
 	var r = await cloud.pet("load")
 	cloud_busy = false
 	if not (r is Dictionary):
-		_cloud_note("Could not reach the ledger. Nothing is saved until it answers.")
+		_cloud_note("Smudge cannot reach the ledger just now. Nothing gets written down until it answers.")
 		return
 	if str(r.get("r", "")) == "unlinked":
-		_cloud_note("This pet was unlinked on the website.")
+		_cloud_note("Somebody on the website told Smudge to forget this computer. Link again if that was a mistake.")
 		cloud.token = ""
 		_save_game()
 		return
@@ -2187,7 +2187,7 @@ func _cloud_sell() -> void:
 	var r = await cloud.pet("sell", {"items": map})
 	cloud_busy = false
 	if not (r is Dictionary) or str(r.get("r", "")) != "ok":
-		_say_text("The market is not answering.")
+		_say_text("Market's shut. Or ignoring me. Try again in a bit.")
 		return
 	cloud_rev = int(r.get("rev", cloud_rev))
 	var st: Dictionary = r["set"]

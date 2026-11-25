@@ -298,3 +298,9 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Database part of Link in browser applied (25 Nov, after Dean approved) and tested in a rolled-back block: nothing before Yes, wrong id gets nothing, the secret is handed over once only, and it loads the ledger
 - [ ] Not yet run for real: the Yes button itself needs a signed-in player, and the pet has not talked to the real server. Dean to try both ways from the zip
 - Decided by Dean: the pet stays minimal, for farming by typing. Crew, expeditions, bench, gear and the city stay on the website
+
+## Sound and wording — 25 Nov
+- [x] Pet's account-link messages rewritten in Smudge's voice ("Smudge knows you, <name>...")
+- Rule from Dean: no plain, flat wording anywhere in the game. Messages should sound like Smudge and be fun, while still telling the player what to do
+- [ ] Sweep the website and the pet for flat system wording ("Could not reach the ledger", "Linked", "Not enough gold") and give it the same treatment
+- [ ] Sound: Pixel Lab refused sound effects and music (Dean's plan is Tier 1; they need Tier 2). Options: upgrade Pixel Lab, or Dean downloads a free pack (Kenney, Freesound) and hands the files over
