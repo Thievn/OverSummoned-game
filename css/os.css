@@ -403,3 +403,11 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .card.mini .tcg .nbar .nm{font-size:.7rem}.card.mini .tcg .nbar .lv{display:none}
 .card.mini .tcg .win{top:18.5%;bottom:4%}
 .card.mini .tcg .tline,.card.mini .tcg .tbox{display:none}
+
+/* card text scales with the card, and the front never cuts a sentence off */
+.card{container-type:inline-size}
+.tcg .tbox .fl{font-size:max(6.5px,4.2cqw);line-height:1.24;-webkit-line-clamp:4}
+.tcg .tbox .era{font-size:max(5.5px,3cqw);letter-spacing:.03em}
+.tcg .tline{font-size:max(6.5px,3.7cqw)}
+.tcg .nbar .nm{font-size:max(11px,6.4cqw)}
+.card.mini .tcg .nbar .nm{font-size:max(9px,8.6cqw)}

@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1124n';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1124o';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -144,6 +144,12 @@ window.OS = (function () {
 
   // ------------------------------------------------------------------ cards
   // opt: owned (false = silhouette), level, stats (override), gear [ids or null x3], mini, noflip
+  // the front of a card shows only whole sentences that fit its text box; the full bio is on the back
+  OS.blurb = function (bio, room) {
+    const parts = bio.match(/[^.!?]+[.!?]+['”\u2019]?\s*/g) || [bio]; let out = parts[0].trim();
+    for (let i = 1; i < parts.length && (out + ' ' + parts[i].trim()).length <= (room || 112); i++) out += ' ' + parts[i].trim();
+    return out;
+  };
   OS.card = function (h, opt) {
     opt = opt || {}; const owned = opt.owned !== false, R = OS.R;
     const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : ''));
@@ -162,7 +168,7 @@ window.OS = (function () {
       <div class="win"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>
         <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div></div>
       <div class="tline"><span>${owned ? h.species + ' · ' + h.title : 'Not yet summoned'}</span><b class="gem" title="${OS.cap(h.rarity)}"></b></div>
-      <div class="tbox"><div class="era">${OS.cap(h.rarity)}${owned ? ' · ' + h.era : ''}</div><div class="fl">${owned ? h.bio : 'Somebody the book has not coughed up yet.'}</div></div></div>` + back;
+      <div class="tbox"><div class="era">${OS.cap(h.rarity)}${owned ? ' · ' + h.era : ''}</div><div class="fl">${owned ? OS.blurb(h.bio) : 'Somebody the book has not coughed up yet.'}</div></div></div>` + back;
     if (!opt.mini) {
       const slots = c.querySelector('.slots'), gear = opt.gear || h.gear;
       gear.forEach((g, i) => slots.appendChild(g ? OS.slot(g, { dim: opt.dimGear && opt.dimGear[i] }) : OS.el('div', 'slot empty')));
