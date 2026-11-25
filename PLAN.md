@@ -117,7 +117,13 @@ Status: [x] done, [~] partly done, [ ] not started.
 ## Raising a card (the point of everything)
 - [x] The full kit: a hero wearing two of their own three signature pieces gets +10% to every stat; all three gives +25% and +10% work speed. Shown on the hero sheet
 - [x] Stats page in the account: collection, work, ink and gold, fights, time played (counts from when it was added)
-- [ ] Extra gear slots beyond weapon, armor, trinket (hat, boots, charm), with gear sets that pay out at 2, 4 and 6 pieces. Needs new items and icons
+- [x] Final card design, on every card: front has the five numbers, power and a dot per gear slot; back has the hero standing idle (animated on the opened card) with gear down both sides, bonus lines, a slim stat line, and the story behind the "i"
+- [x] Eight slots: weapon, head, body, feet, charm (opens at card level 5) for gear anyone can wear; plus the hero's own three pieces, which only that hero can wear
+- [x] Era gear (`rules/gear2.py`): 130 pieces, five per hero's time and place, all rarities, 26 three-piece sets (bonus at 2 and 3), weapon and charm specials. Drops where that hero's own gear drops. Icons cut from green screen
+- [x] Armory in the bag: every piece owned, filter by slot, shows who wears it. Empty slots glow when something fits
+- [ ] RULE for every new hero: also add their three own pieces plus five era pieces (weapon, head, body, feet, charm) to `rules/gear2.py`, generate icons on green screen, rebuild
+- [ ] Hero eyelids are off (eye positions inaccurate); place by hand per hero to bring blinking back
+- [ ] Balance check for era gear: stat budgets and the special percentages are first guesses
 - [ ] Making skills that turn treasure into things for cards: Cooking (meals before raids), Tinkering (gear upgrades), Restoring (cabinet pieces)
 - [ ] Mastery per treasure, and one completion percentage on the dashboard
 - [ ] Crews, market, per-skill leaderboards (needs database approval)

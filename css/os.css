@@ -411,3 +411,51 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .tcg .tline{font-size:max(6.5px,3.7cqw)}
 .tcg .nbar .nm{font-size:max(11px,6.4cqw)}
 .card.mini .tcg .nbar .nm{font-size:max(9px,8.6cqw)}
+
+/* ---------------------------------------------------------------- card v4: numbers on the front, gear around the hero on the back */
+.tcg .tbox{display:none}
+.tcg .win{top:13.2%;bottom:34.2%}
+.tcg .tline{bottom:26.2%;height:6%}
+.tcg .nums{bottom:11.8%;height:12.6%;display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw}
+.tcg .nums div{background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020;border-radius:2cqw;text-align:center;color:#221708;display:flex;flex-direction:column;justify-content:center;gap:.6cqw}
+.tcg .nums b{font:400 max(11px,7cqw)/1 "Lilita One",sans-serif}.tcg .nums span{font:800 max(5px,2.7cqw)/1 Nunito,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a5a2a}
+.tcg .foot{bottom:3%;height:7%;display:flex;align-items:center;justify-content:space-between;padding:0 3cqw;border-radius:2.2cqw;background:linear-gradient(180deg,#f3ead2,#dccba3);box-shadow:inset 0 0 0 1.5px #0b1020,0 0 0 1.5px color-mix(in srgb,var(--rc) 70%,#0b1020);color:#221708;font:800 max(7px,3.7cqw)/1 Nunito,sans-serif;white-space:nowrap}
+.tcg .foot b{font:400 max(9px,5.2cqw)/1 "Lilita One",sans-serif}
+.tcg .dots{display:flex;gap:1cqw;align-items:center}.tcg .dots i{width:4.2cqw;height:4.2cqw;border-radius:1cqw;background:#3a3320;box-shadow:inset 0 0 0 1.5px #0b1020}.tcg .dots i.o{border-radius:50%}.tcg .dots u{width:1.5px;height:5cqw;background:#8a7a56;margin:0 .6cqw}
+.card.locked .tcg .nums,.card.locked .tcg .foot{filter:grayscale(.6) brightness(.72)}
+.card.mini .tcg .nums,.card.mini .tcg .foot{display:none}
+/* back */
+.card .back.bk{transform:rotateY(180deg);padding:0;display:block;font-size:inherit;line-height:normal;color:#e8edfb;background:linear-gradient(160deg,color-mix(in srgb,var(--rc) 78%,#fff),color-mix(in srgb,var(--rc) 62%,#0b1020) 45%,color-mix(in srgb,var(--rc) 40%,#0b1020));box-shadow:0 10px 26px rgba(0,0,0,.55)}
+.card .back.bk::before{display:block!important;content:"";position:absolute;inset:3px;border-radius:11px;background:#10162c;z-index:0}
+.r-legendary .back.bk{background:linear-gradient(135deg,#fff1b8,#f2a516 22%,#fff6d0 45%,#c9730a 68%,#ffd35c)}
+.r-absurd .back.bk{background:linear-gradient(135deg,#ff4fb4,#ffd35c 30%,#3fe0c5 55%,#b06bff 78%,#ff4fb4)}
+.r-unhinged .back.bk{background:linear-gradient(135deg,#ff3b30,#3a0508 30%,#ff7a66 52%,#3a0508 74%,#ff3b30)}
+.bk .ib{flex:none;width:8cqw;height:8cqw;border-radius:50%;border:0;background:#221708;color:#f3ead2;font:400 max(9px,4.6cqw)/1 "Lilita One",sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.bk .doll{top:13.2%;height:54.6%;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px #0b1020,0 0 0 2px color-mix(in srgb,var(--rc) 75%,#0b1020);background:#0d1430}
+.bk .doll .bgi{position:absolute;inset:0;background-size:cover;background-position:center}
+.bk .doll .bgi::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,11,28,.9),rgba(8,11,28,.28) 30%,rgba(8,11,28,.28) 70%,rgba(8,11,28,.9))}
+.bk .live{position:absolute;inset:0}.bk .live>img{position:absolute;left:50%;bottom:0;max-height:92%;max-width:62%;transform:translateX(-50%);filter:drop-shadow(0 6px 8px rgba(0,0,0,.6))}
+.bk .gcol{position:absolute;top:2.7cqw;bottom:2.7cqw;width:17cqw;display:grid;grid-template-rows:repeat(4,1fr);gap:1.7cqw;z-index:2}.bk .gcol.l{left:2.7cqw}.bk .gcol.r{right:2.7cqw}
+.gs{min-height:0;background:rgba(20,28,62,.93);border-radius:2.3cqw;box-shadow:inset 0 0 0 2px var(--q,#2a3761);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.gs img{max-width:72%;max-height:64%;object-fit:contain;margin-top:2.3cqw}
+.gs u{position:absolute;left:0;right:0;top:.8cqw;text-align:center;font:800 max(5px,2.25cqw)/1 Nunito,sans-serif;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:#aab6d6;white-space:nowrap;overflow:hidden}
+.gs.own{background:linear-gradient(180deg,rgba(52,38,90,.95),rgba(20,28,62,.93));box-shadow:inset 0 0 0 2px var(--q,#4a3a78),0 0 0 1.5px rgba(243,185,48,.6)}
+.gs img.sil{filter:brightness(0) opacity(.42)}.gs img.ready{opacity:.55}
+.gs.lock{opacity:.62;cursor:default}.gs.lock em{font:400 max(8px,4cqw)/1 "Lilita One",sans-serif;font-style:normal;color:#8894b8;margin-top:2.5cqw}
+.gs.avail{box-shadow:inset 0 0 0 2px #3fe0c5,0 0 10px rgba(63,224,197,.8)}
+.gs.avail::after{content:"+";position:absolute;right:-1.6cqw;top:-1.6cqw;width:5cqw;height:5cqw;border-radius:50%;background:#3fe0c5;color:#0b1020;font:400 max(8px,4.2cqw)/5cqw "Lilita One",sans-serif;text-align:center}
+.bk .bon{bottom:19.4%;height:11.2%;border-radius:2.3cqw;background:#161d3d;box-shadow:inset 0 0 0 1.5px #2a3761;padding:1.1cqw 2.6cqw;font:700 max(6px,3.05cqw)/1.42 Nunito,sans-serif;color:#cfd8f3;white-space:nowrap;overflow:hidden}
+.bk .bon b{color:#3fe0c5;font-weight:800}.bk .bon s{text-decoration:none;color:#7682a8}.bk .bon i{font-style:normal;color:#f3b930;font-weight:800}
+.bk .strip{bottom:11.6%;height:6.3%;border-radius:2.3cqw;background:#161d3d;box-shadow:inset 0 0 0 1.5px #2a3761;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;text-align:center;font:800 max(5px,2.6cqw)/1 Nunito,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#8894b8;white-space:nowrap}
+.bk .strip b{font:400 max(8px,4.7cqw)/1 "Lilita One",sans-serif;color:#fff;letter-spacing:0;margin-left:.9cqw}.bk .strip em{font-style:normal;color:#3fe0c5;letter-spacing:0;font-size:max(5px,2.7cqw);margin-left:.5cqw}
+.bk .cl{display:flex;align-items:center;gap:1.8cqw}.bk .cl i{display:block;width:19cqw;height:2.3cqw;border-radius:2cqw;background:#b9a57a;overflow:hidden}.bk .cl i b{display:block;height:100%;background:color-mix(in srgb,var(--rc) 70%,#221708)}
+.bk .story{display:none;top:13.2%;bottom:11.6%;border-radius:6px;background:linear-gradient(180deg,#efe6cf,#e2d4b0);box-shadow:inset 0 0 0 1.5px #0b1020;color:#3a2a14;padding:3.6cqw;font:italic 600 max(8px,4.1cqw)/1.45 Nunito,sans-serif;overflow:auto;z-index:4}
+.bk .story h4{font:800 max(6px,3.2cqw)/1.2 Nunito,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--rc) 60%,#221708);margin:0 0 1.8cqw;font-style:normal}.bk .story p{margin:0 0 3cqw}
+.bk.info .story{display:block}.bk.info .doll,.bk.info .bon,.bk.info .strip{visibility:hidden}
+
+.herosheet2{display:grid;grid-template-columns:min(340px,82vw) 1fr;gap:1.3rem;align-items:start}
+.herosheet2>.card{width:100%}
+@media(max-width:760px){.herosheet2{grid-template-columns:1fr;justify-items:center}.herosheet2>.card{width:min(340px,84vw)}}
+.armgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.5rem}
+.armrow{display:flex;gap:.7rem;align-items:center;padding:.45rem .55rem;border-radius:12px;background:#111936;border:1px solid var(--line)}
+.armrow>div:last-child{display:flex;flex-direction:column;min-width:0;font-size:.85rem;line-height:1.3}.armrow b{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.armrow .mut{font-size:.76rem}

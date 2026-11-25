@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1124s';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1125a';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -109,7 +109,10 @@ window.OS = (function () {
       s += `<div class="sub"><span>${OS.cap(it.slot)}</span><span>${OS.cap(it.rarity)}</span></div>`;
       for (const k in it.stats) s += `<div>+${it.stats[k]} ${OS.statWord[k]}</div>`;
       if (it.equip) s += `<div class="eq">Equip: Increases ${it.equip.skill} speed by ${it.equip.speed}%.</div>`;
-      s += `<div class="sig">Signature item: ${OS.heroes[it.owner].name}. Half again as strong in their hands.</div>`;
+      const FX = { speed: 'work speed', luck: 'luck at jobs', ink: 'ink earned', xp: 'skill xp', raid: 'damage in raids' };
+      if (it.special) s += `<div class="eq">Special: +${Math.round(it.special.amount * 100)}% ${FX[it.special.kind]}.</div>`;
+      if (it.set) { const st = R.gear_sets[it.set], k = Object.keys(st.two)[0]; s += `<div class="eq">${st.name} set · 2 worn: +${st.two[k]} ${OS.statWord[k]} · all 3: +${Math.round(st.three.amount * 100)}% ${FX[st.three.kind]}.</div>`; }
+      if (it.owner) s += `<div class="sig">Only ${OS.heroes[it.owner].name} can wear this.</div>`;
     } else s += `<div class="sub"><span>Treasure</span><span>${OS.cap(it.rarity)}</span></div>`;
     s += `<div class="fl">"${it.flavor}"</div>`;
     const pl = R.places.find(p => p.id === it.place);
@@ -150,29 +153,67 @@ window.OS = (function () {
     for (let i = 1; i < parts.length && (out + ' ' + parts[i].trim()).length <= (room || 112); i++) out += ' ' + parts[i].trim();
     return out;
   };
+  OS.FX = { speed: 'work speed', luck: 'luck at jobs', ink: 'ink', xp: 'skill xp', raid: 'raid damage' };
+  const SW = { attack: 'Atk', defense: 'Def', health: 'Hp', speed: 'Spd', luck: 'Lck' };
+  // a short word for one of a hero's own pieces: "Lanyard of Mild Authority" -> "Lanyard"
+  OS.shortName = n => { n = n.replace(/['‘’"“”][^'‘’"“”]*['‘’"“”]/g, '').replace(/\(.*?\)/g, '').trim(); if (n.indexOf(' of ') > 0) n = n.split(' of ')[0]; const w = n.split(/\s+/); return w[w.length - 1]; };
+  /* A hero card.
+     Front: name, picture, type line, the five numbers, power, and a dot per gear slot in its rarity colour.
+     Back: the hero standing in the middle with gear down both sides (left: weapon, head, body, feet that
+     anyone can wear; right: charm, then the hero's own three pieces), the bonuses, a slim stat line.
+     opt: owned, mini, level, stats (totals), base (stats before gear), load { g: {slot: id}, own: [id x3],
+     has(id), avail: {key: true}, lines: [html], copies: [have, need], charmOpen, power }, live (animate the
+     back), onSlot(key), noflip. */
   OS.card = function (h, opt) {
-    opt = opt || {}; const owned = opt.owned !== false, R = OS.R;
+    opt = opt || {}; const owned = opt.owned !== false, R = OS.R, L = opt.load || {}, g = L.g || {}, own = L.own || [null, null, null];
     const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : ''));
-    const stats = opt.stats || h.stats, max = 60;
-    let back = '';
-    if (!opt.mini) {
-      back = `<div class="face back"><i class="frame"></i><div><div class="nm">${h.name}</div><div class="ti">${h.title} · ${h.era}</div></div>
-        <div class="bio">${h.bio}</div>
-        <div class="stats">${R.stats.map(k => `<span>${OS.statWord[k]}</span><i><b style="width:${Math.min(100, stats[k] / max * 100)}%"></b></i><span>${stats[k]}</span>`).join('')}</div>
-        <div class="slots"></div></div>`;
-    }
-    // trading-card layout: name bar, art window, type line, text box. One calm frame in the rarity's colour.
+    const stats = opt.stats || h.stats, base = opt.base || stats, power = L.power != null ? L.power : stats.attack + stats.defense + stats.health;
+    const col = id => id && OS.items[id] ? R.rarity_color[OS.items[id].rarity] : '';
+    const GS = R.slots.general, keys = GS.concat(['own0', 'own1', 'own2']), at = k => k.indexOf('own') === 0 ? own[+k[3]] : g[k];
+    const dots = keys.map((k, i) => (i === 5 ? '<u></u>' : '') + `<i class="${k === 'charm' ? 'o' : ''}" style="${at(k) ? 'background:' + col(at(k)) : ''}"></i>`).join('');
     const lv = opt.level > 1 ? `<span class="lv">Lv ${opt.level}</span>` : '';
-    c.innerHTML = `<div class="face front tcg">
+    let front = `<div class="face front tcg">
       <div class="nbar"><span class="nm">${owned ? h.name : '???'}</span>${lv}</div>
       <div class="win"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>
         <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div></div>
       <div class="tline"><span>${owned ? h.species + ' · ' + h.title : 'Not yet summoned'}</span><b class="gem" title="${OS.cap(h.rarity)}"></b></div>
-      <div class="tbox"><div class="era">${OS.cap(h.rarity)}${owned ? ' · ' + h.era : ''}</div><div class="fl">${owned ? OS.blurb(h.bio) : 'Somebody the book has not coughed up yet.'}</div></div></div>` + back;
+      <div class="nums">${R.stats.map(k => `<div><b>${owned ? stats[k] : '?'}</b><span>${OS.statWord[k]}</span></div>`).join('')}</div>
+      <div class="foot"><span>Power <b>${owned ? power : '?'}</b></span><span class="dots">${dots}</span></div></div>`;
+    let back = '';
     if (!opt.mini) {
-      const slots = c.querySelector('.slots'), gear = opt.gear || h.gear;
-      gear.forEach((g, i) => slots.appendChild(g ? OS.slot(g, { dim: opt.dimGear && opt.dimGear[i] }) : OS.el('div', 'slot empty')));
-      if (!opt.noflip && owned) c.addEventListener('click', e => { if (!e.target.closest('.slot')) c.classList.toggle('flip'); });
+      const cell = (k, label, id, cls) => `<div class="gs ${cls || ''}${id ? ' has' : ''}${L.avail && L.avail[k] ? ' avail' : ''}" data-slot="${k}" style="${id ? '--q:' + col(id) : ''}"><u>${label}</u>${id ? `<img src="${OS.img('loot', OS.items[id].icon)}" alt="${OS.items[id].name}">` : ''}</div>`;
+      const charmOpen = L.charmOpen != null ? L.charmOpen : (opt.level || 1) >= R.slots.charm_level;
+      const left = ['weapon', 'head', 'body', 'feet'].map(k => cell(k, OS.cap(k), g[k])).join('');
+      const right = (charmOpen ? cell('charm', 'Charm', g.charm) : `<div class="gs lock" data-slot="charm"><u>Charm</u><em>Lv ${R.slots.charm_level}</em></div>`) +
+        h.gear.map((gid, i) => { const worn = own[i] === gid, have = worn || (L.has ? L.has(gid) : false);
+          return `<div class="gs own${worn ? ' has' : ''}${!worn && have ? ' avail' : ''}" data-slot="own${i}" style="${worn ? '--q:' + col(gid) : ''}"><u>${OS.shortName(OS.items[gid].name)}</u><img class="${worn ? '' : have ? 'ready' : 'sil'}" src="${OS.img('loot', OS.items[gid].icon)}" alt="${worn ? OS.items[gid].name : have ? OS.items[gid].name + ', in your armory' : 'Not found yet'}"></div>`; }).join('');
+      const st = R.gear_sets['set_' + h.id], k2 = st ? Object.keys(st.two)[0] : '';
+      const lines = L.lines || (st ? [`<s>${st.name} set · 2 worn: +${st.two[k2]} ${OS.statWord[k2]} · all 3: +${Math.round(st.three.amount * 100)}% ${OS.FX[st.three.kind]}</s>`, `<s>${h.name.split(' ')[0]}’s kit · 2 worn: +${Math.round(R.kit.two * 100)}% all stats · all 3: +${Math.round(R.kit.three * 100)}%</s>`] : []);
+      const cp = L.copies ? `<span class="cl">Lv ${opt.level || 1} <i><b style="width:${Math.min(100, L.copies[0] / L.copies[1] * 100)}%"></b></i> ${L.copies[0]} / ${L.copies[1]} copies</span>` : `<span class="cl">Lv ${opt.level || 1}</span>`;
+      back = `<div class="face back tcg bk">
+        <div class="nbar"><span class="nm">${h.name}</span><button class="ib" type="button" aria-label="About ${h.name}">i</button></div>
+        <div class="doll"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div><div class="live"><img src="${OS.img('heroes', h.id)}" alt=""></div>
+          <div class="gcol l">${left}</div><div class="gcol r">${right}</div></div>
+        <div class="bon">${lines.slice(0, 3).join('<br>')}</div>
+        <div class="strip">${R.stats.map(k => `<span>${SW[k]}<b>${stats[k]}</b>${stats[k] > base[k] ? `<em>+${stats[k] - base[k]}</em>` : ''}</span>`).join('')}</div>
+        <div class="foot"><span>Power <b>${power}</b></span>${cp}</div>
+        <div class="story"><h4>${h.title} · ${h.era}</h4><p>${h.bio}</p><h4>Smudge says</h4><p>“${h.lines[1]}”</p></div></div>`;
+    }
+    c.innerHTML = front + back;
+    if (!opt.mini) {
+      c.querySelectorAll('.gs').forEach(el => {
+        const k = el.dataset.slot, id = k.indexOf('own') === 0 ? h.gear[+k[3]] : g[k], worn = k.indexOf('own') === 0 ? own[+k[3]] === id : !!id;
+        if (id && (worn || (L.has && L.has(id)))) OS.bindTip(el, () => OS.tipHTML(id));
+        else if (k.indexOf('own') === 0) OS.bindTip(el, () => `<div class="tn" style="color:${R.rarity_color[OS.items[id].rarity]}">???</div><div class="sub"><span>${OS.cap(OS.items[id].rarity)}</span></div><div class="src">One of ${h.name.split(' ')[0]}’s own three pieces. Not found yet.</div>`);
+        if (opt.onSlot) el.addEventListener('click', e => { e.stopPropagation(); opt.onSlot(k); });
+      });
+      c.querySelector('.ib').addEventListener('click', e => { e.stopPropagation(); const bk = c.querySelector('.back'); bk.classList.toggle('info'); e.currentTarget.textContent = bk.classList.contains('info') ? '×' : 'i'; });
+      // the hero stands idle on the back, but only once somebody is looking at it
+      const wake = () => { if (!opt.live || c._pup || !window.DBCanvas || !OS.rig['h_' + h.id]) return; const host = c.querySelector('.live'), e = OS.rig['h_' + h.id]; if (!host.clientHeight) return;
+        const sc = Math.min(host.clientHeight * 0.92 / e.size[1], host.clientWidth * 0.62 / e.size[0]); host.innerHTML = ''; c._pup = new DBCanvas.Puppet(host, h.id, sc, { hero: true, x: 0.5 - (e.size[0] / 2 - e.foot[0]) * sc / host.clientWidth, y: 0.995, ver: OS.VER }); };
+      c.wake = wake; c.sleep = () => { if (c._pup) { c._pup.destroy(); c._pup = null; } };
+      if (!opt.noflip && owned) c.addEventListener('click', e => { if (e.target.closest('.gs,.ib')) return; c.classList.toggle('flip'); if (c.classList.contains('flip')) setTimeout(wake, 350); });
+      if (opt.back) { c.classList.add('flip'); setTimeout(wake, 60); }
     }
     return c;
   };

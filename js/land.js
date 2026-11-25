@@ -50,7 +50,7 @@
 
   // ---------------------------------------------------------------- cards
   const show = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin'];
-  show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id])));
+  show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id], { live: true })));
   setTimeout(() => { const c = $('cards').children[2]; if (c) { c.classList.add('flip'); setTimeout(() => c.classList.remove('flip'), 2600); } }, 1800);
   const WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'], TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
   const word = n => { const w = n < 20 ? WORDS[n] : n < 100 ? TENS[Math.floor(n / 10)] + (n % 10 ? '-' + WORDS[n % 10] : '') : String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
