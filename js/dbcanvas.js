@@ -137,8 +137,10 @@
   function fetchPose(stem, base, ver) {
     const k = base + stem;
     if (!files[k]) {
-      const u = base + stem, img = new Image(); img.src = u + '_tex.webp' + ver;
-      files[k] = Promise.all([fetch(u + '_ske.json' + ver).then(r => r.json()), fetch(u + '_tex.json' + ver).then(r => r.json()), img.decode()]).then(([ske, tex]) => ({ ske, tex, img }));
+      const u = base + stem, img = new Image();
+      // onload, not decode(): decode() can sit unresolved while the tab is in the background
+      const pic = new Promise((ok, bad) => { img.onload = ok; img.onerror = () => bad(new Error('picture missing: ' + stem)); }); img.src = u + '_tex.webp' + ver;
+      files[k] = Promise.all([fetch(u + '_ske.json' + ver).then(r => r.json()), fetch(u + '_tex.json' + ver).then(r => r.json()), pic]).then(([ske, tex]) => ({ ske, tex, img }));
     }
     return files[k];
   }
