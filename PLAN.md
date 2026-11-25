@@ -160,3 +160,14 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Cabinet bonus fills fast (44 of 66 pieces in two hours of testing): check +0.5% per piece is not too generous
 - [ ] Hunt order tends to park a hero at the place with their own signature gear; decide if that is wanted
 - [ ] Web game running around the clock levels too fast (about 4 weeks to 99)
+
+## The city (Torn side) — built 24 Nov, on the preview
+- [x] Database: friends, mailbox, guilds (30 max), weekly guild hauls, guild chat, market listings, per-skill boards (`supabase/os2_social.sql`, applied)
+- [x] City screen tabs: Rankings (total + each skill), Friends, Guild, Market, Mailbox; tap any name to see their ledger
+- [x] Gifts between friends (20 a day), market stall (10 spots, market keeps 5%), gold and gifts arrive by mailbox
+- [x] Guild weekly goal: 1,500 hauls per member, reward 3 crates + 5 shards each, guild room chat
+- [x] Scenes: fixed spots per place, everyone wholly on one surface, side-facing heroes turn toward the work
+- [ ] Test with two real accounts (needs Dean signed in on the preview + a second account)
+- [ ] Chat refresh is manual/15s; live chat later. Report/mute for chat before going public
+- [ ] Mailbox dot on the home tile; guild goal tuning; market price history
+- [ ] Saves are still trusted from the browser, so trades can be cheated until saves move server-side

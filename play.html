@@ -7,17 +7,17 @@
 <meta name="robots" content="noindex"><meta name="theme-color" content="#080c1a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/css/os.css?v=1125g">
+<link rel="stylesheet" href="/css/os.css?v=1125h">
 </head>
 <body class="game">
-<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1125g" alt=""><p>Opening the ledger…</p></div>
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1125h" alt=""><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
   <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
   <div class="res">
     <span title="Energy. Spend it on training."><img src="/assets/v2/loot/x_energy.webp" alt="Energy"><b id="r-energy">0</b></span>
     <span title="Ink. Smudge spends it to summon."><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
     <span title="Gold"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">0</b></span>
-    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp?v=1125g" alt=""></button>
+    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp?v=1125h" alt=""></button>
   </div>
 </div></header>
 
@@ -37,7 +37,7 @@
       <button class="tile" data-go="workshop"><img src="/assets/v2/loot/x_anvil.webp" alt=""><b>Workshop</b><span>Brew tonics. Upgrade gear.</span></button>
       <button class="tile" data-go="training"><img src="/assets/v2/loot/x_dumbbell.webp" alt=""><b>Training</b><span>Spend energy on stats.</span></button>
       <button class="tile" data-go="raids"><img src="/assets/v2/loot/x_sword.webp" alt=""><b>Raids</b><span id="t-raids">Three against one boss.</span></button>
-      <button class="tile" data-go="board"><img src="/assets/v2/loot/x_trophy.webp" alt=""><b>The city</b><span>Who is ahead.</span></button>
+      <button class="tile" data-go="board"><img src="/assets/v2/loot/x_trophy.webp" alt=""><b>The city</b><span>Friends, guilds, the market.</span></button>
       <button class="tile" data-go="shop"><img src="/assets/v2/loot/x_gold.webp" alt=""><b>Shop</b><span>Opening soon.</span></button>
       <button class="tile" data-go="account"><img src="/assets/v2/loot/x_key.webp" alt=""><b>Account</b><span>Name, logins, settings.</span></button>
     </div>
@@ -104,9 +104,7 @@
   </section>
 
   <section class="view" id="v-board"><button class="back" data-go="home">← Home</button><h2>The city</h2>
-    <p class="mut" style="margin-bottom:1rem">Everyone with a ledger, ranked by how much they have learned.</p>
-    <div class="panel"><div id="bd-list"></div></div>
-    <div class="panel" style="margin-top:.9rem"><h3>Coming to the city</h3><p class="mut" style="margin:0">Friends, visiting other ledgers, gifts, crews and a market stall are on the way.</p></div>
+    <div class="atabs" id="city-tabs"></div><div id="city-body"></div>
   </section>
 
   <section class="view" id="v-shop"><button class="back" data-go="home">← Home</button><h2>The shop</h2>
@@ -138,7 +136,7 @@
 <script src="/js/cloud.js"></script>
 <script src="/js/os.js"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1125g"></script>
+<script src="/js/dbcanvas.js?v=1125h"></script>
 <script src="/js/game.js"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>

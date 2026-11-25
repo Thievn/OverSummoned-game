@@ -496,3 +496,16 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 
 .crewsay{position:absolute;z-index:6;max-width:44%;background:#fff;color:#1e2a47;border:2.5px solid #1e2a47;border-radius:12px 12px 12px 3px;padding:.3em .65em;font:700 .8rem/1.25 Nunito,sans-serif;opacity:0;transform:translateY(6px) scale(.85);transform-origin:10% 100%;transition:opacity .18s,transform .22s cubic-bezier(.3,1.6,.5,1);pointer-events:none;box-shadow:0 4px 10px rgba(0,0,0,.4)}
 .crewsay.r{border-radius:12px 12px 3px 12px;transform-origin:90% 100%}.crewsay.on{opacity:1;transform:none}
+
+/* the city */
+.atabs button.on{background:var(--gold);color:#141c33;border-color:var(--gold)}
+.chips{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.7rem}.chip{background:#0b1020;border:2px solid var(--line);color:var(--mut);font:800 .78rem Nunito;padding:.3em .7em;border-radius:99px;cursor:pointer}.chip.on{border-color:var(--teal);color:var(--teal)}
+.who2{cursor:pointer;text-decoration:underline dotted rgba(255,255,255,.25);text-underline-offset:3px}.brow.g{grid-template-columns:1fr auto auto}
+.addrow{display:flex;gap:.5rem;align-items:center}.addrow input{flex:1;min-width:0}
+.frow{display:flex;gap:.7rem;align-items:center;padding:.55rem 0;border-top:1px solid var(--line)}.frow:first-child{border-top:0}.frow>div:not(.facts):not(.msl){flex:1;min-width:0;display:flex;flex-direction:column;font-size:.92rem}.frow .mut{font-size:.8rem}
+.facts{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}.msl{flex:0 0 46px;width:46px}
+.ghead{display:flex;justify-content:space-between;align-items:center;gap:.8rem}
+.gbar{position:relative;height:26px;border-radius:99px;background:#0b1020;border:2px solid var(--line);overflow:hidden;margin-top:.35rem}.gbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:99px;transition:width .6s}.gbar span{position:absolute;inset:0;display:grid;place-items:center;font:800 .78rem Nunito;color:#fff;text-shadow:0 1px 2px #000}
+.chat{max-height:15rem;overflow:auto;margin:.5rem 0;display:flex;flex-direction:column;gap:.25rem}.chat p{margin:0;font-size:.9rem;line-height:1.35;overflow-wrap:anywhere}.chat b{color:var(--gold);margin-right:.3em}
+.pkstats{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}.pkcards{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.4rem}
+@media(max-width:600px){.brow.g span:nth-of-type(n+2){display:block}.pkstats{grid-template-columns:repeat(2,1fr)}.frow{flex-wrap:wrap}.frow .facts{margin-left:auto}}
