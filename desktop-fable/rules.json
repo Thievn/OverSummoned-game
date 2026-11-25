@@ -264,6 +264,11 @@
   "mastery_cap": 50,
   "wander_minutes": 15
  },
+ "kit": {
+  "two": 0.1,
+  "three": 0.25,
+  "speed": 0.1
+ },
  "rested": {
   "hours": 4,
   "mult": 2.0,

@@ -114,6 +114,14 @@ Status: [x] done, [~] partly done, [ ] not started.
 - Built pages marked [~] are written and tested with sample data, but not yet against the live database.
 - A leaderboard exists; friends, gifts, crews and chat do not yet.
 
+## Raising a card (the point of everything)
+- [x] The full kit: a hero wearing two of their own three signature pieces gets +10% to every stat; all three gives +25% and +10% work speed. Shown on the hero sheet
+- [x] Stats page in the account: collection, work, ink and gold, fights, time played (counts from when it was added)
+- [ ] Extra gear slots beyond weapon, armor, trinket (hat, boots, charm), with gear sets that pay out at 2, 4 and 6 pieces. Needs new items and icons
+- [ ] Making skills that turn treasure into things for cards: Cooking (meals before raids), Tinkering (gear upgrades), Restoring (cabinet pieces)
+- [ ] Mastery per treasure, and one completion percentage on the dashboard
+- [ ] Crews, market, per-skill leaderboards (needs database approval)
+
 ## Pacing (testing)
 - [x] Fresh crew: first 4 hours of work each day at double speed, then the plain rate (plain rate is 65% of the old one). Shown on the dashboard
 - [x] Shards: every duplicate summon gives one; spend them in Arrivals to call a missing hero by name (2 / 4 / 8 / 15 / 30 / 45 / 80 by rarity). Published odds unchanged

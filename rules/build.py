@@ -64,6 +64,8 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15},
+    # a hero wearing their own signature pieces: two gives a little, all three is "the full kit"
+    kit={"two": 0.10, "three": 0.25, "speed": 0.10},
     # ---- pacing. Fresh crew: the first hours of work each day run at double speed, then the plain rate.
     #      The plain rate is lower than it used to be, so daily players gain and round-the-clock idlers lose a little.
     rested={"hours": 4, "mult": 2.0, "base": 0.65},
