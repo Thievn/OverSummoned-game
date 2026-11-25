@@ -236,3 +236,5 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Watch the new idle and the fast stamping on a real phone; tune amounts
 - [ ] Animal repeats are fine from now on as long as each is clearly different (colouring, outfit)
 - [ ] Gear stats still follow a fixed pattern per slot
+- [x] Bella redrawn with two legs (Dean picked the one with black claws); puppet rebuilt
+- [x] Fixed the broken bar across the top of every page: the guild progress bar had been given the same class name as the game's header (`.gbar`), now `.guildbar`

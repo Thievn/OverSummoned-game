@@ -73,7 +73,7 @@ def grid(w, h, origin, NX, NY, weigh):
 
 
 # Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
-CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (140, 222, 32), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (215, 172, 22)}
+CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (155, 215, 26), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (215, 172, 22)}
 
 # Other soft spots on a hero's body picture that move without being cut out (so no seams, ever):
 # (bone name, centre x, centre y, radius x, radius y, kind).  kind: 'sway' rocks, 'bob' rides up and down.
@@ -96,7 +96,6 @@ SOFT = {
     'troffea': [('drum', 330, 90, 50, 55, 'sway'), ('skirt', 170, 400, 110, 60, 'bob')],
     'joost': [('tulip', 345, 120, 35, 50, 'sway'), ('wag', 40, 520, 40, 35, 'sway')],
     'chad': [('phone', 390, 240, 35, 55, 'bob'), ('thumb', 70, 255, 30, 35, 'bob')],
-    'bella': [('phone', 232, 125, 25, 40, 'bob'), ('wag', 25, 330, 25, 40, 'sway')],
     'morwenna': [('lantern', 90, 360, 25, 45, 'sway'), ('wing_a', 80, 470, 80, 70, 'sway'), ('wing_b', 430, 470, 70, 70, 'sway'), ('wand', 100, 150, 25, 60, 'sway')],
     'sable': [('goblet', 365, 230, 28, 45, 'bob'), ('keys', 95, 470, 28, 45, 'sway')],
     'jacko': [('board', 60, 400, 60, 50, 'bob')],
