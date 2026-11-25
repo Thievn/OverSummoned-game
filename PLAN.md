@@ -192,3 +192,9 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Guild chat live refresh, report/mute before going public
 - [ ] Mailbox dot on the home tile; market price history
 - [ ] Logo and social icon set (on hold)
+
+## Public roadmap page — built 24 Nov
+- [x] `/roadmap` ("What's coming"): four stages (Just arrived, Being built, After that, On the horizon); linked from the game home tile and the site footer
+- [ ] Keep it in step with this file: move a card up a stage whenever the feature ships
+- [ ] Optional: let signed-in players vote for what they want most
+- Promises made on the page (change the page if Dean disagrees): shop is looks only; monthly arrivals; nothing resets cards; missed daily stamp keeps your place
