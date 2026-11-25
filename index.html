@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>OverSummoned · An otter, a cursed ledger, and everyone history lost</title>
 <meta name="description" content="Smudge the otter stamped the wrong name in the wrong book. Now strangers from every century keep falling onto your desk. A desktop pet and idle game powered by your typing.">
-<meta name="theme-color" content="#080c1a">
+<meta name="theme-color" content="#080c1a"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta property="og:title" content="OverSummoned">
 <meta property="og:description" content="He stamped the wrong name. Now history keeps showing up.">
 <meta property="og:image" content="/assets/og-share.jpg">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="preload" href="/assets/fonts/LilitaOne.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="/css/os.css?v=1125a">
+<link rel="stylesheet" href="/css/os.css?v=1125b">
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="/">Over<b>Summoned</b></a>
+  <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
   <nav>
     <a class="hide-s" href="#arrivals">The arrivals</a>
     <a class="hide-s" href="#lost">Lost property</a>
@@ -117,7 +117,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js" defer></script>
 <script src="/js/os.js"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1125a"></script>
+<script src="/js/dbcanvas.js?v=1125b"></script>
 <script src="/js/land.js"></script>
+<script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>
 </html>

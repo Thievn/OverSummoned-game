@@ -2,7 +2,7 @@
   "id": "/play",
   "name": "OverSummoned",
   "short_name": "OverSummoned",
-  "description": "A pixel idle RPG you play in your browser. Summon heroes from every era and let them work while you are away.",
+  "description": "Summon animal heroes from every era, put them to work, gear them up. An otter, a cursed ledger, and everyone history lost.",
   "start_url": "/play",
   "scope": "/",
   "display": "standalone",
