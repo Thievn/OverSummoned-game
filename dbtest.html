@@ -8,86 +8,65 @@
 <link rel="stylesheet" href="css/os.css">
 <style>
   body{margin:0;background:#0b1020;color:#e8edfb;font-family:system-ui,sans-serif}
-  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+  .wrap{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
   h1{font:400 1.7rem "Lilita One",system-ui,sans-serif;margin:.2em 0}
   p{color:#aab6d6;margin:.3em 0 1em;line-height:1.45}
-  .dbrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:700px){.dbrow{grid-template-columns:1fr}}
-  .dbstage{position:relative;height:420px;border:2px solid #1f2b52;border-radius:16px;background:radial-gradient(ellipse at 50% 88%,#24335f 0,#111936 60%);overflow:hidden}
+  .dbrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .dbrow.two{grid-template-columns:1fr 1fr}
+  @media(max-width:820px){.dbrow{grid-template-columns:1fr 1fr}}
+  @media(max-width:460px){.dbrow,.dbrow.two{grid-template-columns:1fr}}
+  .dbstage{position:relative;height:340px;border:2px solid #1f2b52;border-radius:16px;background:radial-gradient(ellipse at 50% 88%,#24335f 0,#111936 60%);overflow:hidden}
+  .dbrow.two .dbstage{height:420px}
   .dbstage b{position:absolute;left:12px;top:10px;font-size:.85rem;letter-spacing:.3px;color:#dfe6fa;z-index:3}
-  .dbstage canvas{position:absolute;inset:0;width:100%;height:100%}
-  .dbbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .dbbar{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
   .dbbar label{display:flex;align-items:center;gap:.4em;color:#aab6d6;font-size:.9rem}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Smudge rig test</h1>
-  <p>Left is the rig the site uses now. Right is the same cut parts as DragonBones files, played by the DragonBones runtime. Watch the tail: on the right it bends along its length.</p>
+  <h1>Smudge on DragonBones</h1>
+  <p>All four working poses as DragonBones rigs: same bone names, a tail that bends along its length, and the same named moves on each (idle, act, cheer, blink, talk).</p>
   <div class="dbrow">
-    <div class="dbstage" id="old"><b>Current rig</b></div>
-    <div class="dbstage" id="new"><b>DragonBones</b></div>
+    <div class="dbstage" id="d_stamp"><b>Stamping</b></div>
+    <div class="dbstage" id="d_fish"><b>Fishing</b></div>
+    <div class="dbstage" id="d_pick"><b>Lockpicking</b></div>
+    <div class="dbstage" id="d_dig"><b>Digging</b></div>
   </div>
   <div class="dbbar">
-    <button class="btn" id="bStamp">Stamp</button>
+    <button class="btn" id="bAct">Do the job</button>
     <button class="btn" id="bCheer">Cheer</button>
     <button class="btn" id="bTalk">Talk</button>
     <label><input type="checkbox" id="bBones"> Show bones</label>
   </div>
-  <h1 style="margin-top:1.2em">Other poses, recut</h1>
-  <p>Fishing, lockpicking and digging with the new cuts, on the current rig for now. Press Wiggle to swing every part and look for gaps.</p>
-  <div class="dbrow" style="grid-template-columns:repeat(3,1fr)">
-    <div class="dbstage" id="p_fish"><b>Fishing</b></div>
-    <div class="dbstage" id="p_pick"><b>Lockpicking</b></div>
-    <div class="dbstage" id="p_dig"><b>Digging</b></div>
+  <h1 style="margin-top:1.2em">Old rig, for comparison</h1>
+  <p>The stamping pose on the rig the game still uses. Same new cuts, but the tail swings as one stiff piece and there is no wrist.</p>
+  <div class="dbrow two">
+    <div class="dbstage" id="old"><b>Current rig</b></div>
+    <div class="dbstage" id="d_big"><b>DragonBones</b></div>
   </div>
-  <div class="dbbar"><button class="btn" id="bWig">Wiggle</button></div>
 </div>
-<script src="js/os.js?v=1124d"></script>
+<script src="js/os.js?v=1124e"></script>
 <script src="js/vendor/dragonBones.core.js"></script>
-<script src="js/dbcanvas.js?v=1124d"></script>
+<script src="js/dbcanvas.js?v=1124e"></script>
 <script>
 (async function () {
-  const H = 420, S = 0.62, $ = id => document.getElementById(id);
+  const $ = id => document.getElementById(id), opt = (x, y) => ({ x, y, ver: OS.VER });
   const note = (host, msg) => { const d = document.createElement('p'); d.textContent = msg; d.style.cssText = 'position:absolute;left:12px;right:12px;top:40px;color:#ffb4a8'; host.appendChild(d); };
-  // ---- current rig
+  const all = [];
+  [['stamp', 0.43, 0.5, 0.9, 'd_stamp'], ['fish', 0.46, 0.5, 0.72, 'd_fish'], ['pick', 0.42, 0.47, 0.92, 'd_pick'], ['dig', 0.39, 0.5, 0.94, 'd_dig'], ['stamp', 0.62, 0.52, 0.9, 'd_big']].forEach(([pose, sc, x, y, id]) => {
+    const p = new DBCanvas.Puppet($(id), pose, sc, opt(x, y)); all.push(p);
+    p.ready.catch(e => { console.error(e); note($(id), 'Could not start: ' + e.message); });
+  });
   let old = null;
   try {
     OS.rig = await (await fetch('data/rig.json' + OS.VER)).json();
-    const host = $('old'); old = new OS.Puppet(host, 'stamp', S); old.place(host.clientWidth / 2 + 10, H * 0.9);
+    const host = $('old'); old = new OS.Puppet(host, 'stamp', 0.62); old.place(host.clientWidth * 0.52, 420 * 0.9);
   } catch (e) { console.error(e); note($('old'), 'Could not load the current rig: ' + e.message); }
-
-  // ---- DragonBones
-  let over = () => null, bones = false;
-  try {
-    const host = $('new'), cv = document.createElement('canvas'), ctx = cv.getContext('2d'); host.appendChild(cv);
-    const img = new Image(); img.src = 'assets/v2/db/smudge_tex.webp' + OS.VER;
-    const [ske, tex] = await Promise.all([fetch('assets/v2/db/smudge_ske.json' + OS.VER).then(r => r.json()), fetch('assets/v2/db/smudge_tex.json' + OS.VER).then(r => r.json()), img.decode()]);
-    const f = new DBCanvas.Factory(); f.parseDragonBonesData(ske); f.parseTextureAtlasData(tex, img);
-    const p = f.build('stamp', 'smudge'), an = p.animation; an.play('idle', 0);
-    over = (name, times, layer) => { const s = an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s; };
-    (function blink() { over('blink', 1, 3); setTimeout(blink, 2200 + Math.random() * 3300); })();
-    let last = performance.now();
-    (function frame(now) {
-      const dt = Math.min(0.05, (now - last) / 1000); last = now; f.advance(dt);
-      const w = host.clientWidth, dpr = Math.min(2, window.devicePixelRatio || 1);
-      if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(H * dpr); }
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, H);
-      DBCanvas.draw(ctx, p, w / 2 + 10, H * 0.9, S, { bones });
-      requestAnimationFrame(frame);
-    })(last);
-    window.DB = { p, an, over };
-  } catch (e) { console.error(e); note($('new'), 'Could not start DragonBones: ' + e.message); }
-
-  $('bStamp').onclick = () => { over('stamp', 1, 1); if (old) { old.kick('arm', 22); old.kick('head', 2); } };
-  $('bCheer').onclick = () => { over('cheer', 8, 2); if (old) old.cheer(4); };
-  $('bTalk').onclick = () => { over('talk', 4, 4); if (old) old.say(2.7); };
-  $('bBones').onchange = e => { bones = e.target.checked; };
-  const others = [];
-  [['fish', 0.5, 0.7], ['pick', 0.47, 0.9], ['dig', 0.44, 0.9]].forEach(([pose, sc, fy]) => {
-    try { const h = $('p_' + pose), e = OS.rig[pose], pp = new OS.Puppet(h, pose, sc); pp.place(h.clientWidth / 2 - (e.size[0] / 2 - e.foot[0]) * sc, H * fy); others.push(pp); } catch (err) { console.error(err); }
-  });
-  $('bWig').onclick = () => others.forEach(pp => Object.keys(pp.parts).forEach((n, i) => pp.kick(n, (i % 2 ? -1 : 1) * (n === 'over' ? 0 : 5))));
+  $('bAct').onclick = () => { all.forEach(p => p.act()); if (old) { old.kick('arm', 22); old.kick('head', 2); } };
+  $('bCheer').onclick = () => { all.forEach(p => p.cheer(4)); if (old) old.cheer(4); };
+  $('bTalk').onclick = () => { all.forEach(p => p.say(2.7)); if (old) old.say(2.7); };
+  $('bBones').onchange = e => all.forEach(p => p.bones = e.target.checked);
+  window.DBP = all;
 })();
 </script>
 </body>

@@ -86,7 +86,9 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] White-edge check: only the stamp pose had it. Other Smudge poses and spot-checked heroes are clean; heroes left untouched (auto-peel would eat blades, grey fur, white shirts)
 - [x] Version stamp on art and data links (`OS.VER` in `js/os.js`); bump it whenever art changes
 - [ ] Stamp pose leftovers: small dark nick at the shoulder, flat cloak patch behind the lowered arm
-- [ ] Build fishing, lockpicking and digging as DragonBones rigs (bending tail, shared bones); they run on the old rig for now
+- [x] All four working poses are DragonBones rigs (`rules/dbexport.py` writes `assets/v2/db/smudge_<pose>_*`): shared bones, bending tail, same move names on each (idle, act, cheer, blink, talk)
+- [x] `DBCanvas.Puppet` in `js/dbcanvas.js`: drop-in Smudge player (act / cheer / say), loads each pose on demand
+- [ ] Sleeping pose as a DragonBones rig (no moving parts cut yet)
 - [ ] Copy the recut parts into the desktop pet (`desktop-fable/`)
 - [ ] Shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
 - [ ] Swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)

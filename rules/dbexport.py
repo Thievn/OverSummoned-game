@@ -1,13 +1,13 @@
 """Write a Smudge pose out as real DragonBones files (5.5 format).
 
-  python3 rules/dbexport.py            -> assets/v2/db/smudge_{ske.json,tex.json}, smudge_tex.webp
+  python3 rules/dbexport.py [pose ...]   -> assets/v2/db/smudge_<pose>_{ske.json,tex.json,tex.webp}
 
 Reads the parts tools/puppet.py already cut (art2/puppet/<pose>_*.png) and the joints in
 data/rig.json, and produces a skeleton the official DragonBones runtimes play, and that the
 DragonBones editor can open for hand polish. What it adds over the simple rig:
   * a three-bone tail with a weighted mesh, so the tail bends along its length
   * eyelid and mouth bones
-  * named animations: idle, stamp, cheer, blink, talk
+  * named animations, the same names on every pose: idle, act, cheer, blink, talk
 """
 import json, math, os, sys
 from PIL import Image, ImageDraw
@@ -57,12 +57,13 @@ def keys(seq, key='rotate'):
     return out
 
 
-def build(pose='stamp', name='smudge'):
+def build(pose='stamp'):
+    name = f'smudge_{pose}'
     rig = json.load(open(os.path.join(ROOT, 'data', 'rig.json')))[pose]
-    foot = rig['foot']; P = {p['name']: p for p in rig['parts']}
+    foot = rig['foot']; parts = rig['parts']; P = {p['name']: dict(p) for p in parts}
     img = {n: Image.open(os.path.join(SRC, f'{pose}_{n}.png')).convert('RGBA') for n in ['base'] + list(P)}
     P['base'] = {'offset': [0, 0]}
-    DBX = rig.get('db', {})
+    DBX = rig.get('db', {})                      # stamp pose: the arm in two pieces, forearm + fist
     for n, v in DBX.items(): P[n] = v; img[n] = Image.open(os.path.join(SRC, f'{pose}_{n}.png')).convert('RGBA')
     if DBX: del img['arm']
     A = lambda pt: (pt[0] - foot[0], pt[1] - foot[1])           # picture point -> armature space
@@ -78,7 +79,7 @@ def build(pose='stamp', name='smudge'):
         else: d.ellipse([0, 0, w * s - 1, h * s - 1], fill=col + (255,), outline=INK, width=2 * s)
         return e.resize((w, h), Image.LANCZOS)
     for i, (cx, cy, rx, ry) in enumerate(eyes): img[f'lid{i}'] = ellipse(int(rx * 2.5), int(ry * 2.6), fur, True)
-    img['mouth'] = ellipse(mouth[2] * 2 + 2, mouth[3] * 2 + 2, (90, 31, 44))
+    if mouth[2]: img['mouth'] = ellipse(mouth[2] * 2 + 2, mouth[3] * 2 + 2, (90, 31, 44))
 
     # ---- atlas (simple shelves, 2px gutters)
     order = sorted(img, key=lambda n: -img[n].size[1]); W = 1024; x = y = 2; rowh = 0; sub = []
@@ -91,15 +92,16 @@ def build(pose='stamp', name='smudge'):
     atlas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     for s in sub: atlas.paste(img[s['name']], (s['x'], s['y']))
 
-    # ---- bones
-    body = (0, -90)
+    # ---- bones: the shared set (root, body, head, tail1-3, lids, mouth) plus one per extra moving part
+    body = (0, -90); pos = {}
     bones = [{'name': 'root'}, {'name': 'body', 'parent': 'root', 'transform': {'x': body[0], 'y': body[1]}}]
-    def joint(n, parent='body', ppos=body, length=60):
-        px, py = A(P[n]['pivot']); bones.append({'name': n, 'parent': parent, 'length': length, 'transform': {'x': r2(px - ppos[0]), 'y': r2(py - ppos[1])}})
-        return (px, py)
-    hp = joint('head'); ap = joint('arm')
-    if DBX:
-        wp = A(DBX['hand']['pivot']); bones.append({'name': 'hand', 'parent': 'arm', 'length': 40, 'transform': {'x': r2(wp[0] - ap[0]), 'y': r2(wp[1] - ap[1])}})
+    def joint(n, parent='body', ppos=body, length=60, pivot=None):
+        px, py = A(pivot or P[n]['pivot']); bones.append({'name': n, 'parent': parent, 'length': length, 'transform': {'x': r2(px - ppos[0]), 'y': r2(py - ppos[1])}})
+        pos[n] = (px, py); return (px, py)
+    extras = [p['name'] for p in parts if p['name'] not in ('tail', 'head', 'over')]
+    hp = joint('head')
+    for n in extras: joint(n)
+    if DBX: joint('hand', 'arm', pos['arm'], 40, DBX['hand']['pivot'])
     # tail: three bones in a chain along the tail
     tp = A(P['tail']['pivot']); tl = (P['tail']['pivot'][0] - P['tail']['offset'][0], P['tail']['pivot'][1] - P['tail']['offset'][1])
     (dx, dy), L = tail_axis(img['tail'], tl); ang = math.degrees(math.atan2(dy, dx)); seg = L / 3
@@ -109,7 +111,8 @@ def build(pose='stamp', name='smudge'):
     idx = {b['name']: i for i, b in enumerate(bones)}
     for i, (cx, cy, rx, ry) in enumerate(eyes):
         ex, ey = A((cx, cy - int(ry * 2.6) / 2)); bones.append({'name': f'lid{i}', 'parent': 'head', 'transform': {'x': r2(ex - hp[0]), 'y': r2(ey - hp[1]), 'scY': 0.01}})
-    mx, my = A((mouth[0], mouth[1])); bones.append({'name': 'mouth', 'parent': 'head', 'transform': {'x': r2(mx - hp[0]), 'y': r2(my - hp[1]), 'scY': 0.01}})
+    if mouth[2]:
+        mx, my = A((mouth[0], mouth[1])); bones.append({'name': 'mouth', 'parent': 'head', 'transform': {'x': r2(mx - hp[0]), 'y': r2(my - hp[1]), 'scY': 0.01}})
 
     # ---- tail mesh, weighted across the three tail bones
     tw, th = img['tail'].size; NX, NY = 7, 7; verts = []; uvs = []; weights = []; tris = []
@@ -132,51 +135,94 @@ def build(pose='stamp', name='smudge'):
     tail_mesh = {'type': 'mesh', 'name': 'tail', 'width': tw, 'height': th, 'vertices': verts, 'uvs': uvs, 'triangles': tris,
                  'weights': weights, 'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp}
 
-    # ---- slots (draw order) and skin
-    def image(n, bonepos):
-        o = P[n]['offset']; w, h = img[n].size; c = A((o[0] + w / 2, o[1] + h / 2))
-        return {'name': n, 'transform': {'x': r2(c[0] - bonepos[0]), 'y': r2(c[1] - bonepos[1])}}
-    slots = [{'name': 'tail', 'parent': 'root'}, {'name': 'base', 'parent': 'body'}, {'name': 'arm', 'parent': 'arm'}] + ([{'name': 'hand', 'parent': 'hand'}] if DBX else []) + ([{'name': 'over', 'parent': 'body'}] if 'over' in P else []) + [{'name': 'head', 'parent': 'head'}]
-    skin = [{'name': 'tail', 'display': [tail_mesh]}, {'name': 'base', 'display': [image('base', body)]},
-            {'name': 'arm', 'display': [image('forearm' if DBX else 'arm', ap)]}] + ([{'name': 'hand', 'display': [image('hand', wp)]}] if DBX else []) + ([{'name': 'over', 'display': [image('over', body)]}] if 'over' in P else []) + [{'name': 'head', 'display': [image('head', hp)]}]
-    for n in [f'lid{i}' for i in range(len(eyes))] + ['mouth']:
-        d = {'name': n}
-        if n != 'mouth': d['transform'] = {'y': r2(img[n].size[1] / 2)}
-        slots.append({'name': n, 'parent': n}); skin.append({'name': n, 'display': [d]})
+    # ---- slots in draw order: behind parts, body, front parts, face
+    def image(n, bonepos, tex=None):
+        o = P[tex or n]['offset']; w, h = img[tex or n].size; c = A((o[0] + w / 2, o[1] + h / 2))
+        return {'name': tex or n, 'transform': {'x': r2(c[0] - bonepos[0]), 'y': r2(c[1] - bonepos[1])}}
+    slots = []; skin = []
+    def add(n, bone, display): slots.append({'name': n, 'parent': bone}); skin.append({'name': n, 'display': [display]})
+    def part(p):
+        n = p['name']
+        if n == 'tail': add('tail', 'root', tail_mesh)
+        elif n == 'over': add('over', 'body', image('over', body))
+        elif n == 'head': add('head', 'head', image('head', hp))
+        elif n == 'arm' and DBX: add('arm', 'arm', image('arm', pos['arm'], 'forearm')); add('hand', 'hand', image('hand', pos['hand']))
+        else: add(n, n, image(n, pos[n]))
+    for p in parts:
+        if p['mode'] == 'behind': part(p)
+    add('base', 'body', image('base', body))
+    for p in parts:
+        if p['mode'] != 'behind': part(p)
+    for i in range(len(eyes)): add(f'lid{i}', f'lid{i}', {'name': f'lid{i}', 'transform': {'y': r2(img[f'lid{i}'].size[1] / 2)}})
+    if mouth[2]: add('mouth', 'mouth', {'name': 'mouth'})
 
-    # ---- animations
+    # ---- animations. Every pose has: idle, act, cheer, blink, talk
     S = math.sin; T = 2 * math.pi
-    idle = {'duration': 96, 'playTimes': 0, 'name': 'idle', 'bone': [
+    idle = [
         {'name': 'tail1', 'rotateFrame': wave(96, 6, lambda p: 4 * S(T * p))},
         {'name': 'tail2', 'rotateFrame': wave(96, 6, lambda p: 7 * S(T * p - 0.9) + 2 * S(T * 2 * p))},
         {'name': 'tail3', 'rotateFrame': wave(96, 6, lambda p: 11 * S(T * p - 1.8) + 3 * S(T * 2 * p - 0.6))},
         {'name': 'head', 'rotateFrame': wave(96, 8, lambda p: 1.6 * S(T * p + 0.5))},
-    ]}
-    stamp = {'duration': 14, 'playTimes': 1, 'name': 'stamp', 'bone': [
-        {'name': 'arm', 'rotateFrame': keys([(0, 0), (3, -12), (7, 97), (9, 97), (14, 0)]),
-         'scaleFrame': keys([(0, {'x': 1, 'y': 1}), (3, {'x': 0.96, 'y': 1}), (7, {'x': 1.16, 'y': 1}), (9, {'x': 1.16, 'y': 1}), (14, {'x': 1, 'y': 1})]),
-         'translateFrame': keys([(0, {'x': 0, 'y': 0}), (7, {'x': -4, 'y': 8}), (9, {'x': -4, 'y': 8}), (14, {'x': 0, 'y': 0})])},
-        {'name': 'hand', 'rotateFrame': keys([(0, 0), (3, 8), (7, -92), (9, -92), (14, 0)])},
-        {'name': 'head', 'rotateFrame': keys([(0, 0), (3, -2), (6, 5), (14, 0)])},
-        {'name': 'tail3', 'rotateFrame': keys([(0, 0), (6, -16), (10, 8), (14, 0)])},
-        {'name': 'tail2', 'rotateFrame': keys([(0, 0), (5, -9), (9, 4), (14, 0)])},
-    ]}
-    cheer = {'duration': 12, 'playTimes': 0, 'name': 'cheer', 'bone': [
-        {'name': 'tail1', 'rotateFrame': wave(12, 2, lambda p: 9 * S(T * p))},
-        {'name': 'tail2', 'rotateFrame': wave(12, 2, lambda p: 16 * S(T * p - 1.0))},
-        {'name': 'tail3', 'rotateFrame': wave(12, 2, lambda p: 24 * S(T * p - 2.0))},
-        {'name': 'head', 'rotateFrame': wave(12, 2, lambda p: 3 * S(T * p))},
-    ] + [{'name': f'lid{i}', 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for i in range(len(eyes))]}
-    blink = {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
-        {'name': f'lid{i}', 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for i in range(len(eyes))]}
-    talk = {'duration': 16, 'playTimes': 0, 'name': 'talk', 'bone': [
-        {'name': 'mouth', 'scaleFrame': [{'duration': 2, 'tweenEasing': 0, 'x': 1, 'y': v} for v in (35, 85, 50, 100, 40, 70, 45, 90)] + [{'duration': 0, 'x': 1, 'y': 20}]}]}
+    ]
+    if pose == 'stamp':
+        act = (14, [
+            {'name': 'arm', 'rotateFrame': keys([(0, 0), (3, -12), (7, 97), (9, 97), (14, 0)]),
+             'scaleFrame': keys([(0, {'x': 1, 'y': 1}), (3, {'x': 0.96, 'y': 1}), (7, {'x': 1.16, 'y': 1}), (9, {'x': 1.16, 'y': 1}), (14, {'x': 1, 'y': 1})]),
+             'translateFrame': keys([(0, {'x': 0, 'y': 0}), (7, {'x': -4, 'y': 8}), (9, {'x': -4, 'y': 8}), (14, {'x': 0, 'y': 0})])},
+            {'name': 'hand', 'rotateFrame': keys([(0, 0), (3, 8), (7, -92), (9, -92), (14, 0)])},
+            {'name': 'head', 'rotateFrame': keys([(0, 0), (3, -2), (6, 5), (14, 0)])},
+            {'name': 'tail3', 'rotateFrame': keys([(0, 0), (6, -16), (10, 8), (14, 0)])},
+            {'name': 'tail2', 'rotateFrame': keys([(0, 0), (5, -9), (9, 4), (14, 0)])}])
+    elif pose == 'fish':
+        idle += [{'name': 'feet', 'rotateFrame': wave(96, 6, lambda p: 5 * S(T * 2 * p))},
+                 {'name': 'rod', 'rotateFrame': wave(96, 8, lambda p: 1.2 * S(T * p + 1))}]
+        act = (22, [      # a tug on the line: rod dips, then he hauls back
+            {'name': 'rod', 'rotateFrame': keys([(0, 0), (4, 7), (9, -11), (13, -8), (22, 0)])},
+            {'name': 'head', 'rotateFrame': keys([(0, 0), (4, 4), (9, -5), (22, 0)])},
+            {'name': 'feet', 'rotateFrame': keys([(0, 0), (5, -9), (10, 10), (16, -4), (22, 0)])},
+            {'name': 'tail2', 'rotateFrame': keys([(0, 0), (8, 10), (15, -5), (22, 0)])},
+            {'name': 'tail3', 'rotateFrame': keys([(0, 0), (9, 18), (16, -8), (22, 0)])}])
+    elif pose == 'pick':
+        idle += [{'name': 'hand_a', 'rotateFrame': wave(24, 2, lambda p: 1.6 * S(T * 2 * p) + 0.8 * S(T * 5 * p))},
+                 {'name': 'hand_b', 'rotateFrame': wave(24, 2, lambda p: -1.3 * S(T * 2 * p + 1) + 0.7 * S(T * 3 * p))}]
+        act = (16, [      # the lock gives: both picks twist, head cocks
+            {'name': 'hand_a', 'rotateFrame': keys([(0, 0), (3, -5), (6, 4), (9, -3), (16, 0)])},
+            {'name': 'hand_b', 'rotateFrame': keys([(0, 0), (3, 4), (6, -5), (9, 3), (16, 0)])},
+            {'name': 'head', 'rotateFrame': keys([(0, 0), (4, 6), (10, 6), (16, 0)])},
+            {'name': 'tail3', 'rotateFrame': keys([(0, 0), (6, 20), (11, -8), (16, 0)])}])
+    elif pose == 'dig':
+        idle += [{'name': 'shovel', 'rotateFrame': wave(96, 8, lambda p: 1.2 * S(T * p))}]
+        act = (20, [      # drive the blade down, then fling
+            {'name': 'shovel', 'rotateFrame': keys([(0, 0), (4, -5), (8, 11), (11, 11), (15, -8), (20, 0)]),
+             'translateFrame': keys([(0, {'x': 0, 'y': 0}), (8, {'x': 5, 'y': 9}), (11, {'x': 5, 'y': 9}), (15, {'x': -4, 'y': -6}), (20, {'x': 0, 'y': 0})])},
+            {'name': 'head', 'rotateFrame': keys([(0, 0), (8, 5), (15, -4), (20, 0)])},
+            {'name': 'tail2', 'rotateFrame': keys([(0, 0), (8, -8), (15, 8), (20, 0)])},
+            {'name': 'tail3', 'rotateFrame': keys([(0, 0), (9, -14), (16, 14), (20, 0)])}])
+    else: act = (12, [{'name': 'head', 'rotateFrame': keys([(0, 0), (5, 5), (12, 0)])}])
+    names = {b['name'] for b in bones}
+    lids = [f'lid{i}' for i in range(len(eyes))]
+    anims = [
+        {'duration': 96, 'playTimes': 0, 'name': 'idle', 'bone': idle},
+        {'duration': act[0], 'playTimes': 1, 'name': 'act', 'bone': act[1]},
+        {'duration': 12, 'playTimes': 0, 'name': 'cheer', 'bone': [
+            {'name': 'tail1', 'rotateFrame': wave(12, 2, lambda p: 9 * S(T * p))},
+            {'name': 'tail2', 'rotateFrame': wave(12, 2, lambda p: 16 * S(T * p - 1.0))},
+            {'name': 'tail3', 'rotateFrame': wave(12, 2, lambda p: 24 * S(T * p - 2.0))},
+            {'name': 'head', 'rotateFrame': wave(12, 2, lambda p: 3 * S(T * p))},
+        ] + [{'name': n, 'scaleFrame': [{'duration': 12, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 100}]} for n in lids]},
+        {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
+            {'name': n, 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for n in lids]},
+    ]
+    if mouth[2]: anims.append({'duration': 16, 'playTimes': 0, 'name': 'talk', 'bone': [
+        {'name': 'mouth', 'scaleFrame': [{'duration': 2, 'tweenEasing': 0, 'x': 1, 'y': v} for v in (35, 85, 50, 100, 40, 70, 45, 90)] + [{'duration': 0, 'x': 1, 'y': 35}]}]})
+    for an in anims:
+        for b in an['bone']: assert b['name'] in names, (pose, an['name'], b['name'])
 
     ske = {'frameRate': FPS, 'name': name, 'version': '5.5', 'compatibleVersion': '5.5', 'armature': [{
         'type': 'Armature', 'frameRate': FPS, 'name': pose,
         'aabb': {'x': -foot[0], 'y': -foot[1], 'width': rig['size'][0], 'height': rig['size'][1]},
         'bone': bones, 'slot': slots, 'skin': [{'name': '', 'slot': skin}],
-        'animation': [idle, stamp, cheer, blink, talk], 'defaultActions': [{'gotoAndPlay': 'idle'}]}]}
+        'animation': anims, 'defaultActions': [{'gotoAndPlay': 'idle'}]}]}
     tex = {'name': name, 'imagePath': f'{name}_tex.png', 'width': W, 'height': H, 'SubTexture': sub}
 
     os.makedirs(OUT, exist_ok=True)
@@ -187,4 +233,4 @@ def build(pose='stamp', name='smudge'):
 
 
 if __name__ == '__main__':
-    build(*sys.argv[1:])
+    for pose in (sys.argv[1:] or ['stamp', 'fish', 'pick', 'dig']): build(pose)

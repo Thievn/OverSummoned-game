@@ -130,5 +130,50 @@
     ctx.restore();
   }
 
-  window.DBCanvas = { Factory, draw };
+  // ------------------------------------------------------------------ a ready-made Smudge
+  // new DBCanvas.Puppet(host, 'fish', 0.5, { x: 0.5, y: 0.9 })  ->  .act() .cheer(sec) .say(sec) .bones = true
+  const files = {};
+  function fetchPose(pose, base, ver) {
+    const k = base + pose;
+    if (!files[k]) {
+      const u = base + 'smudge_' + pose, img = new Image(); img.src = u + '_tex.webp' + ver;
+      files[k] = Promise.all([fetch(u + '_ske.json' + ver).then(r => r.json()), fetch(u + '_tex.json' + ver).then(r => r.json()), img.decode()]).then(([ske, tex]) => ({ ske, tex, img }));
+    }
+    return files[k];
+  }
+  class Puppet {
+    constructor(host, pose, scale, opt) {
+      opt = opt || {}; this.host = host; this.pose = pose; this.scale = scale; this.fx = opt.x == null ? 0.5 : opt.x; this.fy = opt.y == null ? 0.9 : opt.y;
+      this.bones = false; this.dead = false; this.ready = this.load(opt.base || '/assets/v2/db/', opt.ver || '');
+    }
+    async load(base, ver) {
+      const d = await fetchPose(this.pose, base, ver); if (this.dead) return;
+      const f = this.factory = new Factory(); f.parseDragonBonesData(d.ske); f.parseTextureAtlasData(d.tex, d.img);
+      this.p = f.build(this.pose, 'smudge_' + this.pose); this.an = this.p.animation; this.an.play('idle', 0);
+      const cv = this.cv = document.createElement('canvas'), ctx = cv.getContext('2d'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none'; this.host.appendChild(cv);
+      const blink = () => { if (this.dead) return; this.over('blink', 1, 3); this.bt = setTimeout(blink, 2200 + Math.random() * 3300); }; blink();
+      let last = performance.now();
+      const frame = now => {
+        if (this.dead) return;
+        const dt = Math.min(0.05, (now - last) / 1000); last = now; f.advance(dt);
+        const w = this.host.clientWidth, h = this.host.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+        if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+        draw(ctx, this.p, w * this.fx, h * this.fy, this.scale, { bones: this.bones });
+        this.raf = requestAnimationFrame(frame);
+      };
+      this.raf = requestAnimationFrame(frame);
+    }
+    // play an animation on top of whatever is running; it fades itself out when done
+    over(name, times, layer) {
+      if (!this.an || !this.an.hasAnimation(name)) return null;
+      const s = this.an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s;
+    }
+    act() { return this.over('act', 1, 1); }
+    cheer(sec) { return this.over('cheer', Math.max(1, Math.round((sec || 2) * 2)), 2); }
+    say(sec) { return this.over('talk', Math.max(1, Math.round((sec || 2) * 1.5)), 4); }
+    destroy() { this.dead = true; cancelAnimationFrame(this.raf); clearTimeout(this.bt); if (this.cv) this.cv.remove(); if (this.p) this.p.dispose(); }
+  }
+
+  window.DBCanvas = { Factory, draw, Puppet };
 })();
