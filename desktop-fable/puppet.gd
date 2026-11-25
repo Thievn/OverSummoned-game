@@ -176,9 +176,10 @@ func _process(delta: float) -> void:
 				ang += sin(t * 0.9) * 0.012
 				ang = clampf(ang, -0.3, 0.2)
 			"arm":
-				ang = clampf(ang, -0.12, 1.25)
-				# the whole arm also drops toward the book, so the stamp lands on the page
-				h.position = (h.get_meta("rest") as Vector2) + Vector2(-14.0, 78.0) * clampf(ang, 0.0, 1.0)
+				# the arm now swings from the shoulder under the cloak, so it needs no slide
+				ang = clampf(ang, -0.2, 1.7)
+			"over":
+				ang = 0.0   # the cloak drape and fists that sit on top of a moving part stay put
 			"hand_a", "hand_b":
 				ang = clampf(ang, -0.3, 0.3)
 			"shovel":

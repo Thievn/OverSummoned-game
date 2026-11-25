@@ -89,7 +89,7 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] All four working poses are DragonBones rigs (`rules/dbexport.py` writes `assets/v2/db/smudge_<pose>_*`): shared bones, bending tail, same move names on each (idle, act, cheer, blink, talk)
 - [x] `DBCanvas.Puppet` in `js/dbcanvas.js`: drop-in Smudge player (act / cheer / say), loads each pose on demand
 - [x] Sleeping pose as a DragonBones rig: back rises and falls, snout and paw twitches at random, tail tip curls, three Zs ripple one after another
-- [ ] Copy the recut parts into the desktop pet (`desktop-fable/`)
+- [x] Recut Smudge parts and rig copied into the desktop pet (`desktop-fable/`); arm swings from the shoulder there too. Runs clean in the headless test. It still uses the simple rig (no bending tail yet)
 - [x] All 26 heroes exported on the shared skeleton (`python3 rules/dbexport.py heroes` -> `assets/v2/db/hero_<id>_*`), bending tail on the seven that have one; `DBCanvas.Puppet(host, id, scale, {hero:true})`
 - [x] Every hero's head recut (`rules/hero_cut.py`): lower edge feathered into the body, neck and collar painted in underneath, so heads tilt with no slit and no stuck copy
 - [ ] Heroes: extra moving parts where it earns it (arms, wings, capes, weapons). Head outlines are still the first coarse ones, so a hat brim or a weapon beside the head moves with it
