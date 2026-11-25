@@ -1,1 +1,1 @@
-{"name":"hero_blackbear","imagePath":"hero_blackbear_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":472,"height":650},{"name":"head","x":476,"y":2,"width":208,"height":246}]}
+{"name":"hero_blackbear","imagePath":"hero_blackbear_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":472,"height":650},{"name":"head","x":476,"y":2,"width":208,"height":246},{"name":"mouth","x":686,"y":2,"width":20,"height":12}]}

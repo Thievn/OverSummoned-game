@@ -1,1 +1,1 @@
-{"name":"hero_brokk","imagePath":"hero_brokk_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":335,"height":430},{"name":"tail","x":339,"y":2,"width":84,"height":110},{"name":"head","x":425,"y":2,"width":145,"height":99}]}
+{"name":"hero_brokk","imagePath":"hero_brokk_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":335,"height":430},{"name":"tail","x":339,"y":2,"width":84,"height":110},{"name":"head","x":425,"y":2,"width":145,"height":99},{"name":"mouth","x":572,"y":2,"width":16,"height":10}]}

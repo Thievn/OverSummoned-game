@@ -1,1 +1,1 @@
-{"name":"hero_morwenna","imagePath":"hero_morwenna_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":497,"height":640},{"name":"head","x":501,"y":2,"width":237,"height":206}]}
+{"name":"hero_morwenna","imagePath":"hero_morwenna_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":497,"height":640},{"name":"head","x":501,"y":2,"width":237,"height":206},{"name":"mouth","x":740,"y":2,"width":14,"height":10}]}

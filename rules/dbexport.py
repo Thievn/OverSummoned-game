@@ -73,6 +73,13 @@ def grid(w, h, origin, NX, NY, weigh):
 
 
 # Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
+# Where a hero's mouth opens when they talk: (centre x, centre y, half width, half height) in the hero's picture.
+# Only heroes drawn with a closed mouth are listed. Beaks, masks and mouths already drawn open have none; they
+# still talk, with the head bobbing to the words (every hero gets that).
+MOUTH = {'kevin': (128, 91, 8, 5), 'brokk': (160, 101, 7, 4), 'gaius': (150, 143, 8, 4), 'edith': (188, 85, 7, 4), 'vincenzo': (100, 97, 7, 4),
+         'napoleon': (242, 165, 9, 5), 'cleocatra': (228, 123, 6, 4), 'blackbear': (253, 125, 9, 5), 'astrid': (190, 115, 7, 4), 'kenji': (242, 163, 8, 5),
+         'lola': (266, 134, 6, 4), 'morwenna': (296, 168, 6, 4), 'sable': (262, 150, 8, 4), 'jacko': (257, 137, 8, 4),
+         'vesper': (172, 144, 6, 4), 'stella': (215, 104, 6, 4), 'max': (231, 132, 9, 4), 'rex': (196, 100, 7, 4), 'ajolote': (258, 152, 10, 5)}
 CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (155, 215, 26), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (228, 172, 22)}
 
 # Other soft spots on a hero's body picture that move without being cut out (so no seams, ever):
@@ -120,6 +127,7 @@ def build(pose='stamp', hero=False):
     # ---- face shapes (drawn here so they ride in the same atlas)
     face = rig.get('face') or {'fur': [0, 0, 0], 'eyes': [], 'mouth': [0, 0, 0, 0]}; has_tail = 'tail' in P
     fur = tuple(face['fur']); eyes = face['eyes']; mouth = face['mouth']
+    if hero: mouth = list(MOUTH.get(pose, (0, 0, 0, 0)))
     if hero: eyes = []      # hero eyelids are off: the recorded eye positions are not accurate enough, and a lid in the wrong place looks worse than no blink
     INK = (28, 20, 32, 255)
     def ellipse(w, h, col, lash=False):
@@ -314,8 +322,10 @@ def build(pose='stamp', hero=False):
         {'duration': 5, 'playTimes': 1, 'name': 'blink', 'bone': [
             {'name': n, 'scaleFrame': [{'duration': 1, 'x': 1, 'y': 100}, {'duration': 4, 'tweenEasing': 0, 'x': 1, 'y': 100}, {'duration': 0, 'x': 1, 'y': 1}]} for n in lids]},
     ]
-    if mouth[2]: anims.append({'duration': 16, 'playTimes': 0, 'name': 'talk', 'bone': [
-        {'name': 'mouth', 'scaleFrame': [{'duration': 2, 'tweenEasing': 0, 'x': 1, 'y': v} for v in (35, 85, 50, 100, 40, 70, 45, 90)] + [{'duration': 0, 'x': 1, 'y': 35}]}]})
+    talk = []
+    if mouth[2]: talk.append({'name': 'mouth', 'scaleFrame': [{'duration': 2, 'tweenEasing': 0, 'x': 1, 'y': v} for v in (35, 85, 50, 100, 40, 70, 45, 90)] + [{'duration': 0, 'x': 1, 'y': 35}]})
+    if hero: talk.append({'name': 'head', 'rotateFrame': [{'duration': 2, 'tweenEasing': 0, 'rotate': v} for v in (0, 2.6, -1.2, 3.2, -0.6, 2.0, -1.8, 2.8)] + [{'duration': 0, 'rotate': 0}]})   # the head bobs to the words
+    if talk: anims.append({'duration': 16, 'playTimes': 0, 'name': 'talk', 'bone': talk})
     for an in anims:
         for b in an['bone']: assert b['name'] in names, (pose, an['name'], b['name'])
 

@@ -1,1 +1,1 @@
-{"name":"hero_kenji","imagePath":"hero_kenji_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":388,"height":650},{"name":"head","x":392,"y":2,"width":272,"height":227},{"name":"tail","x":666,"y":2,"width":106,"height":166}]}
+{"name":"hero_kenji","imagePath":"hero_kenji_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":388,"height":650},{"name":"head","x":392,"y":2,"width":272,"height":227},{"name":"tail","x":666,"y":2,"width":106,"height":166},{"name":"mouth","x":774,"y":2,"width":18,"height":12}]}

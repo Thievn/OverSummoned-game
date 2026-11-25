@@ -1,1 +1,1 @@
-{"name":"hero_lola","imagePath":"hero_lola_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":508,"height":650},{"name":"head","x":512,"y":2,"width":179,"height":209},{"name":"tail","x":693,"y":2,"width":169,"height":174}]}
+{"name":"hero_lola","imagePath":"hero_lola_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":508,"height":650},{"name":"head","x":512,"y":2,"width":179,"height":209},{"name":"tail","x":693,"y":2,"width":169,"height":174},{"name":"mouth","x":864,"y":2,"width":14,"height":10}]}

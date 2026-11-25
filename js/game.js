@@ -282,12 +282,13 @@
         <div class="row" style="margin-top:.6rem;flex-wrap:wrap"></div></div>`;
       const r = card.querySelector('.row'); r.append(btn('small', 'Move him', placeSheet), btn('small ghost', 'What drops here', () => lootSheet(p, modal.close)), btn('small ghost', 'Bring him home', () => { S.jobs = []; save(true); render(); }));
       box.appendChild(card);
-      const host = card.querySelector('.who'), sp = STAND[p.id] || STAND.dock, H = host.clientHeight, sh = H * 1.12, at = q => [host.clientWidth / 2 + (q[0] - .5) * sh * sp.w, -H * .06 + q[1] * sh];
+      // everybody's spot and size come from the stage (js/stage.js), the same table the dashboard uses
+      const host = card.querySelector('.who'), H = host.clientHeight, lay = OS.Stage.layout(p.id, OS.Stage.rect(p.id, host.clientWidth, H));
       // back to front, so whoever stands lower in the picture is drawn in front
-      const cast = crew().map((id, k) => ({ id, q: sp.c[k] })).concat([{ q: sp.s }]).sort((a, c) => a.q[1] - c.q[1]);
-      cast.forEach(m => { const [x, y] = at(m.q);
-        if (m.id) { const e = OS.rig['h_' + m.id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, m.id, hh); if (pp) { pp.flip = !!(LOOKS[m.id] && LOOKS[m.id] !== m.q[2]); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = hh; crewPups.push(pp); } }
-        else { const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, H * .46 / se.size[1]); sm.place(x, y); sm.me = true; jobPups.push(sm); } });
+      const cast = crew().map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, c) => a.q.at[1] - c.q.at[1]);
+      cast.forEach(m => { const [x, y] = m.q.at;
+        if (m.id) { const pp = OS.heroPuppet(host, m.id, m.q.h); if (pp) { pp.flip = OS.Stage.flip(m.id, m.q.face); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = m.q.h; pp.wide = m.q.h * OS.rig['h_' + m.id].size[0] / OS.rig['h_' + m.id].size[1]; crewPups.push(pp); } }
+        else { const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
       jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
     }
     // ---- the crew
@@ -315,25 +316,16 @@
   let CHAT = {}; fetch('/data/chatter.json' + OS.VER).then(r => r.json()).then(j => CHAT = j).catch(() => { });
   const pickLine = (id, kind) => { const l = (CHAT[id] || {})[kind]; return l && l.length ? l[Math.floor(Math.random() * l.length)] : null; };
   function crewSay(pp, text, hold) {
-    const host = document.querySelector('[data-who="0"]'); if (!host || !text) return; const b = el('div', 'crewsay', text), right = pp.x > host.clientWidth / 2;
-    b.style.cssText = `${right ? 'right:' + Math.max(4, host.clientWidth - pp.x - 70) + 'px' : 'left:' + Math.max(4, pp.x - 30) + 'px'};bottom:${Math.max(6, host.clientHeight - pp.y + pp.tall + 6)}px`; if (right) b.classList.add('r');
-    host.appendChild(b); requestAnimationFrame(() => b.classList.add('on')); if (pp.kick) pp.kick('arm', 30);
-    setTimeout(() => { b.classList.remove('on'); setTimeout(() => b.remove(), 250); }, hold || 3200);
+    const host = document.querySelector('[data-who="0"]'); if (!host || !text) return;
+    const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
+    OS.Stage.say(host, { x: pp.x, top: pp.y - pp.tall }, text, hold, jobPups.filter(q => q !== pp).map(box));
+    pp.say((hold || 3200) / 1000 - .4);
   }
   function chatter(dt) {
     if (current !== 'jobs' || !crewPups.length || $('modal').classList.contains('on')) return; chatT -= dt; if (chatT > 0) return; chatT = 11 + Math.random() * 10;
     const a = crewPups[Math.floor(Math.random() * crewPups.length)]; crewSay(a, pickLine(a.id, 'say'));
     const others = crewPups.filter(x => x !== a); if (others.length && Math.random() < 0.45) { const b = others[Math.floor(Math.random() * others.length)]; setTimeout(() => { if (current === 'jobs') crewSay(b, pickLine(b.id, 'reply'), 2600); }, 2700); chatT += 3; }
   }
-  // where everybody goes in each scene, as fractions of the scene picture: Smudge's spot (he works at the edge of the
-  // water, in front of the safe, beside the hole) and three crew spots behind him, each wholly on one surface. w = picture width / height.
-  const STAND = {
-    dock: { w: 1.99, s: [.52, .665], c: [[.38, .52, 'r'], [.6, .5, 'l'], [.71, .57, 'l']] }, bondi: { w: 1.99, s: [.45, .565], c: [[.34, .5, 'r'], [.26, .64, 'r'], [.58, .52, 'l']] },
-    fjord: { w: 2.12, s: [.6, .6], c: [[.18, .55, 'r'], [.45, .56, 'r'], [.85, .52, 'l']] }, speakeasy: { w: 1.28, s: [.5, .79], c: [[.26, .78, 'r'], [.38, .89, 'r'], [.72, .8, 'l']] },
-    vault: { w: 1.91, s: [.52, .84], c: [[.2, .72, 'r'], [.33, .82, 'r'], [.83, .79, 'l']] }, closet: { w: 1.87, s: [.5, .8], c: [[.25, .72, 'r'], [.36, .86, 'r'], [.68, .8, 'l']] },
-    outback: { w: 2.05, s: [.42, .74], c: [[.29, .62, 'r'], [.17, .8, 'r'], [.87, .78, 'l']] }, blackforest: { w: 1.95, s: [.58, .8], c: [[.3, .66, 'r'], [.4, .84, 'r'], [.88, .72, 'l']] } };
-  // heroes whose picture looks to one side; everyone else looks out at you and is never mirrored
-  const LOOKS = { albrecht: 'l', astrid: 'l', marco: 'r', emu: 'r' };
   function placeSheet() {
     const j = Object.assign({ place: null, prog: 0, order: 'stay', since: 0 }, S.jobs[0] || {}), d = el('div', '', `<h3 style="font-size:1.5rem">Where should Smudge work?</h3>`);
     const ps = el('div', 'plist');

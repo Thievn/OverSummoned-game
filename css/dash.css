@@ -4,11 +4,11 @@
 .mocknote{background:rgba(242,185,53,.12);border:2px solid var(--gold);border-radius:12px;padding:.6rem .9rem;color:#f3dca0;font-size:.9rem;margin-bottom:1rem}
 
 /* ---- the desk strip: a live scene with the numbers sitting on it ---- */
-.desk-strip{position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--line);margin-bottom:1.2rem;background:var(--ink2)}
-.desk-scene{position:relative;height:clamp(190px,26vw,290px)}
-.desk-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.85) saturate(1.05)}
+.desk-strip{position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--line);margin-bottom:1.2rem;background:radial-gradient(60% 90% at 66% 60%,#1b2a5a,#0a1024)}
+.desk-scene{position:relative;height:clamp(200px,26vw,300px)}
+.desk-bg{position:absolute;max-width:none;filter:brightness(1.12)}
 .desk-crew{position:absolute;inset:0}
-.desk-fade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,12,26,.94) 0%,rgba(8,12,26,.72) 38%,rgba(8,12,26,.18) 66%,rgba(8,12,26,.55) 100%)}
+.desk-fade{display:none}
 .desk-over{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.9rem,2.2vw,1.4rem)}
 .desk-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
 .desk-over h1{font:400 clamp(1.3rem,3.2vw,2.1rem)/1.1 "Lilita One";color:#fff;margin:.25rem 0 .2rem;text-shadow:0 2px 12px rgba(0,0,0,.6)}

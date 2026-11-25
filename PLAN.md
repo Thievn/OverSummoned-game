@@ -136,6 +136,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Crew chatter: each hero has five lines and two replies in their own voice (`rules/chatter.py` -> `data/chatter.json`, 182 lines, written by hand). One speaks every 11 to 21 seconds; sometimes one other answers. Never two at once. A crew member reacts when Smudge finds treasure
 - [ ] Grok voices: have Grok write a bigger set per hero ONCE, from the owner's office, and store it in the database for everyone. Never per player or per visit, so credits are spent once per hero. Needs database approval
 - [ ] RULE for every new hero: add their lines to `rules/chatter.py`
+- [ ] RULE for every new place: add its standing spots to `STAND` in `js/stage.js` (Smudge + three crew, each wholly on one surface), then check it with a wide crew
+- [ ] RULE for every new hero: if the mouth is drawn closed, add it to `MOUTH` in `rules/dbexport.py` so it opens when they talk
 - [ ] RULE when any picture is redrawn: bump the asset version and `V` in `sw.js`, rebuild the X banner with `python3 tools/x_banner.py`, copy the art and rig entry into `desktop-fable/`
 
 ## Loot

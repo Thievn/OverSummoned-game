@@ -1,1 +1,1 @@
-{"name":"hero_rex","imagePath":"hero_rex_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":403,"height":650},{"name":"head","x":407,"y":2,"width":120,"height":136}]}
+{"name":"hero_rex","imagePath":"hero_rex_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":403,"height":650},{"name":"head","x":407,"y":2,"width":120,"height":136},{"name":"mouth","x":529,"y":2,"width":16,"height":10}]}

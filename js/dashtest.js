@@ -1,19 +1,35 @@
 // Dashboard mockup: fake numbers, but the live bits are live — the rigs move, the bars fill,
 // the sparkline is drawn, and the haul timer runs. Nothing here touches a save.
 (function () {
-  const $ = id => document.getElementById(id), V = '?v=1126d';
+  const $ = id => document.getElementById(id), V = '?v=1126e';
 
   // ---- the desk: Smudge at work with a crew of three, on the scene he is working
   const scene = $('scene'), crew = $('crew');
   const CREW = ['astrid', 'gaius', 'blackbear'];
+  const PLACE = 'dock', POSE = 'fish';
+  let rig = null, cast = [];
   function placeRigs() {
-    const w = crew.clientWidth, h = crew.clientHeight; if (!w) return;
-    if (crew._done) { crew._done.forEach(p => p.destroy()); }
-    const k = h / 290, made = [];
-    made.push(new DBCanvas.Puppet(crew, 'fish', 0.42 * k, { px: [w * 0.60, h * 0.95], ver: V }));
-    CREW.forEach((id, i) => made.push(new DBCanvas.Puppet(crew, id, 0.30 * k, { hero: true, px: [w * (0.72 + i * 0.09), h * (0.90 + i * 0.03)], ver: V })));
-    crew._done = made;
+    const w = crew.clientWidth, h = crew.clientHeight; if (!w || !rig) return;
+    cast.forEach(m => m.p.destroy()); cast = [];
+    // the scene picture sits whole on the right of the strip, and everybody stands where the stage says (js/stage.js)
+    const r = OS.Stage.rect(PLACE, w, h, w > 720 ? .68 : .5), lay = OS.Stage.layout(PLACE, r), bg = $('desk-bg');
+    bg.style.cssText = `left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`;
+    const all = CREW.map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, b) => a.q.at[1] - b.q.at[1]);
+    all.forEach(m => {
+      const e = rig[m.id ? 'h_' + m.id : POSE], sc = m.q.h / e.size[1];
+      const p = new DBCanvas.Puppet(crew, m.id || POSE, sc, { hero: !!m.id, px: m.q.at, ver: V }); if (m.id) p.flip = OS.Stage.flip(m.id, m.q.face);
+      cast.push({ id: m.id, p, x: m.q.at[0], y: m.q.at[1], tall: m.q.h, wide: m.q.h * e.size[0] / e.size[1] });
+    });
   }
+  fetch('/data/rig.json' + V).then(r => r.json()).then(j => { rig = j; placeRigs(); });
+  // the crew talk, one at a time, in a proper bubble
+  let lines = {}; fetch('/data/chatter.json' + V).then(r => r.json()).then(j => lines = j).catch(() => { });
+  setInterval(() => {
+    const crewOnly = cast.filter(m => m.id); if (!crewOnly.length || document.hidden) return;
+    const m = crewOnly[Math.floor(Math.random() * crewOnly.length)], l = (lines[m.id] || {}).say; if (!l || !l.length) return;
+    const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
+    OS.Stage.say(crew, { x: m.x, top: m.y - m.tall }, l[Math.floor(Math.random() * l.length)], 3200, cast.filter(q => q !== m).map(box)); m.p.say(2.8);
+  }, 6500);
   placeRigs(); addEventListener('resize', () => { clearTimeout(crew._t); crew._t = setTimeout(placeRigs, 250); });
 
   // ---- the haul timer, so the strip is never still
