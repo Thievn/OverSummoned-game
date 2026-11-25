@@ -168,6 +168,25 @@ for it in era_items:
 C["gear_sets"] = gear_sets
 C["slots"] = {"general": ["weapon", "head", "body", "feet", "charm"], "own": ["weapon", "armor", "trinket"], "charm_level": 5}
 
+def gear_roll(it):
+    """Gear numbers get the same treatment as cards: seeded by the item's id so they never change, the slot decides which
+    stats, the dice decide the split, better pieces sometimes carry a small third stat, and no piece repeats a number."""
+    import random
+    rng = random.Random("gear:" + it["id"]); old = it["stats"]; keys = list(old)
+    total = max(2, round(sum(old.values()) * rng.uniform(0.92, 1.14)))
+    w = {k: max(old[k], 1) * rng.uniform(0.65, 1.45) for k in keys}
+    extra = [k for k in C["stats"] if k not in keys]
+    if extra and total >= 9 and rng.random() < (0.3 if it["rarity"] in ("common", "uncommon") else 0.55):
+        w[rng.choice(extra)] = sum(w.values()) * rng.uniform(0.12, 0.24)
+    vals = {k: max(1, round(total * v / sum(w.values()))) for k, v in w.items()}
+    for _ in range(30):
+        dup = [k for k in vals if list(vals.values()).count(vals[k]) > 1]
+        if not dup: break
+        k = max(dup, key=lambda x: w[x]); vals[k] += 1
+    it["stats"] = {k: vals[k] for k in C["stats"] if k in vals}
+for it in items.values():
+    if it.get("kind") == "gear" and it.get("stats"): gear_roll(it)
+
 places = []
 for p in PLACES:
     table, n = [], 0

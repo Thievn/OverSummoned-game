@@ -4454,8 +4454,8 @@
    "owner": "kevin",
    "place": "closet",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 5,
+    "speed": 3
    },
    "sell": 30
   },
@@ -4470,7 +4470,7 @@
    "owner": "kevin",
    "place": "closet",
    "stats": {
-    "defense": 4,
+    "defense": 5,
     "health": 4
    },
    "sell": 30
@@ -4486,8 +4486,9 @@
    "owner": "kevin",
    "place": "closet",
    "stats": {
-    "speed": 3,
-    "luck": 5
+    "attack": 1,
+    "speed": 5,
+    "luck": 4
    },
    "sell": 30,
    "equip": {
@@ -4507,7 +4508,8 @@
    "place": "closet",
    "stats": {
     "attack": 6,
-    "speed": 2
+    "speed": 2,
+    "luck": 1
    },
    "sell": 30
   },
@@ -4522,8 +4524,8 @@
    "owner": "marco",
    "place": "closet",
    "stats": {
-    "defense": 4,
-    "health": 4
+    "defense": 3,
+    "health": 5
    },
    "sell": 30
   },
@@ -4538,7 +4540,7 @@
    "owner": "marco",
    "place": "closet",
    "stats": {
-    "speed": 3,
+    "speed": 4,
     "luck": 5
    },
    "sell": 30,
@@ -4558,8 +4560,8 @@
    "owner": "maya",
    "place": "outback",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 5,
+    "speed": 3
    },
    "sell": 30
   },
@@ -4574,8 +4576,8 @@
    "owner": "maya",
    "place": "outback",
    "stats": {
-    "defense": 4,
-    "health": 4
+    "defense": 5,
+    "health": 3
    },
    "sell": 30
   },
@@ -4591,7 +4593,7 @@
    "place": "outback",
    "stats": {
     "speed": 3,
-    "luck": 5
+    "luck": 6
    },
    "sell": 30,
    "equip": {
@@ -4627,7 +4629,7 @@
    "place": "dock",
    "stats": {
     "defense": 4,
-    "health": 4
+    "health": 5
    },
    "sell": 30
   },
@@ -4662,8 +4664,9 @@
    "owner": "gaius",
    "place": "dock",
    "stats": {
-    "attack": 10,
-    "speed": 4
+    "attack": 7,
+    "health": 2,
+    "speed": 5
    },
    "sell": 80
   },
@@ -4678,8 +4681,9 @@
    "owner": "gaius",
    "place": "dock",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 8,
+    "health": 5,
+    "luck": 3
    },
    "sell": 80
   },
@@ -4694,8 +4698,8 @@
    "owner": "gaius",
    "place": "dock",
    "stats": {
-    "speed": 6,
-    "luck": 8
+    "speed": 4,
+    "luck": 9
    },
    "sell": 80,
    "equip": {
@@ -4714,8 +4718,8 @@
    "owner": "edith",
    "place": "outback",
    "stats": {
-    "attack": 10,
-    "speed": 4
+    "attack": 9,
+    "speed": 5
    },
    "sell": 80
   },
@@ -4730,8 +4734,9 @@
    "owner": "edith",
    "place": "outback",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 6,
+    "health": 8,
+    "luck": 2
    },
    "sell": 80
   },
@@ -4746,8 +4751,9 @@
    "owner": "edith",
    "place": "outback",
    "stats": {
+    "defense": 2,
     "speed": 6,
-    "luck": 8
+    "luck": 5
    },
    "sell": 80,
    "equip": {
@@ -4766,7 +4772,8 @@
    "owner": "albrecht",
    "place": "blackforest",
    "stats": {
-    "attack": 10,
+    "attack": 8,
+    "health": 3,
     "speed": 4
    },
    "sell": 80
@@ -4782,8 +4789,8 @@
    "owner": "albrecht",
    "place": "blackforest",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 6,
+    "health": 8
    },
    "sell": 80
   },
@@ -4798,7 +4805,7 @@
    "owner": "albrecht",
    "place": "blackforest",
    "stats": {
-    "speed": 6,
+    "speed": 7,
     "luck": 8
    },
    "sell": 80,
@@ -4818,8 +4825,8 @@
    "owner": "vincenzo",
    "place": "speakeasy",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 14,
+    "speed": 8
    },
    "sell": 220
   },
@@ -4835,7 +4842,7 @@
    "place": "speakeasy",
    "stats": {
     "defense": 11,
-    "health": 11
+    "health": 10
    },
    "sell": 220
   },
@@ -4850,8 +4857,8 @@
    "owner": "vincenzo",
    "place": "speakeasy",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 7,
+    "luck": 17
    },
    "sell": 220,
    "equip": {
@@ -4870,7 +4877,8 @@
    "owner": "slapton",
    "place": "speakeasy",
    "stats": {
-    "attack": 22,
+    "attack": 19,
+    "health": 6,
     "speed": 10
    },
    "sell": 600
@@ -4886,7 +4894,7 @@
    "owner": "slapton",
    "place": "speakeasy",
    "stats": {
-    "defense": 16,
+    "defense": 18,
     "health": 16
    },
    "sell": 600
@@ -4902,7 +4910,7 @@
    "owner": "slapton",
    "place": "speakeasy",
    "stats": {
-    "speed": 13,
+    "speed": 16,
     "luck": 19
    },
    "sell": 600,
@@ -4922,8 +4930,9 @@
    "owner": "napoleon",
    "place": "vault",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 14,
+    "health": 3,
+    "speed": 8
    },
    "sell": 220
   },
@@ -4938,8 +4947,8 @@
    "owner": "napoleon",
    "place": "vault",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 12,
+    "health": 13
    },
    "sell": 220
   },
@@ -4954,7 +4963,8 @@
    "owner": "napoleon",
    "place": "vault",
    "stats": {
-    "speed": 9,
+    "attack": 3,
+    "speed": 5,
     "luck": 13
    },
    "sell": 220,
@@ -4974,8 +4984,8 @@
    "owner": "cleocatra",
    "place": "dock",
    "stats": {
-    "attack": 22,
-    "speed": 10
+    "attack": 23,
+    "speed": 9
    },
    "sell": 600
   },
@@ -4990,8 +5000,8 @@
    "owner": "cleocatra",
    "place": "dock",
    "stats": {
-    "defense": 16,
-    "health": 16
+    "defense": 20,
+    "health": 11
    },
    "sell": 600
   },
@@ -5006,8 +5016,8 @@
    "owner": "cleocatra",
    "place": "dock",
    "stats": {
-    "speed": 13,
-    "luck": 19
+    "speed": 18,
+    "luck": 14
    },
    "sell": 600,
    "equip": {
@@ -5026,8 +5036,8 @@
    "owner": "blackbear",
    "place": "fjord",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 17,
+    "speed": 8
    },
    "sell": 220
   },
@@ -5042,8 +5052,8 @@
    "owner": "blackbear",
    "place": "fjord",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 13,
+    "health": 12
    },
    "sell": 220
   },
@@ -5059,7 +5069,7 @@
    "place": "fjord",
    "stats": {
     "speed": 9,
-    "luck": 13
+    "luck": 12
    },
    "sell": 220,
    "equip": {
@@ -5079,7 +5089,8 @@
    "place": "fjord",
    "stats": {
     "attack": 10,
-    "speed": 4
+    "defense": 3,
+    "speed": 2
    },
    "sell": 80
   },
@@ -5094,8 +5105,9 @@
    "owner": "astrid",
    "place": "fjord",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 6,
+    "health": 7,
+    "luck": 3
    },
    "sell": 80
   },
@@ -5110,7 +5122,7 @@
    "owner": "astrid",
    "place": "fjord",
    "stats": {
-    "speed": 6,
+    "speed": 9,
     "luck": 8
    },
    "sell": 80,
@@ -5130,8 +5142,9 @@
    "owner": "kenji",
    "place": "fjord",
    "stats": {
-    "attack": 10,
-    "speed": 4
+    "attack": 7,
+    "defense": 2,
+    "speed": 5
    },
    "sell": 80
   },
@@ -5146,7 +5159,7 @@
    "owner": "kenji",
    "place": "fjord",
    "stats": {
-    "defense": 7,
+    "defense": 6,
     "health": 7
    },
    "sell": 80
@@ -5162,7 +5175,8 @@
    "owner": "kenji",
    "place": "fjord",
    "stats": {
-    "speed": 6,
+    "health": 3,
+    "speed": 4,
     "luck": 8
    },
    "sell": 80,
@@ -5183,7 +5197,8 @@
    "place": "outback",
    "stats": {
     "attack": 29,
-    "speed": 13
+    "speed": 8,
+    "luck": 7
    },
    "sell": 1500
   },
@@ -5198,8 +5213,9 @@
    "owner": "emu",
    "place": "outback",
    "stats": {
-    "defense": 21,
-    "health": 21
+    "defense": 16,
+    "health": 22,
+    "luck": 7
    },
    "sell": 1500
   },
@@ -5215,7 +5231,7 @@
    "place": "outback",
    "stats": {
     "speed": 17,
-    "luck": 25
+    "luck": 24
    },
    "sell": 1500,
    "equip": {
@@ -5235,7 +5251,7 @@
    "place": "blackforest",
    "stats": {
     "attack": 6,
-    "speed": 2
+    "speed": 3
    },
    "sell": 30
   },
@@ -5250,8 +5266,9 @@
    "owner": "troffea",
    "place": "blackforest",
    "stats": {
-    "defense": 4,
-    "health": 4
+    "attack": 2,
+    "defense": 3,
+    "health": 5
    },
    "sell": 30
   },
@@ -5286,8 +5303,8 @@
    "owner": "joost",
    "place": "vault",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 5,
+    "speed": 3
    },
    "sell": 30
   },
@@ -5303,7 +5320,8 @@
    "place": "vault",
    "stats": {
     "defense": 4,
-    "health": 4
+    "health": 3,
+    "speed": 1
    },
    "sell": 30
   },
@@ -5318,7 +5336,7 @@
    "owner": "joost",
    "place": "vault",
    "stats": {
-    "speed": 3,
+    "speed": 4,
     "luck": 5
    },
    "sell": 30,
@@ -5338,8 +5356,8 @@
    "owner": "chad",
    "place": "closet",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 7,
+    "speed": 1
    },
    "sell": 30
   },
@@ -5355,7 +5373,7 @@
    "place": "closet",
    "stats": {
     "defense": 4,
-    "health": 4
+    "health": 5
    },
    "sell": 30
   },
@@ -5370,8 +5388,8 @@
    "owner": "chad",
    "place": "closet",
    "stats": {
-    "speed": 3,
-    "luck": 5
+    "speed": 5,
+    "luck": 4
    },
    "sell": 30,
    "equip": {
@@ -5390,7 +5408,8 @@
    "owner": "bella",
    "place": "bondi",
    "stats": {
-    "attack": 10,
+    "attack": 9,
+    "defense": 2,
     "speed": 4
    },
    "sell": 80
@@ -5406,8 +5425,9 @@
    "owner": "bella",
    "place": "bondi",
    "stats": {
+    "attack": 2,
     "defense": 7,
-    "health": 7
+    "health": 4
    },
    "sell": 80
   },
@@ -5422,7 +5442,7 @@
    "owner": "bella",
    "place": "bondi",
    "stats": {
-    "speed": 6,
+    "speed": 7,
     "luck": 8
    },
    "sell": 80,
@@ -5442,8 +5462,8 @@
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "attack": 29,
-    "speed": 13
+    "attack": 30,
+    "speed": 15
    },
    "sell": 1500
   },
@@ -5458,8 +5478,8 @@
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "defense": 21,
-    "health": 21
+    "defense": 25,
+    "health": 20
    },
    "sell": 1500
   },
@@ -5474,7 +5494,8 @@
    "owner": "florida",
    "place": "bondi",
    "stats": {
-    "speed": 17,
+    "defense": 5,
+    "speed": 15,
     "luck": 25
    },
    "sell": 1500,
@@ -5494,7 +5515,7 @@
    "owner": "lola",
    "place": "speakeasy",
    "stats": {
-    "attack": 15,
+    "attack": 14,
     "speed": 7
    },
    "sell": 220
@@ -5510,8 +5531,8 @@
    "owner": "lola",
    "place": "speakeasy",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 12,
+    "health": 10
    },
    "sell": 220
   },
@@ -5526,7 +5547,7 @@
    "owner": "lola",
    "place": "speakeasy",
    "stats": {
-    "speed": 9,
+    "speed": 11,
     "luck": 13
    },
    "sell": 220,
@@ -5546,7 +5567,7 @@
    "owner": "morwenna",
    "place": "blackforest",
    "stats": {
-    "attack": 10,
+    "attack": 11,
     "speed": 4
    },
    "sell": 80
@@ -5562,8 +5583,8 @@
    "owner": "morwenna",
    "place": "blackforest",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 6,
+    "health": 8
    },
    "sell": 80
   },
@@ -5578,8 +5599,9 @@
    "owner": "morwenna",
    "place": "blackforest",
    "stats": {
+    "attack": 2,
     "speed": 6,
-    "luck": 8
+    "luck": 7
    },
    "sell": 80,
    "equip": {
@@ -5598,8 +5620,8 @@
    "owner": "sable",
    "place": "vault",
    "stats": {
-    "attack": 10,
-    "speed": 4
+    "attack": 8,
+    "speed": 6
    },
    "sell": 80
   },
@@ -5614,8 +5636,8 @@
    "owner": "sable",
    "place": "vault",
    "stats": {
-    "defense": 7,
-    "health": 7
+    "defense": 6,
+    "health": 9
    },
    "sell": 80
   },
@@ -5630,6 +5652,7 @@
    "owner": "sable",
    "place": "vault",
    "stats": {
+    "attack": 2,
     "speed": 6,
     "luck": 8
    },
@@ -5650,8 +5673,8 @@
    "owner": "jacko",
    "place": "bondi",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 5,
+    "speed": 3
    },
    "sell": 30
   },
@@ -5666,8 +5689,9 @@
    "owner": "jacko",
    "place": "bondi",
    "stats": {
-    "defense": 4,
-    "health": 4
+    "defense": 5,
+    "health": 3,
+    "speed": 1
    },
    "sell": 30
   },
@@ -5682,7 +5706,7 @@
    "owner": "jacko",
    "place": "bondi",
    "stats": {
-    "speed": 3,
+    "speed": 4,
     "luck": 5
    },
    "sell": 30,
@@ -5702,8 +5726,9 @@
    "owner": "raspawtin",
    "place": "fjord",
    "stats": {
-    "attack": 39,
-    "speed": 16
+    "attack": 37,
+    "health": 11,
+    "speed": 12
    },
    "sell": 4000
   },
@@ -5718,9 +5743,9 @@
    "owner": "raspawtin",
    "place": "fjord",
    "stats": {
-    "attack": -1,
-    "defense": 28,
-    "health": 28
+    "attack": 1,
+    "defense": 33,
+    "health": 17
    },
    "sell": 4000
   },
@@ -5735,8 +5760,8 @@
    "owner": "raspawtin",
    "place": "fjord",
    "stats": {
-    "speed": 22,
-    "luck": 33
+    "speed": 29,
+    "luck": 30
    },
    "sell": 4000,
    "equip": {
@@ -5755,8 +5780,9 @@
    "owner": "madjack",
    "place": "outback",
    "stats": {
-    "attack": 39,
-    "speed": 16
+    "attack": 37,
+    "health": 10,
+    "speed": 14
    },
    "sell": 4000
   },
@@ -5771,9 +5797,9 @@
    "owner": "madjack",
    "place": "outback",
    "stats": {
-    "attack": -1,
-    "defense": 28,
-    "health": 28
+    "attack": 1,
+    "defense": 19,
+    "health": 35
    },
    "sell": 4000
   },
@@ -5788,8 +5814,8 @@
    "owner": "madjack",
    "place": "outback",
    "stats": {
-    "speed": 22,
-    "luck": 33
+    "speed": 15,
+    "luck": 36
    },
    "sell": 4000,
    "equip": {
@@ -5808,8 +5834,8 @@
    "owner": "vesper",
    "place": "speakeasy",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "speed": 7,
+    "luck": 15
    },
    "sell": 220,
    "equip": {
@@ -5828,8 +5854,9 @@
    "owner": "vesper",
    "place": "speakeasy",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 12,
+    "speed": 5,
+    "luck": 4
    },
    "sell": 220
   },
@@ -5844,8 +5871,9 @@
    "owner": "vesper",
    "place": "speakeasy",
    "stats": {
-    "defense": 11,
-    "health": 11
+    "defense": 8,
+    "health": 11,
+    "speed": 3
    },
    "sell": 220
   },
@@ -5860,7 +5888,7 @@
    "owner": "roxy",
    "place": "speakeasy",
    "stats": {
-    "attack": 10,
+    "attack": 11,
     "speed": 4
    },
    "sell": 80
@@ -5876,8 +5904,9 @@
    "owner": "roxy",
    "place": "speakeasy",
    "stats": {
+    "attack": 2,
     "defense": 7,
-    "health": 7
+    "health": 4
    },
    "sell": 80
   },
@@ -5892,8 +5921,8 @@
    "owner": "roxy",
    "place": "speakeasy",
    "stats": {
-    "speed": 6,
-    "luck": 8
+    "speed": 5,
+    "luck": 11
    },
    "sell": 80,
    "equip": {
@@ -5912,8 +5941,8 @@
    "owner": "jazzmin",
    "place": "bondi",
    "stats": {
-    "defense": 4,
-    "health": 4
+    "defense": 3,
+    "health": 5
    },
    "sell": 30
   },
@@ -5964,8 +5993,9 @@
    "owner": "stella",
    "place": "vault",
    "stats": {
-    "attack": 22,
-    "speed": 10
+    "attack": 23,
+    "health": 6,
+    "speed": 5
    },
    "sell": 600
   },
@@ -5980,8 +6010,9 @@
    "owner": "stella",
    "place": "vault",
    "stats": {
-    "defense": 16,
-    "health": 16
+    "attack": 4,
+    "defense": 13,
+    "health": 19
    },
    "sell": 600
   },
@@ -5996,8 +6027,8 @@
    "owner": "stella",
    "place": "vault",
    "stats": {
-    "speed": 13,
-    "luck": 19
+    "speed": 16,
+    "luck": 20
    },
    "sell": 600,
    "equip": {
@@ -6016,8 +6047,8 @@
    "owner": "pam",
    "place": "closet",
    "stats": {
-    "attack": 6,
-    "speed": 2
+    "attack": 5,
+    "speed": 3
    },
    "sell": 30
   },
@@ -6032,7 +6063,8 @@
    "owner": "pam",
    "place": "closet",
    "stats": {
-    "defense": 4,
+    "attack": 2,
+    "defense": 5,
     "health": 4
    },
    "sell": 30
@@ -6068,7 +6100,8 @@
    "owner": "gorm",
    "place": "blackforest",
    "stats": {
-    "attack": 29,
+    "attack": 23,
+    "health": 6,
     "speed": 13
    },
    "sell": 1500
@@ -6084,8 +6117,9 @@
    "owner": "gorm",
    "place": "blackforest",
    "stats": {
-    "defense": 21,
-    "health": 21
+    "attack": 8,
+    "defense": 18,
+    "health": 17
    },
    "sell": 1500
   },
@@ -6100,8 +6134,8 @@
    "owner": "gorm",
    "place": "blackforest",
    "stats": {
-    "speed": 17,
-    "luck": 25
+    "speed": 19,
+    "luck": 21
    },
    "sell": 1500,
    "equip": {
@@ -6120,8 +6154,9 @@
    "owner": "flap",
    "place": "fjord",
    "stats": {
-    "attack": 10,
-    "speed": 4
+    "attack": 8,
+    "speed": 4,
+    "luck": 2
    },
    "sell": 80
   },
@@ -6136,7 +6171,8 @@
    "owner": "flap",
    "place": "fjord",
    "stats": {
-    "defense": 7,
+    "attack": 2,
+    "defense": 6,
     "health": 7
    },
    "sell": 80
@@ -6172,8 +6208,8 @@
    "owner": "max",
    "place": "outback",
    "stats": {
-    "attack": 15,
-    "speed": 7
+    "attack": 18,
+    "speed": 6
    },
    "sell": 220
   },
@@ -6188,7 +6224,7 @@
    "owner": "max",
    "place": "outback",
    "stats": {
-    "defense": 11,
+    "defense": 13,
     "health": 11
    },
    "sell": 220
@@ -6204,8 +6240,9 @@
    "owner": "max",
    "place": "outback",
    "stats": {
-    "speed": 9,
-    "luck": 13
+    "health": 3,
+    "speed": 8,
+    "luck": 11
    },
    "sell": 220,
    "equip": {
@@ -6240,7 +6277,7 @@
    "owner": "rex",
    "place": "vault",
    "stats": {
-    "defense": 4,
+    "defense": 3,
     "health": 4
    },
    "sell": 30
@@ -6256,7 +6293,7 @@
    "owner": "rex",
    "place": "vault",
    "stats": {
-    "speed": 3,
+    "speed": 4,
     "luck": 5
    },
    "sell": 30,
@@ -6276,8 +6313,8 @@
    "owner": "ajolote",
    "place": "dock",
    "stats": {
-    "defense": 16,
-    "health": 16
+    "defense": 14,
+    "health": 22
    },
    "sell": 600
   },
@@ -6292,8 +6329,8 @@
    "owner": "ajolote",
    "place": "dock",
    "stats": {
-    "attack": 22,
-    "speed": 10
+    "attack": 21,
+    "speed": 12
    },
    "sell": 600
   },
@@ -6308,7 +6345,7 @@
    "owner": "ajolote",
    "place": "dock",
    "stats": {
-    "speed": 13,
+    "speed": 11,
     "luck": 19
    },
    "sell": 600,
@@ -6346,8 +6383,8 @@
    "icon": "e_kevin_head",
    "flavor": "Cancels noise, colleagues and three fire drills.",
    "stats": {
-    "defense": 4,
-    "luck": 3
+    "defense": 3,
+    "luck": 4
    },
    "era": "kevin",
    "set": "set_kevin",
@@ -6363,7 +6400,7 @@
    "icon": "e_kevin_body",
    "flavor": "Grants the power to schedule a meeting about meetings.",
    "stats": {
-    "defense": 6,
+    "defense": 5,
     "health": 6
    },
    "era": "kevin",
@@ -6397,8 +6434,8 @@
    "icon": "e_kevin_charm",
    "flavor": "Four hundred people now know about the missing yoghurt.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "health": 9,
+    "luck": 8
    },
    "era": "kevin",
    "special": {
@@ -6417,8 +6454,8 @@
    "icon": "e_marco_weapon",
    "flavor": "Inflates tyres and, briefly, egos.",
    "stats": {
-    "attack": 4,
-    "speed": 1
+    "attack": 3,
+    "speed": 2
    },
    "era": "marco",
    "special": {
@@ -6455,7 +6492,7 @@
    "flavor": "Visible from space. Still nobody yields.",
    "stats": {
     "defense": 2,
-    "health": 2
+    "health": 3
    },
    "era": "marco",
    "set": "set_marco",
@@ -6471,8 +6508,9 @@
    "icon": "e_marco_feet",
    "flavor": "You will fall over at a red light exactly once. Everyone does.",
    "stats": {
-    "speed": 8,
-    "luck": 3
+    "defense": 3,
+    "speed": 7,
+    "luck": 2
    },
    "era": "marco",
    "set": "set_marco",
@@ -6488,8 +6526,8 @@
    "icon": "e_marco_charm",
    "flavor": "It has been at one percent for six hours. Nobody understands how.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "health": 5,
+    "luck": 13
    },
    "era": "marco",
    "special": {
@@ -6508,8 +6546,8 @@
    "icon": "e_maya_weapon",
    "flavor": "Opens doors, cars, and conversations nobody wanted to have.",
    "stats": {
-    "attack": 12,
-    "speed": 4
+    "attack": 9,
+    "speed": 7
    },
    "era": "maya",
    "special": {
@@ -6545,7 +6583,7 @@
    "icon": "e_maya_body",
    "flavor": "Heavy, hot, and the only reason you still have eyebrows.",
    "stats": {
-    "defense": 6,
+    "defense": 7,
     "health": 6
    },
    "era": "maya",
@@ -6579,8 +6617,8 @@
    "icon": "e_maya_charm",
    "flavor": "CLEAR. No, further back than that.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "health": 9,
+    "luck": 17
    },
    "era": "maya",
    "special": {
@@ -6619,6 +6657,7 @@
    "icon": "e_brokk_head",
    "flavor": "Very impressive until you meet a doorway. Doorways have not been invented.",
    "stats": {
+    "attack": 1,
     "defense": 7,
     "luck": 4
    },
@@ -6636,8 +6675,8 @@
    "icon": "e_brokk_body",
    "flavor": "The mammoth is no longer using it.",
    "stats": {
-    "defense": 3,
-    "health": 3
+    "defense": 2,
+    "health": 4
    },
    "era": "brokk",
    "set": "set_brokk",
@@ -6653,7 +6692,7 @@
    "icon": "e_brokk_feet",
    "flavor": "Shoes, version one. Mostly a suggestion.",
    "stats": {
-    "speed": 3,
+    "speed": 4,
     "luck": 1
    },
    "era": "brokk",
@@ -6670,8 +6709,9 @@
    "icon": "e_brokk_charm",
    "flavor": "The first art critic said the legs were wrong. He was eaten.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "defense": 3,
+    "health": 7,
+    "luck": 10
    },
    "era": "brokk",
    "special": {
@@ -6691,7 +6731,7 @@
    "flavor": "Designed to bend on impact so it cannot be thrown back. Rude.",
    "stats": {
     "attack": 7,
-    "speed": 2
+    "speed": 3
    },
    "era": "gaius",
    "special": {
@@ -6711,7 +6751,8 @@
    "flavor": "The crest is so the centurion can find you to shout at.",
    "stats": {
     "defense": 7,
-    "luck": 4
+    "speed": 1,
+    "luck": 3
    },
    "era": "gaius",
    "set": "set_gaius",
@@ -6727,8 +6768,8 @@
    "icon": "e_gaius_body",
    "flavor": "Forty-seven straps. One of them is always undone.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 11,
+    "health": 10
    },
    "era": "gaius",
    "set": "set_gaius",
@@ -6761,8 +6802,9 @@
    "icon": "e_gaius_charm",
    "flavor": "Nobody is sure which way was bad. It worked out badly either way.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "attack": 4,
+    "health": 7,
+    "luck": 15
    },
    "era": "gaius",
    "special": {
@@ -6801,8 +6843,8 @@
    "icon": "e_edith_head",
    "flavor": "Make everything look like it is on fire. In her line of work, it usually is.",
    "stats": {
-    "defense": 4,
-    "luck": 3
+    "defense": 3,
+    "luck": 4
    },
    "era": "edith",
    "set": "set_edith",
@@ -6819,7 +6861,7 @@
    "flavor": "More pockets than sense. A spanner in every one.",
    "stats": {
     "defense": 2,
-    "health": 2
+    "health": 3
    },
    "era": "edith",
    "set": "set_edith",
@@ -6835,7 +6877,7 @@
    "icon": "e_edith_feet",
    "flavor": "Announce your arrival two streets away.",
    "stats": {
-    "speed": 4,
+    "speed": 5,
     "luck": 2
    },
    "era": "edith",
@@ -6852,8 +6894,9 @@
    "icon": "e_edith_charm",
    "flavor": "Ran forever, for about a minute.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "health": 9,
+    "speed": 5,
+    "luck": 19
    },
    "era": "edith",
    "special": {
@@ -6892,6 +6935,7 @@
    "icon": "e_albrecht_head",
    "flavor": "Stuffed with lavender. Solves nothing. Smells lovely.",
    "stats": {
+    "attack": 1,
     "defense": 7,
     "luck": 4
    },
@@ -6909,7 +6953,7 @@
    "icon": "e_albrecht_body",
    "flavor": "Still in the wrapping. He is saving it.",
    "stats": {
-    "defense": 3,
+    "defense": 4,
     "health": 3
    },
    "era": "albrecht",
@@ -6943,8 +6987,8 @@
    "icon": "e_albrecht_charm",
    "flavor": "Medieval science at its finest. Do not open. Do not ask.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "health": 6,
+    "luck": 13
    },
    "era": "albrecht",
    "special": {
@@ -6964,7 +7008,7 @@
    "flavor": "He has never played baseball. He has had many conversations.",
    "stats": {
     "attack": 7,
-    "speed": 2
+    "speed": 3
    },
    "era": "vincenzo",
    "special": {
@@ -6984,7 +7028,7 @@
    "flavor": "Worn low. Sees nothing. Heard nothing.",
    "stats": {
     "defense": 2,
-    "luck": 2
+    "luck": 3
    },
    "era": "vincenzo",
    "set": "set_vincenzo",
@@ -7000,8 +7044,9 @@
    "icon": "e_vincenzo_body",
    "flavor": "Watches? Cutlery? A second, smaller coat?",
    "stats": {
+    "attack": 2,
     "defense": 6,
-    "health": 6
+    "health": 4
    },
    "era": "vincenzo",
    "set": "set_vincenzo",
@@ -7018,7 +7063,7 @@
    "flavor": "For leaving a room quickly but with style.",
    "stats": {
     "speed": 4,
-    "luck": 2
+    "luck": 3
    },
    "era": "vincenzo",
    "set": "set_vincenzo",
@@ -7034,8 +7079,9 @@
    "icon": "e_vincenzo_charm",
    "flavor": "A gift from a business associate. It is a hint.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "attack": 4,
+    "health": 10,
+    "luck": 11
    },
    "era": "vincenzo",
    "special": {
@@ -7054,8 +7100,8 @@
    "icon": "e_slapton_weapon",
    "flavor": "Take forty-seven. He will get it this time.",
    "stats": {
-    "attack": 7,
-    "speed": 2
+    "attack": 9,
+    "speed": 1
    },
    "era": "slapton",
    "special": {
@@ -7074,7 +7120,7 @@
    "icon": "e_slapton_head",
    "flavor": "Not a hat. He wears it as a hat.",
    "stats": {
-    "defense": 7,
+    "defense": 6,
     "luck": 4
    },
    "era": "slapton",
@@ -7091,8 +7137,8 @@
    "icon": "e_slapton_body",
    "flavor": "Monogrammed, embroidered, and for sale in the lobby.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 13,
+    "health": 7
    },
    "era": "slapton",
    "set": "set_slapton",
@@ -7125,8 +7171,9 @@
    "icon": "e_slapton_charm",
    "flavor": "Eleven pages. Thanks himself twice.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "health": 17,
+    "speed": 6,
+    "luck": 14
    },
    "era": "slapton",
    "special": {
@@ -7145,7 +7192,8 @@
    "icon": "e_napoleon_weapon",
    "flavor": "Small, loud, and with a great deal to prove.",
    "stats": {
-    "attack": 18,
+    "attack": 13,
+    "defense": 4,
     "speed": 6
    },
    "era": "napoleon",
@@ -7165,8 +7213,9 @@
    "icon": "e_napoleon_head",
    "flavor": "Adds a full foot of height. He owns nine.",
    "stats": {
-    "defense": 7,
-    "luck": 4
+    "attack": 2,
+    "defense": 6,
+    "luck": 3
    },
    "era": "napoleon",
    "set": "set_napoleon",
@@ -7182,7 +7231,7 @@
    "icon": "e_napoleon_body",
    "flavor": "Marched to Moscow. Regretted it around Smolensk.",
    "stats": {
-    "defense": 3,
+    "defense": 4,
     "health": 3
    },
    "era": "napoleon",
@@ -7199,6 +7248,7 @@
    "icon": "e_napoleon_feet",
    "flavor": "The lifts are a state secret.",
    "stats": {
+    "attack": 2,
     "speed": 8,
     "luck": 3
    },
@@ -7216,8 +7266,8 @@
    "icon": "e_napoleon_charm",
    "flavor": "He circled Russia twice. Nobody stopped him.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "health": 12,
+    "luck": 16
    },
    "era": "napoleon",
    "special": {
@@ -7236,7 +7286,7 @@
    "icon": "e_cleocatra_weapon",
    "flavor": "One is for guiding. One is for the other thing.",
    "stats": {
-    "attack": 12,
+    "attack": 11,
     "speed": 4
    },
    "era": "cleocatra",
@@ -7257,7 +7307,8 @@
    "flavor": "The vulture is decorative. She says.",
    "stats": {
     "defense": 11,
-    "luck": 7
+    "speed": 3,
+    "luck": 4
    },
    "era": "cleocatra",
    "set": "set_cleocatra",
@@ -7273,7 +7324,7 @@
    "icon": "e_cleocatra_body",
    "flavor": "Ironed by forty servants. Sat on by one cat.",
    "stats": {
-    "defense": 3,
+    "defense": 4,
     "health": 3
    },
    "era": "cleocatra",
@@ -7307,8 +7358,9 @@
    "icon": "e_cleocatra_charm",
    "flavor": "It is on the shelf. It was on the table. Nobody moved it.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "attack": 6,
+    "health": 12,
+    "luck": 20
    },
    "era": "cleocatra",
    "special": {
@@ -7347,8 +7399,9 @@
    "icon": "e_blackbear_head",
    "flavor": "The parrot is gone. The memory remains.",
    "stats": {
-    "defense": 7,
-    "luck": 4
+    "attack": 1,
+    "defense": 6,
+    "luck": 3
    },
    "era": "blackbear",
    "set": "set_blackbear",
@@ -7364,7 +7417,7 @@
    "icon": "e_blackbear_body",
    "flavor": "Washed annually, by rain.",
    "stats": {
-    "defense": 2,
+    "defense": 3,
     "health": 2
    },
    "era": "blackbear",
@@ -7398,8 +7451,9 @@
    "icon": "e_blackbear_charm",
    "flavor": "He drew it himself after the rum. All of them are worth checking.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "attack": 4,
+    "health": 10,
+    "luck": 9
    },
    "era": "blackbear",
    "special": {
@@ -7438,7 +7492,8 @@
    "icon": "e_astrid_head",
    "flavor": "Historians were very insistent about this.",
    "stats": {
-    "defense": 7,
+    "defense": 5,
+    "health": 2,
     "luck": 4
    },
    "era": "astrid",
@@ -7455,8 +7510,8 @@
    "icon": "e_astrid_body",
    "flavor": "Ten thousand rings. She counted on a slow raid.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 8,
+    "health": 12
    },
    "era": "astrid",
    "set": "set_astrid",
@@ -7489,8 +7544,9 @@
    "icon": "e_astrid_charm",
    "flavor": "Scholars spent forty years translating it.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "defense": 6,
+    "health": 15,
+    "luck": 14
    },
    "era": "astrid",
    "special": {
@@ -7529,7 +7585,7 @@
    "icon": "e_kenji_head",
    "flavor": "Holds the hair. Holds the honour.",
    "stats": {
-    "defense": 4,
+    "defense": 5,
     "luck": 3
    },
    "era": "kenji",
@@ -7546,7 +7602,7 @@
    "icon": "e_kenji_body",
    "flavor": "More patch than kimono now. Each one is a story he will not tell.",
    "stats": {
-    "defense": 2,
+    "defense": 3,
     "health": 2
    },
    "era": "kenji",
@@ -7580,8 +7636,9 @@
    "icon": "e_kenji_charm",
    "flavor": "Nothing can disturb the one who holds it. Except a dropped rice ball.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "attack": 4,
+    "health": 8,
+    "luck": 14
    },
    "era": "kenji",
    "special": {
@@ -7600,7 +7657,7 @@
    "icon": "e_emu_weapon",
    "flavor": "Issued to the losing side. Explains a lot.",
    "stats": {
-    "attack": 7,
+    "attack": 8,
     "speed": 2
    },
    "era": "emu",
@@ -7620,7 +7677,7 @@
    "icon": "e_emu_head",
    "flavor": "Keeps the flies off. Makes a noise like applause.",
    "stats": {
-    "defense": 2,
+    "defense": 3,
     "luck": 2
    },
    "era": "emu",
@@ -7637,8 +7694,9 @@
    "icon": "e_emu_body",
    "flavor": "An emu wearing emu feathers. The army never stood a chance.",
    "stats": {
-    "defense": 6,
-    "health": 6
+    "defense": 5,
+    "health": 6,
+    "luck": 2
    },
    "era": "emu",
    "set": "set_emu",
@@ -7654,8 +7712,9 @@
    "icon": "e_emu_feet",
    "flavor": "Fifty kilometres an hour and no idea where they are going.",
    "stats": {
-    "speed": 12,
-    "luck": 5
+    "attack": 2,
+    "speed": 9,
+    "luck": 6
    },
    "era": "emu",
    "set": "set_emu",
@@ -7671,8 +7730,8 @@
    "icon": "e_emu_charm",
    "flavor": "Signed by a major, a minister, and one confused farmer.",
    "stats": {
-    "luck": 26,
-    "health": 18
+    "health": 23,
+    "luck": 20
    },
    "era": "emu",
    "special": {
@@ -7711,8 +7770,8 @@
    "icon": "e_troffea_head",
    "flavor": "Has not come loose in four days of dancing. Nobody knows how.",
    "stats": {
-    "defense": 2,
-    "luck": 2
+    "defense": 1,
+    "luck": 3
    },
    "era": "troffea",
    "set": "set_troffea",
@@ -7729,7 +7788,7 @@
    "flavor": "Stitched by her mother, who also could not stop.",
    "stats": {
     "defense": 3,
-    "health": 3
+    "health": 4
    },
    "era": "troffea",
    "set": "set_troffea",
@@ -7745,7 +7804,8 @@
    "icon": "e_troffea_feet",
    "flavor": "They tap when nobody is in them. The priest has been informed.",
    "stats": {
-    "speed": 12,
+    "health": 2,
+    "speed": 11,
     "luck": 5
    },
    "era": "troffea",
@@ -7762,8 +7822,9 @@
    "icon": "e_troffea_charm",
    "flavor": "The real cure the council actually tried. It did not work.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "defense": 4,
+    "health": 14,
+    "luck": 17
    },
    "era": "troffea",
    "special": {
@@ -7803,7 +7864,7 @@
    "flavor": "Height is confidence. Confidence is credit.",
    "stats": {
     "defense": 4,
-    "luck": 3
+    "luck": 5
    },
    "era": "joost",
    "set": "set_joost",
@@ -7819,8 +7880,8 @@
    "icon": "e_joost_body",
    "flavor": "Bought at the peak. Worth three radishes now.",
    "stats": {
-    "defense": 6,
-    "health": 6
+    "defense": 5,
+    "health": 8
    },
    "era": "joost",
    "set": "set_joost",
@@ -7853,8 +7914,8 @@
    "icon": "e_joost_charm",
    "flavor": "He was told it was a tulip. He has stopped checking.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "health": 13,
+    "luck": 12
    },
    "era": "joost",
    "special": {
@@ -7873,7 +7934,7 @@
    "icon": "e_chad_weapon",
    "flavor": "For filming the apology video.",
    "stats": {
-    "attack": 4,
+    "attack": 5,
     "speed": 1
    },
    "era": "chad",
@@ -7910,7 +7971,7 @@
    "icon": "e_chad_body",
    "flavor": "Formal wear, in his circles.",
    "stats": {
-    "defense": 3,
+    "defense": 4,
     "health": 3
    },
    "era": "chad",
@@ -7927,8 +7988,9 @@
    "icon": "e_chad_feet",
    "flavor": "Never worn. Never will be. Somehow worth a car.",
    "stats": {
-    "speed": 12,
-    "luck": 5
+    "attack": 2,
+    "speed": 11,
+    "luck": 4
    },
    "era": "chad",
    "set": "set_chad",
@@ -7944,8 +8006,9 @@
    "icon": "e_chad_charm",
    "flavor": "He paid more for this than for his education. It was a screenshot.",
    "stats": {
-    "luck": 26,
-    "health": 18
+    "defense": 5,
+    "health": 15,
+    "luck": 24
    },
    "era": "chad",
    "special": {
@@ -7965,7 +8028,7 @@
    "flavor": "Four hundred degrees and left on the bed.",
    "stats": {
     "attack": 7,
-    "speed": 2
+    "speed": 3
    },
    "era": "bella",
    "special": {
@@ -7985,7 +8048,7 @@
    "flavor": "Cover most of the face. That is the look.",
    "stats": {
     "defense": 2,
-    "luck": 2
+    "luck": 3
    },
    "era": "bella",
    "set": "set_bella",
@@ -8002,7 +8065,7 @@
    "flavor": "Hashtag ad. Hashtag gifted. Hashtag please.",
    "stats": {
     "defense": 6,
-    "health": 6
+    "health": 7
    },
    "era": "bella",
    "set": "set_bella",
@@ -8018,7 +8081,7 @@
    "icon": "e_bella_feet",
    "flavor": "On sand. She has one leg and still makes it work.",
    "stats": {
-    "speed": 4,
+    "speed": 5,
     "luck": 2
    },
    "era": "bella",
@@ -8035,8 +8098,9 @@
    "icon": "e_bella_charm",
    "flavor": "Ten percent off something nobody needed.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "attack": 4,
+    "health": 9,
+    "luck": 14
    },
    "era": "bella",
    "special": {
@@ -8076,7 +8140,7 @@
    "flavor": "Provides lift. Not enough. Yet.",
    "stats": {
     "defense": 7,
-    "luck": 4
+    "luck": 5
    },
    "era": "florida",
    "set": "set_florida",
@@ -8093,7 +8157,7 @@
    "flavor": "Came free with forty gallons.",
    "stats": {
     "defense": 2,
-    "health": 2
+    "health": 3
    },
    "era": "florida",
    "set": "set_florida",
@@ -8126,8 +8190,8 @@
    "icon": "e_florida_charm",
    "flavor": "His third favourite. The other two are on the fridge.",
    "stats": {
-    "luck": 26,
-    "health": 18
+    "health": 18,
+    "luck": 27
    },
    "era": "florida",
    "special": {
@@ -8146,8 +8210,9 @@
    "icon": "e_lola_weapon",
    "flavor": "Opens bottles. Ends arguments. Usually in that order.",
    "stats": {
-    "attack": 12,
-    "speed": 4
+    "attack": 10,
+    "defense": 2,
+    "speed": 5
    },
    "era": "lola",
    "special": {
@@ -8167,7 +8232,8 @@
    "flavor": "Weighs as much as a small dog. She has never once looked down.",
    "stats": {
     "defense": 11,
-    "luck": 7
+    "speed": 2,
+    "luck": 6
    },
    "era": "lola",
    "set": "set_lola",
@@ -8183,8 +8249,8 @@
    "icon": "e_lola_body",
    "flavor": "For arriving late on purpose.",
    "stats": {
-    "defense": 3,
-    "health": 3
+    "defense": 4,
+    "health": 2
    },
    "era": "lola",
    "set": "set_lola",
@@ -8200,7 +8266,8 @@
    "icon": "e_lola_feet",
    "flavor": "Every step is a drumroll.",
    "stats": {
-    "speed": 8,
+    "defense": 2,
+    "speed": 7,
     "luck": 3
    },
    "era": "lola",
@@ -8217,8 +8284,8 @@
    "icon": "e_lola_charm",
    "flavor": "She uses them to light the stove.",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 3,
+    "luck": 2
    },
    "era": "lola",
    "special": {
@@ -8257,8 +8324,9 @@
    "icon": "e_morwenna_head",
    "flavor": "The cauldron did that. They do not talk about it.",
    "stats": {
-    "defense": 7,
-    "luck": 4
+    "attack": 2,
+    "defense": 6,
+    "luck": 3
    },
    "era": "morwenna",
    "set": "set_morwenna",
@@ -8274,8 +8342,9 @@
    "icon": "e_morwenna_body",
    "flavor": "The spiders want it back.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 11,
+    "health": 7,
+    "speed": 3
    },
    "era": "morwenna",
    "set": "set_morwenna",
@@ -8308,8 +8377,9 @@
    "icon": "e_morwenna_charm",
    "flavor": "She has no memory of doing it. He has paperwork.",
    "stats": {
-    "luck": 20,
-    "health": 13
+    "defense": 4,
+    "health": 13,
+    "luck": 14
    },
    "era": "morwenna",
    "special": {
@@ -8348,8 +8418,8 @@
    "icon": "e_sable_head",
    "flavor": "Tip it once for hello, twice for run.",
    "stats": {
-    "defense": 4,
-    "luck": 3
+    "defense": 5,
+    "luck": 4
    },
    "era": "sable",
    "set": "set_sable",
@@ -8365,8 +8435,8 @@
    "icon": "e_sable_body",
    "flavor": "So loud that nobody remembers the face above it.",
    "stats": {
-    "defense": 6,
-    "health": 6
+    "defense": 7,
+    "health": 5
    },
    "era": "sable",
    "set": "set_sable",
@@ -8399,8 +8469,8 @@
    "icon": "e_sable_charm",
    "flavor": "He has not noticed. He has eleven.",
    "stats": {
-    "luck": 15,
-    "health": 10
+    "health": 9,
+    "luck": 15
    },
    "era": "sable",
    "special": {
@@ -8419,8 +8489,8 @@
    "icon": "e_jacko_weapon",
    "flavor": "The shark apologised. Sort of.",
    "stats": {
-    "attack": 7,
-    "speed": 2
+    "attack": 6,
+    "speed": 3
    },
    "era": "jacko",
    "special": {
@@ -8440,7 +8510,7 @@
    "flavor": "SPF one thousand.",
    "stats": {
     "defense": 2,
-    "luck": 2
+    "luck": 3
    },
    "era": "jacko",
    "set": "set_jacko",
@@ -8456,7 +8526,7 @@
    "icon": "e_jacko_body",
    "flavor": "Worn in the surf, at the pub and to one wedding.",
    "stats": {
-    "defense": 2,
+    "defense": 3,
     "health": 2
    },
    "era": "jacko",
@@ -8473,7 +8543,8 @@
    "icon": "e_jacko_feet",
    "flavor": "Magnificent in water. Tragic on stairs.",
    "stats": {
-    "speed": 8,
+    "health": 2,
+    "speed": 7,
     "luck": 3
    },
    "era": "jacko",
@@ -8490,8 +8561,8 @@
    "icon": "e_jacko_charm",
    "flavor": "One blast: swim between the flags. Two blasts: mate. Come on.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "health": 6,
+    "luck": 11
    },
    "era": "jacko",
    "special": {
@@ -8510,8 +8581,8 @@
    "icon": "e_raspawtin_weapon",
    "flavor": "It did nothing. He asked for the vintage.",
    "stats": {
-    "attack": 12,
-    "speed": 4
+    "attack": 11,
+    "speed": 5
    },
    "era": "raspawtin",
    "special": {
@@ -8531,7 +8602,7 @@
    "flavor": "The bear had it coming.",
    "stats": {
     "defense": 4,
-    "luck": 3
+    "luck": 2
    },
    "era": "raspawtin",
    "set": "set_raspawtin",
@@ -8547,8 +8618,8 @@
    "icon": "e_raspawtin_body",
    "flavor": "He considers them ventilation.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 6,
+    "health": 12
    },
    "era": "raspawtin",
    "set": "set_raspawtin",
@@ -8581,8 +8652,8 @@
    "icon": "e_raspawtin_charm",
    "flavor": "It is not a trick of the light. He checked.",
    "stats": {
-    "luck": 26,
-    "health": 18
+    "health": 26,
+    "luck": 24
    },
    "era": "raspawtin",
    "special": {
@@ -8602,7 +8673,8 @@
    "flavor": "A real officer did this. The enemy assumed it was a new weapon.",
    "stats": {
     "attack": 18,
-    "speed": 6
+    "speed": 4,
+    "luck": 5
    },
    "era": "madjack",
    "special": {
@@ -8621,7 +8693,7 @@
    "icon": "e_madjack_head",
    "flavor": "The dent has a name and a regimental history.",
    "stats": {
-    "defense": 4,
+    "defense": 5,
     "luck": 3
    },
    "era": "madjack",
@@ -8638,7 +8710,7 @@
    "icon": "e_madjack_body",
    "flavor": "Smells of cordite and marmalade.",
    "stats": {
-    "defense": 6,
+    "defense": 7,
     "health": 6
    },
    "era": "madjack",
@@ -8672,8 +8744,8 @@
    "icon": "e_madjack_charm",
    "flavor": "Dear Sir. I must protest in the strongest possible terms.",
    "stats": {
-    "luck": 26,
-    "health": 18
+    "health": 15,
+    "luck": 27
    },
    "era": "madjack",
    "special": {
@@ -8692,8 +8764,8 @@
    "icon": "e_vesper_weapon",
    "flavor": "For pointing at things she disapproves of.",
    "stats": {
-    "attack": 7,
-    "speed": 2
+    "attack": 8,
+    "speed": 1
    },
    "era": "vesper",
    "special": {
@@ -8713,6 +8785,7 @@
    "flavor": "Contains a comb lost in 1981.",
    "stats": {
     "defense": 7,
+    "speed": 1,
     "luck": 4
    },
    "era": "vesper",
@@ -8729,7 +8802,7 @@
    "icon": "e_vesper_body",
    "flavor": "Once belonged to a vicar. He wants it back.",
    "stats": {
-    "defense": 9,
+    "defense": 11,
     "health": 9
    },
    "era": "vesper",
@@ -8763,8 +8836,8 @@
    "icon": "e_vesper_charm",
    "flavor": "Side B is the same but slower.",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 3,
+    "luck": 2
    },
    "era": "vesper",
    "special": {
@@ -8803,7 +8876,7 @@
    "icon": "e_roxy_head",
    "flavor": "Bought at a pet shop. The pet shop was confused.",
    "stats": {
-    "defense": 4,
+    "defense": 5,
     "luck": 3
    },
    "era": "roxy",
@@ -8820,8 +8893,9 @@
    "icon": "e_roxy_body",
    "flavor": "Seventy badges. She has heard of four of the bands.",
    "stats": {
-    "defense": 6,
-    "health": 6
+    "defense": 5,
+    "health": 6,
+    "speed": 2
    },
    "era": "roxy",
    "set": "set_roxy",
@@ -8837,7 +8911,7 @@
    "icon": "e_roxy_feet",
    "flavor": "Take ten minutes to lace. Worth every one.",
    "stats": {
-    "speed": 4,
+    "speed": 5,
     "luck": 2
    },
    "era": "roxy",
@@ -8854,8 +8928,8 @@
    "icon": "e_roxy_charm",
    "flavor": "Issue one of one.",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 2,
+    "luck": 3
    },
    "era": "roxy",
    "special": {
@@ -8895,7 +8969,7 @@
    "flavor": "Absorbs sweat and, somehow, doubt.",
    "stats": {
     "defense": 2,
-    "luck": 2
+    "luck": 3
    },
    "era": "jazzmin",
    "set": "set_jazzmin",
@@ -8911,8 +8985,8 @@
    "icon": "e_jazzmin_body",
    "flavor": "Visible from orbit.",
    "stats": {
-    "defense": 3,
-    "health": 3
+    "defense": 2,
+    "health": 4
    },
    "era": "jazzmin",
    "set": "set_jazzmin",
@@ -8945,8 +9019,8 @@
    "icon": "e_jazzmin_charm",
    "flavor": "Reads 40,000. It is not yet lunch.",
    "stats": {
-    "luck": 7,
-    "health": 4
+    "health": 5,
+    "luck": 6
    },
    "era": "jazzmin",
    "special": {
@@ -8965,7 +9039,8 @@
    "icon": "e_stella_weapon",
    "flavor": "Disintegrates things. Mostly the prop budget.",
    "stats": {
-    "attack": 26,
+    "attack": 18,
+    "health": 5,
     "speed": 9
    },
    "era": "stella",
@@ -8986,7 +9061,8 @@
    "flavor": "Picks up Mars and one polka station.",
    "stats": {
     "defense": 7,
-    "luck": 4
+    "health": 1,
+    "luck": 3
    },
    "era": "stella",
    "set": "set_stella",
@@ -9002,8 +9078,9 @@
    "icon": "e_stella_body",
    "flavor": "One size fits all species.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "attack": 3,
+    "defense": 6,
+    "health": 11
    },
    "era": "stella",
    "set": "set_stella",
@@ -9019,8 +9096,8 @@
    "icon": "e_stella_feet",
    "flavor": "Wonderful on rockets. Awful near fridges.",
    "stats": {
-    "speed": 8,
-    "luck": 3
+    "speed": 7,
+    "luck": 4
    },
    "era": "stella",
    "set": "set_stella",
@@ -9036,8 +9113,8 @@
    "icon": "e_stella_charm",
    "flavor": "The secret message is always \"buy more cereal\".",
    "stats": {
-    "luck": 4,
-    "health": 3
+    "health": 3,
+    "luck": 4
    },
    "era": "stella",
    "special": {
@@ -9056,8 +9133,8 @@
    "icon": "e_pam_weapon",
    "flavor": "Does nothing unless pointed at a screen. Then also nothing.",
    "stats": {
-    "attack": 7,
-    "speed": 2
+    "attack": 6,
+    "speed": 3
    },
    "era": "pam",
    "special": {
@@ -9076,8 +9153,8 @@
    "icon": "e_pam_head",
    "flavor": "Reflects the score back at the loser.",
    "stats": {
-    "defense": 2,
-    "luck": 2
+    "defense": 1,
+    "luck": 3
    },
    "era": "pam",
    "set": "set_pam",
@@ -9093,8 +9170,8 @@
    "icon": "e_pam_body",
    "flavor": "Every pocket beeps.",
    "stats": {
-    "defense": 6,
-    "health": 6
+    "defense": 5,
+    "health": 7
    },
    "era": "pam",
    "set": "set_pam",
@@ -9111,7 +9188,7 @@
    "flavor": "Flash with every step. Stealth is not an option.",
    "stats": {
     "speed": 4,
-    "luck": 2
+    "luck": 3
    },
    "era": "pam",
    "set": "set_pam",
@@ -9127,8 +9204,9 @@
    "icon": "e_pam_charm",
    "flavor": "It does not help. Everyone does it anyway.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "attack": 3,
+    "health": 5,
+    "luck": 11
    },
    "era": "pam",
    "special": {
@@ -9147,8 +9225,8 @@
    "icon": "e_gorm_weapon",
    "flavor": "Small parts. Not for children under three.",
    "stats": {
-    "attack": 12,
-    "speed": 4
+    "attack": 14,
+    "speed": 3
    },
    "era": "gorm",
    "special": {
@@ -9167,7 +9245,8 @@
    "icon": "e_gorm_head",
    "flavor": "Historically wrong. Looks great.",
    "stats": {
-    "defense": 11,
+    "defense": 8,
+    "speed": 3,
     "luck": 7
    },
    "era": "gorm",
@@ -9184,8 +9263,8 @@
    "icon": "e_gorm_body",
    "flavor": "Protects one square inch, heroically.",
    "stats": {
-    "defense": 17,
-    "health": 17
+    "defense": 18,
+    "health": 19
    },
    "era": "gorm",
    "set": "set_gorm",
@@ -9218,8 +9297,9 @@
    "icon": "e_gorm_charm",
    "flavor": "Sold separately. Comic relief included.",
    "stats": {
-    "luck": 7,
-    "health": 4
+    "health": 4,
+    "speed": 2,
+    "luck": 6
    },
    "era": "gorm",
    "special": {
@@ -9238,7 +9318,7 @@
    "icon": "e_flap_weapon",
    "flavor": "For signalling. And for when signalling fails.",
    "stats": {
-    "attack": 7,
+    "attack": 8,
     "speed": 2
    },
    "era": "flap",
@@ -9258,8 +9338,8 @@
    "icon": "e_flap_head",
    "flavor": "Smells of engine oil and courage.",
    "stats": {
-    "defense": 2,
-    "luck": 2
+    "defense": 1,
+    "luck": 3
    },
    "era": "flap",
    "set": "set_flap",
@@ -9275,8 +9355,9 @@
    "icon": "e_flap_body",
    "flavor": "Singed at the back, as tradition demands.",
    "stats": {
+    "attack": 2,
     "defense": 6,
-    "health": 6
+    "health": 4
    },
    "era": "flap",
    "set": "set_flap",
@@ -9292,7 +9373,7 @@
    "icon": "e_flap_feet",
    "flavor": "For landings. All of them so far.",
    "stats": {
-    "speed": 4,
+    "speed": 5,
     "luck": 2
    },
    "era": "flap",
@@ -9309,8 +9390,8 @@
    "icon": "e_flap_charm",
    "flavor": "Admit one. To be continued.",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 2,
+    "luck": 3
    },
    "era": "flap",
    "special": {
@@ -9329,8 +9410,9 @@
    "icon": "e_max_weapon",
    "flavor": "The compass points at trouble.",
    "stats": {
-    "attack": 12,
-    "speed": 4
+    "attack": 11,
+    "speed": 4,
+    "luck": 3
    },
    "era": "max",
    "special": {
@@ -9366,7 +9448,7 @@
    "icon": "e_max_body",
    "flavor": "Comes torn. Tears more at dramatic moments.",
    "stats": {
-    "defense": 2,
+    "defense": 3,
     "health": 2
    },
    "era": "max",
@@ -9400,8 +9482,8 @@
    "icon": "e_max_charm",
    "flavor": "It always stops here. Always.",
    "stats": {
-    "luck": 11,
-    "health": 7
+    "health": 7,
+    "luck": 11
    },
    "era": "max",
    "special": {
@@ -9420,7 +9502,8 @@
    "icon": "e_rex_weapon",
    "flavor": "Shaped like an injury.",
    "stats": {
-    "attack": 12,
+    "attack": 9,
+    "health": 3,
     "speed": 4
    },
    "era": "rex",
@@ -9440,8 +9523,8 @@
    "icon": "e_rex_head",
    "flavor": "Two hats. One head. No regrets.",
    "stats": {
-    "defense": 4,
-    "luck": 3
+    "defense": 3,
+    "luck": 4
    },
    "era": "rex",
    "set": "set_rex",
@@ -9457,8 +9540,9 @@
    "icon": "e_rex_body",
    "flavor": "The fringe has its own lighting cue.",
    "stats": {
-    "defense": 9,
-    "health": 9
+    "defense": 7,
+    "health": 8,
+    "luck": 2
    },
    "era": "rex",
    "set": "set_rex",
@@ -9491,8 +9575,8 @@
    "icon": "e_rex_charm",
    "flavor": "Access all areas. Except the catering.",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 2,
+    "luck": 3
    },
    "era": "rex",
    "special": {
@@ -9512,7 +9596,7 @@
    "flavor": "The referee did not see it. He never does.",
    "stats": {
     "attack": 7,
-    "speed": 2
+    "speed": 3
    },
    "era": "ajolote",
    "special": {
@@ -9532,7 +9616,8 @@
    "flavor": "Its owner lost the bet. Those are the rules.",
    "stats": {
     "defense": 15,
-    "luck": 10
+    "health": 4,
+    "luck": 9
    },
    "era": "ajolote",
    "set": "set_ajolote",
@@ -9549,7 +9634,8 @@
    "flavor": "Takes longer to remove than the match lasts.",
    "stats": {
     "defense": 9,
-    "health": 9
+    "health": 7,
+    "luck": 2
    },
    "era": "ajolote",
    "set": "set_ajolote",
@@ -9565,8 +9651,9 @@
    "icon": "e_ajolote_feet",
    "flavor": "Built for the top rope.",
    "stats": {
-    "speed": 8,
-    "luck": 3
+    "defense": 1,
+    "speed": 7,
+    "luck": 2
    },
    "era": "ajolote",
    "set": "set_ajolote",
@@ -9582,8 +9669,8 @@
    "icon": "e_ajolote_charm",
    "flavor": "Sunday! Sunday! Sunday!",
    "stats": {
-    "luck": 2,
-    "health": 2
+    "health": 3,
+    "luck": 2
    },
    "era": "ajolote",
    "special": {

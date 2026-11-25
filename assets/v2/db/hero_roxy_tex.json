@@ -1,1 +1,1 @@
-{"name":"hero_roxy","imagePath":"hero_roxy_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":379,"height":650},{"name":"head","x":383,"y":2,"width":202,"height":180}]}
+{"name":"hero_roxy","imagePath":"hero_roxy_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":379,"height":650},{"name":"tail","x":383,"y":2,"width":140,"height":209},{"name":"head","x":525,"y":2,"width":202,"height":180}]}
