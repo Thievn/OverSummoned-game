@@ -526,3 +526,73 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .faq-q[open] summary::after{content:"\2212"}
 .faq-q summary h3{margin:0;font-size:1.05rem}
 .faq-q p{margin:.7rem 0 .15rem;color:var(--mut);max-width:46em}
+
+/* sign-in: the rigged Smudge replaces the floating picture */
+.authart .authpup{position:relative;width:min(360px,70%);aspect-ratio:1/1;margin:0 auto;
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+
+/* ===================== hero and place pages ===================== */
+.crumb{font-size:.85rem;color:var(--mut);margin:1.3rem 0 1.1rem}
+.crumb a{color:var(--mut);text-decoration:none}.crumb a:hover{color:var(--teal)}
+.crumb span{color:#cfd7ee}
+.hero-pg,.place-pg{padding-bottom:3rem}
+.htop{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:2.2rem;align-items:start}
+.hart{background:radial-gradient(60% 60% at 50% 45%,color-mix(in srgb,var(--c) 26%,transparent),transparent 72%);border-radius:22px}
+.hart img{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 34px rgba(0,0,0,.55))}
+.rare{display:inline-block;font:800 .68rem Nunito;letter-spacing:.16em;text-transform:uppercase;color:#141c33;border-radius:999px;padding:.3em .9em}
+.hero-pg h1,.place-pg h1{font:400 clamp(2.1rem,6vw,3.4rem)/1.03 "Lilita One";color:#fff;margin:.5rem 0 .2rem}
+.htitle{font:400 1.25rem "Lilita One";color:var(--c,var(--teal));margin:0 0 1.1rem}
+.facts{list-style:none;padding:0;margin:0 0 1.3rem;display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem}
+.facts li{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:.55rem .8rem}
+.facts span{display:block;font:800 .66rem Nunito;letter-spacing:.13em;text-transform:uppercase;color:var(--mut)}
+.facts b{font:400 1.02rem "Lilita One";color:#fff}
+.bio{color:#cfd7ee;font-size:1.06rem;line-height:1.6;max-width:40em}
+.say{margin:1rem 0 0;padding:.7rem 1rem;border-left:4px solid var(--c,var(--teal));background:rgba(255,255,255,.04);border-radius:0 12px 12px 0;color:#dfe6fa;font-style:italic}
+.hero-pg .btn,.place-pg .btn{margin-top:1.4rem}
+.hsec{margin:2.8rem 0 0;max-width:62rem}
+.hsec h2{font:400 1.7rem "Lilita One";color:#fff;margin:0 0 .8rem}
+.factbox{background:var(--parch);color:var(--sepia);border-radius:14px;padding:1rem 1.2rem;font-size:1.04rem;line-height:1.5;max-width:44em;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.hsec p{color:#aab5d6;line-height:1.6}
+.small{font-size:.9rem}
+.statlist{list-style:none;padding:0;margin:0;max-width:34rem;display:grid;gap:.5rem}
+.statlist li{display:grid;grid-template-columns:5.2rem 1fr 2.2rem;align-items:center;gap:.7rem}
+.statlist span{font:800 .72rem Nunito;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.statlist .bar{height:12px;background:#0b1020;border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.statlist .bar i{display:block;height:100%;border-radius:999px}
+.statlist b{font:400 1.05rem "Lilita One";color:#fff;text-align:right}
+.gearwall{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:.8rem}
+.gcard{display:grid;grid-template-columns:64px 1fr;gap:.9rem;background:var(--panel);border:2px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:.9rem}
+.gcard img{width:64px;height:64px;object-fit:contain}
+.gcard b{display:block;font:400 1.08rem "Lilita One";color:#fff}
+.gcard i{display:block;font:800 .66rem Nunito;letter-spacing:.11em;text-transform:uppercase;color:var(--c);margin:.1rem 0 .4rem}
+.gcard p{margin:0 0 .45rem;color:#aab5d6;font-size:.92rem;line-height:1.45}
+.gst{font:800 .76rem Nunito;color:#dfe6fa}
+.wherep{margin:2.4rem 0 0;color:#aab5d6;font-size:1.03rem;line-height:1.6;max-width:46em}
+.wherep a{color:var(--teal)}
+.kinrow{display:flex;flex-wrap:wrap;gap:.7rem}
+.kin{display:grid;justify-items:center;gap:.3rem;width:104px;text-decoration:none;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:.6rem .3rem;transition:transform .14s,border-color .14s}
+.kin:hover{transform:translateY(-3px);border-color:var(--teal)}
+.kin img{width:76px;height:76px;object-fit:contain}
+.kin span{font:800 .72rem Nunito;color:#cfd7ee;text-align:center;line-height:1.2}
+.cta-end{background:linear-gradient(135deg,#17224a,#101936);border:2px solid var(--line);border-radius:18px;padding:1.7rem;text-align:center;max-width:62rem}
+.cta-end h2{margin-bottom:.3rem}
+.pscene{width:100%;height:auto;border-radius:18px;border:2px solid var(--line);margin:.8rem 0 1.4rem}
+/* hubs */
+.hubwrap{padding-bottom:3.5rem}
+.hubwrap .lede{margin-bottom:2rem}
+.herogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:.9rem}
+.hcard{display:grid;justify-items:center;gap:.2rem;text-decoration:none;background:var(--panel);border:2px solid var(--line);border-top:5px solid var(--c);border-radius:16px;padding:1rem .7rem;transition:transform .14s,border-color .14s}
+.hcard:hover{transform:translateY(-4px);border-color:var(--c)}
+.hcard img{width:100%;max-width:150px;height:auto;object-fit:contain}
+.hcard b{font:400 1.1rem "Lilita One";color:#fff;text-align:center;line-height:1.15}
+.hcard i{font:800 .68rem Nunito;letter-spacing:.06em;color:var(--c);text-align:center;font-style:normal}
+.hcard span{font-size:.78rem;color:var(--mut);text-align:center}
+.placegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.pcard{display:block;text-decoration:none;background:var(--panel);border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .14s,border-color .14s}
+.pcard:hover{transform:translateY(-4px);border-color:var(--teal)}
+.pcard img{width:100%;height:auto;display:block}
+.pcard b{display:block;font:400 1.2rem "Lilita One";color:#fff;padding:.8rem 1rem 0}
+.pcard i{display:block;font:800 .68rem Nunito;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-style:normal;padding:.15rem 1rem 0}
+.pcard span{display:block;color:#aab5d6;font-size:.9rem;line-height:1.45;padding:.5rem 1rem 1rem}
+@media(max-width:860px){.htop{grid-template-columns:1fr;gap:1.3rem}.hart{max-width:330px}}
+@media(max-width:520px){.facts{grid-template-columns:1fr}}

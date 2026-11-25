@@ -7,43 +7,505 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://oversummoned.com/assets/og-share.jpg</image:loc>
-      <image:title>OverSummoned: Smudge the otter and his cursed ledger</image:title>
+      <image:title>OverSummoned</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/archive.webp</image:loc>
-      <image:title>OverSummoned place: archive</image:title>
+      <image:title>OverSummoned place: The Archive</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/dock.webp</image:loc>
-      <image:title>OverSummoned place: dock</image:title>
+      <image:title>OverSummoned place: Roman Dock</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/bondi.webp</image:loc>
-      <image:title>OverSummoned place: bondi</image:title>
+      <image:title>OverSummoned place: Bondi Rock Pool</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/fjord.webp</image:loc>
-      <image:title>OverSummoned place: fjord</image:title>
+      <image:title>OverSummoned place: Lofoten Ice Hole</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/speakeasy.webp</image:loc>
-      <image:title>OverSummoned place: speakeasy</image:title>
+      <image:title>OverSummoned place: Speakeasy Safe</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/vault.webp</image:loc>
-      <image:title>OverSummoned place: vault</image:title>
+      <image:title>OverSummoned place: The Doge&#x27;s Vault</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/closet.webp</image:loc>
-      <image:title>OverSummoned place: closet</image:title>
+      <image:title>OverSummoned place: The Supply Closet</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/outback.webp</image:loc>
-      <image:title>OverSummoned place: outback</image:title>
+      <image:title>OverSummoned place: Emu War Trench</image:title>
     </image:image>
     <image:image>
       <image:loc>https://oversummoned.com/assets/v2/scenes/blackforest.webp</image:loc>
-      <image:title>OverSummoned place: blackforest</image:title>
+      <image:title>OverSummoned place: Witch&#x27;s Clearing</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/ajolote</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/ajolote.webp</image:loc>
+      <image:title>El Ajolote Dorado, The Golden One</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/albrecht</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/albrecht.webp</image:loc>
+      <image:title>Doctor Albrecht, Plague Doctor</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/astrid</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/astrid.webp</image:loc>
+      <image:title>Astrid Ironhowl, Shield-Maiden</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/bella</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/bella.webp</image:loc>
+      <image:title>Bella Pawsworth, Influencer</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/blackbear</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/blackbear.webp</image:loc>
+      <image:title>Captain Blackbear, Pirate Captain</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/brokk</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/brokk.webp</image:loc>
+      <image:title>Brokk, Ice Age Hunter</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/chad</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/chad.webp</image:loc>
+      <image:title>Chad Hodler, Crypto Visionary</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/cleocatra</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/cleocatra.webp</image:loc>
+      <image:title>Cleocatra, Queen of the Nile</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/edith</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/edith.webp</image:loc>
+      <image:title>Edith Crane, Engineer</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/emu</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/emu.webp</image:loc>
+      <image:title>General Emu, Undefeated Commander</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/flap</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/flap.webp</image:loc>
+      <image:title>Commander Flap, The Bird Who Finally Flew</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/florida</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/florida.webp</image:loc>
+      <image:title>Florida Man, Local Legend</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/gaius</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/gaius.webp</image:loc>
+      <image:title>Gaius Marcellus, Legionary</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/gorm</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/gorm.webp</image:loc>
+      <image:title>Gorm the Mighty, Master of the Immediate Area</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/jacko</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/jacko.webp</image:loc>
+      <image:title>Jacko Riley, Surf Lifeguard</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/jazzmin</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/jazzmin.webp</image:loc>
+      <image:title>Jazzmin Sweat, Feel the Burn</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/joost</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/joost.webp</image:loc>
+      <image:title>Joost van der Bloem, Tulip Speculator</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/kenji</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/kenji.webp</image:loc>
+      <image:title>Kenji Shibata, Ronin</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/kevin</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/kevin.webp</image:loc>
+      <image:title>Kevin Latham, Office Worker</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/lola</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/lola.webp</image:loc>
+      <image:title>Lola Vixen, Cabaret Star</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/madjack</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/madjack.webp</image:loc>
+      <image:title>Mad Jack Ramsbottom, Officer and Lunatic</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/marco</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/marco.webp</image:loc>
+      <image:title>Marco Reyes, Delivery Rider</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/max</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/max.webp</image:loc>
+      <image:title>Sgt. Max Carnage, One-Rhino Army</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/maya</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/maya.webp</image:loc>
+      <image:title>Maya Washington, Paramedic</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/morwenna</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/morwenna.webp</image:loc>
+      <image:title>Morwenna Duskwing, Hedge Witch</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/napoleon</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/napoleon.webp</image:loc>
+      <image:title>Napoleon Bone-apart, Emperor</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/pam</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/pam.webp</image:loc>
+      <image:title>Pixel Pam, Three Letters, Top of Every Board</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/raspawtin</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/raspawtin.webp</image:loc>
+      <image:title>Raspawtin, Unkillable Mystic</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/rex</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/rex.webp</image:loc>
+      <image:title>Rex Sizzle, Voice of a Generation, He Says</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/roxy</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/roxy.webp</image:loc>
+      <image:title>Roxy Riot, Three Chords and a Grudge</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/sable</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/sable.webp</image:loc>
+      <image:title>Sable Quickpaw, Master Thief</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/slapton</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/slapton.webp</image:loc>
+      <image:title>Will Slapton, Leading Man</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/stella</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/stella.webp</image:loc>
+      <image:title>Captain Stella Comet, Ace of the Rocket Patrol</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/troffea</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/troffea.webp</image:loc>
+      <image:title>Frau Troffea, The Dancing Plague</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/vesper</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/vesper.webp</image:loc>
+      <image:title>Vesper Nightshade, Queen of the Batcave</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/heroes/vincenzo</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/heroes/vincenzo.webp</image:loc>
+      <image:title>Vincenzo Moretti, Gangster</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/archive</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/archive.webp</image:loc>
+      <image:title>The Archive</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/dock</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/dock.webp</image:loc>
+      <image:title>Roman Dock</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/bondi</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/bondi.webp</image:loc>
+      <image:title>Bondi Rock Pool</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/fjord</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/fjord.webp</image:loc>
+      <image:title>Lofoten Ice Hole</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/speakeasy</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/speakeasy.webp</image:loc>
+      <image:title>Speakeasy Safe</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/vault</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/vault.webp</image:loc>
+      <image:title>The Doge&#x27;s Vault</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/closet</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/closet.webp</image:loc>
+      <image:title>The Supply Closet</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/outback</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/outback.webp</image:loc>
+      <image:title>Emu War Trench</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://oversummoned.com/places/blackforest</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://oversummoned.com/assets/v2/scenes/blackforest.webp</image:loc>
+      <image:title>Witch&#x27;s Clearing</image:title>
     </image:image>
   </url>
   <url>
