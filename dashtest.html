@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard mockup · OverSummoned</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/css/os.css?v=1126b">
+<link rel="stylesheet" href="/css/dash.css?v=1126b">
+</head>
+<body class="dashbody">
+<header class="gbar"><div class="wrap">
+  <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
+  <div class="res">
+    <span title="Energy"><img src="/assets/v2/loot/x_energy.webp" alt="Energy"><b id="r-energy">64</b></span>
+    <span title="Ink"><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
+    <span title="Gold"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">12,480</b></span>
+    <button class="fbbtn" type="button">Ideas or feedback?</button>
+    <button class="avatar"><img src="/assets/v2/smudge/stamp.webp?v=1126b" alt=""></button>
+  </div>
+</div></header>
+
+<main class="wrap dash">
+  <p class="mocknote"><b>Mockup.</b> Made-up numbers, nothing is saved, no button does anything. This is for you to mark up.</p>
+
+  <!-- ============ the desk: a live scene, not a header ============ -->
+  <section class="desk-strip" id="strip">
+    <div class="desk-scene" id="scene">
+      <img class="desk-bg" id="desk-bg" src="/assets/v2/scenes/dock.webp" alt="">
+      <div class="desk-crew" id="crew"></div>
+      <div class="desk-fade"></div>
+    </div>
+    <div class="desk-over">
+      <div class="desk-top">
+        <div><div class="tag">Wednesday, 25 November · evening</div>
+          <h1>Smudge is fishing the Roman Dock.</h1>
+          <p class="mut">Crew of three. Everything they pull up lands in your bag.</p></div>
+        <div class="desk-pace"><span class="pace-dot"></span><b>Double speed</b><span class="mut">4h 12m of fresh crew left</span></div>
+      </div>
+      <div class="desk-run">
+        <div class="runbar"><i id="runbar"></i><span id="runtxt">Next haul in 7s</span></div>
+        <div class="runstat"><b id="hauls">1,284</b><span>hauls</span></div>
+        <div class="runstat"><b>×2.4</b><span>mastery</span></div>
+        <button class="btn small">Change the job</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="dashgrid">
+    <!-- ============ left rail: everything that fills up ============ -->
+    <aside class="rail">
+      <h3 class="railh">Filling up</h3>
+
+      <div class="meter big" id="m-ink">
+        <div class="mtop"><img src="/assets/v2/loot/x_ink.webp" alt=""><div><b>Ink</b><span class="mut" id="ink-sub">1,840 more until the next stranger</span></div><em id="ink-pct">68%</em></div>
+        <div class="bar"><i id="ink-bar" style="width:68%"></i></div>
+        <div class="spark" id="sp-ink"></div>
+      </div>
+
+      <div class="meter" id="m-energy">
+        <div class="mtop"><img src="/assets/v2/loot/x_energy.webp" alt=""><div><b>Energy</b><span class="mut" id="en-sub">+1 in 2m 14s</span></div><em id="en-pct">64<i>/100</i></em></div>
+        <div class="bar"><i id="en-bar" style="width:64%;background:linear-gradient(90deg,#2f9bff,#7ec8ff)"></i></div>
+      </div>
+
+      <div class="meter" id="m-crate">
+        <div class="mtop"><img src="/assets/v2/loot/x_crate.webp" alt=""><div><b>Rift crate</b><span class="mut" id="cr-sub">Drops in 11m 40s</span></div><em id="cr-pct">61%</em></div>
+        <div class="bar"><i id="cr-bar" style="width:61%;background:linear-gradient(90deg,#b06bff,#d7aaff)"></i></div>
+      </div>
+
+      <div class="meter ready" id="m-tix">
+        <div class="mtop"><img src="/assets/v2/loot/x_sword.webp" alt=""><div><b>Raid tickets</b><span class="mut">Full. Go and spend them.</span></div><em>3<i>/3</i></em></div>
+        <div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      </div>
+
+      <div class="meter" id="m-guild">
+        <div class="mtop"><img src="/assets/v2/loot/x_trophy.webp" alt=""><div><b>Guild goal</b><span class="mut">The Damp Cellar · ends Sunday</span></div><em>72%</em></div>
+        <div class="bar"><i style="width:72%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div>
+        <p class="mut tiny">8,640 of 12,000 hauls. You have put in 1,284.</p>
+      </div>
+
+      <div class="meter" id="m-ledger">
+        <div class="mtop"><img src="/assets/v2/loot/x_stamp.webp" alt=""><div><b>The whole ledger</b><span class="mut">Everything there is to collect</span></div><em>41.8%</em></div>
+        <div class="bar"><i style="width:41.8%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div>
+        <div class="legrid">
+          <span><b>23</b>/36 arrivals</span><span><b>118</b>/440 gear</span>
+          <span><b>61</b>/140 treasure</span><span><b>2</b>/5 bosses</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ middle: the four trades, then the rooms ============ -->
+    <section class="mid">
+      <h3 class="railh">The four trades</h3>
+      <div class="skills" id="skills"></div>
+
+      <h3 class="railh">The rooms</h3>
+      <div class="rooms">
+        <button class="room hot"><img src="/assets/v2/loot/x_anvil.webp" alt=""><div><b>Workshop <i class="dot"></i></b><span>3 tonics ready to brew · 14 duplicates to melt</span><div class="bar sm"><i style="width:45%"></i></div></div><em>→</em></button>
+        <button class="room"><img src="/assets/v2/loot/x_dumbbell.webp" alt=""><div><b>Training</b><span>64 energy banked · 6 stat points to spend</span><div class="bar sm"><i style="width:64%;background:linear-gradient(90deg,#2f9bff,#7ec8ff)"></i></div></div><em>→</em></button>
+        <button class="room hot"><img src="/assets/v2/loot/x_sword.webp" alt=""><div><b>Raids <i class="dot"></i></b><span>3 tickets · Brenda is back from leave</span><div class="bar sm"><i style="width:100%;background:linear-gradient(90deg,#ff6a3d,#ffa06b)"></i></div></div><em>→</em></button>
+        <button class="room"><img src="/assets/v2/loot/x_friends.webp" alt=""><div><b>The city</b><span>2 gifts waiting · 4 market sales</span><div class="bar sm"><i style="width:30%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div></div><em>→</em></button>
+        <button class="room"><img src="/assets/v2/loot/x_crate_open.webp" alt=""><div><b>Cabinet</b><span>61 treasures · 3 new since you left</span><div class="bar sm"><i style="width:43%;background:linear-gradient(90deg,#b06bff,#d7aaff)"></i></div></div><em>→</em></button>
+        <button class="room soon"><img src="/assets/v2/loot/x_gold.webp" alt=""><div><b>Shop</b><span>Opening soon. Looks only, never power.</span></div><em>→</em></button>
+      </div>
+
+      <h3 class="railh">This week's contracts</h3>
+      <div class="contracts">
+        <div class="ct done"><span>40 / 40 hauls at the Lofoten Ice Hole</span><div class="bar sm"><i style="width:100%"></i></div><button class="btn small">Claim 40 shards</button></div>
+        <div class="ct"><span>26 / 60 hauls at the Speakeasy Safe</span><div class="bar sm"><i style="width:43%"></i></div><b class="mut">60 shards</b></div>
+        <div class="ct"><span>12 / 80 hauls at the Emu War Trench</span><div class="bar sm"><i style="width:15%"></i></div><b class="mut">90 shards</b></div>
+      </div>
+    </section>
+
+    <!-- ============ right: who is out, and what happened ============ -->
+    <aside class="rail">
+      <h3 class="railh">Away right now</h3>
+      <div class="away" id="away"></div>
+
+      <h3 class="railh">While you were away <span class="mut tiny">6h 12m</span></h3>
+      <ul class="feed" id="feed"></ul>
+    </aside>
+  </div>
+</main>
+
+<script src="/js/vendor/dragonBones.core.min.js"></script>
+<script src="/js/dbcanvas.js?v=1126b"></script>
+<script src="/js/dashtest.js?v=1126b"></script>
+</body>
+</html>

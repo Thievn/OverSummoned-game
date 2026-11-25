@@ -77,7 +77,7 @@
       ]
     },
     {
-      "source": "/(ledger|gm|offline|admin|cardtest|dbtest|maptest)(.*)",
+      "source": "/(ledger|gm|offline|admin|cardtest|dbtest|maptest|dashtest)(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
