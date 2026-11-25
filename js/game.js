@@ -218,9 +218,12 @@
       }
       box.appendChild(card);
     }
-    pending.forEach(([i, id]) => { const host = box.querySelector(`[data-who="${i}"]`); jobPups[i] = OS.heroPuppet(host, id, host.clientHeight); });
+    // each scene has a spot of solid ground for the worker to stand on: [x, y, picture width / height] as fractions of the scene picture
+    pending.forEach(([i, id]) => { const host = box.querySelector(`[data-who="${i}"]`), sp = STAND[S.jobs[i].place] || [.5, .8, 2], H = host.clientHeight, sh = H * 1.12, e = OS.rig['h_' + id];
+      const pp = jobPups[i] = OS.heroPuppet(host, id, Math.min(H * .5, H * .62 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .12)); if (pp) pp.place(host.clientWidth / 2 + (sp[0] - .5) * sh * sp[2], -H * .06 + sp[1] * sh); });
   }
   let jobPups = [];
+  const STAND = { dock: [.45, .6, 1.99], bondi: [.3, .54, 1.99], fjord: [.42, .64, 2.12], speakeasy: [.42, .8, 1.28], vault: [.42, .8, 1.91], closet: [.42, .8, 1.87], outback: [.3, .74, 2.05], blackforest: [.36, .78, 1.95] };
   function jobSheet(i) {
     const j = S.jobs[i] || { hero: null, place: null, prog: 0 }, d = el('div', '', `<h3 style="font-size:1.5rem">${S.jobs[i] ? 'Change this job' : 'Send somebody to work'}</h3>`);
     d.appendChild(el('div', 'tag', 'Who'));

@@ -104,6 +104,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
 
 ## Waiting on Dean
+- [ ] Header logo: tried a ring-O wordmark, Dean did not like it; plain two-tone restored. Logo and icon set on hold
+- [ ] Going live on oversummoned.com: Dean said yes once the Torn/Melvor mechanics are done. Not yet: crews, market, making skills, and the hero-jobs question are open. Preview only for now
 - [x] Approve the database change (accounts, saves, page views, admin numbers)
 - [ ] Later: add the preview address to Supabase's sign-in redirect list (Authentication, URL Configuration), then test Google sign-in
 - [x] Deploy of the Grok marketing function
@@ -127,6 +129,12 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Making skills that turn treasure into things for cards: Cooking (meals before raids), Tinkering (gear upgrades), Restoring (cabinet pieces)
 - [ ] Mastery per treasure, and one completion percentage on the dashboard
 - [ ] Crews, market, per-skill leaderboards (needs database approval)
+
+## Loot
+- [x] Junk loot (`rules/junk.py`): 63 sell-only finds (local fish, lost property, daft things; 7 per place plus 7 that fall out of the rift anywhere). Mostly 1 to 9 gold, a few worth 20 to 50. Not part of the cabinet. "Sell spare treasure" sells all junk
+- [ ] Gold needs more to spend on (today: gear upgrades). Ideas: market, shard purchases, cosmetics
+- [ ] OPEN DESIGN QUESTION (Dean, 24 Nov): heroes doing Smudge's hands-on jobs does not make sense. Proposal: Smudge does fishing / lockpicking / digging himself (animated), a few heroes stand by as his crew for bonuses, the rest go on timed expeditions shown as a card with a bar
+- [x] Job scenes: each place has a standing spot on solid ground for the hero
 
 ## Pacing (testing)
 - [x] Fresh crew: first 4 hours of work each day at double speed, then the plain rate (plain rate is 65% of the old one). Shown on the dashboard

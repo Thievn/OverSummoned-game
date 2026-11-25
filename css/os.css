@@ -460,18 +460,7 @@ body.admin{padding-bottom:3rem}.crown{font:400 1rem "Lilita One";color:#1a0d02;b
 .armrow{display:flex;gap:.7rem;align-items:center;padding:.45rem .55rem;border-radius:12px;background:#111936;border:1px solid var(--line)}
 .armrow>div:last-child{display:flex;flex-direction:column;min-width:0;font-size:.85rem;line-height:1.3}.armrow b{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.armrow .mut{font-size:.76rem}
 
-/* ---------------------------------------------------------------- header wordmark */
-.brand{position:relative;display:inline-flex;align-items:center;font:400 1.75rem/1 "Lilita One",sans-serif;letter-spacing:.3px;color:#fff;text-decoration:none;white-space:nowrap;padding:.1em .1em .18em 0;
-  -webkit-text-stroke:5px #070b1a;paint-order:stroke fill;text-shadow:0 3px 0 #070b1a,0 4px 0 #070b1a,0 0 16px rgba(63,224,197,.28);transform:rotate(-1.2deg);transition:transform .15s}
-.brand:hover{transform:rotate(-1.2deg) scale(1.03)}
-.brand b{font-weight:400;color:var(--teal);background:linear-gradient(180deg,#7ff5e0,#2fd0b6 55%,#1aa890);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;
-  filter:drop-shadow(0 0 0 #070b1a) drop-shadow(1.6px 0 0 #070b1a) drop-shadow(-1.6px 0 0 #070b1a) drop-shadow(0 1.6px 0 #070b1a) drop-shadow(0 -1.6px 0 #070b1a) drop-shadow(0 3px 0 #070b1a);text-shadow:none;margin-left:.02em}
-.brand::before{content:"";flex:none;width:.95em;height:.95em;margin-right:.03em;margin-bottom:-.02em;border-radius:50%;
-  background:radial-gradient(circle,#f3b930 0 13%,transparent 14%),conic-gradient(from 0deg,#3fe0c5 0 8%,transparent 0 12.5%,#3fe0c5 0 20.5%,transparent 0 25%,#3fe0c5 0 33%,transparent 0 37.5%,#3fe0c5 0 45.5%,transparent 0 50%,#3fe0c5 0 58%,transparent 0 62.5%,#3fe0c5 0 70.5%,transparent 0 75%,#3fe0c5 0 83%,transparent 0 87.5%,#3fe0c5 0 95.5%,transparent 0);
-  -webkit-mask:radial-gradient(circle,#000 0 14%,transparent 15% 30%,#000 31% 40%,transparent 41%);mask:radial-gradient(circle,#000 0 14%,transparent 15% 30%,#000 31% 40%,transparent 41%);
-  box-shadow:none;animation:brandspin 14s linear infinite}
-.brand::after{content:"";position:absolute;left:.07em;top:50%;width:.82em;height:.82em;margin-top:-.47em;border-radius:50%;box-shadow:inset 0 0 0 .13em #3fe0c5,0 0 0 .07em #070b1a,inset 0 0 0 .2em #070b1a,0 0 12px rgba(63,224,197,.55);pointer-events:none}
-.brand .o{display:none}
-@keyframes brandspin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.brand::before{animation:none}}
-@media(max-width:520px){.brand{font-size:1.4rem;-webkit-text-stroke:4px #070b1a}}
+.brand .o{display:inline}
+
+
+.jscene div.who{inset:0;top:0;bottom:0}
