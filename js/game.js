@@ -229,9 +229,13 @@
         <div class="row" style="margin-top:.6rem;flex-wrap:wrap"></div></div>`;
       const r = card.querySelector('.row'); r.append(btn('small', 'Move him', placeSheet), btn('small ghost', 'What drops here', () => lootSheet(p, modal.close)), btn('small ghost', 'Bring him home', () => { S.jobs = []; save(true); render(); }));
       box.appendChild(card);
-      const host = card.querySelector('.who'), sp = STAND[p.id] || [.5, .8, 2], H = host.clientHeight, sh = H * 1.12, gx = host.clientWidth / 2 + (sp[0] - .5) * sh * sp[2], gy = -H * .06 + sp[1] * sh;
-      crew().forEach((id, k) => { const e = OS.rig['h_' + id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, id, hh); if (pp) { pp.place(gx - sh * (.14 + k * .1) * (k === 1 ? -1.1 : 1) + (k === 2 ? -sh * .1 : 0), gy - H * (.035 + .015 * k)); jobPups.push(pp); pp.id = id; pp.tall = hh; crewPups.push(pp); } });
-      const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, H * .5 / se.size[1]); sm.place(gx + (se.foot[0] - se.size[0] / 2) * 0, gy + H * .03); jobPups.unshift(sm);
+      const host = card.querySelector('.who'), sp = STAND[p.id] || STAND.dock, H = host.clientHeight, sh = H * 1.12, at = q => [host.clientWidth / 2 + (q[0] - .5) * sh * sp.w, -H * .06 + q[1] * sh];
+      // back to front, so whoever stands lower in the picture is drawn in front
+      const cast = crew().map((id, k) => ({ id, q: sp.c[k] })).concat([{ q: sp.s }]).sort((a, c) => a.q[1] - c.q[1]);
+      cast.forEach(m => { const [x, y] = at(m.q);
+        if (m.id) { const e = OS.rig['h_' + m.id], hh = Math.min(H * .4, H * .5 * e.size[1] / Math.max(e.size[0], e.size[1]) + H * .1), pp = OS.heroPuppet(host, m.id, hh); if (pp) { pp.flip = !!(LOOKS[m.id] && LOOKS[m.id] !== m.q[2]); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = hh; crewPups.push(pp); } }
+        else { const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, H * .46 / se.size[1]); sm.place(x, y); sm.me = true; jobPups.push(sm); } });
+      jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
     }
     // ---- the crew
     const cw = el('div', 'panel crewp'); cw.innerHTML = `<div class="spread"><h3 style="margin:0">Crew</h3><span class="mut">They stand behind him. They do not do the work; they make him better at it.</span></div><div class="cw3"></div>`;
@@ -268,7 +272,15 @@
     const a = crewPups[Math.floor(Math.random() * crewPups.length)]; crewSay(a, pickLine(a.id, 'say'));
     const others = crewPups.filter(x => x !== a); if (others.length && Math.random() < 0.45) { const b = others[Math.floor(Math.random() * others.length)]; setTimeout(() => { if (current === 'jobs') crewSay(b, pickLine(b.id, 'reply'), 2600); }, 2700); chatT += 3; }
   }
-  const STAND = { dock: [.45, .6, 1.99], bondi: [.3, .54, 1.99], fjord: [.42, .64, 2.12], speakeasy: [.42, .8, 1.28], vault: [.42, .8, 1.91], closet: [.42, .8, 1.87], outback: [.3, .74, 2.05], blackforest: [.36, .78, 1.95] };
+  // where everybody goes in each scene, as fractions of the scene picture: Smudge's spot (he works at the edge of the
+  // water, in front of the safe, beside the hole) and three crew spots behind him, each wholly on one surface. w = picture width / height.
+  const STAND = {
+    dock: { w: 1.99, s: [.52, .665], c: [[.38, .52, 'r'], [.6, .5, 'l'], [.71, .57, 'l']] }, bondi: { w: 1.99, s: [.45, .565], c: [[.34, .5, 'r'], [.26, .64, 'r'], [.58, .52, 'l']] },
+    fjord: { w: 2.12, s: [.6, .6], c: [[.18, .55, 'r'], [.45, .56, 'r'], [.85, .52, 'l']] }, speakeasy: { w: 1.28, s: [.5, .79], c: [[.26, .78, 'r'], [.38, .89, 'r'], [.72, .8, 'l']] },
+    vault: { w: 1.91, s: [.52, .84], c: [[.2, .72, 'r'], [.33, .82, 'r'], [.83, .79, 'l']] }, closet: { w: 1.87, s: [.5, .8], c: [[.25, .72, 'r'], [.36, .86, 'r'], [.68, .8, 'l']] },
+    outback: { w: 2.05, s: [.42, .74], c: [[.29, .62, 'r'], [.17, .8, 'r'], [.87, .78, 'l']] }, blackforest: { w: 1.95, s: [.58, .8], c: [[.3, .66, 'r'], [.4, .84, 'r'], [.88, .72, 'l']] } };
+  // heroes whose picture looks to one side; everyone else looks out at you and is never mirrored
+  const LOOKS = { albrecht: 'l', astrid: 'l', marco: 'r', emu: 'r' };
   function placeSheet() {
     const j = Object.assign({ place: null, prog: 0, order: 'stay', since: 0 }, S.jobs[0] || {}), d = el('div', '', `<h3 style="font-size:1.5rem">Where should Smudge work?</h3>`);
     const ps = el('div', 'plist');

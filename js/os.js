@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1125f';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1125g';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -62,7 +62,7 @@ window.OS = (function () {
       }
       this.place();
     }
-    place(x, y) { if (x != null) { this.x = x; this.y = y; } if (this.db) { this.db.scale = this.scale; this.db.px = [this.x || 0, this.y || 0]; return; } this.root.style.transform = `translate(${this.x || 0}px,${this.y || 0}px) scale(${this.scale})`; }
+    place(x, y) { if (x != null) { this.x = x; this.y = y; } if (this.db) { this.db.scale = this.scale; this.db.flip = !!this.flip; this.db.px = [this.x || 0, this.y || 0]; return; } this.root.style.transform = `translate(${this.x || 0}px,${this.y || 0}px) scale(${this.scale})`; }
     kick(part, v) { if (this.db) { if (Math.abs(v) >= 10) this.db.act(); return; } const s = this.springs[part] || (this.springs[part] = [0, 0]); s[1] += v; }
     say(sec) { if (this.db) return void this.db.say(sec); this.talk = sec; }
     cheer(sec) { if (this.db) return void this.db.cheer(sec); this.happy = sec; this.kick('tail', 8); }

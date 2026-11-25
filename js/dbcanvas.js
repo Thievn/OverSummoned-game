@@ -101,7 +101,7 @@
 
   function draw(ctx, display, x, y, scale, opt) {
     const arm = display.armature; if (!arm) return;
-    ctx.save(); ctx.translate(x, y); ctx.scale(scale, scale);
+    ctx.save(); ctx.translate(x, y); ctx.scale(opt && opt.flip ? -scale : scale, scale);
     for (const s of arm.getSlots()) {
       const td = s._textureData; if (!s.shown || s._displayIndex < 0 || !td || s.alpha <= 0.003) continue;
       const img = td.parent.image, r = td.region; if (!img) continue;
@@ -169,7 +169,7 @@
         const w = this.host.clientWidth, h = this.host.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
         if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-        draw(ctx, this.p, this.px ? this.px[0] : w * this.fx, this.px ? this.px[1] : h * this.fy, this.scale, { bones: this.bones });
+        draw(ctx, this.p, this.px ? this.px[0] : w * this.fx, this.px ? this.px[1] : h * this.fy, this.scale, { bones: this.bones, flip: this.flip });
         this.raf = requestAnimationFrame(frame);
       };
       this.raf = requestAnimationFrame(frame);
