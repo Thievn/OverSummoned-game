@@ -29,6 +29,7 @@
       <div class="panel chart"><div class="spread"><h3>New accounts</h3><button class="linkbtn" data-table="c-signups">Table</button></div><p class="mut">Per day, last 30 days.</p><div id="c-signups"></div></div>
       <div class="panel chart"><div class="spread"><h3>Summons</h3><button class="linkbtn" data-table="c-summons">Table</button></div><p class="mut">Per day, last 30 days.</p><div id="c-summons"></div></div>
       <div class="panel chart"><div class="spread"><h3>Players active</h3><button class="linkbtn" data-table="c-active">Table</button></div><p class="mut">Players who did something that day.</p><div id="c-active"></div></div>
+      <div class="panel" style="grid-column:1/-1"><div class="spread"><h3>Where in the world</h3><span class="mut" id="g-sum"></span></div><p class="mut">Last 30 days. One dot per place; the gold ping walks through the latest visits.</p><div class="geomap" id="g-map"></div><div id="g-list" style="margin-top:.8rem"></div></div>
       <div class="panel"><h3>Most visited pages</h3><p class="mut">Last 7 days.</p><div id="o-paths"></div></div>
       <div class="panel"><h3>Where visitors come from</h3><p class="mut">Last 7 days.</p><div id="o-refs"></div></div>
     </div>
@@ -55,5 +56,5 @@
 </main>
 <div class="tip" id="ctip"></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
-<script src="/js/cloud.js"></script><script src="/js/os.js"></script><script src="/js/admin.js"></script>
+<script src="/js/cloud.js"></script><script src="/js/os.js"></script><script src="/js/geomap.js?v=1126a"></script><script src="/js/admin.js"></script>
 </body></html>

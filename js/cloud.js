@@ -71,11 +71,12 @@ window.Cloud = (function () {
   C.boardSkill = sk => rpc('os2_board_skill', { p_skill: sk }, () => [{ username: 'Pemberton', xp: 1.4e7, rebirth: 1 }, { username: 'DevOtter', xp: 90000, rebirth: 0 }]);
   C.setProfile = async patch => DEV ? true : !(await sb.from('os2_profile').update(patch).eq('id', C.user.id)).error;
   C.signOut = async () => { if (!DEV) await sb.auth.signOut(); location.href = '/'; };
-  // our own page-view counter: path, where they came from, and a random per-browser id. Nothing else.
+  // our own page-view counter: path, where they came from, a random per-browser id, and the rough place (country, city).
   C.track = function () {
     if (DEV || !sb) return; let sid; try { sid = localStorage.getItem('os_sid'); if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('os_sid', sid); } } catch (e) { sid = 'none'; }
     let ref = ''; try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) { } if (ref === location.hostname) ref = '';
-    sb.rpc('os2_track', { p_path: location.pathname, p_ref: ref, p_sid: sid }).then(() => { }, () => { });
+    const send = g => sb.rpc('os2_track_geo', { p_path: location.pathname, p_ref: ref, p_sid: sid, p_country: g.country || null, p_region: g.region || null, p_city: g.city || null, p_lat: g.lat == null ? null : g.lat, p_lon: g.lon == null ? null : g.lon }).then(() => { }, () => { });
+    fetch('/api/geo').then(r => r.json()).then(send, () => send({}));   // the rough place the visit came from; never the IP
   };
   return C;
 })();
