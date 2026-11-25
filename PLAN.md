@@ -249,3 +249,24 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] After that goes live: tighten the save check so nothing can be added except by the server (closes the last cheat)
 - [ ] Still decided in the browser: whether a haul finds anything at all, raid win/lose, bench crafting, calling a hero by name with shards, gold from selling. All are capped by the server's limits; move them over next
 - [ ] Finds now arrive in small batches about every second and a half, not the instant a haul lands
+
+## 25 Nov, after midnight — the cheat is closed (live)
+- [x] Finds: the server now also decides whether a haul finds anything; the game asks about every 0.7s so drops feel close to instant
+- [x] Selling spares and calling a hero by name with shards happen on the server
+- [x] Strict ledger: this version of the game cannot add gear, treasure, junk or cards by saving at all. Only the server hands them out
+- [x] Raid prizes capped by the server (3 banked, one more every two hours)
+- [x] Fixed an old bug: "Sell spare treasure" was also selling spare card shards
+- [x] Pushed live so Dean can test signed in (the preview cannot do Google sign-in until its address is added in Supabase)
+- [ ] If anything misbehaves live: roll back to commit b1e029a (the last version before server rolls)
+- [ ] Once confirmed working for a day: switch on `strict` for everyone (one line, see supabase/os2_server_rolls.md)
+- [ ] Still decided in the browser, under server limits: raid win or lose, bench crafting, tonic brewing, contracts, xp and ink earned over time, gold from crates and raids
+
+## Next on the agenda (in order)
+1. Dean tests live: work a place, open a crate, summon, send and collect an expedition, sell spares, call a hero with shards, win a raid
+2. Two-account test of the city: friend, gift, market sale, guild chat and goal
+3. Balance pass with real numbers (pacing with Smudge alone, bench times, era gear, cabinet bonus)
+4. Report and mute for guild chat; live chat refresh; town-crier feed
+5. Mastery per treasure
+6. Collections/albums with set bonuses (the CUE idea)
+7. Wave three: ten more arrivals
+8. Open the doors (`os2_open`) when 1-4 are done

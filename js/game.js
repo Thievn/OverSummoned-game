@@ -11,6 +11,7 @@
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
     energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, crew: [null, null, null], exped: [], parts: 0, make: null, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
+  S.v = 3;      // v3: nothing is added to the bag or the roster except by the server; the save check holds this game to that
   // older ledgers had heroes holding jobs. Now Smudge works one place and heroes stand crew: keep the first place, move the workers into the crew.
   if (!S.work3) { const old = (S.jobs || []).filter(j => j && j.place); S.crew = [0, 1, 2].map(i => (old[i] && old[i].hero) || null); S.jobs = old.length ? [{ place: old[0].place, prog: 0, order: old[0].order || 'stay', since: 0 }] : []; S.work3 = 1; }
 
@@ -95,9 +96,10 @@
     S.contracts = { week: w, list }; return list;
   }
   function claim(i) { const c = contracts()[i]; if (!c || c.paid || c.have < c.need) return; c.paid = true; bump('contracts'); give('x_shard', c.shards); give('x_crate'); save(true); render(); toast(`Contract done: ${c.shards} shards and a crate.`); }
-  function callByName(id) {
+  async function callByName(id) {
     const h = OS.heroes[id], cost = SH.cost[h.rarity], have = S.bag.x_shard || 0; if (S.roster[id] || have < cost) return;
-    S.bag.x_shard = have - cost; S.roster[id] = 1; Cloud.log('shard_call', id); save(true); modal.close(); render();
+    if (Cloud.dev) S.bag.x_shard = have - cost; else { const r = await srv(() => Cloud.call(id)); if (r.r !== 'ok') { toast(r.r); return; } }
+    S.roster[id] = 1; Cloud.log('shard_call', id); save(true); modal.close(); render();
     const d = el('div', 'reveal'); d.innerHTML = `<div class="tag" style="font-size:1rem;color:${R.rarity_color[h.rarity]}">Called by name · ${OS.cap(h.rarity)}</div>`; d.appendChild(OS.card(h, { level: 1, stats: heroStats(id) })); d.appendChild(el('p', '', `<b>Smudge:</b> “${h.lines[MODES.indexOf(S.mode)]}”`)); d.appendChild(btn('', 'Find them somewhere to stand', modal.close)); modal.open(d);
   }
   function lockedSheet(id) {
@@ -125,7 +127,7 @@
     const inkGot = t.ink * R.web.ink_mult * inkBonus() * (1 + crewFx('ink')); bump('hauls_' + p.skill); bump('ink', inkGot);
     S.actions++; S.ink += inkGot; gainXP(p.skill, Math.round(t.xp * R.web.xp_mult * (1 + tonic('xp') + crewFx('xp'))), quiet);
     crew().forEach(id => { const m = S.mastery[id] || (S.mastery[id] = {}); m[p.skill] = (m[p.skill] || 0) + R.jobs.mastery_xp; });
-    if (Math.random() < R.web.loot_chance) PEND.push([p.id, fullLuck(p, jobLuck(j)), Math.random() < perk(p.skill, 'double') ? 2 : 1]);   // the server decides what it was
+    PEND.push([p.id, fullLuck(p, jobLuck(j)), 1, Math.round(perk(p.skill, 'double') * 100) / 100]);   // the server decides whether this haul found anything, and what
     return drops;
   }
   const WANDER = (R.jobs.wander_minutes || 15) * 60; let jobsMoved = false;
@@ -177,7 +179,7 @@
   // The server checks every save. If it refuses one (opened elsewhere, or numbers that could not have been earned) it sends back the last page it accepts.
   let busy = false;
   async function save(force) { S.last = now(); dirty = true; if (!force || saving || busy) return; saving = true; dirty = false; let r = null; try { r = await Cloud.save(S, summary()); } catch (e) { } saving = false; if (!r) dirty = true; else if (r.ok === false) refused(r); }
-  function refused(r) { if (r.why === 'size') return; S = Object.assign(fresh(), r.data || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty'; S.last = now(); dirty = false;
+  function refused(r) { if (r.why === 'size') return; S = Object.assign(fresh(), r.data || {}); S.v = 3; S.mode = MODES.includes(S.mode) ? S.mode : 'salty'; S.last = now(); dirty = false;
     toast(r.why === 'stale' ? 'This ledger was open somewhere else. Loaded the newest page.' : 'The ledger did not balance, so the last checked page was loaded.'); render(); }
   async function flush() { while (saving) await new Promise(r => setTimeout(r, 80)); await save(true); while (saving) await new Promise(r => setTimeout(r, 80)); }
   // anything that moves between players happens on the server's copy; it answers with the new numbers and we take them as they are
@@ -188,9 +190,9 @@
   const fullLuck = (p, extra) => Math.round((level(p.skill) * R.loot.luck_per_level + perk(p.skill, 'luck') + (extra || 0)) * 100) / 100;
   const flat = add => Object.keys(add || {}).reduce((a, k) => a.concat(Array(add[k]).fill(k)), []);
   async function roll(list, cost) {
-    list = list.filter(x => x && x.n > 0); if (!list.length && !cost) return { ids: [], add: {}, total: 0 };
+    list = list.filter(x => x && (x.n > 0 || x.hauls > 0)); if (!list.length && !cost) return { ids: [], add: {}, total: 0 };
     let r;
-    if (Cloud.dev) { const add = {}, ids = []; list.forEach(x => { const p = places[x.place] || RIFT; for (let i = 0; i < x.n; i++) { const gear = x.gear && p.loot.filter(([id]) => OS.items[id].kind === 'gear'); const id = gear && gear.length ? gear[Math.floor(Math.random() * gear.length)][0] : rollLootLocal(p, x.luck); add[id] = (add[id] || 0) + 1; if (ids.length < 80) ids.push([0, id]); } }); r = { r: 'ok', add, list: ids }; }
+    if (Cloud.dev) { const add = {}, ids = []; list.forEach(x => { const p = places[x.place] || RIFT; const n0 = (x.n || 0) + Array.from({ length: x.hauls || 0 }).reduce(t => t + (Math.random() < R.web.loot_chance ? (Math.random() < (x.dbl || 0) ? 2 : 1) : 0), 0); for (let i = 0; i < n0; i++) { const gear = x.gear && p.loot.filter(([id]) => OS.items[id].kind === 'gear'); const id = gear && gear.length ? gear[Math.floor(Math.random() * gear.length)][0] : rollLootLocal(p, x.luck); add[id] = (add[id] || 0) + 1; if (ids.length < 80) ids.push([0, id]); } }); r = { r: 'ok', add, list: ids }; }
     else { if (cost) await flush(); while (saving || busy) await new Promise(k => setTimeout(k, 80)); busy = true; try { r = await Cloud.roll(list, cost); } catch (e) { r = null; } finally { busy = false; } }
     if (!r) return { ids: [], add: {}, total: 0, err: 'down' }; if (r.r !== 'ok') return { ids: [], add: {}, total: 0, err: r.r };
     let total = 0; Object.keys(r.add).forEach(k => { if (OS.items[k]) { give(k, r.add[k]); total += r.add[k]; } }); if (cost) S.bag[cost.item] = Math.max(0, (S.bag[cost.item] || 0) - 1);
@@ -200,7 +202,7 @@
   const PEND = []; let rolling = false, rollWait = 0;
   async function pumpRolls() {
     if (rolling || busy || saving || !PEND.length) return; rolling = true; const take = PEND.splice(0), m = {};
-    take.forEach(([pl, lk, n]) => { const k = pl + '|' + lk; (m[k] || (m[k] = { place: pl, luck: lk, n: 0 })).n += n; });
+    take.forEach(([pl, lk, n, dbl]) => { const k = pl + '|' + lk + '|' + dbl; (m[k] || (m[k] = { place: pl, luck: lk, dbl: dbl || 0, hauls: 0 })).hauls += n; });
     const r = await roll(Object.values(m).slice(0, 60)); rolling = false;
     if (r.err === 'down') { take.forEach(x => PEND.push(x)); rollWait = 15; return; } if (r.err) return;
     bump('finds', r.total); Object.keys(r.add).forEach(id => { const it = OS.items[id]; if (!it) return; bump('finds_' + it.rarity, r.add[id]); if (it.kind === 'gear') bump('gear_found', r.add[id]); });
@@ -508,9 +510,11 @@
     const row = el('div', 'row'); if (S.bag.x_crate > 0) row.appendChild(btn('', `Open another (${S.bag.x_crate} left)`, () => openCrate())); row.appendChild(btn('ghost', 'Into the bag', modal.close)); d.appendChild(row); modal.open(d); render();
   }
   function drink(id) { const t = R.tonics.find(x => x.id === id); if (!t || !(S.bag[id] > 0)) return; bump('tonics'); S.bag[id]--; S.tonics[t.effect] = Math.max(now(), S.tonics[t.effect] || 0) + t.minutes * 60000; save(true); render(); toast(`${t.name}: ${t.text}`); }
-  $('b-sell').onclick = () => { let room = Infinity, earned = 0;
-    Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot') return; while (S.bag[id] > (it.junk ? 0 : 1) && earned + it.sell <= room) { S.bag[id]--; earned += it.sell; } });
-    S.gold += earned; S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(earned ? `Sold the spares for ${earned} gold.` : false ? 'The market has had enough of you today.' : 'Nothing to sell. Junk all goes; one of each treasure is kept.'); };
+  $('b-sell').onclick = async () => { const map = {}; let earned = 0;
+    Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || id === 'x_shard') return; const n = S.bag[id] - (it.junk ? 0 : 1); if (n > 0) { map[id] = n; earned += n * it.sell; } });
+    if (!earned) return toast('Nothing to sell. Junk all goes; one of each treasure is kept.');
+    if (Cloud.dev) { Object.keys(map).forEach(id => S.bag[id] -= map[id]); S.gold += earned; } else { const r = await srv(() => Cloud.sell(map)); if (r.r !== 'ok') return toast(r.r); earned = r.earned; }
+    S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(`Sold the spares for ${earned} gold.`); };
 
   // ------------------------------------------------------------------ workshop
   const spare = rar => Object.keys(S.bag).filter(id => OS.items[id] && OS.items[id].kind === 'loot' && !OS.items[id].junk && OS.items[id].rarity === rar && id !== 'x_shard').reduce((a, id) => a + Math.max(0, S.bag[id] - 1), 0);
@@ -699,13 +703,13 @@
   function render() { renderTop(); renderers[current](); }
 
   // ------------------------------------------------------------------ the clock
-  (function offline() { const gone = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (gone > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(gone, true); toast(`While you were away (${fmt(gone)}): ${PEND.reduce((t, x) => t + x[2], 0)} finds and ${OS.num(Math.max(0, S.ink - ink0))} ink.`); } else tickMeters(); })();
+  (function offline() { const gone = Math.min((now() - S.last) / 1000, R.crew.offline_hours * 3600); if (gone > 60 && S.jobs.some(j => j)) { const ink0 = S.ink, got = advance(gone, true); toast(`While you were away (${fmt(gone)}): ${PEND.reduce((t, x) => t + x[2], 0)} hauls and ${OS.num(Math.max(0, S.ink - ink0))} ink.`); } else tickMeters(); })();
   let lastT = performance.now(), uiT = 0, slow = 0;
   function frame(t) {
     const dt = Math.min(2, (t - lastT) / 1000); lastT = t; bump('seconds', dt); const got = advance(dt, false);
     chatter(dt);
     if (jobsMoved) { jobsMoved = false; if (current === 'jobs' && !$('modal').classList.contains('on')) renderJobs(); }
-    rollWait -= dt; if (rollWait <= 0 && PEND.length) { rollWait = 1.5; pumpRolls(); }
+    rollWait -= dt; if (rollWait <= 0 && PEND.length) { rollWait = 0.7; pumpRolls(); }
     uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
       if (S.make && $('mk-bar')) { $('mk-bar').style.width = pct(S.make.t, S.make.need); $('mk-left').textContent = fmt(Math.max(0, S.make.need - S.make.t)); }
       if (current === 'jobs') S.exped.forEach((e, i) => { const left = (e.end - now()) / 1000, b = document.querySelector(`[data-ex="${i}"]`), tx = document.querySelector(`[data-exleft="${i}"]`); if (b) b.style.width = pct(e.dur - Math.max(0, left), e.dur); if (tx) { if (left > 0) tx.textContent = fmt(left); else if (!$('modal').classList.contains('on')) renderJobs(); } });

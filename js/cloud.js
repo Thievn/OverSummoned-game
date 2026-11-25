@@ -57,6 +57,8 @@ window.Cloud = (function () {
   // the server rolls loot and summons (local testing rolls in the game itself)
   C.roll = (list, cost) => rpc('os2_roll', { p_rolls: list, p_cost: cost || null });
   C.summon = n => rpc('os2_summon', { p_n: n });
+  C.sell = items => rpc('os2_sell', { p_items: items });
+  C.call = hero => rpc('os2_call', { p_hero: hero });
   C.boardSkill = sk => rpc('os2_board_skill', { p_skill: sk }, () => [{ username: 'Pemberton', xp: 1.4e7, rebirth: 1 }, { username: 'DevOtter', xp: 90000, rebirth: 0 }]);
   C.setProfile = async patch => DEV ? true : !(await sb.from('os2_profile').update(patch).eq('id', C.user.id)).error;
   C.signOut = async () => { if (!DEV) await sb.auth.signOut(); location.href = '/'; };
