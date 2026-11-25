@@ -166,6 +166,7 @@
       const frame = now => {
         if (this.dead) return;
         const dt = Math.min(0.05, (now - last) / 1000); last = now; f.advance(dt);
+        if (this._q) { const st = this.an.getState('act'); if (!st || st.isCompleted || !st.isPlaying) { const s2 = this.over('act', 1, 1); if (s2) s2.timeScale = this._q; this._q = 0; } }
         const w = this.host.clientWidth, h = this.host.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
         if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
@@ -179,7 +180,14 @@
       if (!this.an || !this.an.hasAnimation(name)) return null;
       const s = this.an.fadeIn(name, 0.06, times, layer, name); if (s) { s.resetToPose = false; s.autoFadeOutTime = 0.08; } return s;
     }
-    act() { return this.over('act', 1, 1); }
+    // One swing per press, however fast the presses come. A swing already under way is never restarted (that is what used to
+    // leave the arm stuck in the air); it is hurried along instead, and one more is queued behind it.
+    act() {
+      const now = performance.now(), gap = (now - (this._at || 0)) / 1000; this._at = now;
+      const st = this.an.getState('act'), len = st ? st.totalTime : 0.58, fast = gap < 0.7 ? Math.min(7, Math.max(1, len / Math.max(gap, 0.07))) : 1;
+      if (st && st.isPlaying && !st.isCompleted) { st.timeScale = Math.max(st.timeScale, fast); this._q = fast; return st; }
+      const s = this.over('act', 1, 1); if (s) s.timeScale = fast; return s;
+    }
     cheer(sec) { return this.over('cheer', Math.max(1, Math.round((sec || 2) * 2)), 2); }
     say(sec) { return this.over('talk', Math.max(1, Math.round((sec || 2) * 1.5)), 4); }
     destroy() { this.dead = true; cancelAnimationFrame(this.raf); clearTimeout(this.bt); clearTimeout(this.ft); if (this.cv) this.cv.remove(); if (this.p) this.p.dispose(); }

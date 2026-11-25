@@ -224,3 +224,15 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Every card now has its own stat spread: seeded by the hero's id (never changes between builds), no number repeated on a card, no two cards alike,
       archetype sets the shape, rarity sets the size (totals: common 48-53, uncommon 56-67, rare 73-78, epic 87-99, legendary 108-114, absurd 124-126, unhinged 159-164)
 - [x] Wave two and the new stats pushed live (main = fable)
+
+## Late 24 Nov — on the preview, waiting for Dean's go to push live
+- [x] True fact on all 36 cards (`rules/facts.py` + wave2)
+- [x] Rift treasure: 18 things from the neon decades (pocket pet egg, brick phone, boom box...), found in rift crates (40% of rolls) and brought home by wave-two heroes' expeditions (30%); they fill an Archive shelf in the cabinet
+- [x] Bigger idle on every hero: weight shift from the feet, visible breath, more head and prop movement
+- [x] Stamp arm no longer sticks in the air on fast typing: a swing is never restarted, it is sped up and one more is queued
+- [x] Stella redrawn from her other picture (the stray tail piece is gone); pencil cassette icon redrawn; both sunglasses icons redrawn
+## To-do (raised by Dean, not done)
+- [ ] Bella the flamingo looks like she has three feet: fix or redraw her picture
+- [ ] Watch the new idle and the fast stamping on a real phone; tune amounts
+- [ ] Animal repeats are fine from now on as long as each is clearly different (colouring, outfit)
+- [ ] Gear stats still follow a fixed pattern per slot

@@ -73,7 +73,7 @@ def grid(w, h, origin, NX, NY, weigh):
 
 
 # Soft secondary motion on the pin-up heroes: (centre x, centre y, radius) of the bust in the hero's picture.
-CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (140, 222, 32), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (238, 205, 22)}
+CHEST = {'cleocatra': (228, 240, 28), 'astrid': (205, 215, 30), 'bella': (140, 222, 32), 'lola': (272, 205, 28), 'troffea': (206, 240, 24), 'vesper': (190, 225, 24), 'roxy': (230, 215, 24), 'jazzmin': (195, 235, 24), 'stella': (215, 172, 22)}
 
 # Other soft spots on a hero's body picture that move without being cut out (so no seams, ever):
 # (bone name, centre x, centre y, radius x, radius y, kind).  kind: 'sway' rocks, 'bob' rides up and down.
@@ -239,6 +239,12 @@ def build(pose='stamp', hero=False):
         {'name': 'tail3', 'rotateFrame': wave(96, 6, lambda p: 11 * S(T * p - 1.8) + 3 * S(T * 2 * p - 0.6))},
         {'name': 'head', 'rotateFrame': wave(96, 8, lambda p: 1.6 * S(T * p + 0.5))},
     ]
+    M = 1.7 if hero else 1.0      # heroes stand on card backs and behind Smudge at a small size, so their idle has to read from a distance
+    if hero:
+        # a slow shift of weight from the feet, a visible breath, and a head that looks about
+        idle[3] = {'name': 'head', 'rotateFrame': wave(96, 6, lambda p: 3.4 * S(T * p + 0.5) + 1.1 * S(T * 2 * p))}
+        idle.append({'name': 'root', 'rotateFrame': wave(96, 8, lambda p: 1.3 * S(T * p)),
+                     'scaleFrame': wave(96, 6, lambda p: 1 + 0.016 * (0.5 - 0.5 * math.cos(T * 2 * p)), 'y')})
     if hero:
         act = (14, [{'name': 'head', 'rotateFrame': keys([(0, 0), (3, -2.5), (7, 3.5), (14, 0)])},
                     {'name': 'tail2', 'rotateFrame': keys([(0, 0), (5, 9), (10, -4), (14, 0)])},
@@ -282,15 +288,15 @@ def build(pose='stamp', hero=False):
     for n_, (sn, sx, sy, srx, sry, kind) in enumerate(soft):
         ph = n_ * 1.7
         if kind == 'bounce':
-            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p: 0.7 * S(T * 2 * p - 0.9), 'y')})
+            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p: 0.7 * M * S(T * 2 * p - 0.9), 'y')})
             act[1].append({'name': sn, 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (3, {'x': 0, 'y': -1.6}), (6, {'x': 0, 'y': 3.2}), (9, {'x': 0, 'y': -1.8}), (11, {'x': 0, 'y': 0.9}), (14, {'x': 0, 'y': 0})])})
             bounce.append({'name': sn, 'translateFrame': wave(12, 2, lambda p: 2.4 * S(T * p - 1.1), 'y')})
         elif kind == 'sway':
-            idle.append({'name': sn, 'rotateFrame': wave(96, 6, lambda p, ph=ph: 3.2 * S(T * p + ph) + 1.2 * S(T * 3 * p + ph))})
+            idle.append({'name': sn, 'rotateFrame': wave(96, 6, lambda p, ph=ph: M * (3.2 * S(T * p + ph) + 1.2 * S(T * 3 * p + ph)))})
             act[1].append({'name': sn, 'rotateFrame': keys([(0, 0), (4, -7), (8, 6), (11, -2), (14, 0)])})
             bounce.append({'name': sn, 'rotateFrame': wave(12, 2, lambda p, ph=ph: 7 * S(T * p + ph))})
         else:
-            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p, ph=ph: 1.6 * S(T * p + ph), 'y')})
+            idle.append({'name': sn, 'translateFrame': wave(96, 6, lambda p, ph=ph: 1.6 * M * S(T * p + ph), 'y')})
             act[1].append({'name': sn, 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (4, {'x': 0, 'y': -5}), (8, {'x': 0, 'y': 1.5}), (14, {'x': 0, 'y': 0})])})
             bounce.append({'name': sn, 'translateFrame': wave(12, 2, lambda p, ph=ph: 3 * S(T * p + ph), 'y')})
     names = {b['name'] for b in bones}
