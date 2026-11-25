@@ -82,7 +82,12 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Smudge stamp pose as a test: shared bone names, three-bone tail with a bending mesh, idle / stamp / cheer / blink / talk; test page at `/dbtest.html`
 - [x] Dean chose DragonBones (likes the tail). Keep the current rig's blink style and smaller mouth
 - [x] Stamp pose recut (`rules/smudge_stamp_cut.py`): white fringe peeled, head no longer takes the feather, arm cut from the shoulder with the cloak painted in behind, fist and stamp on a wrist joint so the stamp lands face-down
-- [ ] Same careful recut for Smudge's other poses (fish, pick, dig, sleep) and a white-fringe pass on every hero
+- [x] Fishing, lockpicking and digging recut (`rules/smudge_fish_cut.py`, `_pick_`, `_dig_`, shared helpers in `rules/cutlib.py`): hood no longer takes the feather, whole arms on the lockpick pose, shovel slides under both fists, legs and tails reach up under the body so no gaps open
+- [x] White-edge check: only the stamp pose had it. Other Smudge poses and spot-checked heroes are clean; heroes left untouched (auto-peel would eat blades, grey fur, white shirts)
+- [x] Version stamp on art and data links (`OS.VER` in `js/os.js`); bump it whenever art changes
+- [ ] Stamp pose leftovers: small dark nick at the shoulder, flat cloak patch behind the lowered arm
+- [ ] Build fishing, lockpicking and digging as DragonBones rigs (bending tail, shared bones); they run on the old rig for now
+- [ ] Copy the recut parts into the desktop pet (`desktop-fable/`)
 - [ ] Shared skeleton for Smudge's other poses and all 26 heroes (extra bones only where needed: wings, capes, weapons)
 - [ ] Swap the game and landing puppets over to the DragonBones player; shrink the player download (core is about 680 KB unminified; Pixi dropped for a small canvas renderer, `js/dbcanvas.js`)
 - [ ] Godot desktop pet: play the same files (add-on if one works on 4.3, otherwise a small player on Godot's built-in Skeleton2D)

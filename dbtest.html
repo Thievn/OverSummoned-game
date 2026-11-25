@@ -34,10 +34,18 @@
     <button class="btn" id="bTalk">Talk</button>
     <label><input type="checkbox" id="bBones"> Show bones</label>
   </div>
+  <h1 style="margin-top:1.2em">Other poses, recut</h1>
+  <p>Fishing, lockpicking and digging with the new cuts, on the current rig for now. Press Wiggle to swing every part and look for gaps.</p>
+  <div class="dbrow" style="grid-template-columns:repeat(3,1fr)">
+    <div class="dbstage" id="p_fish"><b>Fishing</b></div>
+    <div class="dbstage" id="p_pick"><b>Lockpicking</b></div>
+    <div class="dbstage" id="p_dig"><b>Digging</b></div>
+  </div>
+  <div class="dbbar"><button class="btn" id="bWig">Wiggle</button></div>
 </div>
-<script src="js/os.js?v=1124c"></script>
+<script src="js/os.js?v=1124d"></script>
 <script src="js/vendor/dragonBones.core.js"></script>
-<script src="js/dbcanvas.js?v=1124c"></script>
+<script src="js/dbcanvas.js?v=1124d"></script>
 <script>
 (async function () {
   const H = 420, S = 0.62, $ = id => document.getElementById(id);
@@ -75,6 +83,11 @@
   $('bCheer').onclick = () => { over('cheer', 8, 2); if (old) old.cheer(4); };
   $('bTalk').onclick = () => { over('talk', 4, 4); if (old) old.say(2.7); };
   $('bBones').onchange = e => { bones = e.target.checked; };
+  const others = [];
+  [['fish', 0.5, 0.7], ['pick', 0.47, 0.9], ['dig', 0.44, 0.9]].forEach(([pose, sc, fy]) => {
+    try { const h = $('p_' + pose), e = OS.rig[pose], pp = new OS.Puppet(h, pose, sc); pp.place(h.clientWidth / 2 - (e.size[0] / 2 - e.foot[0]) * sc, H * fy); others.push(pp); } catch (err) { console.error(err); }
+  });
+  $('bWig').onclick = () => others.forEach(pp => Object.keys(pp.parts).forEach((n, i) => pp.kick(n, (i % 2 ? -1 : 1) * (n === 'over' ? 0 : 5))));
 })();
 </script>
 </body>
