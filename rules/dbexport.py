@@ -38,7 +38,7 @@ def mat(deg, x, y):
 
 def wave(dur, step, fn, key='rotate'):
     """Sampled looping timeline: fn(phase 0..1) -> value."""
-    fr = [{'duration': step, 'tweenEasing': 0, key: r2(fn(f / dur))} for f in range(0, dur, step)]
+    fr = [{'duration': step, 'tweenEasing': 0, key: r2(fn(f / dur))} for f in range(0, dur, step) if f + step <= dur]
     fr.append({'duration': 0, key: r2(fn(0))})
     return fr
 
@@ -232,5 +232,111 @@ def build(pose='stamp'):
     print(f'{name}: {len(bones)} bones, {len(slots)} slots, tail {ang:.0f} deg x {L:.0f}px, atlas {W}x{H}')
 
 
+def build_sleep():
+    """The sleeping pose. The whole picture is one soft mesh with bones under the back, the snout and
+    the front paws, so the back rises as he breathes and he twitches now and then; the tail lies in
+    front on its own three bones; three Zs ride up and down one after another."""
+    pose = 'sleep'; name = 'smudge_sleep'
+    rig = json.load(open(os.path.join(ROOT, 'data', 'rig.json')))[pose]; foot = rig['foot']; D = rig['db']
+    A = lambda pt: (pt[0] - foot[0], pt[1] - foot[1]); TP = rig['parts'][0]
+    img = {'base': Image.open(os.path.join(SRC, 'sleep_base.png')).convert('RGBA'), 'tail': Image.open(os.path.join(SRC, 'sleep_tail.png')).convert('RGBA')}
+    def zed(sz):
+        s = 4; w = sz * s; e = Image.new('RGBA', (w + 8 * s, w + 8 * s), (0, 0, 0, 0)); d = ImageDraw.Draw(e); o = 4 * s; t = w * 0.24
+        pts = [(o, o), (o + w, o), (o + w, o + t * 0.9), (o + t * 1.25, o + w - t), (o + w, o + w - t), (o + w, o + w), (o, o + w), (o, o + w - t * 0.9), (o + w - t * 1.25, o + t), (o, o + t)]
+        d.polygon(pts, fill=(236, 240, 255, 255)); d.line(pts + [pts[0]], fill=(16, 22, 42, 255), width=2 * s, joint='curve')
+        return e.resize((sz + 8, sz + 8), Image.LANCZOS)
+    ZS = [16, 22, 30]
+    for i, sz in enumerate(ZS): img[f'z{i}'] = zed(sz)
+
+    order = sorted(img, key=lambda n: -img[n].size[1]); W = 1024; x = y = 2; rowh = 0; sub = []
+    for n in order:
+        w, h = img[n].size
+        if x + w + 2 > W: x = 2; y += rowh + 2; rowh = 0
+        sub.append({'name': n, 'x': x, 'y': y, 'width': w, 'height': h}); x += w + 2; rowh = max(rowh, h)
+    H = 1
+    while H < y + rowh + 2: H *= 2
+    atlas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    for s in sub: atlas.paste(img[s['name']], (s['x'], s['y']))
+
+    body = (0, -90)
+    bones = [{'name': 'root'}, {'name': 'body', 'parent': 'root', 'transform': {'x': 0, 'y': -90}}]
+    P = {}
+    for n in ('breath', 'nose', 'paw'):
+        P[n] = A(D[n]); bones.append({'name': n, 'parent': 'body', 'transform': {'x': r2(P[n][0] - body[0]), 'y': r2(P[n][1] - body[1])}})
+    tp = A(TP['pivot']); tl = (TP['pivot'][0] - TP['offset'][0], TP['pivot'][1] - TP['offset'][1])
+    (dx, dy), L = tail_axis(img['tail'], tl); ang = math.degrees(math.atan2(dy, dx)); seg = L / 3
+    bones.append({'name': 'tail1', 'parent': 'body', 'length': r2(seg), 'transform': {'x': r2(tp[0] - body[0]), 'y': r2(tp[1] - body[1]), 'skX': r2(ang), 'skY': r2(ang)}})
+    bones.append({'name': 'tail2', 'parent': 'tail1', 'length': r2(seg), 'transform': {'x': r2(seg)}})
+    bones.append({'name': 'tail3', 'parent': 'tail2', 'length': r2(seg), 'transform': {'x': r2(seg)}})
+    for i, zp in enumerate(D['zs']):
+        zx, zy = A(zp); bones.append({'name': f'z{i}', 'parent': 'root', 'transform': {'x': r2(zx), 'y': r2(zy)}})
+    idx = {b['name']: i for i, b in enumerate(bones)}
+
+    def grid(w, h, origin, NX, NY, weigh):
+        verts = []; uvs = []; weights = []; tris = []
+        for j in range(NY):
+            for i in range(NX):
+                px, py = w * i / (NX - 1), h * j / (NY - 1)
+                verts += [r2(origin[0] + px), r2(origin[1] + py)]; uvs += [round(px / w, 4), round(py / h, 4)]
+                ws = [(b, round(v, 3)) for b, v in weigh(px, py) if v > 0.001]
+                weights += [len(ws)] + [v for bw in ws for v in bw]
+        for j in range(NY - 1):
+            for i in range(NX - 1):
+                a = j * NX + i; tris += [a, a + 1, a + NX, a + 1, a + NX + 1, a + NX]
+        return verts, uvs, tris, weights
+    # body picture: weights fall off smoothly from each of the three little bones
+    bw, bh = img['base'].size
+    def wbody(px, py):
+        def near(c, rx, ry, floor=0.0):
+            v = math.exp(-(((px - c[0]) / rx) ** 2 + ((py - c[1]) / ry) ** 2) / 2); return max(0.0, (v - floor) / (1 - floor))
+        b = near(D['breath'], 95, 80, 0.15); n = near(D['nose'], 20, 18, 0.2); p = near(D['paw'], 26, 16, 0.2)
+        t = b + n + p
+        if t > 1: b, n, p = b / t, n / t, p / t
+        return [(idx['body'], 1 - (b + n + p)), (idx['breath'], b), (idx['nose'], n), (idx['paw'], p)]
+    v, u, t, w = grid(bw, bh, A((0, 0)), 20, 14, wbody)
+    bp = [idx['body'], 1, 0, 0, 1, body[0], body[1]]
+    for n in ('breath', 'nose', 'paw'): bp += [idx[n], 1, 0, 0, 1, r2(P[n][0]), r2(P[n][1])]
+    base_mesh = {'type': 'mesh', 'name': 'base', 'width': bw, 'height': bh, 'vertices': v, 'uvs': u, 'triangles': t, 'weights': w, 'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp}
+    tw, th = img['tail'].size
+    def wtail(px, py):
+        q = ((px - tl[0]) * dx + (py - tl[1]) * dy) / L * 3 - 0.5; q = max(0.0, min(2.0, q)); k = min(1, int(q)); f = q - k; f = f * f * (3 - 2 * f)
+        return [(idx[f'tail{k + 1}'], 1 - f), (idx[f'tail{k + 2}'], f)]
+    v, u, t, w = grid(tw, th, A(TP['offset']), 9, 5, wtail)
+    bp = []
+    for k in range(3): bp += [idx[f'tail{k + 1}']] + mat(ang, tp[0] + dx * seg * k, tp[1] + dy * seg * k)
+    tail_mesh = {'type': 'mesh', 'name': 'tail', 'width': tw, 'height': th, 'vertices': v, 'uvs': u, 'triangles': t, 'weights': w, 'slotPose': [1, 0, 0, 1, 0, 0], 'bonePose': bp}
+
+    slots = [{'name': 'base', 'parent': 'root'}, {'name': 'tail', 'parent': 'root'}] + [{'name': f'z{i}', 'parent': f'z{i}'} for i in range(3)]
+    skin = [{'name': 'base', 'display': [base_mesh]}, {'name': 'tail', 'display': [tail_mesh]}] + [{'name': f'z{i}', 'display': [{'name': f'z{i}'}]} for i in range(3)]
+
+    S = math.sin; T = 2 * math.pi; C = math.cos
+    idle = [
+        {'name': 'breath', 'translateFrame': wave(120, 6, lambda p: -3.6 * (0.5 - 0.5 * C(T * p)), 'y')},
+        {'name': 'tail2', 'rotateFrame': wave(120, 8, lambda p: 1.5 * S(T * p + 0.4))},
+        {'name': 'tail3', 'rotateFrame': wave(120, 6, lambda p: 4 * S(T * p) + 1.5 * S(T * 3 * p))},
+    ]
+    # the Zs: one wave passing along the three of them, like a caterpillar's back
+    for i in range(3):
+        idle.append({'name': f'z{i}', 'translateFrame': wave(120, 4, lambda p, i=i: (5 + 2 * i) * S(T * 2 * p - i * 1.25), 'y'),
+                     'rotateFrame': wave(120, 6, lambda p, i=i: 6 * S(T * 2 * p - i * 1.25 - 0.8))})
+    twitch = [{'name': 'nose', 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (2, {'x': -1.5, 'y': -2.5}), (4, {'x': 0.5, 'y': 0.5}), (6, {'x': -1, 'y': -1.5}), (10, {'x': 0, 'y': 0})])}]
+    act = [   # a dream: paws jerk, tail tip flicks, he settles
+        {'name': 'paw', 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (2, {'x': 3, 'y': -3}), (4, {'x': -1, 'y': 1}), (6, {'x': 2.5, 'y': -2}), (9, {'x': -0.5, 'y': 0.5}), (16, {'x': 0, 'y': 0})])},
+        {'name': 'nose', 'translateFrame': keys([(0, {'x': 0, 'y': 0}), (3, {'x': -1.5, 'y': -2}), (8, {'x': 0.5, 'y': 0.5}), (16, {'x': 0, 'y': 0})])},
+        {'name': 'tail3', 'rotateFrame': keys([(0, 0), (3, 13), (6, -6), (9, 8), (16, 0)])},
+        {'name': 'tail2', 'rotateFrame': keys([(0, 0), (4, 5), (8, -2), (16, 0)])}]
+    cheer = [{'name': 'tail3', 'rotateFrame': wave(24, 3, lambda p: 9 * S(T * p))}, {'name': 'tail2', 'rotateFrame': wave(24, 3, lambda p: 4 * S(T * p - 0.8))}]
+    anims = [{'duration': 120, 'playTimes': 0, 'name': 'idle', 'bone': idle}, {'duration': 16, 'playTimes': 1, 'name': 'act', 'bone': act},
+             {'duration': 10, 'playTimes': 1, 'name': 'twitch', 'bone': twitch}, {'duration': 24, 'playTimes': 0, 'name': 'cheer', 'bone': cheer}]
+    ske = {'frameRate': FPS, 'name': name, 'version': '5.5', 'compatibleVersion': '5.5', 'armature': [{
+        'type': 'Armature', 'frameRate': FPS, 'name': pose, 'aabb': {'x': -foot[0], 'y': -foot[1], 'width': bw, 'height': bh},
+        'bone': bones, 'slot': slots, 'skin': [{'name': '', 'slot': skin}], 'animation': anims, 'defaultActions': [{'gotoAndPlay': 'idle'}]}]}
+    tex = {'name': name, 'imagePath': f'{name}_tex.png', 'width': W, 'height': H, 'SubTexture': sub}
+    json.dump(ske, open(os.path.join(OUT, f'{name}_ske.json'), 'w'), separators=(',', ':'))
+    json.dump(tex, open(os.path.join(OUT, f'{name}_tex.json'), 'w'), separators=(',', ':'))
+    atlas.save(os.path.join(OUT, f'{name}_tex.webp'), quality=92, method=6)
+    print(f'{name}: {len(bones)} bones, {len(slots)} slots, tail {ang:.0f} deg x {L:.0f}px, atlas {W}x{H}')
+
+
 if __name__ == '__main__':
-    for pose in (sys.argv[1:] or ['stamp', 'fish', 'pick', 'dig']): build(pose)
+    for pose in (sys.argv[1:] or ['stamp', 'fish', 'pick', 'dig', 'sleep']): build_sleep() if pose == 'sleep' else build(pose)

@@ -1,0 +1,1 @@
+{"name":"smudge_sleep","imagePath":"smudge_sleep_tex.png","width":1024,"height":512,"SubTexture":[{"name":"base","x":2,"y":2,"width":570,"height":381},{"name":"tail","x":574,"y":2,"width":249,"height":105},{"name":"z2","x":825,"y":2,"width":38,"height":38},{"name":"z1","x":865,"y":2,"width":30,"height":30},{"name":"z0","x":897,"y":2,"width":24,"height":24}]}

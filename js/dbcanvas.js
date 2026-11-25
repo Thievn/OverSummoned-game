@@ -152,6 +152,9 @@
       this.p = f.build(this.pose, 'smudge_' + this.pose); this.an = this.p.animation; this.an.play('idle', 0);
       const cv = this.cv = document.createElement('canvas'), ctx = cv.getContext('2d'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none'; this.host.appendChild(cv);
       const blink = () => { if (this.dead) return; this.over('blink', 1, 3); this.bt = setTimeout(blink, 2200 + Math.random() * 3300); }; blink();
+      // little fidgets some poses have (a sleeping snout twitch, now and then a dream)
+      const fidget = () => { if (this.dead) return; if (Math.random() < 0.22) this.over('act', 1, 1); else this.over('twitch', 1, 5); this.ft = setTimeout(fidget, 3500 + Math.random() * 5500); };
+      if (this.an.hasAnimation('twitch')) this.ft = setTimeout(fidget, 2500);
       let last = performance.now();
       const frame = now => {
         if (this.dead) return;
@@ -172,7 +175,7 @@
     act() { return this.over('act', 1, 1); }
     cheer(sec) { return this.over('cheer', Math.max(1, Math.round((sec || 2) * 2)), 2); }
     say(sec) { return this.over('talk', Math.max(1, Math.round((sec || 2) * 1.5)), 4); }
-    destroy() { this.dead = true; cancelAnimationFrame(this.raf); clearTimeout(this.bt); if (this.cv) this.cv.remove(); if (this.p) this.p.dispose(); }
+    destroy() { this.dead = true; cancelAnimationFrame(this.raf); clearTimeout(this.bt); clearTimeout(this.ft); if (this.cv) this.cv.remove(); if (this.p) this.p.dispose(); }
   }
 
   window.DBCanvas = { Factory, draw, Puppet };

@@ -95,6 +95,25 @@ def cut_behind(a, base, pts, overlap=None, keep_cloak=True, soften=None, thin=Fa
     return piece
 
 
+def cut_front(a, base, pts, fill=10, fur_only=True):
+    """A part lying on top of the body (a tail curled in front). Cloak stays on the body. The body is
+    painted a little way in under the part's edge so no slit opens when it lifts; the rest is cleared."""
+    teal, cloak, dark = colours(a); alpha = a[..., 3] > 0; rgb = a[..., :3].astype(np.int16)
+    m = poly(a, pts) & alpha & ~cloak
+    if fur_only:
+        fur = m & (rgb[..., 0] > rgb[..., 2] + 18) & (rgb[..., 0] >= rgb[..., 1])
+        fur = biggest(ndimage.binary_opening(fur, iterations=1))
+        m = ndimage.binary_fill_holes(fur | (ndimage.binary_dilation(fur, iterations=7) & m & dark))
+    m |= ndimage.binary_dilation(m, iterations=7) & alpha & dark & ndimage.binary_dilation(~alpha, iterations=8) & ndimage.binary_dilation(poly(a, pts), iterations=6)
+    piece = a.copy(); piece[~m] = 0
+    base[..., 3][m] = 0
+    known = base[..., 3] > 200
+    band = ndimage.binary_dilation(known, iterations=fill) & m
+    painted = cv2.inpaint(np.ascontiguousarray(base[..., :3]), (~known).astype(np.uint8) * 255, 4, cv2.INPAINT_TELEA)
+    base[..., :3][band] = painted[band]; base[..., 3][band] = 255
+    return piece
+
+
 def crumbs(base, least=300):
     lab, n = ndimage.label(base[..., 3] > 0)
     if n > 1:
