@@ -272,6 +272,10 @@
   "crew_luck_div": 150,
   "solo_mult": 3.0
  },
+ "rift": {
+  "crate_chance": 0.4,
+  "exped_chance": 0.3
+ },
  "exped": {
   "slots": [
    0,
@@ -1328,7 +1332,8 @@
    "species": "Sloth",
    "rarity": "common",
    "bio": "Kevin has been 'circling back' on the same email since March. He was summoned mid-sip and has not put the mug down since. Nobody at his office has noticed he is gone.",
-   "fact": "",
+   "fact": "Sloths move so little that algae grows in their fur and turns them slightly green.",
+   "rift": 0,
    "lines": [
     "Kevin from the office! He brought his coffee!",
     "Kevin. From accounting. Somehow still on break.",
@@ -1357,7 +1362,8 @@
    "species": "Greyhound",
    "rarity": "common",
    "bio": "Marco has delivered through rain, snow, and one small tornado. He was pulled through the rift mid-wheelie and still asked who ordered the pad thai.",
-   "fact": "",
+   "fact": "A greyhound can reach around 70 kilometres an hour within a few strides.",
+   "rift": 0,
    "lines": [
     "A delivery rider! Did he bring snacks?",
     "Marco. Delivers anything, anywhere. Even across time, apparently.",
@@ -1386,7 +1392,8 @@
    "species": "Golden Retriever",
    "rarity": "uncommon",
    "bio": "Maya has seen everything and is still nice about it. She arrived with a full trauma kit and immediately started checking everyone's pulse, including the book's.",
-   "fact": "",
+   "fact": "Golden retrievers were bred in Scotland in the 1800s to fetch shot birds out of the water.",
+   "rift": 0,
    "lines": [
     "A paramedic! We're safe now!",
     "Maya. Paramedic. Finally someone useful.",
@@ -1415,7 +1422,8 @@
    "species": "Badger",
    "rarity": "uncommon",
    "bio": "Brokk hunted mammoth with a stick and bad eyesight. He considers the wheel a fad. He has discovered central heating and will not be leaving.",
-   "fact": "",
+   "fact": "Badger families dig setts that can stay in use for generations.",
+   "rift": 0,
    "lines": [
     "A big strong hunter from the Ice Age!",
     "Brokk. From the Ice Age. He's going to hate the thermostat.",
@@ -1444,7 +1452,8 @@
    "species": "Bulldog",
    "rarity": "rare",
    "bio": "Twenty years in the Ninth Legion and all he got was a bad knee and strong opinions about road quality. Marches everywhere. Even to the fridge.",
-   "fact": "",
+   "fact": "Bulldogs were bred for bull-baiting, which England banned in 1835.",
+   "rift": 0,
    "lines": [
     "A Roman soldier! So shiny!",
     "Gaius. Legionary. Has opinions about marching.",
@@ -1473,7 +1482,8 @@
    "species": "Beaver",
    "rarity": "rare",
    "bio": "Edith built three bridges before breakfast and was told each time that a gentleman must have helped. She keeps a list of those gentlemen. The list is laminated now.",
-   "fact": "",
+   "fact": "A beaver's front teeth never stop growing, and they are orange because of the iron in them.",
+   "rift": 0,
    "lines": [
     "An engineer! She can fix the ledger!",
     "Edith. Victorian engineer. Already judging our wiring.",
@@ -1502,7 +1512,8 @@
    "species": "Crow",
    "rarity": "rare",
    "bio": "His cure for everything is leeches, and his cure for leeches is more leeches. Somehow his patients keep improving, mostly out of spite.",
-   "fact": "",
+   "fact": "Crows can recognise individual human faces and hold a grudge for years.",
+   "rift": 0,
    "lines": [
     "A doctor with a bird mask! Spooky but cool!",
     "A plague doctor. Wash your hands. Seriously.",
@@ -1531,7 +1542,8 @@
    "species": "Weasel",
    "rarity": "epic",
    "bio": "Runs a perfectly legitimate olive oil business that has never sold a single olive. Extremely polite. That is the scary part.",
-   "fact": "",
+   "fact": "The least weasel is the smallest meat-eating mammal in the world.",
+   "rift": 0,
    "lines": [
     "A fancy man in a nice suit!",
     "Vincenzo Moretti. Don't ask what he does. Don't.",
@@ -1560,7 +1572,8 @@
    "species": "Peacock",
    "rarity": "legendary",
    "bio": "Four-time winner of awards he gave himself. One slap away from greatness at all times. Does his own stunts, then describes them to you for an hour.",
-   "fact": "",
+   "fact": "Only the males are peacocks. The females are peahens, and together they are peafowl.",
+   "rift": 0,
    "lines": [
     "A movie star! Can I have an autograph?",
     "Will Slapton. Leading man. Bigger ego than the book.",
@@ -1589,7 +1602,8 @@
    "species": "Corgi",
    "rarity": "epic",
    "bio": "Conquered most of Europe and still cannot reach the top shelf. Will invade any country that mentions it. Do not bring up Russia, winter, or stepladders.",
-   "fact": "",
+   "fact": "Corgis were bred to herd cattle by nipping at their heels.",
+   "rift": 0,
    "lines": [
     "A tiny emperor! Look at his little hat!",
     "Napoleon. Conquered Europe. Defeated by a kitchen counter.",
@@ -1618,7 +1632,8 @@
    "species": "Egyptian Cat",
    "rarity": "legendary",
    "bio": "Ruler of Egypt, seducer of empires, knocker of priceless vases off tables. Has not walked anywhere in years. Expects to be carried and will stare at you until it happens.",
-   "fact": "",
+   "fact": "Ancient Egyptians mummified cats in huge numbers.",
+   "rift": 0,
    "lines": [
     "A queen! A real queen! Should I bow?",
     "Cleocatra. She's already decided you work for her.",
@@ -1647,7 +1662,8 @@
    "species": "Black Bear",
    "rarity": "epic",
    "bio": "The most feared captain on the seven seas, with smoking fuses in his beard and a ship full of stolen rum. Terrified of seagulls. The crew has agreed never to discuss it.",
-   "fact": "",
+   "fact": "Black bears are not always black. Some are brown, cinnamon, blond or even white.",
+   "rift": 0,
    "lines": [
     "A pirate captain! With a real beard!",
     "Captain Blackbear. Scourge of the seas. Scared of birds.",
@@ -1676,7 +1692,8 @@
    "species": "Wolf",
    "rarity": "rare",
    "bio": "Raided six kingdoms before she was twenty and was bored by five of them. Undefeated in battle. Has been looking for a comfortable chair for eleven hundred years.",
-   "fact": "",
+   "fact": "A wolf's howl can carry for several kilometres.",
+   "rift": 0,
    "lines": [
     "A wolf warrior! She's so strong!",
     "Astrid. Shield-maiden. Could bench-press the book.",
@@ -1705,7 +1722,8 @@
    "species": "Shiba Inu",
    "rarity": "rare",
    "bio": "A masterless samurai bound by honor, discipline, and a ferocious loyalty to whoever is currently holding a rice ball. Sits when told. Does not roll over. He has standards.",
-   "fact": "",
+   "fact": "The Shiba Inu is one of Japan's oldest dog breeds, and it nearly died out in the 1940s.",
+   "rift": 0,
    "lines": [
     "A samurai puppy! Such a serious face!",
     "Kenji. Ronin. Loyal to no master. Loyal to all snacks.",
@@ -1734,7 +1752,8 @@
    "species": "Emu",
    "rarity": "absurd",
    "bio": "In 1932 the Australian army went to war against emus with machine guns. The army lost. This is him. He has never lost a war and he would like you to know that.",
-   "fact": "",
+   "fact": "In 1932 Australia sent soldiers with machine guns to deal with emus. The emus won.",
+   "rift": 0,
    "lines": [
     "A big bird general! He looks so proud!",
     "General Emu. Beat an actual army. With his legs.",
@@ -1763,7 +1782,8 @@
    "species": "Hare",
    "rarity": "uncommon",
    "bio": "One July morning in 1518 she stepped into the street and started dancing. Four hundred people joined in. Nobody knows why. She is still going, and she is not tired.",
-   "fact": "",
+   "fact": "Hares are born with fur and open eyes, ready to run. Rabbits are born bald and blind.",
+   "rift": 0,
    "lines": [
     "She's dancing! She's so good at dancing!",
     "Frau Troffea. Started dancing in 1518. Hasn't stopped. Don't make eye contact.",
@@ -1792,7 +1812,8 @@
    "species": "Hamster",
    "rarity": "uncommon",
    "bio": "At the peak of tulip mania Joost traded his house, his boat and two cows for a single bulb. The market crashed on a Tuesday. He ate the bulb on Wednesday. Still bullish.",
-   "fact": "",
+   "fact": "A hamster's cheek pouches stretch all the way back to its shoulders.",
+   "rift": 0,
    "lines": [
     "He has a flower! He really loves his flower!",
     "Joost. Traded his house for a tulip. It's a long story. It's a sad story.",
@@ -1821,7 +1842,8 @@
    "species": "Lemming",
    "rarity": "common",
    "bio": "Chad got in early on nine different coins and out early on none. He calls every cliff a dip. He is not giving financial advice, but he is giving it loudly.",
-   "fact": "",
+   "fact": "Lemmings do not march off cliffs together. That one is a myth.",
+   "rift": 0,
    "lines": [
     "He says we're all going to the moon! Fun!",
     "Chad. Lost everything twice. Calls it 'building'.",
@@ -1850,7 +1872,8 @@
    "species": "Flamingo",
    "rarity": "rare",
    "bio": "Four million followers, three brand deals, one leg. Bella has been holding the same pose since 2019 and no longer remembers what the other foot was for. Link in bio.",
-   "fact": "",
+   "fact": "Flamingos hatch grey. The pink comes from what they eat.",
+   "rift": 0,
    "lines": [
     "She's so glamorous! And so pink!",
     "Bella. Four million followers. Zero idea where she is right now.",
@@ -1879,7 +1902,8 @@
    "species": "Alligator",
    "rarity": "absurd",
    "bio": "Arrested for wrestling himself in a gas station car park. Released because nobody could work out which one of him started it. Every headline you have ever read. All him.",
-   "fact": "",
+   "fact": "The temperature of the nest decides whether alligator eggs hatch male or female.",
+   "rift": 0,
    "lines": [
     "A big smiley alligator! With muscles!",
     "Florida Man. Yes, that one. All of them, actually.",
@@ -1908,7 +1932,8 @@
    "species": "Fox",
    "rarity": "epic",
    "bio": "The brightest star of the Paris cabaret. Gentlemen came from across Europe to watch her dance, and went home without their watches, wallets, and in one case a small yacht.",
-   "fact": "",
+   "fact": "A fox can hear a mouse moving under deep snow, and pounces on it from above.",
+   "rift": 0,
    "lines": [
     "A dancer! With feathers! So fancy!",
     "Lola Vixen. Steals hearts. And, separately, wallets.",
@@ -1937,7 +1962,8 @@
    "species": "Moth",
    "rarity": "rare",
    "bio": "Dark, brooding, mistress of forbidden arts. Lives alone in a cottage of bones and candle smoke. Completely unable to resist a lamp. It has ruined several curses.",
-   "fact": "",
+   "fact": "There are roughly ten times as many kinds of moth as there are butterflies.",
+   "rift": 0,
    "lines": [
     "A witch! A pretty moth witch!",
     "Morwenna. Very dark. Very mysterious. Keeps flying into the lantern.",
@@ -1966,7 +1992,8 @@
    "species": "Raccoon",
    "rarity": "rare",
    "bio": "The finest thief in Venice. Has robbed the Doge three times and returned twice to rinse the loot in the canal. Leaves no fingerprints. Leaves everything slightly damp.",
-   "fact": "",
+   "fact": "A raccoon's front paws are so sensitive it can tell what something is by touch alone.",
+   "rift": 0,
    "lines": [
     "A sneaky raccoon! Look at his little mask!",
     "Sable. Master thief. Washes everything he steals. Everything.",
@@ -1995,7 +2022,8 @@
    "species": "Kangaroo",
    "rarity": "uncommon",
    "bio": "Has pulled three hundred swimmers out of the surf and reminded every single one about sunscreen. Never skips leg day. Has never needed to.",
-   "fact": "",
+   "fact": "Kangaroos can barely move backwards. Their tail and big feet get in the way.",
+   "rift": 0,
    "lines": [
     "A lifeguard! He'll keep us safe!",
     "Jacko. Lifeguard. Abs you could grate cheese on.",
@@ -2024,7 +2052,8 @@
    "species": "Borzoi",
    "rarity": "unhinged",
    "bio": "They poisoned his cakes. He asked for seconds. They shot him, twice. He complimented the aim. They threw him in a frozen river and he was seen the next morning ordering brunch. Nobody has tried since. It seems rude.",
-   "fact": "",
+   "fact": "The borzoi was bred by Russian nobles to hunt wolves.",
+   "rift": 0,
    "lines": [
     "A very tall dog with very intense eyes! Hello!",
     "Raspawtin. Poisoned, shot, drowned. Still here. Deeply annoying.",
@@ -2053,7 +2082,8 @@
    "species": "Ram",
    "rarity": "unhinged",
    "bio": "Went to the Second World War carrying a longbow, a broadsword and a set of bagpipes, and used all three. When the war ended he was reportedly furious. Says any officer who goes into action without his sword is improperly dressed.",
-   "fact": "",
+   "fact": "Bighorn rams crash heads at around 30 kilometres an hour, and do it again.",
+   "rift": 0,
    "lines": [
     "A soldier with bagpipes! And a sword! And a bow!",
     "Mad Jack. Brought a sword to a tank fight. Won.",
@@ -2083,6 +2113,7 @@
    "rarity": "epic",
    "bio": "She has not smiled since 1979 and considers that a personal best. Knows every doorman in Soho, owns eleven black dresses that are all different, and will dance only if nobody is watching.",
    "fact": "Bats are the only mammals that can truly fly. Everything else is gliding.",
+   "rift": 1,
    "lines": [
     "She looks sad! Shall we give her a biscuit?",
     "Vesper Nightshade. Finds your enthusiasm exhausting.",
@@ -2112,6 +2143,7 @@
    "rarity": "rare",
    "bio": "Bass player in a band that has had four names and two gigs. The stripe is natural, the attitude is practised, and the amplifier is technically borrowed.",
    "fact": "A skunk can hit a target about three metres away, and warns you first by stamping its feet.",
+   "rift": 1,
    "lines": [
     "Her hair is so tall! And stripy!",
     "Roxy Riot. Plays bass badly, loudly, and on purpose.",
@@ -2141,6 +2173,7 @@
    "rarity": "uncommon",
    "bio": "Host of a morning workout show watched by nine million people, six of whom exercise. Has never been tired, sad or still. Doctors would like to study her.",
    "fact": "Poodles were bred as water retrievers. The famous haircut was to keep joints warm in cold water.",
+   "rift": 1,
    "lines": [
     "She's so bouncy! And five, six, seven, eight!",
     "Jazzmin Sweat. Will make you do one more. Then one more.",
@@ -2170,6 +2203,7 @@
    "rarity": "legendary",
    "bio": "Star of forty-one Saturday serials, each ending with her about to be eaten, melted or married to a Martian. She escaped every time, usually by flipping a switch marked ESCAPE.",
    "fact": "Snow leopards cannot roar. They chuff, growl and yowl instead.",
+   "rift": 1,
    "lines": [
     "A space lady! Her hat is a fishbowl!",
     "Captain Stella Comet. Saves the galaxy weekly. Matinee at two.",
@@ -2199,6 +2233,7 @@
    "rarity": "common",
    "bio": "Holds the high score on every cabinet in the arcade, including the broken one. Lives on vending machine crisps. Her initials are PAM and you will never get rid of them.",
    "fact": "The red panda was called a panda about forty years before the giant panda got the name.",
+   "rift": 1,
    "lines": [
     "She is very good at the beepy games!",
     "Pixel Pam. Has one more quarter than you, always.",
@@ -2228,6 +2263,7 @@
    "rarity": "absurd",
    "bio": "Came with a sword, a shield and a mail-in offer. Rules everything he can see, which without his glasses is about four feet. Shouts his own name before doing anything, including sitting down.",
    "fact": "A bison weighs close to a tonne and can still run at about 55 kilometres an hour.",
+   "rift": 1,
    "lines": [
     "He is VERY big and VERY shouty!",
     "Gorm the Mighty. By the power of whatever is nearest.",
@@ -2257,6 +2293,7 @@
    "rarity": "rare",
    "bio": "Spent thirty years watching other birds do it. Then he found a rocket, two straps and a helmet, and has not been seen below two hundred feet since. Landing remains a work in progress.",
    "fact": "Emperor penguins can dive deeper than 500 metres and hold their breath for over twenty minutes.",
+   "rift": 1,
    "lines": [
     "A flying penguin! He did it! Hooray!",
     "Commander Flap. Up is easy. Down is where the paperwork starts.",
@@ -2286,6 +2323,7 @@
    "rarity": "epic",
    "bio": "Retired nine times. Each time somebody kidnapped a relative, a president or his boat. Carries a weapon nobody could lift and a one-liner for every occasion, most of them about the weather.",
    "fact": "A rhino's horn is made of keratin, the same stuff as your fingernails.",
+   "rift": 1,
    "lines": [
     "He has a headband! He must be sporty!",
     "Sgt. Max Carnage. Came out of retirement for this. Again.",
@@ -2315,6 +2353,7 @@
    "rarity": "uncommon",
    "bio": "Frontman of a band whose biggest hit is a ballad about his own hair. Uses more hairspray in a week than a small town. Has been on a farewell tour since the second album.",
    "fact": "The Afghan hound is a sighthound: it hunts by spotting prey and outrunning it, not by scent.",
+   "rift": 1,
    "lines": [
     "His hair is so shiny! Like a pony!",
     "Rex Sizzle. Three octaves, two chords, one mirror.",
@@ -2344,6 +2383,7 @@
    "rarity": "legendary",
    "bio": "Undefeated in nine hundred bouts and has never once removed the mask, including at his own wedding. Fights crime on weekdays, wrestles on Sundays, and sleeps in a fish tank.",
    "fact": "An axolotl can regrow a lost limb, and keeps its feathery baby gills for its whole life.",
+   "rift": 1,
    "lines": [
     "A shiny wrestling man! With frilly ears!",
     "El Ajolote Dorado. The mask stays on. Do not ask.",
@@ -2374,7 +2414,80 @@
    "level": 1,
    "tier": 0,
    "blurb": "A cellar of unread books and one that reads back. Every name Smudge stamps pulls a stranger out of history.",
-   "loot": []
+   "loot": [
+    [
+     "archive_1",
+     20
+    ],
+    [
+     "archive_2",
+     20
+    ],
+    [
+     "archive_3",
+     20
+    ],
+    [
+     "archive_4",
+     20
+    ],
+    [
+     "archive_5",
+     20
+    ],
+    [
+     "archive_6",
+     20
+    ],
+    [
+     "archive_7",
+     9
+    ],
+    [
+     "archive_8",
+     9
+    ],
+    [
+     "archive_9",
+     9
+    ],
+    [
+     "archive_10",
+     9
+    ],
+    [
+     "archive_11",
+     9
+    ],
+    [
+     "archive_12",
+     4
+    ],
+    [
+     "archive_13",
+     4
+    ],
+    [
+     "archive_14",
+     4
+    ],
+    [
+     "archive_15",
+     4
+    ],
+    [
+     "archive_16",
+     1
+    ],
+    [
+     "archive_17",
+     1
+    ],
+    [
+     "archive_18",
+     1
+    ]
+   ]
   },
   {
    "id": "dock",
@@ -9479,6 +9592,186 @@
    },
    "place": "dock",
    "sell": 15
+  },
+  "archive_1": {
+   "id": "archive_1",
+   "name": "Slap Bracelet",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_1",
+   "flavor": "Banned in four schools. Worn in all of them.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_2": {
+   "id": "archive_2",
+   "name": "Pencil-Wound Cassette",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_2",
+   "flavor": "The pencil is part of the format.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_3": {
+   "id": "archive_3",
+   "name": "Floppy Disk",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_3",
+   "flavor": "Holds one photograph. Of nothing.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_4": {
+   "id": "archive_4",
+   "name": "Jelly Sandals",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_4",
+   "flavor": "Blisters, but fashionable.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_5": {
+   "id": "archive_5",
+   "name": "Grape Scented Marker",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_5",
+   "flavor": "Smells like grape. Do not check the taste.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_6": {
+   "id": "archive_6",
+   "name": "Rental Tape (Not Rewound)",
+   "kind": "loot",
+   "rarity": "common",
+   "icon": "archive_6",
+   "flavor": "Be kind. Somebody was not.",
+   "place": "archive",
+   "sell": 4
+  },
+  "archive_7": {
+   "id": "archive_7",
+   "name": "Pocket Pet Egg",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "archive_7",
+   "flavor": "It is hungry. It is always hungry.",
+   "place": "archive",
+   "sell": 10
+  },
+  "archive_8": {
+   "id": "archive_8",
+   "name": "Pager",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "archive_8",
+   "flavor": "Somebody needs you. No idea who.",
+   "place": "archive",
+   "sell": 10
+  },
+  "archive_9": {
+   "id": "archive_9",
+   "name": "Cube Puzzle",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "archive_9",
+   "flavor": "Solved once, by peeling the stickers.",
+   "place": "archive",
+   "sell": 10
+  },
+  "archive_10": {
+   "id": "archive_10",
+   "name": "Roller Skates",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "archive_10",
+   "flavor": "Stopping is sold separately.",
+   "place": "archive",
+   "sell": 10
+  },
+  "archive_11": {
+   "id": "archive_11",
+   "name": "Boom Box",
+   "kind": "loot",
+   "rarity": "uncommon",
+   "icon": "archive_11",
+   "flavor": "Needs eight batteries. Lasts one song.",
+   "place": "archive",
+   "sell": 10
+  },
+  "archive_12": {
+   "id": "archive_12",
+   "name": "Light-Up Yo-Yo",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "archive_12",
+   "flavor": "Walks the dog. The dog does not come back.",
+   "place": "archive",
+   "sell": 24
+  },
+  "archive_13": {
+   "id": "archive_13",
+   "name": "Brick Phone",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "archive_13",
+   "flavor": "Weighs two pounds. The battery lasts one sentence.",
+   "place": "archive",
+   "sell": 24
+  },
+  "archive_14": {
+   "id": "archive_14",
+   "name": "Portable Disc Player (Skips)",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "archive_14",
+   "flavor": "Skips if you breathe near it.",
+   "place": "archive",
+   "sell": 24
+  },
+  "archive_15": {
+   "id": "archive_15",
+   "name": "Virtual Visor",
+   "kind": "loot",
+   "rarity": "rare",
+   "icon": "archive_15",
+   "flavor": "The future. It gives you a headache.",
+   "place": "archive",
+   "sell": 24
+  },
+  "archive_16": {
+   "id": "archive_16",
+   "name": "Hoverboard (Does Not Hover)",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "archive_16",
+   "flavor": "Works on everything except the ground.",
+   "place": "archive",
+   "sell": 60
+  },
+  "archive_17": {
+   "id": "archive_17",
+   "name": "Screaming Modem",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "archive_17",
+   "flavor": "It is not broken. That is what connecting sounds like.",
+   "place": "archive",
+   "sell": 60
+  },
+  "archive_18": {
+   "id": "archive_18",
+   "name": "Gold Game Cartridge",
+   "kind": "loot",
+   "rarity": "epic",
+   "icon": "archive_18",
+   "flavor": "They only made a few. This one was down the back of a sofa.",
+   "place": "archive",
+   "sell": 60
   },
   "bath_carp": {
    "id": "bath_carp",

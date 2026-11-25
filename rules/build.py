@@ -63,12 +63,14 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           cleocatra="egypt", blackbear="caribbean", astrid="norway", kenji="japan", emu="outback", troffea="medieval", joost="amsterdam", chad="office", bella="beach", florida="beach",
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 import wave2 as _w2
+from facts import FACTS
 BG.update(_w2.BG)
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15,
           # Smudge does the work, one place at a time; up to three heroes stand behind him as crew
           "crew_slots": [0, 15, 45], "crew_speed_div": 150, "crew_luck_div": 150, "solo_mult": 3.0},
     # everybody else can be sent home to their own era for a while and comes back with whatever they found
+    rift={"crate_chance": 0.4, "exped_chance": 0.3},
     exped={"slots": [0, 0, 30, 80, 150], "hours": [1, 4, 8], "rolls_per_hour": 7, "ink_per_hour": 260, "mastery_per_hour": 30},
     # making skills: turn what comes up into something a card can use
     making={"skills": ["Cooking", "Tinkering", "Restoring"], "recipes": [
@@ -153,7 +155,7 @@ for h in HEROES:
         items[iid] = it
         gear_ids.append(iid)
     heroes.append(dict(id=h["id"], name=h["name"], title=h["title"], era=h["era"], species=h["species"], rarity=h["rarity"],
-                       bio=h["bio"], fact=h.get("fact", ""), lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
+                       bio=h["bio"], fact=h.get("fact") or FACTS.get(h["id"], ""), rift=1 if h["id"] in _w2.BG else 0, lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
                        gear=gear_ids, place=h["place"]))
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)

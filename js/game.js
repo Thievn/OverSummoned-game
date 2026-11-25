@@ -6,6 +6,8 @@
   const MODES = ['sweet', 'salty', 'unhinged'], RAR = R.rarities, rr = r => RAR.indexOf(r);
   const places = {}; R.places.forEach(p => places[p.id] = p);
   const workPlaces = R.places.filter(p => p.skill !== 'Summoning');
+  // the rift's own treasure (the neon decades): turns up in rift crates and comes home with the later arrivals
+  const RIFT = R.rift && R.places.find(p => p.id === 'archive' && p.loot.length);
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
     energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, crew: [null, null, null], exped: [], parts: 0, make: null, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
@@ -324,7 +326,7 @@
   }
   function haul(e, frac) {
     const h = OS.heroes[e.hero], p = places[h.place], hrs = e.dur / 3600 * frac, st = heroStats(e.hero), luck = st.luck / R.jobs.luck_div + fx(e.hero, 'luck'), got = [];
-    const n = Math.max(frac >= 1 ? 1 : 0, Math.round(hrs * R.exped.rolls_per_hour * (1 + st.speed / 200))); for (let i = 0; i < n; i++) { const id = rollLoot(p, luck); give(id); got.push(id); bump('finds'); }
+    const n = Math.max(frac >= 1 ? 1 : 0, Math.round(hrs * R.exped.rolls_per_hour * (1 + st.speed / 200))); for (let i = 0; i < n; i++) { const id = rollLoot(RIFT && h.rift && Math.random() < R.rift.exped_chance ? RIFT : p, luck); give(id); got.push(id); bump('finds'); }
     const ink = Math.round(hrs * R.exped.ink_per_hour * inkBonus() * (1 + fx(e.hero, 'ink'))); S.ink += ink; bump('ink', ink); bump('expeditions');
     const m = S.mastery[e.hero] || (S.mastery[e.hero] = {}); m[p.skill] = (m[p.skill] || 0) + Math.round(hrs * R.exped.mastery_per_hour);
     return { got, ink, h, p };
@@ -455,7 +457,7 @@
   }
   function openCrate(quiet) {
     if (!quiet) { if (!(S.bag.x_crate > 0)) return; S.bag.x_crate--; }
-    const open = workPlaces.filter(unlocked), got = []; for (let i = 0; i < R.crate.rolls; i++) { const id = rollLoot(open[Math.floor(Math.random() * open.length)], R.crate.luck); give(id); got.push(id); }
+    const open = workPlaces.filter(unlocked), got = []; for (let i = 0; i < R.crate.rolls; i++) { const id = rollLoot(RIFT && Math.random() < R.rift.crate_chance ? RIFT : open[Math.floor(Math.random() * open.length)], R.crate.luck); give(id); got.push(id); }
     const gold = R.crate.gold[0] + Math.floor(Math.random() * (R.crate.gold[1] - R.crate.gold[0] + 1)); S.gold += gold; S.ink += R.crate.ink; bump('crates'); bump('gold', gold); bump('ink', R.crate.ink); Cloud.log('crate'); save(true);
     if (quiet) { toast(`Crate opened: ${gold} gold, ${got.map(x => OS.items[x].name).join(', ')}`); return; }
     const d = el('div', 'reveal', `<img src="${OS.img('loot', 'x_crate_open')}" alt="" style="width:150px" class="popin"><h3 style="font-size:1.6rem">Something fell out of time</h3><p class="mut">${gold} gold, ${R.crate.ink} ink, and these.</p>`);

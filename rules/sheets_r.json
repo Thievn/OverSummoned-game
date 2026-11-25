@@ -1,0 +1,35 @@
+{
+ "r01": [
+  "archive_1",
+  "archive_2",
+  "archive_3",
+  "archive_4",
+  "archive_5",
+  "archive_6",
+  "archive_7",
+  "archive_8",
+  "archive_9"
+ ],
+ "r02": [
+  "archive_10",
+  "archive_11",
+  "archive_12",
+  "archive_13",
+  "archive_14",
+  "archive_15",
+  "archive_16",
+  "archive_17",
+  "archive_18"
+ ],
+ "r03": [
+  "e_pam_head",
+  "e_max_head",
+  "_spare20",
+  "_spare21",
+  "_spare22",
+  "_spare23",
+  "_spare24",
+  "_spare25",
+  "_spare26"
+ ]
+}
