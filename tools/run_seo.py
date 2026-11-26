@@ -24,7 +24,7 @@ FAQ=[
 ("Is it an idle game?",
  "Yes. Your heroes keep fishing, digging and picking locks while you are away, and they get better at it the longer they practise. Everything they did still counts when you come back."),
 ("How many heroes are there?",
- "There are 36 arrivals so far, each a collectible card with its own story, stats and three lost items. More arrive as the ledger keeps misfiring."),
+ "Dozens so far, and the ledger keeps misfiring, so nobody is keeping an exact count. Each arrival is a collectible card with its own story, stats and three lost items."),
 ("Where does Smudge work?",
  "Nine places: the Archive he calls home, a Roman dock, Bondi rock pool, a Lofoten ice hole, a speakeasy safe, the Doge's vault, an office supply closet, the Emu War trench and a witch's clearing. Each has its own trade and its own lost things."),
 ("Can I change how Smudge talks?",

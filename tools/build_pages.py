@@ -229,8 +229,8 @@ def place_page(p):
 
 def hub(kind):
     if kind == 'heroes':
-        title = "All %d arrivals in OverSummoned" % len(HEROES)
-        desc = "Every stranger the cursed ledger has pulled out of history so far — %d collectible arrivals, each with their own era, stats and three lost items." % len(HEROES)
+        title = "Every arrival in OverSummoned"
+        desc = "Every stranger the cursed ledger has pulled out of history so far. Collectible arrivals, each with their own era, stats and three lost items."
         items = sorted(HEROES, key=lambda h: h['name'])
         cards = "".join(
             '<a class="hcard" href="/heroes/%s" style="--c:%s"><img src="/assets/v2/heroes/thumb/%s.webp" alt="%s" loading="lazy" width="200" height="200"><b>%s</b><i>%s</i><span>%s</span></a>'

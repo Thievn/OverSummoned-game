@@ -358,8 +358,8 @@ Opus plan
 - O7 Smudge's wardrobe and the desktop pet: later.
 
 Fable plan
-- F1 Site copy pass: remove "36" from index.html (meta, JSON-LD, FAQ), heroes/index.html, llms.txt, build_pages/seo.
-- F2 The 14 arrivals on paper: name, hook, bio, three lost items, crew lines, Grok art prompt. Dean approves the list before any art.
+- F1 DONE: no fixed hero count anywhere on the public site or in the page generators. The in-game "N of M met" counters in js/game.js are left for O2.
+- F2 DONE (waiting on Dean): the 14 are written in `tools/arrivals_draft.py`, which builds `data/arrivals_draft.json` (bio, fact, three announce lines, gear and set names with flavour, crew lines, two history paragraphs, the full Grok prompt) and `ARRIVALS.md` (the sheet Dean approves). NO ART until Dean approves names. Two need a new `beyond` backdrop. Stats, set bonuses and gear numbers are Opus's (O5).
 - F3 Arrival sheets, final: the approved 14 written into the data files Opus reads.
 - F4 Raid writing: every boss, rooms, choices, outcomes, potion names. Needs O3.
 - F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
