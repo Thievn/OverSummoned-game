@@ -319,7 +319,7 @@
         if (m.id) { const pp = OS.heroPuppet(host, m.id, m.q.h); if (pp) { pp.flip = OS.Stage.flip(m.id, m.q.face); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = m.q.h; pp.wide = m.q.h * OS.rig['h_' + m.id].size[0] / OS.rig['h_' + m.id].size[1]; crewPups.push(pp); } }
         else { const se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
       if (p.skill === 'Fishing') FX.rod(OS.Stage.rodTip('fish', lay.smudge.at, lay.smudge.h, OS.rig));
-      if (lay.crate) FX.crate([lay.smudge.at[0] - lay.smudge.h * .2, lay.smudge.at[1] - lay.smudge.h * .11], lay.smudge.h * .6);
+      if (lay.crate) FX.crate([lay.smudge.at[0] - lay.smudge.h * .29, lay.smudge.at[1] - lay.smudge.h * .11], lay.smudge.h * .6);
       jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
     }
     // ---- the crew
