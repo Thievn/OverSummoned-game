@@ -1,4 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { MAIL_FROM, NOTIFY_TO, sendMail, wishlistMail, inviteMail } from './mail.ts';
 
 const ALLOWED = new Set([
   'https://oversummoned.com',
@@ -20,8 +21,6 @@ async function sha256(s: string) {
   const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
-
-import { MAIL_FROM, NOTIFY_TO, sendMail, wishlistMail, inviteMail } from './mail.ts';
 
 Deno.serve(async (req) => {
   const h = cors(req.headers.get('origin'));
@@ -58,7 +57,7 @@ Deno.serve(async (req) => {
 
   // send both letters to the owner's own address, to see them in a real inbox
   if (b.op === 'test') {
-    const { data: me } = await asUser.auth.getUser();
+    const { data: me } = await asUser.auth.getUser(auth.slice(7));
     const to = me?.user?.email;
     if (!to) return J({ ok: false, msg: 'No email on this account.' }, 400);
     const sent = await Promise.all([sendMail(to, wishlistMail()), sendMail(to, inviteMail(to))]);

@@ -1,4 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { NOTIFY_TO, sendMail, wishlistMail, ownerMail } from './mail.ts';
 
 const ALLOWED = new Set([
   'https://oversummoned.com',
@@ -20,8 +21,6 @@ async function sha256(s: string) {
   const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
-
-import { NOTIFY_TO, sendMail, wishlistMail, ownerMail } from './mail.ts';
 
 Deno.serve(async (req) => {
   const h = cors(req.headers.get('origin'));
