@@ -386,13 +386,12 @@ Fable plan
 - F1 DONE: no fixed hero count anywhere on the public site or in the page generators. The in-game "N of M met" counters in js/game.js are left for O2.
 - F2 + F3 DONE, APPROVED: Dean approved all 14 as written (26 Nov). `tools/arrivals_draft.py` builds `data/arrivals.json`: per hero id, name, title, era, species, rarity, bg, place, bio, fact, lines (sweet/salty/unhinged), gear (3, with flavour), set (name + 3 pieces), say, reply, history (2 paragraphs), and `prompt` (the full Grok art prompt; ref `art/raw/sheet1/smudge_1.jpg`, 1:1, n 2). Their raid lines are already in `tools/raids_text.py` (V_NEW). O5 can start: queue the art, check each for extra limbs, cut, rig, MOUTH, stats and set bonuses, pages, os2_item rows. Two need a new `beyond` backdrop and three new bgs (office exists; check `stage`, `egypt`, `london`, `castle`, `beach`).
 - F4 DONE: `tools/raids_text.py` builds `data/raids.json` (edit the script, not the JSON): 8 boss intros, 48 rooms, boss lines, and 13 lines per hero for all 36. room_pool and default reactions kept as fallbacks. New heroes (O5) need a row in V there.
-- F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
+- F5 DONE: `tools/exped_text.py` builds `data/expeditions.json` (edit the script, not the JSON; it refuses to build if a hero or place is missing, a placeholder is unknown or a line repeats). 8 places x 6 openers, 8 turns, 4 good and 4 poor endings (48 opener-and-turn pairings each before endings), 22 closing lines across the five tones, and 3 lines in their own voice for all 50 heroes, written about the one place each of them is always sent. The narrator is not Smudge and never calls the hero he or she. A hero added later needs a VOICE row; a place added later needs BEATS. One engine touch, flagged to Dean: `short()` in js/game.js now drops a trailing comma, because Zorp's name was printing as "Zorp," in expeditions and raids.
 - F6 Loot and gold names. Needs O6.
 
-Order to switch in: done so far: Fable F1+F2+F3+F4 · Opus O1, O2, O2b, O3, O5. Left: Fable F5 (expedition stories) · Opus O6 (loot and gold) · Fable F6 (loot names) · Opus O7 (Smudge's wardrobe in the game, desktop pet).
+Order to switch in: done so far: Fable F1+F2+F3+F4+F5 · Opus O1, O2, O2b, O3, O4, O5. Left: Opus O6 (loot and gold) · Fable F6 (loot names) · Opus O7 (Smudge's wardrobe in the game, desktop pet).
 
 Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
-- F5: `data/expeditions.json` is ALL stand-in. Fable writes beats for the 9 places (more per place is better: three are drawn each trip), the five tone lines, and `voice` entries per hero id for the ones worth it. Keep the JSON shape.
 - F6 (or sooner): the 42 era-set piece flavour lines for the new 14 are Opus stand-ins, in `rules/wave3.py` SETFLAV. Everything else about the 14 is Fable's own words.
 
 Email: both letters live in `supabase/functions/{waitlist,beta}/mail.ts` (identical copies; change both and redeploy both).

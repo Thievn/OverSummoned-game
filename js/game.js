@@ -734,7 +734,7 @@
   const fillIn = (t, o) => String(t || '').replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m);
   const pick1 = a => a && a.length ? a[Math.floor(Math.random() * a.length)] : '';
   const TITLES = ['Captain', 'Doctor', 'Dr.', 'General', 'Sgt.', 'Frau', 'Inspector', 'Agent', 'President', 'Pharaoh', 'Mad', 'El', 'Commander', 'Pixel', 'Unit', 'Lady', 'Sir'];
-  const short = id => { const w = OS.heroes[id].name.split(' '); return TITLES.includes(w[0]) && w[1] ? w[1] : w[0]; };
+  const short = id => { const w = OS.heroes[id].name.split(' '); return (TITLES.includes(w[0]) && w[1] ? w[1] : w[0]).replace(/[,;:]+$/, ''); };
   const bossOf = b => Object.assign({ weak: null, resist: null, rooms: [], lines: {}, intro: b.text }, RAIDS && RAIDS.bosses[b.id]);
   function react(id, tag) { const r = (RAIDS && RAIDS.reactions) || {}, pool = (r[id] && r[id][tag]) || (r.default && r.default[tag]); return pool ? fillIn(pick1(pool), { name: short(id) }) : ''; }
   const teamStats = team => { const t = { attack: 0, defense: 0, health: 0, speed: 0, luck: 0 }; team.forEach(id => { const s = heroStats(id); R.stats.forEach(k => t[k] += s[k]); }); return t; };
