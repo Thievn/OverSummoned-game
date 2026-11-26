@@ -1,0 +1,53 @@
+{
+ "_about": "Raid writing. STAND-IN TEXT written by Opus to make the engine work; Fable rewrites all of it in F4. The engine reads: boss intro, rooms (falls back to room_pool when a boss has none), boss lines, and reactions. A room choice rolls one team stat (attack, defense, health, speed or luck). {name} is the hero who reacts, {boss} the boss, {place} the place. The narrator is neutral: no swearing, whatever Smudge's voice setting.",
+ "room_pool": [
+  {"id": "door", "text": "A door, older than anyone in the team, and locked from the other side. Something behind it is breathing.", "choices": [
+   {"stat": "attack", "label": "Kick it in", "ok": "The door gives on the second kick. The breathing stops.", "bad": "The door holds. Somebody's ankle does not."},
+   {"stat": "luck", "label": "Try the handle", "ok": "It was never locked. Nobody mentions it.", "bad": "The handle comes off in a hand. The breathing gets closer."}]},
+  {"id": "floor", "text": "Half the floor is gone. The other half is thinking about it.", "choices": [
+   {"stat": "speed", "label": "Run across", "ok": "Three pairs of feet, three clean landings.", "bad": "Somebody finds out where the floor went."},
+   {"stat": "defense", "label": "Edge along the wall", "ok": "Slow, careful, and nobody falls.", "bad": "The wall was the part holding the floor up."}]},
+  {"id": "guards", "text": "Two guards, both asleep, both enormous, both lying across the only way through.", "choices": [
+   {"stat": "luck", "label": "Tiptoe over them", "ok": "Not a twitch. The team is through.", "bad": "One of them wakes up mid-step and is not pleased about it."},
+   {"stat": "attack", "label": "Wake them up properly", "ok": "They do not stay awake for long.", "bad": "They were only pretending to be asleep."},
+   {"stat": "speed", "label": "Go round the long way", "ok": "Longer, quieter, fine.", "bad": "The long way has its own guards."}]},
+  {"id": "trap", "text": "The corridor is very clean, very quiet, and full of small holes in the walls.", "choices": [
+   {"stat": "defense", "label": "Shields up and walk", "ok": "Darts bounce off. The team walks out tutting.", "bad": "Darts do not bounce off everything."},
+   {"stat": "speed", "label": "Sprint", "ok": "The darts arrive just after everybody has left.", "bad": "Some of the darts are faster than some of the team."}]},
+  {"id": "stash", "text": "A strongbox, half buried, with a note on it that says DO NOT.", "choices": [
+   {"stat": "luck", "label": "Open it", "ok": "Inside: something useful, and a second note that says FINE.", "bad": "Inside: a spring, a glove, and a very fast punch."},
+   {"stat": "health", "label": "Leave it and push on", "ok": "The team saves its strength for what is ahead.", "bad": "Pushing on means walking through the thing that guards the box."}]},
+  {"id": "storm", "text": "The weather turns, all at once, as if someone flipped it.", "choices": [
+   {"stat": "health", "label": "Push through it", "ok": "Soaked, cold, still standing.", "bad": "The cold gets into everybody's bones."},
+   {"stat": "luck", "label": "Find shelter", "ok": "A dry hollow, right where it needed to be.", "bad": "The shelter is occupied."}]}
+ ],
+ "bosses": {
+  "tiber": {"weak": "speed", "resist": "attack", "intro": "The water off the Roman dock goes very still. Then a long shape moves under it, and keeps moving, and keeps on being the same shape.", "rooms": [],
+   "lines": {"open": "{boss} rises out of the Tiber with most of the river still on it.", "hit": ["{boss} lashes out with something that is mostly teeth.", "A wave of river water and bad intentions hits the team.", "{boss} drags somebody under for a moment, then thinks better of it."], "low": "{boss} is slowing down. The water around it is turning a worrying colour.", "win": "{boss} sinks back into the river and, for now, stays there.", "lose": "The team is washed back onto the dock, coughing up the Tiber."}},
+  "tony": {"weak": "luck", "resist": "speed", "intro": "Behind the speakeasy, in the room with the safe, four gentlemen in good suits are waiting. They have been waiting a while.", "rooms": [],
+   "lines": {"open": "{boss} straighten their ties and crack their knuckles in the same order.", "hit": ["One of {boss} swings a chair with real feeling.", "{boss} explain, using fists, how they feel about the safe.", "A gentleman in a good suit throws a very good punch."], "low": "Two of {boss} are looking at the door.", "win": "{boss} leave by the window. All of them. One at a time.", "lose": "{boss} put the team out on the street and dust off their hands."}},
+  "vanguard": {"weak": "attack", "resist": "speed", "intro": "Across the wheat, a line of emus. Disciplined. Watching. One of them has a medal.", "rooms": [],
+   "lines": {"open": "{boss} charge, all at once, faster than anything with those legs should go.", "hit": ["{boss} run straight through the team and turn for another go.", "An emu kicks with the force of a small car.", "{boss} scatter, regroup, and come back from the side."], "low": "{boss} are thinning out. The one with the medal looks thoughtful.", "win": "{boss} withdraw in good order. They will remember this.", "lose": "The team retreats across the wheat. The emus do not chase. They do not need to."}},
+  "gary": {"weak": "defense", "resist": "luck", "intro": "Between the flags at Bondi, a fin, going round in slow, confident circles.", "rooms": [],
+   "lines": {"open": "{boss} comes up out of the surf with a mouth full of very bad news.", "hit": ["{boss} takes a bite out of the afternoon.", "{boss} thrashes, and half the rock pool goes with him.", "{boss} circles once and comes back in from below."], "low": "{boss} is swimming crooked. He is thinking about the open sea.", "win": "{boss} heads out past the flags and keeps going.", "lose": "The lifeguards drag the team out of the water and close the beach."}},
+  "nephew": {"weak": "luck", "resist": "attack", "intro": "Inside the Doge's vault, the Doge's nephew. He has a sword, a lot of training, and nobody has ever told him no.", "rooms": [],
+   "lines": {"open": "{boss} salutes, very correctly, and then attacks without waiting for anyone to salute back.", "hit": ["{boss} lunges, perfectly, as he was taught.", "{boss} disarms somebody and hands the weapon back, which is worse.", "{boss} parries everything and then some."], "low": "{boss} has started checking his hair between strikes.", "win": "{boss} yields, very correctly, and asks not to be mentioned to his uncle.", "lose": "{boss} has the team escorted out of the vault, politely, by eight guards."}},
+  "well": {"weak": "attack", "resist": "luck", "intro": "In the witch's clearing, the old well has a new lid, and the lid is moving.", "rooms": [],
+   "lines": {"open": "{boss} climbs out of the well. It takes a long time. There is a lot of it.", "hit": ["{boss} reaches out of the dark and pulls.", "Something from the well whispers, and everyone hears their own name.", "{boss} lashes the clearing with roots that were not there a moment ago."], "low": "{boss} is sinking back towards the well, as if it is tired.", "win": "{boss} goes back down the well. The lid goes back on. Someone sits on it.", "lose": "The team runs from the clearing and does not look back, which is wise."}},
+  "antlers": {"weak": "health", "resist": "defense", "intro": "Under the ice at Lofoten, something with antlers is looking up at the team through a hole it made itself.", "rooms": [],
+   "lines": {"open": "{boss} breaks the ice from below, antlers first.", "hit": ["{boss} swings its antlers in a wide, freezing arc.", "The ice cracks under the team and {boss} is waiting underneath.", "{boss} breathes out, and the cold is a weapon."], "low": "{boss} is breathing hard. The ice around it is going soft.", "win": "{boss} sinks back under the ice, and the hole freezes over behind it.", "lose": "The team is pulled out of the fjord half frozen. The hole is still open."}},
+  "brenda": {"weak": "speed", "resist": "luck", "intro": "Brenda is back from leave. She has seen the supply closet. She is standing in the doorway.", "rooms": [],
+   "lines": {"open": "{boss} rolls up her sleeves and closes the closet door behind her.", "hit": ["{boss} throws a stapler with frightening accuracy.", "{boss} asks who used the last of the printer paper, and it hurts.", "{boss} reorganises somebody, by force."], "low": "{boss} is looking at the clock. It is nearly five.", "win": "{boss} signs out for the day and leaves the closet to the team.", "lose": "{boss} sends the team to HR. It is the worst thing that has happened to any of them."}}
+ },
+ "reactions": {
+  "default": {
+   "ok": ["{name}: That went well. Suspicious.", "{name}: Told you.", "{name}: Easy. Next."],
+   "fail": ["{name}: Nobody saw that.", "{name}: That was the plan. Probably.", "{name}: Ow."],
+   "hurt": ["{name}: Still standing. Mostly.", "{name}: I have had worse. Not recently."],
+   "boss": ["{name}: That is a lot bigger than the drawing.", "{name}: Right. Everybody pick a side of it."],
+   "win": ["{name}: We should do that again. Not soon.", "{name}: Who is carrying the loot?"],
+   "lose": ["{name}: We were holding back.", "{name}: Next time, bring a bigger team."],
+   "loot": ["{name}: Mine. Probably."]
+  }
+ }
+}

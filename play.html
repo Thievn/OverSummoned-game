@@ -23,10 +23,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1126n">
+<link rel="stylesheet" href="/css/os.css?v=1126q">
 </head>
 <body class="game">
-<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126a" alt=""><p>Opening the ledger…</p></div>
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126q" alt=""><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
   <button class="backbtn" id="go-back" type="button" aria-label="Back" hidden>&#8249;</button>
   <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
@@ -35,7 +35,7 @@
     <span title="Ink. Smudge spends it to summon." data-go="summon"><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
     <span title="Gold. Spend it in the shop." data-go="shop"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">0</b></span>
     <button class="fbbtn" id="go-feedback" type="button">Ideas or feedback?</button>
-    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp?v=1126a" alt=""></button>
+    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp?v=1126q" alt=""></button>
   </div>
 </div></header>
 
@@ -95,13 +95,24 @@
   </section>
 
   <section class="view" id="v-heroes">
-    <div class="spread" style="margin-bottom:1rem"><h2>The arrivals</h2><b class="mut" id="h-count"></b></div>
+    <div class="spread" style="margin-bottom:.7rem"><h2>The arrivals</h2><b class="mut" id="h-count"></b></div>
+    <div class="finder" id="h-find">
+      <input type="search" id="h-q" placeholder="Search a name, animal, era or place" autocomplete="off" aria-label="Search the arrivals">
+      <select id="h-sort" aria-label="Sort the arrivals"><option value="rarity">Rarest first</option><option value="power">Strongest first</option><option value="level">Highest card level</option><option value="name">A to Z</option><option value="era">By era</option></select>
+      <div class="chips" id="h-chips"></div>
+    </div>
+    <p class="mut finder-none" id="h-none" hidden>Nobody matches that. Try fewer words.</p>
     <div class="heroes" id="hgrid"></div>
   </section>
 
   <section class="view" id="v-bag">
     <div class="spread" style="margin-bottom:.6rem"><h2>The bag</h2><div class="row"><span class="mut" id="b-cap" style="font-size:.85rem"></span><button class="btn small" id="b-sell">Sell spare treasure</button></div></div>
     <p class="mut" style="margin-bottom:1rem">Tap anything to read its label. Crates open, tonics get drunk, gear is worn from an arrival's card, treasure is for selling or brewing.</p>
+    <div class="finder" id="b-find">
+      <input type="search" id="b-q" placeholder="Search the bag and the armory" autocomplete="off" aria-label="Search the bag">
+      <select id="b-sort" aria-label="Sort the bag"><option value="kind">By kind</option><option value="rarity">Rarest first</option><option value="name">A to Z</option><option value="count">Most first</option><option value="value">Most valuable</option></select>
+      <div class="chips" id="b-chips"></div>
+    </div>
     <div class="panel"><div class="itemrow" id="bgrid"></div></div>
   </section>
 
@@ -160,13 +171,13 @@
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/cloud.js"></script>
-<script src="/js/os.js?v=1126n"></script>
-<script src="/js/sound.js?v=1126n"></script>
-<script src="/js/stage.js?v=1126n"></script>
-<script src="/js/scenefx.js?v=1126n"></script>
+<script src="/js/os.js?v=1126q"></script>
+<script src="/js/sound.js?v=1126q"></script>
+<script src="/js/stage.js?v=1126q"></script>
+<script src="/js/scenefx.js?v=1126q"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1126n"></script>
-<script src="/js/game.js?v=1126n"></script>
+<script src="/js/dbcanvas.js?v=1126q"></script>
+<script src="/js/game.js?v=1126q"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>
 </html>

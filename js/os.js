@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1126n';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1126q';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -24,7 +24,7 @@ window.OS = (function () {
       if (window.DBCanvas && OS.rig[pose] && !OS.noBones) {
         const hero = pose.indexOf('h_') === 0;
         this.host = host; this.scale = scale; this.pose = pose; this.hero = hero; this.parts = {}; this.x = 0; this.y = 0;
-        this.db = new DBCanvas.Puppet(host, hero ? pose.slice(2) : pose, scale, { hero, px: [0, 0], ver: OS.VER });
+        this.db = new DBCanvas.Puppet(host, hero ? pose.slice(2) : pose, scale, { hero, px: [0, 0], ver: OS.VER }); this.db.follow = !hero;
         return;
       }
       this.host = host; this.scale = scale; this.springs = {}; this.t = 0;
@@ -37,7 +37,7 @@ window.OS = (function () {
     }
     setPose(pose) {
       if (pose === this.pose) return;
-      if (this.db) { this.db.destroy(); this.pose = pose; this.db = new DBCanvas.Puppet(this.host, pose, this.scale, { px: [this.x, this.y], ver: OS.VER }); return; }
+      if (this.db) { this.db.destroy(); this.pose = pose; this.db = new DBCanvas.Puppet(this.host, pose, this.scale, { px: [this.x, this.y], ver: OS.VER }); this.db.follow = true; return; }
       this.pose = pose; this.hero = pose.indexOf('h_') === 0; this.springs = {}; this.parts = {}; this.root.innerHTML = '';
       const e = OS.rig[pose], foot = e.foot;
       const add = p => {
@@ -65,6 +65,10 @@ window.OS = (function () {
     place(x, y) { if (x != null) { this.x = x; this.y = y; } if (this.db) { this.db.scale = this.scale; this.db.flip = !!this.flip; this.db.px = [this.x || 0, this.y || 0]; return; } this.root.style.transform = `translate(${this.x || 0}px,${this.y || 0}px) scale(${this.scale})`; }
     kick(part, v) { if (this.db) { if (Math.abs(v) >= 10) this.db.act(); return; } const s = this.springs[part] || (this.springs[part] = [0, 0]); s[1] += v; }
     say(sec) { if (this.db) return void this.db.say(sec); this.talk = sec; }
+    // signs of life (only the bone puppets have them; the old rig ignores these)
+    lookAt(x, y, sec) { if (this.db && this.db.lookAt) this.db.lookAt(x, y, sec); }
+    sulk(sec) { if (this.db && this.db.sulk) this.db.sulk(sec); }
+    hello() { if (this.db && this.db.ready) this.db.ready.then(() => this.db.hello()); }
     cheer(sec) { if (this.db) return void this.db.cheer(sec); this.happy = sec; this.kick('tail', 8); }
     // a point on the pose picture, in the host's pixels
     point(ix, iy) { const f = OS.rig[this.pose].foot; return [this.x + (ix - f[0]) * this.scale, this.y + (iy - f[1]) * this.scale]; }

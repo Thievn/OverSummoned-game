@@ -119,6 +119,7 @@
       }
     }
     ctx.globalAlpha = 1;
+    if (opt && opt.after) opt.after(ctx);
     if (opt && opt.bones) {
       ctx.lineWidth = 3 / scale; ctx.lineCap = 'round';
       for (const b of arm.getBones()) {
@@ -144,6 +145,53 @@
     }
     return files[k];
   }
+  // ------------------------------------------------------------------ the wardrobe
+  // Where things sit on Smudge in each pose, in picture pixels: [x, y, tilt in degrees, width]. head_top is the top of the hood,
+  // face is between the eyes. A new hat or pair of glasses is ONE picture drawn to the template in art2/slots/, never a cut.
+  const ANCHOR = {
+    stamp: { foot: [300, 520], head_top: [262, 30, -8, 118], face: [304, 137, 5, 118, 'front'] },
+    fish:  { foot: [250, 355], head_top: [200, 24, 8, 92],   face: [204, 80, 4, 96, 'side'] },
+    pick:  { foot: [257, 522], head_top: [305, 34, 6, 98],   face: [340, 115, 4, 96, 'side'] },
+    dig:   { foot: [300, 535], head_top: [312, 22, 10, 98],  face: [330, 101, 4, 96, 'side'] },
+  };
+  // fur and cloak colours: every pixel of that colour family is moved to the new colour, keeping its light and shade
+  function hsl(r, g, b) { r /= 255; g /= 255; b /= 255; const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2; if (mx === mn) return [0, 0, l];
+    const d = mx - mn, s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); const h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; return [h * 60, s, l]; }
+  function rgb(h, s, l) { h = ((h % 360) + 360) % 360 / 360; if (!s) return [l * 255, l * 255, l * 255]; const q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    const f = t => { t = (t + 1) % 1; return 255 * (t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p); }; return [f(h + 1 / 3), f(h), f(h - 1 / 3)]; }
+  const hex = c => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
+  const FUR = { h: [14, 42], s: [.2, .8], l: [.1, .8], ref: hsl(150, 96, 57) }, CLOAK = { h: [168, 222], s: [.12, 1], l: [.06, .85], ref: hsl(32, 92, 104) };
+  function recolor(img, fur, cloak, mask) {
+    const c = document.createElement('canvas'); c.width = img.naturalWidth || img.width; c.height = img.naturalHeight || img.height;
+    const x = c.getContext('2d'); x.drawImage(img, 0, 0); if (!fur && !cloak) return c;
+    const d = x.getImageData(0, 0, c.width, c.height), a = d.data, tf = fur && hsl(...hex(fur)), tc = cloak && hsl(...hex(cloak));
+    let M = null; if (mask) { const mc = document.createElement('canvas'); mc.width = c.width; mc.height = c.height; const mx = mc.getContext('2d'); mx.drawImage(mask, 0, 0, c.width, c.height); M = mx.getImageData(0, 0, c.width, c.height).data; }
+    const inn = (v, r) => v >= r[0] && v <= r[1];
+    for (let i = 0; i < a.length; i += 4) {
+      if (a[i + 3] < 8) continue; const [h, s, l] = hsl(a[i], a[i + 1], a[i + 2]); let t = null, R = null;
+      const isFur = M ? M[i] > 128 : inn(h, FUR.h) && inn(s, FUR.s) && inn(l, FUR.l), isCloak = M ? M[i + 1] > 128 : inn(h, CLOAK.h) && inn(s, CLOAK.s) && inn(l, CLOAK.l);
+      if (tf && isFur) { t = tf; R = FUR.ref; } else if (tc && isCloak) { t = tc; R = CLOAK.ref; }
+      if (!t) continue;
+      // move the mid-tones toward the new colour's lightness and leave the deepest shadows and brightest highlights where they were
+      const L = Math.max(0, Math.min(.98, l + (t[2] - R[2]) * (l < .5 ? l / .5 : (1 - l) / .5)));
+      const o = rgb(t[0], Math.min(1, s * t[1] / Math.max(.05, R[1])), L); a[i] = o[0]; a[i + 1] = o[1]; a[i + 2] = o[2];
+    }
+    x.putImageData(d, 0, 0); return c;
+  }
+  const pics = {}; const pic = u => pics[u] || (pics[u] = new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = u; }));
+
+  // ------------------------------------------------------------------ the mind: small, constant signs of life
+  // Everyone breathes and glances about. Smudge also follows your pointer, yawns and dozes when nobody does anything,
+  // startles awake, looks at whoever is talking, cheers and sulks. All on random timers, so no two puppets move in step.
+  const INPUT = { t: performance.now(), x: -1, y: -1, burst: 0, bt: 0 };
+  if (typeof addEventListener === 'function') {
+    const poke = () => { INPUT.t = performance.now(); };
+    addEventListener('pointermove', e => { INPUT.x = e.clientX; INPUT.y = e.clientY; poke(); }, { passive: true });
+    addEventListener('pointerdown', poke, { passive: true }); addEventListener('scroll', poke, { passive: true });
+    addEventListener('keydown', () => { const n = performance.now(); INPUT.burst = n - INPUT.bt < 180 ? INPUT.burst + 1 : 0; INPUT.bt = n; poke(); });
+  }
+  const DOZE_AFTER = 40000, ease = (c, t, k, dt) => c + (t - c) * Math.min(1, k * dt);
+
   class Puppet {
     constructor(host, pose, scale, opt) {
       opt = opt || {}; this.host = host; this.pose = pose; this.scale = scale; this.fx = opt.x == null ? 0.5 : opt.x; this.fy = opt.y == null ? 0.9 : opt.y;
@@ -151,12 +199,14 @@
       this.px = opt.px || null;                                            // [x, y] in host pixels for the feet, instead of the fractions
       // the canvas goes in straight away, so anything added to the host later sits on top of him
       const cv = this.cv = document.createElement('canvas'); cv.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none'; host.appendChild(cv);
-      this.bones = false; this.dead = false; this.ready = this.load(opt.base || '/assets/v2/db/', opt.ver || '');
+      this.bones = false; this.dead = false; this.base = opt.base || '/assets/v2/db/'; this.ver = opt.ver || ''; this.ready = this.load(this.base, this.ver);
     }
     async load(base, ver) {
       const d = await fetchPose(this.stem, base, ver); if (this.dead) return;
       const f = this.factory = new Factory(); f.parseDragonBonesData(d.ske); f.parseTextureAtlasData(d.tex, d.img);
-      this.p = f.build(this.pose, this.stem); this.an = this.p.animation; this.an.play('idle', 0);
+      this.p = f.build(this.pose, this.stem); this.an = this.p.animation;
+      f.advance(0); this.img0 = d.img; this.atlas = f.getTextureAtlasData(d.tex.name || this.stem); this.bindWear(); this.bindMind();
+      this.an.play('idle', 0);
       const cv = this.cv, ctx = cv.getContext('2d');
       const blink = () => { if (this.dead) return; this.over('blink', 1, 3); this.bt = setTimeout(blink, 2200 + Math.random() * 3300); }; blink();
       // little fidgets some poses have (a sleeping snout twitch, now and then a dream)
@@ -165,16 +215,76 @@
       let last = performance.now();
       const frame = now => {
         if (this.dead) return;
-        const dt = Math.min(0.05, (now - last) / 1000); last = now; f.advance(dt);
+        const dt = Math.min(0.05, (now - last) / 1000); last = now; this.think(dt, now); f.advance(dt);
         if (this._q) { const st = this.an.getState('act'); if (!st || st.isCompleted || !st.isPlaying) { const s2 = this.over('act', 1, 1); if (s2) s2.timeScale = this._q; this._q = 0; } }
         const w = this.host.clientWidth, h = this.host.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
         if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-        draw(ctx, this.p, this.px ? this.px[0] : w * this.fx, this.px ? this.px[1] : h * this.fy, this.scale, { bones: this.bones, flip: this.flip });
+        const ox = this.px ? this.px[0] : w * this.fx, oy = this.px ? this.px[1] : h * this.fy; this.at = [ox, oy];
+        draw(ctx, this.p, ox, oy, this.scale, { bones: this.bones, flip: this.flip, after: this.worn ? c => this.paintWear(c) : null });
         this.raf = requestAnimationFrame(frame);
       };
       this.raf = requestAnimationFrame(frame);
     }
+    // ---------------- wardrobe: dress({ head_top: url, face: url, fur: '#hex', cloak: '#hex' }); null takes a thing off
+    bindWear() {
+      const A = ANCHOR[this.pose], head = this.p.armature.getBone('head'); this.wearAt = {}; this.worn = null; if (!A || !head || this.stem.indexOf('hero_') === 0) return;
+      const m = head.globalTransformMatrix, det = m.a * m.d - m.b * m.c, ang0 = Math.atan2(m.b, m.a), sc0 = Math.hypot(m.a, m.b);
+      ['head_top', 'face'].forEach(k => { const v = A[k]; if (!v) return; const ax = v[0] - A.foot[0], ay = v[1] - A.foot[1], dx = ax - m.tx, dy = ay - m.ty;
+        this.wearAt[k] = { lx: (m.d * dx - m.c * dy) / det, ly: (-m.b * dx + m.a * dy) / det, rot: v[2] * Math.PI / 180 - ang0, w: v[3] / sc0, view: v[4] || '' }; });
+      this.head = head;
+    }
+    async dress(o) {
+      const w = this.worn || {}; this.dressing = o;
+      for (const k of ['head_top', 'face']) if (k in o) { if (!o[k]) delete w[k]; else { const u = typeof o[k] === 'string' ? o[k] : o[k][this.wearAt[k] && this.wearAt[k].view] || o[k].front; const im = await pic(u); if (im) w[k] = im; } }
+      if (('fur' in o || 'cloak' in o) && this.atlas) { this.tint = Object.assign(this.tint || {}, { fur: 'fur' in o ? o.fur : (this.tint || {}).fur, cloak: 'cloak' in o ? o.cloak : (this.tint || {}).cloak });
+        const mask = ANCHOR[this.pose] && this.stem.indexOf('smudge_') === 0 ? await pic(this.base + this.stem + '_mask.webp' + this.ver) : null; const c = recolor(this.img0, this.tint.fur, this.tint.cloak, mask); (Array.isArray(this.atlas) ? this.atlas : [this.atlas]).forEach(a => a.image = c); }
+      this.worn = Object.keys(w).length ? w : null; return this;
+    }
+    paintWear(ctx) {
+      const m = this.head && this.head.globalTransformMatrix; if (!m) return;
+      for (const k of ['head_top', 'face']) { const im = this.worn[k], q = this.wearAt[k]; if (!im || !q) continue;
+        const x = m.a * q.lx + m.c * q.ly + m.tx, y = m.b * q.lx + m.d * q.ly + m.ty, sc = Math.hypot(m.a, m.b), W = q.w * sc, H = W * im.height / im.width;
+        ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(m.b, m.a) + q.rot); ctx.drawImage(im, -W / 2, -H / 2, W, H); ctx.restore(); }
+    }
+    // ---------------- mind
+    bindMind() {
+      const a = this.p.armature, B = n => a.getBone(n); this.mb = { head: B('head'), body: B('body'), tail: B('tail2'), lids: [B('lid0'), B('lid1')].filter(Boolean) };
+      this.mood = { tilt: 0, want: 0, breath: Math.random() * 6, rate: 1.4 + Math.random() * .5, lid: 0, lidWant: 0, tail: Math.random() * 6, glance: 0, until: 0, state: 'awake' };
+      this.smudge = this.stem.indexOf('smudge_') === 0 && this.pose !== 'sleep';
+    }
+    think(dt, now) {
+      const M = this.mood, b = this.mb; if (!M) return;
+      const idle = now - INPUT.t;
+      if (this.smudge) {
+        if (M.state === 'awake' && idle > DOZE_AFTER) { M.state = 'yawn'; M.until = now + 1600; this.say && this.over('talk', 1, 4); }
+        else if (M.state === 'yawn' && now > M.until) M.state = 'doze';
+        else if ((M.state === 'doze' || M.state === 'yawn') && idle < 400) { M.state = 'awake'; M.tilt = -0.16; M.lid = 0; if (this.over) this.over('blink', 1, 3); }
+        if (INPUT.burst > 6 && M.state === 'awake') { INPUT.burst = 0; M.tilt -= 0.1; }      // a flurry of typing makes him jump
+      }
+      if (now < (M.forceUntil || 0)) M.want = M.force;
+      else if (M.state === 'yawn') M.want = -0.14;
+      else if (M.state === 'doze') M.want = 0.09 + Math.sin(now / 1900) * 0.015;
+      else if (this.follow && this.smudge && INPUT.x >= 0 && this.at && this.cv) {
+        const r = this.cv.getBoundingClientRect(), hm = b.head && b.head.globalTransformMatrix, sx = this.flip ? -1 : 1;
+        const hx = r.left + this.at[0] + sx * (hm ? hm.tx : 0) * this.scale, hy = r.top + this.at[1] + (hm ? hm.ty : 0) * this.scale;
+        let dx = (INPUT.x - hx) * sx, dy = INPUT.y - hy; if (dx < 20) dx = 20 + Math.abs(dx) * .3;
+        M.want = Math.max(-0.13, Math.min(0.13, Math.atan2(dy, dx) * 0.32));
+      } else { if (now > M.glance) { M.glance = now + 2500 + Math.random() * 5000; M.gw = (Math.random() - .5) * 0.12; } M.want = M.gw || 0; }
+      M.lidWant = M.state === 'doze' ? 1 : 0;
+      M.tilt = ease(M.tilt, M.want, M.state === 'awake' ? 5 : 1.6, dt); M.lid = ease(M.lid, M.lidWant, 2, dt);
+      M.breath += dt * M.rate * (M.state === 'doze' ? 0.6 : 1); M.tail += dt * 0.9;
+      if (b.head) { b.head.offset.rotation = M.tilt; b.head.invalidUpdate(); }
+      if (b.body) { b.body.offset.scaleY = 1 + Math.sin(M.breath) * 0.011; b.body.offset.scaleX = 1 - Math.sin(M.breath) * 0.004; b.body.invalidUpdate(); }
+      if (b.tail) { b.tail.offset.rotation = Math.sin(M.tail) * 0.05; b.tail.invalidUpdate(); }
+      b.lids.forEach(l => { l.offset.scaleY = 1 + M.lid * 95; l.invalidUpdate(); });
+    }
+    // look toward a point on the page (a crew member who is talking) for a moment
+    lookAt(clientX, clientY, sec) { const M = this.mood, hm = this.mb && this.mb.head && this.mb.head.globalTransformMatrix; if (!M || !this.cv || !this.at) return;
+      const r = this.cv.getBoundingClientRect(), sx = this.flip ? -1 : 1, hx = r.left + this.at[0] + sx * (hm ? hm.tx : 0) * this.scale, hy = r.top + this.at[1] + (hm ? hm.ty : 0) * this.scale;
+      const dx = Math.max(30, (clientX - hx) * sx), dy = clientY - hy; M.force = Math.max(-0.12, Math.min(0.12, Math.atan2(dy, dx) * 0.4)); M.forceUntil = performance.now() + (sec || 2) * 1000; }
+    sulk(sec) { const M = this.mood; if (!M) return; M.force = 0.12; M.forceUntil = performance.now() + (sec || 1.6) * 1000; }
+    hello() { if (this.an) { this.over('cheer', 2, 2); if (this.mood) { this.mood.force = -0.1; this.mood.forceUntil = performance.now() + 900; } } }
     // play an animation on top of whatever is running; it fades itself out when done
     over(name, times, layer) {
       if (!this.an || !this.an.hasAnimation(name)) return null;
@@ -194,5 +304,5 @@
     destroy() { this.dead = true; cancelAnimationFrame(this.raf); clearTimeout(this.bt); clearTimeout(this.ft); if (this.cv) this.cv.remove(); if (this.p) this.p.dispose(); }
   }
 
-  window.DBCanvas = { Factory, draw, Puppet };
+  window.DBCanvas = { Factory, draw, Puppet, ANCHOR, INPUT };
 })();

@@ -104,8 +104,22 @@
     if (error || !data || !data.ok) { toast('Could not reach the notes.'); return false; }
     RIGN = {}; (data.notes || []).forEach(n => RIGN[n.hero] = n); return true;
   }
+  // ---- Smudge's wardrobe proof: every pose, as now and in three test looks
+  const WEAR = '/assets/v2/wear/', GLASSES = { front: WEAR + 'glasses_front.webp', side: WEAR + 'glasses_side.webp' };
+  const LOOKS = [['As now', {}], ['Crown and glasses', { head_top: WEAR + 'crown.webp', face: GLASSES }], ['Ginger, red cloak', { fur: '#c2652a', cloak: '#9b2335' }], ['Grey, purple cloak, glasses', { fur: '#8d8f99', cloak: '#5b3c8c', face: GLASSES }]];
+  let WPUPS = [];
+  function renderWardrobe() {
+    const g = $('w-grid'); WPUPS.forEach(p => p.destroy()); WPUPS = []; g.innerHTML = '';
+    ['stamp', 'fish', 'pick', 'dig'].forEach(pose => LOOKS.forEach(([name, look]) => {
+      const c = document.createElement('div'); c.className = 'wcell'; c.innerHTML = `<span>${pose} · ${name}</span>`; const host = document.createElement('div'); host.className = 'wstage'; c.appendChild(host); g.appendChild(c);
+      const p = new DBCanvas.Puppet(host, pose, 0.36, { x: 0.5, y: 0.97, ver: OS.VER }); p.follow = true; p.ready.then(() => p.dress(look)); WPUPS.push(p);
+    }));
+  }
+  $('w-doze').addEventListener('click', () => { DBCanvas.INPUT.t = performance.now() - 60000; });
+  $('w-cheer').addEventListener('click', () => WPUPS.forEach((p, i) => setTimeout(() => p.cheer(2), i * 60)));
+  $('w-sulk').addEventListener('click', () => WPUPS.forEach(p => p.sulk(2)));
   async function renderRigs() {
-    const grid = $('g-grid'); if (!grid._init) { grid._init = true; await rigNotes('list'); }
+    const grid = $('g-grid'); if (!grid._init) { grid._init = true; await rigNotes('list'); } if (!WPUPS.length) renderWardrobe();
     GPUPS.forEach(p => p.destroy()); GPUPS = []; grid.innerHTML = '';
     const want = $('g-filter').value;
     R.heroes.forEach(h => {

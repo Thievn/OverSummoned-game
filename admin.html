@@ -16,9 +16,9 @@
 <!-- seo:end -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1126p"></head>
+<link rel="stylesheet" href="/css/os.css?v=1126q"></head>
 <body class="game admin">
-<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126a" alt=""><p>Unlocking the office…</p></div>
+<div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126q" alt=""><p>Unlocking the office…</p></div>
 <header class="gbar"><div class="wrap"><a class="brand" href="/play" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a><span class="crown">Owner's office</span><div class="res"><button class="btn small ghost" id="refresh">Refresh</button><a class="btn small" href="/play">Back to the game</a></div></div></header>
 <main class="wrap">
   <nav class="atabs" id="atabs"><button class="on" data-t="overview">Overview</button><button data-t="players">Players</button><button data-t="heroes">Characters</button><button data-t="items">Items</button><button data-t="economy">Economy</button><button data-t="rigs">Movement</button><button data-t="beta">Beta</button><button data-t="studio">Marketing studio</button></nav>
@@ -40,6 +40,11 @@
     <div class="spread" style="margin-bottom:.4rem"><h2>Movement review</h2><div class="row"><select id="g-filter"><option value="">Everyone</option><option value="open">Not looked at</option><option value="problem">Problems</option><option value="fixed">Fixed, needs a re-check</option><option value="ok">Looks right</option></select><button class="linkbtn" id="g-all">Play every move once</button></div></div>
     <p class="mut" style="margin:0 0 .8rem">Every arrival, standing as they do in the game. <b>Talk</b>, <b>Cheer</b> and <b>Swing</b> play the other moves; <b>Swing</b> pushes the head as far as it ever turns, which is where a bad cut shows. Mark anything wrong and say what you saw. Claude reads these notes.</p>
     <div class="rgrid" id="g-grid"></div>
+    <div class="panel" id="w-panel" style="margin-top:1.2rem">
+      <div class="spread"><h3 style="margin:0">Smudge's wardrobe (test, not live)</h3><div class="row"><button class="linkbtn" id="w-doze">Make him doze</button><button class="linkbtn" id="w-cheer">Cheer</button><button class="linkbtn" id="w-sulk">Sulk</button></div></div>
+      <p class="mut" style="margin:.4rem 0 .8rem">Left column is Smudge as he is in the game now. The others wear the test crown and glasses and two fur and cloak colours. Nothing was cut to make these: each item is one picture drawn to a template (art2/slots/), and the colours change only fur and cloak. Move your pointer: he follows it. Leave the page alone for 40 seconds: he yawns and dozes, and wakes when you move. If these look right, say so and they go into the game as Smudge's wardrobe.</p>
+      <div class="wgrid" id="w-grid"></div>
+    </div>
   </section>
   <section class="view" id="a-items"><div class="spread" style="margin-bottom:.8rem"><h2>Items</h2><div class="row"><select id="i-kind"><option value="">Everything</option><option value="gear">Gear</option><option value="loot">Treasure</option></select><select id="i-place"><option value="">Every place</option></select></div></div><div class="panel"><div class="itemrow" id="a-igrid"></div></div><div class="panel" style="margin-top:.9rem;overflow:auto"><table class="atable" id="i-table"></table></div></section>
   <section class="view" id="a-economy"><h2 style="margin-bottom:.8rem">Economy</h2><div class="statrow" id="e-tiles"></div>
@@ -61,6 +66,6 @@
 </main>
 <div class="tip" id="ctip"></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
-<script src="/js/cloud.js"></script><script src="/js/os.js"></script><script src="/js/geomap.js?v=1126n"></script><script src="/js/stage.js?v=1126n"></script><script src="/js/vendor/dragonBones.core.min.js"></script><script src="/js/dbcanvas.js?v=1126n"></script>
-<script src="/js/admin.js"></script>
+<script src="/js/cloud.js"></script><script src="/js/os.js"></script><script src="/js/geomap.js?v=1126q"></script><script src="/js/stage.js?v=1126q"></script><script src="/js/vendor/dragonBones.core.min.js"></script><script src="/js/dbcanvas.js?v=1126q"></script>
+<script src="/js/admin.js?v=1126q"></script>
 </body></html>

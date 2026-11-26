@@ -61,8 +61,10 @@
     const p = places[j.place]; let sp = 0;
     crew().forEach(id => { sp += heroStats(id).speed / R.jobs.crew_speed_div + mastery(id, p.skill) * R.jobs.mastery_speed + fx(id, 'speed') + (kitCount(id) >= 3 ? KIT.speed : 0);
       (S.equip[id] || []).forEach(g => { const it = g && OS.items[g]; if (it && it.equip && it.equip.skill === p.skill) sp += it.equip.speed * gearMult(g, id) / 100; }); });
-    return (1 + sp + perk(p.skill, 'speed') + tonic('speed') + (cabSet(p.id) ? CAB.set_speed : 0)) * R.jobs.solo_mult;
+    return (1 + softCap(sp + perk(p.skill, 'speed') + tonic('speed') + (cabSet(p.id) ? CAB.set_speed : 0))) * R.jobs.solo_mult;
   }
+  // every speed bonus is added up first, then bent by one curve: the first bonuses count almost in full, stacking more gives less and less
+  const softCap = b => { const c = R.jobs.speed_cap; return c ? c * (1 - Math.exp(-b / c)) : b; };
   const jobTime = j => R.tier[places[j.place].tier].seconds / jobSpeed(j);
   const jobLuck = () => crew().reduce((t, id) => t + heroStats(id).luck / R.jobs.crew_luck_div + fx(id, 'luck'), 0) + tonic('luck');
   const crewFx = kind => crew().reduce((t, id) => t + fx(id, kind), 0);
@@ -225,6 +227,7 @@
   const SND = (n, o) => { if (OS.Sound) OS.Sound.play(n, o); };
   const WORKSND = { Fishing: 'splash', Lockpicking: 'lock', Digging: 'dig' }, RAREUP = ['rare', 'epic', 'legendary', 'absurd', 'unhinged'];
   function dropPop(id) { const pop = document.querySelector('[data-pop="0"]'), it = OS.items[id]; if (!it) return;
+    { const sm = jobPups.find(q => q && q.me); if (sm && RAREUP.includes(it.rarity)) sm.cheer(2); else if (sm && it.junk && Math.random() < .35) sm.sulk(1.4); }
     if (RAREUP.includes(it.rarity)) SND('rare'); else if (current === 'jobs' && S.jobs[0]) SND(WORKSND[places[S.jobs[0].place].skill] || 'haul', { vol: .7 }); const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (FX) FX.splash(); if (crewPups.length && !it.junk) crewPups[Math.floor(Math.random() * crewPups.length)].kick('arm', 30);
     if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } }
   const btn = (cls, text, fn) => { const b = el('button', 'btn ' + cls, text); b.onclick = fn; return b; };
@@ -292,7 +295,7 @@
     $('adminbtn').hidden = !me.admin;
     const g = $('guide'), left = GUIDE.filter(s => !s[3]()); g.hidden = !left.length;
     if (left.length) { g.innerHTML = '<div class="tag">Getting started</div>' + GUIDE.map((s, i) => `<div class="gstep ${s[3]() ? 'done' : ''}"><i>${s[3]() ? '✓' : i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div><button class="btn small ${s[3]() ? 'ghost' : ''}" data-go="${s[2]}">${s[3]() ? 'Done' : 'Go'}</button></div>`).join(''); }
-    $('h-stats').innerHTML = [['Arrivals', Object.keys(S.roster).length + ' / ' + R.heroes.length], ['Total level', totalLevel()], ['Hauls', OS.num(S.actions)], ['Raid tickets', S.tickets + ' / ' + R.raids.tickets], ['Crates', S.bag.x_crate || 0]].map(([a, b]) => `<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
+    $('h-stats').innerHTML = [['Arrivals met', Object.keys(S.roster).length], ['Total level', totalLevel()], ['Hauls', OS.num(S.actions)], ['Raid tickets', S.tickets + ' / ' + R.raids.tickets], ['Crates', S.bag.x_crate || 0]].map(([a, b]) => `<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
     const comp = (() => { const g = Object.values(OS.items).filter(i => i.kind === 'gear'), parts = [[Object.keys(S.roster).length, R.heroes.length], [Object.keys(S.cabinet).length, treasures.length], [g.filter(i => owns(i.id)).length, g.length], [Object.keys(S.raids).length, R.raids.bosses.length], [Math.min(99 * 4, totalLevel()), 99 * 4]]; return parts.reduce((t, [a, b]) => t + a / b, 0) / parts.length * 100; })();
     let cp = $('h-comp'); if (!cp) { cp = el('div', 'panel'); cp.id = 'h-comp'; cp.style.marginBottom = '1rem'; $('h-stats').after(cp); }
     cp.innerHTML = `<div class="spread"><h3 style="margin:0">The whole ledger</h3><b style="font:400 1.5rem 'Lilita One';color:#f3b930">${comp.toFixed(1)}%</b></div><div class="bar" style="margin-top:.5rem"><i style="width:${comp}%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div><p class="mut" style="margin:.4rem 0 0;font-size:.85rem">Heroes met, cabinet, gear found, bosses beaten and levels, all in one number.</p>`;
@@ -334,7 +337,7 @@
       const cast = crew().map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, c) => a.q.at[1] - c.q.at[1]);
       cast.forEach(m => { const [x, y] = m.q.at;
         if (m.id) { const pp = OS.heroPuppet(host, m.id, m.q.h); if (pp) { pp.flip = OS.Stage.flip(m.id, m.q.face); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = m.q.h; pp.wide = m.q.h * OS.rig['h_' + m.id].size[0] / OS.rig['h_' + m.id].size[1]; crewPups.push(pp); } }
-        else { const se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
+        else { const se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); if (!hiDone) { hiDone = true; sm.hello(); } } });
       if (p.skill === 'Fishing') FX.rod(OS.Stage.rodTip('fish', lay.smudge.at, lay.smudge.h, OS.rig));
       if (lay.crate) FX.crate([lay.smudge.at[0] - lay.smudge.h * .29, lay.smudge.at[1] - lay.smudge.h * .11], lay.smudge.h * .6);
       jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
@@ -359,7 +362,7 @@
     else if (S.exped.length < expSlots()) { const r = el('div', 'row'); r.appendChild(btn('small', 'Send somebody', expedSheet)); xl.appendChild(r); }
     box.appendChild(ex);
   }
-  let jobPups = [], crewPups = [], chatT = 6, FX = null;
+  let jobPups = [], crewPups = [], chatT = 6, FX = null, hiDone = false;
   // ---- crew chatter: one voice at a time. Somebody says a line; now and then one other answers. Never a pile-up.
   let CHAT = {}; fetch('/data/chatter.json' + OS.VER).then(r => r.json()).then(j => CHAT = j).catch(() => { });
   const pickLine = (id, kind) => { const l = (CHAT[id] || {})[kind]; return l && l.length ? l[Math.floor(Math.random() * l.length)] : null; };
@@ -368,6 +371,8 @@
     const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
     OS.Stage.say(host, { x: pp.x, top: pp.y - pp.tall }, text, hold, jobPups.filter(q => q !== pp).map(box));
     pp.say((hold || OS.Stage.holdFor(text)) / 1000 - .3);
+    // Smudge turns to whoever is talking
+    const me = jobPups.find(q => q && q.me), r = host.getBoundingClientRect(); if (me && me !== pp) me.lookAt(r.left + pp.x, r.top + pp.y - pp.tall * .8, Math.min(4, (hold || OS.Stage.holdFor(text)) / 1000));
   }
   function chatter(dt) {
     if (current !== 'jobs' || !crewPups.length || $('modal').classList.contains('on')) return; chatT -= dt; if (chatT > 0) return; chatT = 11 + Math.random() * 10;
@@ -438,17 +443,21 @@
     stamp() { if (spup) { spup.kick('arm', 30); spup.kick('head', 2.2); } },
   };
   addEventListener('resize', () => sfx.layout());
+  // published odds, plus a small open bonus to rare-or-better for every 10 Summoning levels (the server rolls with the same rule)
+  const luckSteps = () => Math.floor(level('Summoning') / 10), oddsBump = () => (R.summon.luck_per_10 || 0) * luckSteps();
+  function summonWeights() { const w = {}, b = 1 + oddsBump(); RAR.forEach(r => w[r] = R.summon.weights[r] * (r === 'common' || r === 'uncommon' ? 1 : b)); return w; }
+  let oddsAt = -1;
   function renderSummon() {
     const cost = summonCost(), l = level('Summoning'), f = Math.min(1, S.ink / cost);
-    $('s-bar').style.width = f * 100 + '%'; $('s-ink').textContent = `${OS.num(S.ink)} / ${OS.num(cost)} ink`; $('s-met').textContent = `${Object.keys(S.roster).length} of ${R.heroes.length} met`; $('s-lvl').textContent = '· level ' + l;
+    $('s-bar').style.width = f * 100 + '%'; $('s-ink').textContent = `${OS.num(S.ink)} / ${OS.num(cost)} ink`; $('s-met').textContent = `${Object.keys(S.roster).length} met so far`; $('s-lvl').textContent = '· level ' + l;
     $('s-go').disabled = S.ink < cost || summoning; $('s-prog').setAttribute('stroke-dasharray', f * 100 + ' 100'); if (!summoning) $('s-glow').setAttribute('opacity', Math.max(0, (f - .6) * .9).toFixed(2));
-    if (!$('s-odds').children.length) { const w = R.summon.weights, tot = Object.values(w).reduce((a, b) => a + b, 0), mx = Math.max(...Object.values(w));
-      $('s-odds').innerHTML = RAR.map(r => `<span class="r-${r}" style="color:var(--rc)">${OS.cap(r)}</span><i class="r-${r}"><b style="width:${Math.sqrt(w[r] / mx) * 100}%"></b></i><span>${(w[r] / tot * 100).toFixed(w[r] < 1 ? 2 : 1)}%</span>`).join(''); }
+    if (oddsAt !== luckSteps()) { oddsAt = luckSteps(); const w = summonWeights(), tot = Object.values(w).reduce((a, b) => a + b, 0), mx = Math.max(...Object.values(w));
+      $('s-odds').innerHTML = RAR.map(r => `<span class="r-${r}" style="color:var(--rc)">${OS.cap(r)}</span><i class="r-${r}"><b style="width:${Math.sqrt(w[r] / mx) * 100}%"></b></i><span>${(w[r] / tot * 100).toFixed(w[r] < 1 ? 2 : 1)}%</span>`).join('') + (oddsBump() ? `<p class="odds-note">Summoning level ${l}: rare or better is ${Math.round(oddsBump() * 100)}% more likely than the base odds.</p>` : `<p class="odds-note">Every 10 Summoning levels makes rare or better ${Math.round((R.summon.luck_per_10 || 0) * 100)}% more likely.</p>`); }
   }
   let summoning = false, lastStamp = 0;
   // the roll itself: spend the ink, pick a rarity by the published odds, pick anybody of that rarity
   function rollSummonLocal(quiet) {
-    const cost = summonCost(); S.ink -= cost; S.summons++; const w = R.summon.weights; let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0), rar = 'common'; for (const k of RAR) { r -= w[k]; if (r <= 0) { rar = k; break; } }
+    const cost = summonCost(); S.ink -= cost; S.summons++; const w = summonWeights(); let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0), rar = 'common'; for (const k of RAR) { r -= w[k]; if (r <= 0) { rar = k; break; } }
     let pool = R.heroes.filter(h => h.rarity === rar); if (!pool.length) pool = R.heroes.filter(h => h.rarity === 'common');
     const h = pool[Math.floor(Math.random() * pool.length)], had = S.roster[h.id] || 0, before = cardLevel(had || 1);
     bump(had ? 'dupes' : 'new_heroes'); bump('ink_spent', cost); S.roster[h.id] = had + 1; if (had) give('x_shard', SH.per_dupe + (before >= R.card.max_level ? 1 : 0)); gainXP('Summoning', Math.round(cost * R.summon.xp_per_ink), quiet); Cloud.log('summon', h.id);
@@ -483,9 +492,36 @@
   $('s-go').onclick = summon; $('s-stamp').onclick = stamp; sstage.addEventListener('pointerdown', stamp);
 
   // ------------------------------------------------------------------ arrivals
-  function renderHeroes() { const g = $('hgrid'); g.innerHTML = ''; $('h-count').textContent = `${Object.keys(S.roster).length} of ${R.heroes.length} met, and counting`;
-    R.heroes.slice().sort((a, b) => rr(b.rarity) - rr(a.rarity)).forEach(h => { const n = S.roster[h.id] || 0, c = OS.card(h, { owned: n > 0, mini: true, level: cardLevel(n) }); c.onclick = () => n ? heroSheet(h.id) : lockedSheet(h.id); g.appendChild(c); });
-    $('h-count').textContent += ` · ${S.bag.x_shard || 0} shards`; }
+  // ---- finding things: one search box, one sort, a row of filter chips, on the arrivals and in the bag
+  const FIND = { hq: '', hsort: 'rarity', hf: 'all', bq: '', bsort: 'kind', bf: 'all' };
+  const norm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const hits = (q, ...fields) => { const w = norm(q).split(/\s+/).filter(Boolean), hay = norm(fields.join(' ')); return w.every(x => hay.includes(x)); };
+  const chipRow = (box, list, cur, key) => { box.innerHTML = list.map(([k, t, n]) => `<button type="button" class="chip${cur === k ? ' on' : ''}" data-${key}="${k}">${t}${n != null ? ` <i>${n}</i>` : ''}</button>`).join(''); };
+  function renderHeroes() {
+    const g = $('hgrid'); g.innerHTML = ''; const met = Object.keys(S.roster).length;
+    $('h-count').textContent = `${met} met, and counting · ${S.bag.x_shard || 0} shards`;
+    const metN = id => S.roster[id] || 0, place = h => (places[h.place] || {}).name || '';
+    const rars = RAR.filter(r => R.heroes.some(h => h.rarity === r));
+    chipRow($('h-chips'), [['all', 'Everyone', null], ['met', 'Met', met], ['new', 'Not met yet', null], ['crew', 'On the crew', crew().length]].concat(rars.map(r => [r, OS.cap(r), R.heroes.filter(h => h.rarity === r && metN(h.id)).length])), FIND.hf, 'hf');
+    const list = R.heroes.filter(h => {
+      const f = FIND.hf, n = metN(h.id);
+      if (f === 'met' && !n) return false; if (f === 'new' && n) return false; if (f === 'crew' && !crew().includes(h.id)) return false; if (RAR.includes(f) && h.rarity !== f) return false;
+      // strangers you have not met keep their names hidden, so search can only find them by rarity, place or era
+      return !FIND.hq || (n ? hits(FIND.hq, h.name, h.title, h.species, h.era, h.rarity, place(h)) : hits(FIND.hq, h.rarity, place(h), h.era));
+    });
+    const by = { rarity: (a, b) => rr(b.rarity) - rr(a.rarity) || a.name.localeCompare(b.name), name: (a, b) => a.name.localeCompare(b.name),
+      power: (a, b) => (metN(b.id) ? power(b.id) : -1) - (metN(a.id) ? power(a.id) : -1), level: (a, b) => cardLevel(metN(b.id)) - cardLevel(metN(a.id)) || metN(b.id) - metN(a.id) || rr(b.rarity) - rr(a.rarity),
+      era: (a, b) => a.era.localeCompare(b.era) || a.name.localeCompare(b.name) };
+    list.sort((a, b) => (!!metN(b.id) - !!metN(a.id)) * (FIND.hsort === 'rarity' || FIND.hsort === 'era' ? 0 : 1) || by[FIND.hsort](a, b));
+    list.forEach(h => { const n = metN(h.id), c = OS.card(h, { owned: n > 0, mini: true, level: cardLevel(n) }); c.onclick = () => n ? heroSheet(h.id) : lockedSheet(h.id); g.appendChild(c); });
+    $('h-none').hidden = list.length > 0;
+  }
+  $('h-q').addEventListener('input', e => { FIND.hq = e.target.value; renderHeroes(); });
+  $('h-sort').addEventListener('change', e => { FIND.hsort = e.target.value; renderHeroes(); });
+  $('h-chips').addEventListener('click', e => { const b = e.target.closest('[data-hf]'); if (b) { FIND.hf = b.dataset.hf; renderHeroes(); } });
+  $('b-q').addEventListener('input', e => { FIND.bq = e.target.value; renderBag(); });
+  $('b-sort').addEventListener('change', e => { FIND.bsort = e.target.value; renderBag(); });
+  $('b-chips').addEventListener('click', e => { const b = e.target.closest('[data-bf]'); if (b) { FIND.bf = b.dataset.bf; renderBag(); } });
   // what a slot on a card can take, from the bag
   const slotOf = k => k.indexOf('own') === 0 ? R.slots.own[+k[3]] : k;
   const fits = (id, k) => Object.keys(S.bag).filter(x => S.bag[x] > 0 && OS.items[x] && OS.items[x].kind === 'gear' && (k.indexOf('own') === 0 ? x === OS.heroes[id].gear[+k[3]] : (!OS.items[x].owner && OS.items[x].slot === k)));
@@ -528,17 +564,22 @@
   // ------------------------------------------------------------------ bag, crates, tonics
   let armF = 'all';
   function renderBag() {
-    rollDay(); const g = $('bgrid'); g.innerHTML = ''; const ids = Object.keys(S.bag).filter(i => S.bag[i] > 0 && OS.items[i] && OS.items[i].kind !== 'gear');
-    const ord = { crate: 0, tonic: 1, gear: 2, loot: 3 }; ids.sort((a, b) => ord[OS.items[a].kind] - ord[OS.items[b].kind] || rr(OS.items[b].rarity) - rr(OS.items[a].rarity) || OS.items[a].name.localeCompare(OS.items[b].name));
+    rollDay(); const g = $('bgrid'); g.innerHTML = ''; const all = Object.keys(S.bag).filter(i => S.bag[i] > 0 && OS.items[i] && OS.items[i].kind !== 'gear');
+    const kindOf = id => { const it = OS.items[id]; return it.kind === 'crate' || it.kind === 'tonic' ? 'use' : it.junk ? 'junk' : 'treasure'; };
+    chipRow($('b-chips'), [['all', 'Everything', all.length], ['use', 'Crates and tonics', all.filter(i => kindOf(i) === 'use').length], ['treasure', 'Treasure', all.filter(i => kindOf(i) === 'treasure').length], ['junk', 'Junk', all.filter(i => kindOf(i) === 'junk').length], ['gear', 'Gear only', null]], FIND.bf, 'bf');
+    const ids = FIND.bf === 'gear' ? [] : all.filter(id => (FIND.bf === 'all' || kindOf(id) === FIND.bf) && (!FIND.bq || hits(FIND.bq, OS.items[id].name, OS.items[id].rarity, OS.items[id].flavor, (places[OS.items[id].place] || {}).name)));
+    const ord = { crate: 0, tonic: 1, gear: 2, loot: 3 }, bySort = { kind: (a, b) => ord[OS.items[a].kind] - ord[OS.items[b].kind] || rr(OS.items[b].rarity) - rr(OS.items[a].rarity), rarity: (a, b) => rr(OS.items[b].rarity) - rr(OS.items[a].rarity), name: () => 0, count: (a, b) => S.bag[b] - S.bag[a], value: (a, b) => (OS.items[b].sell || 0) - (OS.items[a].sell || 0) };
+    ids.sort((a, b) => bySort[FIND.bsort](a, b) || OS.items[a].name.localeCompare(OS.items[b].name));
     ids.forEach(id => { const it = OS.items[id], s = OS.slot(id, { count: S.bag[id], have: S.bag[id] }); if (it.kind === 'crate') { s.classList.add('pulse'); s.onclick = () => openCrate(); } if (it.kind === 'tonic') s.onclick = () => drink(id); g.appendChild(s); });
     for (let i = ids.length; i < Math.max(24, Math.ceil(ids.length / 12) * 12); i++) g.appendChild(OS.slot(null));
     // ---- the armory: every piece of gear you own, sorted, with who is wearing it
     let arm = $('armory'); if (!arm) { arm = el('div', 'panel'); arm.id = 'armory'; arm.style.marginTop = '1rem'; g.parentNode.parentNode.appendChild(arm); arm.addEventListener('click', e => { const b = e.target.closest('[data-af]'); if (b) { armF = b.dataset.af; renderBag(); } }); }
     const wearer = {}; Object.keys(S.gear).forEach(hid => Object.values(S.gear[hid]).forEach(x => { if (x) wearer[x] = hid; })); Object.keys(S.equip).forEach(hid => (S.equip[hid] || []).forEach(x => { if (x) wearer[x] = hid; }));
     const mine = Object.values(OS.items).filter(i => i.kind === 'gear' && owns(i.id)), tabs = [['all', 'All'], ['weapon', 'Weapons'], ['head', 'Head'], ['body', 'Body'], ['feet', 'Feet'], ['charm', 'Charms'], ['own', 'Hero’s own']];
-    const pick = mine.filter(i => armF === 'all' ? true : armF === 'own' ? !!i.owner : !i.owner && i.slot === armF).sort((a, c) => rr(c.rarity) - rr(a.rarity) || (a.set || 'zz').localeCompare(c.set || 'zz') || a.name.localeCompare(c.name));
+    const pick = mine.filter(i => (armF === 'all' ? true : armF === 'own' ? !!i.owner : !i.owner && i.slot === armF) && (!FIND.bq || hits(FIND.bq, i.name, i.rarity, i.slot, i.owner ? OS.heroes[i.owner].name : '', i.set ? R.gear_sets[i.set].name : ''))).sort((a, c) => rr(c.rarity) - rr(a.rarity) || (a.set || 'zz').localeCompare(c.set || 'zz') || a.name.localeCompare(c.name));
     arm.innerHTML = `<div class="spread"><h3 style="margin:0">The armory</h3><span class="mut">${mine.length} of ${Object.values(OS.items).filter(i => i.kind === 'gear').length} pieces found</span></div>
       <div class="row" style="flex-wrap:wrap;gap:.4rem;margin:.6rem 0">${tabs.map(([k, t]) => `<button class="btn small ${armF === k ? '' : 'ghost'}" data-af="${k}">${t}</button>`).join('')}</div><div class="armgrid"></div>`;
+    arm.hidden = FIND.bf !== 'all' && FIND.bf !== 'gear';
     const ag = arm.querySelector('.armgrid'); if (!pick.length) ag.appendChild(el('p', 'mut', 'Nothing here yet.'));
     pick.forEach(it => { const row = el('div', 'armrow r-' + it.rarity), sl = OS.slot(it.id, { count: S.bag[it.id] }); row.appendChild(sl);
       row.appendChild(el('div', '', `<b style="color:var(--rc)">${it.name}</b><span class="mut">${OS.cap(it.rarity)} · ${it.owner ? OS.heroes[it.owner].name + ' only' : OS.cap(it.slot)}${it.set ? ' · ' + R.gear_sets[it.set].name + ' set' : ''}</span><span class="mut">${wearer[it.id] ? 'Worn by ' + OS.heroes[wearer[it.id]].name + (S.bag[it.id] > 0 ? ' · ' + S.bag[it.id] + ' spare' : '') : 'In the armory' + (S.bag[it.id] > 1 ? ' · ' + S.bag[it.id] : '')}</span>`)); ag.appendChild(row); });
@@ -562,7 +603,7 @@
     const g = el('div', 'row'); g.style.justifyContent = 'center'; got.forEach(x => g.appendChild(OS.slot(x))); d.appendChild(g); d.appendChild(el('p', '', `<b>Smudge:</b> “${line('crate')}”`));
     const row = el('div', 'row'); if (S.bag.x_crate > 0) row.appendChild(btn('', `Open another (${S.bag.x_crate} left)`, () => openCrate())); row.appendChild(btn('ghost', 'Into the bag', modal.close)); d.appendChild(row); modal.open(d); render();
   }
-  function drink(id) { const t = R.tonics.find(x => x.id === id); if (!t || !(S.bag[id] > 0)) return; bump('tonics'); S.bag[id]--; S.tonics[t.effect] = Math.max(now(), S.tonics[t.effect] || 0) + t.minutes * 60000; save(true); render(); toast(`${t.name}: ${t.text}`); }
+  function drink(id) { const pt = (R.potions || []).find(x => x.id === id); if (pt) return toast(`${pt.name}: ${pt.text} Pack it in a potion slot when you start a raid.`); const t = R.tonics.find(x => x.id === id); if (!t || !(S.bag[id] > 0)) return; bump('tonics'); S.bag[id]--; S.tonics[t.effect] = Math.max(now(), S.tonics[t.effect] || 0) + t.minutes * 60000; save(true); render(); toast(`${t.name}: ${t.text}`); }
   $('b-sell').onclick = async () => { const map = {}; let earned = 0;
     Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || id === 'x_shard') return; const n = S.bag[id] - (it.junk ? 0 : 1); if (n > 0) { map[id] = n; earned += n * it.sell; } });
     if (!earned) return toast('Nothing to sell. Junk all goes; one of each treasure is kept.');
@@ -602,7 +643,7 @@
   function renderWorkshop() {
     renderMaking();
     const tb = $('w-tonics'); tb.innerHTML = '';
-    R.tonics.forEach(t => { const have = spare(t.cost.rarity), row = el('div', 'exrow'); row.innerHTML = `<div class="slot has r-uncommon"><img src="${OS.img('loot', t.id)}" alt=""></div><div><b>${t.name}</b><div class="mut" style="font-size:.85rem">${t.text} Costs ${t.cost.n} spare ${t.cost.rarity} treasures. You have ${have} spare.</div></div>`;
+    R.tonics.concat(R.potions || []).forEach(t => { const have = spare(t.cost.rarity), row = el('div', 'exrow'); row.innerHTML = `<div class="slot has r-uncommon"><img src="${OS.img('loot', t.id)}" alt=""></div><div><b>${t.name}</b><div class="mut" style="font-size:.85rem">${t.text} Costs ${t.cost.n} spare ${t.cost.rarity} treasures. You have ${have} spare.</div></div>`;
       const b = btn('small', 'Brew', () => { let need = t.cost.n; Object.keys(S.bag).sort((a, b) => S.bag[b] - S.bag[a]).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || it.rarity !== t.cost.rarity || id === 'x_shard') return; const use = Math.min(need, Math.max(0, S.bag[id] - 1)); S.bag[id] -= use; need -= use; }); give(t.id); save(true); render(); toast(`Brewed a ${t.name}. It is in the bag.`); }); b.disabled = have < t.cost.n; row.appendChild(b); tb.appendChild(row); });
     const gb = $('w-gear'); gb.innerHTML = ''; const all = new Set(); Object.keys(S.bag).forEach(id => { if (S.bag[id] > 0 && OS.items[id] && OS.items[id].kind === 'gear') all.add(id); }); Object.values(S.equip).forEach(e => e.forEach(g => g && all.add(g))); Object.values(S.gear).forEach(w => Object.values(w).forEach(g => g && all.add(g)));
     if (!all.size) gb.appendChild(el('p', 'mut', 'No gear yet. It turns up at jobs and falls out of raid bosses.'));
@@ -623,39 +664,137 @@
   // ------------------------------------------------------------------ raids
   function renderRaids() {
     $('rd-tix').innerHTML = `Tickets ${S.tickets} / ${R.raids.tickets}` + (S.tickets < R.raids.tickets ? ` <span class="mut" style="font-weight:700">· next in ${fmt((R.raids.regen_minutes * 60000 - (now() - S.ticketT)) / 1000)}</span>` : '');
-    const box = $('rd-list'); if (box.dataset.sig === S.tickets + JSON.stringify(S.raids) + totalLevel()) return; box.dataset.sig = S.tickets + JSON.stringify(S.raids) + totalLevel(); box.innerHTML = '';
+    const box = $('rd-list'); if (!RAIDS) { raidsReady.then(renderRaids); return; } if (box.dataset.sig === S.tickets + JSON.stringify(S.raids) + totalLevel()) return; box.dataset.sig = S.tickets + JSON.stringify(S.raids) + totalLevel(); box.innerHTML = '';
     R.raids.bosses.forEach(b => { const p = places[b.place], open = unlocked(p), row = el('div', 'prow' + (open ? '' : ' lock'));
-      row.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt=""><div><div class="tag">${p.name} · beaten ${S.raids[b.id] || 0} times</div><h3>${b.name}</h3><p>${open ? b.text : 'Needs ' + p.skill + ' level ' + p.level + '.'}</p><p class="mut" style="font-size:.8rem">Health ${OS.num(b.hp)} · Attack ${b.attack} · Defense ${b.defense} · ${b.gold} gold</p></div>`;
+      const B = bossOf(b); row.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt=""><div><div class="tag">${p.name} · beaten ${S.raids[b.id] || 0} times</div><h3>${b.name}</h3><p>${open ? b.text : 'Needs ' + p.skill + ' level ' + p.level + '.'}</p><p class="mut" style="font-size:.8rem">Health ${OS.num(b.hp)} · Attack ${b.attack} · Defense ${b.defense} · ${b.gold} gold${B.weak ? ' · weak to ' + STATW[B.weak].toLowerCase() : ''}</p></div>`;
       const acts = el('div', 'row acts'), go = btn('small', 'Raid', () => raidSheet(b)); go.disabled = !open || S.tickets < 1; acts.appendChild(go); row.appendChild(acts); box.appendChild(row); });
   }
-  function raidSheet(b) {
-    const team = [], d = el('div', '', `<h3 style="font-size:1.5rem">${b.name}</h3><p class="mut">${b.text} Pick three.</p>`), hs = el('div', 'heroes pick'), info = el('p', '', '');
-    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) }); c.onclick = () => { const k = team.indexOf(id); if (k >= 0) team.splice(k, 1); else if (team.length < 3) team.push(id); c.classList.toggle('sel', team.includes(id)); upd(); }; hs.appendChild(c); });
-    const go = btn('', 'Send them in', () => fight(b, team.slice())); d.append(hs, info, go);
-    function upd() { const t = teamStats(team); info.innerHTML = team.length ? `Team: Attack <b>${t.attack}</b> · Defense <b>${t.defense}</b> · Health <b>${t.health * R.raids.hp_mult}</b> · Speed <b>${t.speed}</b> · Luck <b>${t.luck}</b>` : 'Nobody picked yet.'; go.disabled = !team.length; }
-    upd(); modal.open(d);
-  }
+  // ---- raids you play: pick three and two potions, walk three rooms, then fight the boss at reading speed.
+  //      Room choices roll one team stat; wounds carry into the boss fight; a lost raid sends the team to rest.
+  //      The words live in data/raids.json (Fable writes them); this is only the engine.
+  const RD = R.raids; let RAIDS = null; const raidsReady = fetch('/data/raids.json' + OS.VER).then(r => r.json()).then(j => RAIDS = j).catch(() => RAIDS = { room_pool: [], bosses: {}, reactions: { default: {} } });
+  const STATW = { attack: 'Attack', defense: 'Defense', health: 'Health', speed: 'Speed', luck: 'Luck' };
+  const resting = id => Math.max(0, ((S.recover || {})[id] || 0) - now());
+  const fillIn = (t, o) => String(t || '').replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m);
+  const pick1 = a => a && a.length ? a[Math.floor(Math.random() * a.length)] : '';
+  const TITLES = ['Captain', 'Doctor', 'Dr.', 'General', 'Sgt.', 'Frau', 'Inspector', 'Agent', 'President', 'Pharaoh', 'Mad', 'El', 'Commander', 'Pixel', 'Unit', 'Lady', 'Sir'];
+  const short = id => { const w = OS.heroes[id].name.split(' '); return TITLES.includes(w[0]) && w[1] ? w[1] : w[0]; };
+  const bossOf = b => Object.assign({ weak: null, resist: null, rooms: [], lines: {}, intro: b.text }, RAIDS && RAIDS.bosses[b.id]);
+  function react(id, tag) { const r = (RAIDS && RAIDS.reactions) || {}, pool = (r[id] && r[id][tag]) || (r.default && r.default[tag]); return pool ? fillIn(pick1(pool), { name: short(id) }) : ''; }
   const teamStats = team => { const t = { attack: 0, defense: 0, health: 0, speed: 0, luck: 0 }; team.forEach(id => { const s = heroStats(id); R.stats.forEach(k => t[k] += s[k]); }); return t; };
-  function fight(b, team) {
-    S.tickets--; if (S.tickets === R.raids.tickets - 1) S.ticketT = now();
-    const raidUp = 1 + team.reduce((a, id) => a + fx(id, 'raid'), 0) / Math.max(1, team.length);
-    const t = teamStats(team), log = []; let hp = t.health * R.raids.hp_mult, bhp = b.hp, win = false; const maxhp = hp;
-    for (let r = 1; r <= R.raids.rounds && hp > 0 && bhp > 0; r++) {
-      const who = OS.heroes[team[(r - 1) % team.length]].name, crit = Math.random() < Math.min(.5, t.luck / 300), twice = Math.random() < Math.min(.5, t.speed / 400);
-      let dmg = Math.round(Math.max(2, Math.round(t.attack * (.8 + Math.random() * .4) - b.defense * .5)) * (crit ? 2 : 1) * (twice ? 2 : 1) * raidUp); bhp -= dmg;
-      log.push({ t: `${who} ${crit ? 'lands a huge hit' : twice ? 'strikes twice' : 'hits'} for ${dmg}.`, hp, bhp: Math.max(0, bhp), cls: crit ? 'crit' : '' }); if (bhp <= 0) { win = true; break; }
-      const hit = Math.max(1, Math.round(b.attack * (.8 + Math.random() * .4) - t.defense / 3)); hp -= hit; log.push({ t: `${b.name} hits back for ${hit}.`, hp: Math.max(0, hp), bhp, cls: 'foe' });
+  // the team's stats as this boss sees them: its weakness counts half again, what it shrugs off counts for less
+  function effStats(team, B) { const t = teamStats(team), raidUp = 1 + team.reduce((a, id) => a + fx(id, 'raid'), 0) / Math.max(1, team.length);
+    R.stats.forEach(k => t[k] = Math.round(t[k] * (k === B.weak ? RD.weak_mult : k === B.resist ? RD.resist_mult : 1))); t.raidUp = raidUp; return t; }
+  // one exchange: the team strikes, then the boss. Shared by the real fight and by the odds estimate, so they always agree.
+  function exchange(st, b, t, who) {
+    const crit = Math.random() < Math.min(.5, t.luck / 300), twice = Math.random() < Math.min(.5, t.speed / 400), fury = st.fury > 0 ? 1 + st.furyAmt : 1;
+    const dmg = Math.round(Math.max(2, Math.round(t.attack * (.8 + Math.random() * .4) - b.defense * .5)) * (crit ? 2 : 1) * (twice ? 2 : 1) * t.raidUp * fury); st.bhp -= dmg; if (st.fury > 0) st.fury--;
+    const out = [{ kind: crit ? 'crit' : 'hit', who, dmg, crit, twice }]; if (st.bhp <= 0) return out;
+    const shield = st.shield > 0 ? 1 - st.shieldAmt : 1, hit = Math.max(1, Math.round((b.attack * (.8 + Math.random() * .4) - t.defense / 3) * shield)); st.hp -= hit; if (st.shield > 0) st.shield--;
+    out.push({ kind: 'foe', dmg: hit, shielded: shield < 1 }); return out;
+  }
+  function odds(b, t, hp, bhp, n) { let w = 0; for (let i = 0; i < (n || 160); i++) { const st = { hp, bhp, fury: 0, shield: 0 }; for (let r = 0; r < RD.rounds && st.hp > 0 && st.bhp > 0; r++) exchange(st, b, t, ''); if (st.bhp <= 0) w++; } return w / (n || 160); }
+  function attackNeeded(b, t, hp) { for (let m = 1.1; m <= 6; m += .1) { const tt = Object.assign({}, t, { attack: Math.round(t.attack * m) }); if (odds(b, tt, hp, b.hp, 80) >= .5) return tt.attack; } return null; }
+  const potionsHave = () => R.potions.filter(p => (S.bag[p.id] || 0) > 0);
+
+  async function raidSheet(b) {
+    await raidsReady; const B = bossOf(b), p = places[b.place], team = [], pots = [];
+    const d = el('div', 'raidset'), heroes = el('div', 'heroes pick'), info = el('div', 'raidodds', ''), potRow = el('div', 'potrow', '');
+    d.innerHTML = `<div class="raidhead" style="background-image:url(${OS.img('scenes', p.id)})"><div><div class="tag">${p.name} · ${p.era}</div><h3>${b.name}</h3></div></div>
+      <p class="raidintro">${B.intro || b.text}</p>
+      <div class="row raidtags">${B.weak ? `<span class="rtag good">Weak to ${STATW[B.weak]}</span>` : ''}${B.resist ? `<span class="rtag bad">Shrugs off ${STATW[B.resist]}</span>` : ''}<span class="rtag">Health ${OS.num(b.hp)} · Attack ${b.attack} · Defense ${b.defense}</span></div>
+      <h4>Pick three</h4>`;
+    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const rest = resting(id), c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) });
+      if (rest) { c.classList.add('resting'); c.appendChild(el('span', 'restlbl', 'Resting ' + fmt(rest / 1000))); }
+      c.onclick = () => { if (resting(id)) return toast(`${OS.heroes[id].name} is still recovering from the last raid.`); const k = team.indexOf(id); if (k >= 0) team.splice(k, 1); else if (team.length < 3) team.push(id); c.classList.toggle('sel', team.includes(id)); upd(); }; heroes.appendChild(c); });
+    const go = btn('', `Go in (1 ticket)`, () => { if (S.tickets < 1) return toast('No raid tickets left. One comes back every ' + RD.regen_minutes / 60 + ' hours.'); runRaid(b, B, team.slice(), pots.slice()); });
+    d.append(heroes, el('h4', '', `Potions (${RD.potion_slots} slots)`), potRow, info, go);
+    function drawPots() {
+      const have = potionsHave(); potRow.innerHTML = have.length ? '' : `<p class="mut">No potions. Brew them in the Workshop: ${R.potions.map(x => x.name).join(', ')}.</p>`;
+      have.forEach(x => { const used = pots.filter(q => q === x.id).length, left = S.bag[x.id] - used, bt = el('button', 'potbtn' + (used ? ' on' : ''), `<img src="${OS.img('loot', x.id)}" alt=""><span><b>${x.name}</b>${x.text}</span><i>${used ? used + ' packed · ' : ''}${left} left</i>`); bt.type = 'button';
+        bt.onclick = () => { if (left > 0 && pots.length < RD.potion_slots) pots.push(x.id); else { const k = pots.indexOf(x.id); if (k >= 0) pots.splice(k, 1); } drawPots(); }; potRow.appendChild(bt); });
     }
-    const p = places[b.place], got = [];
-    if (win) { roll([{ place: p.id, n: R.raids.loot_rolls, luck: fullLuck(p, R.raids.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); save(true); });
-      bump('raids_won'); bump('gold', b.gold); S.gold += b.gold; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5); } else S.gold += Math.round(b.gold * .1);
-    Cloud.log('raid', b.id, win ? 1 : 0); save(true); [0, 220, 470].forEach(ms => setTimeout(() => SND('hit'), ms)); setTimeout(() => SND(win ? 'win' : 'deny'), 900);
-    const d = el('div', 'fight', `<h3 style="font-size:1.5rem">${b.name}</h3><div class="hpbars"><div><span>Your three</span><div class="bar"><i id="f-hp" style="width:100%;background:linear-gradient(90deg,#1f9a49,#6fe394)"></i></div></div><div><span>${b.name}</span><div class="bar"><i id="f-bhp" style="width:100%;background:linear-gradient(90deg,#b3261e,#ff7a70)"></i></div></div></div><div class="flog" id="f-log"></div>`); modal.open(d);
-    let i = 0; const step = () => { if (!$('f-log')) return; if (i < log.length) { const L = log[i++], row = el('div', L.cls, L.t); $('f-log').prepend(row); $('f-hp').style.width = pct(L.hp, maxhp); $('f-bhp').style.width = pct(L.bhp, b.hp); setTimeout(step, 380); return; }
-      const end = el('div', 'reveal', `<h3 style="font-size:1.6rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3><p class="mut">${win ? `${b.gold} gold and everything below.` : `${Math.round(b.gold * .1)} gold for the trouble. Train them, dress them, or bring luckier friends.`}</p>`);
-      const g = el('div', 'row'); g.style.justifyContent = 'center'; got.forEach(x => g.appendChild(OS.slot(x))); end.append(g, btn('', 'Good', modal.close)); d.appendChild(end); render(); }; setTimeout(step, 400);
+    function upd() {
+      go.disabled = team.length < 1 || S.tickets < 1;
+      if (!team.length) { info.innerHTML = '<p class="mut">Nobody picked yet. Three is best: everyone adds their stats.</p>'; return; }
+      const t = effStats(team, B), hp = teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1), o = odds(b, t, hp, b.hp), need = o < .5 ? attackNeeded(b, t, hp) : null;
+      info.innerHTML = `<p>Against the boss, fresh: <b>${Math.round(o * 100)}%</b> to win.${need ? ` It needs about <b>${need}</b> attack; you have ${t.attack}.` : ''} The rooms on the way can make that better or worse.</p>
+        <p class="mut">Team: ${R.stats.map(k => `${STATW[k]} <b${k === B.weak ? ' class="good"' : k === B.resist ? ' class="bad"' : ''}>${t[k] == null ? '' : k === 'health' ? Math.round(hp) : t[k]}</b>`).join(' · ')}</p>`;
+    }
+    drawPots(); upd(); modal.open(d);
   }
 
+  function runRaid(b, B, team, pots) {
+    S.tickets--; if (S.tickets === RD.tickets - 1) S.ticketT = now(); save(true);
+    const p = places[b.place], t = effStats(team, B), maxhp = Math.round(teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1));
+    const st = { hp: maxhp, bhp: b.hp, fury: 0, furyAmt: 0, shield: 0, shieldAmt: 0, round: 0 }, diff = RD.room_diff[p.tier] || 100, lineMs = RD.line_ms || 1300;
+    const pool = (B.rooms && B.rooms.length >= RD.rooms ? B.rooms : (B.rooms || []).concat(RAIDS.room_pool || [])).slice(), rooms = []; while (rooms.length < RD.rooms && pool.length) rooms.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    const say = (t2) => fillIn(t2, { boss: b.name, place: p.name });
+    const d = el('div', 'raidrun'); d.innerHTML = `<div class="raidhead small" style="background-image:url(${OS.img('scenes', p.id)})"><div><div class="tag">${p.name}</div><h3>${b.name}</h3></div></div>
+      <div class="hpbars"><div><span>Your three <em id="r-hpn"></em></span><div class="bar"><i id="r-hp" style="width:100%;background:linear-gradient(90deg,#1f9a49,#6fe394)"></i></div></div><div><span>${b.name} <em id="r-bhpn"></em></span><div class="bar"><i id="r-bhp" style="width:100%;background:linear-gradient(90deg,#b3261e,#ff7a70)"></i></div></div></div>
+      <div class="rteam">${team.map(id => `<img src="${OS.img('heroes', id)}" alt="${OS.heroes[id].name}" title="${OS.heroes[id].name}">`).join('')}</div>
+      <div class="rstory" id="r-story" aria-live="polite"></div><div class="rchoices" id="r-choices"></div><div class="rpots" id="r-pots"></div>`;
+    modal.open(d); let live = true; const story = $('r-story'), choices = $('r-choices');
+    const gone = () => !live || !document.body.contains(story);
+    const bars = () => { $('r-hp').style.width = pct(st.hp, maxhp); $('r-bhp').style.width = pct(st.bhp, b.hp); $('r-hpn').textContent = Math.max(0, Math.round(st.hp)) + ' / ' + maxhp; $('r-bhpn').textContent = Math.max(0, Math.round(st.bhp)) + ' / ' + b.hp; };
+    const line = (text, cls) => { if (!text) return; const r = el('p', 'rline ' + (cls || ''), text); story.appendChild(r); story.scrollTop = story.scrollHeight; requestAnimationFrame(() => r.classList.add('in')); };
+    const wait = ms => new Promise(ok => setTimeout(ok, ms));
+    const voice = (tag, id) => { id = id || pick1(team); const l = react(id, tag); if (l) line(l, 'voice'); };
+    bars();
+
+    async function room(i) {
+      const rm = rooms[i]; if (!rm) return fightBoss();
+      line(`Room ${i + 1} of ${rooms.length}`, 'tag'); await wait(250); if (gone()) return; line(say(rm.text), 'scene'); await wait(900); if (gone()) return;
+      choices.innerHTML = '';
+      rm.choices.forEach(c => { const ch = Math.max(.1, Math.min(.95, t[c.stat] / (t[c.stat] + diff))), bt = el('button', 'btn rchoice', `${c.label}<span>${STATW[c.stat]} · ${Math.round(ch * 100)}%</span>`);
+        bt.onclick = async () => { choices.innerHTML = ''; SND('click'); const ok = Math.random() < ch;
+          line(`${c.label}.`, 'you'); await wait(600); if (gone()) return;
+          if (ok) { line(say(c.ok), 'good'); st.bhp = Math.round(st.bhp * (1 - RD.room_bonus)); voice('ok'); }
+          else { const hurt = Math.round(maxhp * RD.room_hurt); st.hp = Math.max(1, st.hp - hurt); SND('hit'); line(say(c.bad) + ` (−${hurt} health)`, 'bad'); voice(st.hp < maxhp * .5 ? 'hurt' : 'fail'); }
+          bars(); await wait(lineMs); if (!gone()) room(i + 1); };
+        choices.appendChild(bt); });
+    }
+    function drawPots() {
+      const box = $('r-pots'); if (!box) return; box.innerHTML = ''; if (!pots.length) return;
+      pots.forEach((id, k) => { const x = R.potions.find(q => q.id === id), bt = el('button', 'potbtn small', `<img src="${OS.img('loot', id)}" alt=""><span><b>${x.name}</b></span>`); bt.type = 'button';
+        bt.onclick = () => { if (!(S.bag[id] > 0)) return; S.bag[id]--; pots.splice(k, 1); bump('tonics');
+          if (x.effect === 'heal') { const g = Math.round(maxhp * x.amount); st.hp = Math.min(maxhp, st.hp + g); line(`The team drinks a ${x.name}. +${g} health.`, 'good'); }
+          if (x.effect === 'shield') { st.shield = x.rounds; st.shieldAmt = x.amount; line(`The team drinks an ${x.name}. The next ${x.rounds} hits do half damage.`, 'good'); }
+          if (x.effect === 'fury') { st.fury = x.rounds; st.furyAmt = x.amount; line(`The team drinks a ${x.name}. The next ${x.rounds} blows land harder.`, 'good'); }
+          SND('confirm'); bars(); drawPots(); save(true); };
+        box.appendChild(bt); });
+      box.prepend(el('span', 'mut', 'Drink:'));
+    }
+    async function fightBoss() {
+      choices.innerHTML = ''; line(B.lines.open ? say(B.lines.open) : `${b.name} attacks.`, 'scene'); await wait(500); voice('boss'); drawPots(); await wait(lineMs); let lowSaid = false;
+      while (!gone() && st.hp > 0 && st.bhp > 0 && st.round < RD.rounds) {
+        st.round++; const who = team[(st.round - 1) % team.length], ev = exchange(st, b, t, who), nm = short(who);
+        for (const e of ev) {
+          if (gone()) return;
+          if (e.kind === 'foe') { SND('hit', { vol: .8 }); line((B.lines.hit ? say(pick1(B.lines.hit)) : `${b.name} hits back.`) + ` (−${e.dmg}${e.shielded ? ', shielded' : ''})`, 'foe'); if (st.hp < maxhp * .3 && Math.random() < .5) voice('hurt'); }
+          else { SND('hit'); line(`${nm} ${e.crit ? 'lands a huge hit' : e.twice ? 'strikes twice' : 'hits'} for ${e.dmg}.`, e.crit ? 'crit' : 'hit'); }
+          bars(); await wait(lineMs);
+        }
+        if (!lowSaid && st.bhp > 0 && st.bhp < b.hp * .3 && B.lines.low) { lowSaid = true; line(say(B.lines.low), 'scene'); await wait(lineMs); }
+      }
+      if (gone()) return; finish(st.bhp <= 0);
+    }
+    function finish(win) {
+      live = false; $('r-pots').innerHTML = ''; const got = [];
+      if (win) { line(B.lines.win ? say(B.lines.win) : `${b.name} goes down.`, 'good'); voice('win'); SND('win');
+        roll([{ place: p.id, n: RD.loot_rolls, luck: fullLuck(p, RD.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); showGot(); save(true); });
+        bump('raids_won'); bump('gold', b.gold); S.gold += b.gold; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5);
+        S.journal = S.journal || {}; team.forEach(id => { const j = S.journal[id] || (S.journal[id] = []); j.push({ d: Date.now(), t: `Beat ${b.name} at ${p.name}.` }); if (j.length > 40) j.shift(); });
+      } else { line(B.lines.lose ? say(B.lines.lose) : 'The team limps home.', 'bad'); voice('lose'); SND('deny'); const cons = Math.round(b.gold * .1); S.gold += cons;
+        S.recover = S.recover || {}; team.forEach(id => S.recover[id] = now() + RD.recover_minutes * 60000); }
+      Cloud.log('raid', b.id, win ? 1 : 0); save(true);
+      const end = el('div', 'reveal', `<h3 style="font-size:1.5rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3><p class="mut">${win ? `${b.gold} gold and whatever it was guarding.` : `${Math.round(b.gold * .1)} gold for the trouble. The three of them rest for ${RD.recover_minutes} minutes. Train them, dress them, pack potions, or bring friends who hit harder.`}</p>`);
+      const g = el('div', 'row'); g.style.justifyContent = 'center'; const showGot = () => { g.innerHTML = ''; got.forEach(x => g.appendChild(OS.slot(x))); }; end.append(g, btn('', 'Good', modal.close)); choices.innerHTML = ''; choices.appendChild(end); render();
+    }
+    // closing the sheet mid-raid is a retreat: the ticket is spent, nobody is hurt, nothing is won
+    const obs = new MutationObserver(() => { if (!document.body.contains(story) || !$('modal').classList.contains('on')) { if (live) { live = false; Cloud.log('raid', b.id, 0); } obs.disconnect(); } }); obs.observe($('modal'), { attributes: true, childList: true, subtree: true });
+    room(0);
+  }
   // ------------------------------------------------------------------ the city, shop, account
   // ---- the city: rankings, friends, guilds, the market stall and the mailbox
   let cityTab = 'ranks', citySkill = '', soc = null, socAt = 0, mkt = null, mktFilter = '';
@@ -686,7 +825,7 @@
       acts.appendChild(btn('small ghost', f.status === 'ok' ? 'Remove' : f.mine ? 'Cancel' : 'No', async () => { await Cloud.friendDrop(f.username); cityAgain(true); })); row.appendChild(acts); L.appendChild(row); }); wirePeek(box); }
   async function peek(n) { let p; try { p = await Cloud.peek(n); } catch (e) { } if (!p) { toast('That ledger is shut.'); return; }
     const d = el('div', 'peek'), top = Object.keys(p.xp).sort((a, c) => p.xp[c] - p.xp[a]).slice(0, 4), own = Object.keys(p.roster);
-    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem">${esc(p.username)}</h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} of ${R.heroes.length} arrivals · ${p.cabinet} treasures on display</p>
+    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem">${esc(p.username)}</h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} arrivals met · ${p.cabinet} treasures on display</p>
       <div class="pkstats">${top.map(k => `<div class="stat"><b>${lvlOf(p.xp[k])}${p.rebirth[k] ? '<small> ' + '★'.repeat(p.rebirth[k]) + '</small>' : ''}</b><span>${k}</span></div>`).join('')}</div><div class="tag" style="margin-top:.8rem">${(p.crew || []).some(x => x) ? 'Their crew' : 'Their best cards'}</div><div class="pkcards"></div>`;
     const show = ((p.crew || []).filter(x => x && OS.heroes[x]).length ? p.crew.filter(x => x && OS.heroes[x]) : own.filter(x => OS.heroes[x]).sort((a, c) => p.roster[c] - p.roster[a]).slice(0, 3));
     show.forEach(id => d.querySelector('.pkcards').appendChild(OS.card(OS.heroes[id], { mini: true, level: p.roster[id] || 1, noflip: true })));
@@ -758,7 +897,7 @@
     const L = S.life || {}, best = Object.keys(S.roster).sort((x, y) => power(y) - power(x))[0], mTot = Object.values(S.mastery).reduce((t, m) => t + Object.values(m).reduce((q, x) => q + lvlOf(x) - 1, 0), 0);
     const gearOwned = Object.values(OS.items).filter(i => i.kind === 'gear' && owns(i.id)).length, gearAll = Object.values(OS.items).filter(i => i.kind === 'gear').length, kits = Object.keys(S.roster).filter(id => kitCount(id) >= 3).length;
     const groups = [
-      ['Collection', [['Heroes met', Object.keys(S.roster).length + ' / ' + R.heroes.length], ['Cards at top level', Object.keys(S.roster).filter(id => cardLevel(S.roster[id]) >= R.card.max_level).length], ['Cabinet pieces', Object.keys(S.cabinet).length + ' / ' + treasures.length], ['Gear found', gearOwned + ' / ' + gearAll], ['Full kits worn', kits], ['Duplicate summons', L.dupes || 0], ['Shards in hand', S.bag.x_shard || 0]]],
+      ['Collection', [['Heroes met', Object.keys(S.roster).length], ['Cards at top level', Object.keys(S.roster).filter(id => cardLevel(S.roster[id]) >= R.card.max_level).length], ['Cabinet pieces', Object.keys(S.cabinet).length + ' / ' + treasures.length], ['Gear found', gearOwned + ' / ' + gearAll], ['Full kits worn', kits], ['Duplicate summons', L.dupes || 0], ['Shards in hand', S.bag.x_shard || 0]]],
       ['Work', [['Total level', totalLevel()], ['Rebirths', rebirthTotal()], ['Hauls', OS.num(S.actions)]].concat(R.skills.filter(k => k !== 'Summoning').map(k => [k + ' hauls', OS.num(L['hauls_' + k] || 0)])).concat([['Things found', OS.num(L.finds || 0)], ['Expeditions', L.expeditions || 0], ['Things made', L.made || 0]].concat(MK.skills.map(k => [k, 'Level ' + level(k)])).concat([ ['Rare or better found', OS.num(RAR.slice(2).reduce((t, r) => t + (L['finds_' + r] || 0), 0))], ['Mastery levels', mTot], ['Contracts done', L.contracts || 0]]))],
       ['Ink and gold', [['Ink earned', OS.num(L.ink || 0)], ['Ink spent summoning', OS.num(L.ink_spent || 0)], ['Ink bonus', '+' + Math.round((inkBonus() - 1) * 1000) / 10 + '%'], ['Stamps', OS.num(L.stamps || 0)], ['Summons', S.summons], ['Gold earned', OS.num(L.gold || 0)], ['Gold from selling', OS.num(L.gold_sold || 0)]]],
       ['Fights and extras', [['Raids won', L.raids_won || 0], ['Bosses beaten', Object.keys(S.raids).length + ' / ' + R.raids.bosses.length], ['Strongest hero', best ? OS.heroes[best].name + ' (' + power(best) + ')' : 'nobody'], ['Crates opened', L.crates || 0], ['Tonics drunk', L.tonics || 0], ['Time played', fmt(L.seconds || 0)]]]];

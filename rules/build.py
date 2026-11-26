@@ -20,11 +20,11 @@ C = dict(
     lock_pins=5,
     max_keys_per_second=14,
     daily_keys={"full": 40000, "after": 0.05},   # keys past the daily amount count for 5% (stops macros, never hits a real typist)
-    web={"xp_mult": 0.25, "loot_chance": 0.5, "ink_mult": 0.35, "stamp_ink": 5},
+    web={"xp_mult": 0.25, "loot_chance": 0.5, "ink_mult": 0.2, "stamp_ink": 5},
     # ---- summoning
     summon={"base_ink": 3000, "per_unique": 400, "xp_per_ink": 0.25,
             "weights": {"common": 50, "uncommon": 28, "rare": 14, "epic": 6, "legendary": 1.6, "absurd": 0.35, "unhinged": 0.05},
-            "luck_per_level": 0.0},   # the odds are the odds: published, and they never move
+            "luck_per_level": 0.0, "luck_per_10": 0.03},   # published odds; every 10 Summoning levels adds 3% to rare-or-better weights, shown on screen
     # ---- cards
     card={"max_level": 10, "stat_per_level": 0.08, "shard_gold": 25,
           "hero_total": {"common": 50, "uncommon": 62, "rare": 76, "epic": 92, "legendary": 110, "absurd": 130, "unhinged": 155}},
@@ -66,9 +66,9 @@ import wave2 as _w2
 from facts import FACTS
 BG.update(_w2.BG)
 C.update(
-    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.01, "mastery_cap": 50, "wander_minutes": 15,
+    jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.006, "mastery_cap": 50, "wander_minutes": 15,
           # Smudge does the work, one place at a time; up to three heroes stand behind him as crew
-          "crew_slots": [0, 15, 45], "crew_speed_div": 150, "crew_luck_div": 150, "solo_mult": 3.0},
+          "crew_slots": [0, 15, 45], "crew_speed_div": 150, "crew_luck_div": 150, "solo_mult": 1.0, "speed_cap": 2.5},
     # everybody else can be sent home to their own era for a while and comes back with whatever they found
     rift={"crate_chance": 0.4, "exped_chance": 0.3},
     exped={"slots": [0, 0, 30, 80, 150], "hours": [1, 4, 8], "rolls_per_hour": 7, "ink_per_hour": 260, "mastery_per_hour": 30},
@@ -98,8 +98,15 @@ C.update(
     tonics=[{"id": "x_tonic_speed", "name": "Quickstep Tonic", "effect": "speed", "amount": 0.25, "minutes": 60, "cost": {"rarity": "common", "n": 8}, "text": "Every job runs 25% faster for an hour."},
             {"id": "x_tonic_luck", "name": "Lucky Dip Tonic", "effect": "luck", "amount": 0.5, "minutes": 60, "cost": {"rarity": "uncommon", "n": 4}, "text": "Better finds everywhere for an hour."},
             {"id": "x_tonic_xp", "name": "Bookworm Tonic", "effect": "xp", "amount": 0.5, "minutes": 60, "cost": {"rarity": "rare", "n": 2}, "text": "Half again as much skill xp for an hour."}],
+    # potions: brewed like tonics, carried into a raid in the two potion slots and drunk mid-fight
+    potions=[{"id": "x_potion_heal", "name": "Healing Draught", "effect": "heal", "amount": 0.35, "cost": {"rarity": "common", "n": 6}, "text": "Drunk mid-fight, it gives the team back a third of its health."},
+             {"id": "x_potion_shield", "name": "Ironskin Draught", "effect": "shield", "amount": 0.5, "rounds": 3, "cost": {"rarity": "uncommon", "n": 3}, "text": "The next three hits the team takes do half damage."},
+             {"id": "x_potion_fury", "name": "Fury Draught", "effect": "fury", "amount": 0.6, "rounds": 3, "cost": {"rarity": "rare", "n": 2}, "text": "The team's next three blows land 60% harder."}],
     gear_up={"max": 5, "per_level": 0.15, "gold": [60, 150, 350, 800, 2000], "parts": [1, 2, 4, 7, 12]},
     raids={"tickets": 3, "regen_minutes": 120, "hp_mult": 8, "rounds": 20, "loot_rolls": 3, "loot_luck": 2.0,
+           # played raids (O3): three rooms then the boss; a room choice rolls a team stat against the room's difficulty
+           "rooms": 3, "potion_slots": 2, "recover_minutes": 30, "room_diff": {"1": 45, "2": 140, "3": 340}, "room_hurt": 0.12, "room_bonus": 0.08,
+           "weak_mult": 1.5, "resist_mult": 0.6, "line_ms": 1300,
            "bosses": [
              {"id": "tiber", "name": "The Tiber Thing", "place": "dock", "hp": 300, "attack": 35, "defense": 10, "gold": 120, "text": "Nobody has seen all of it. The part with the teeth is enough."},
              {"id": "tony", "name": "Big Tony's Boys", "place": "speakeasy", "hp": 340, "attack": 38, "defense": 12, "gold": 140, "text": "Four gentlemen who would like a word about the safe."},
@@ -117,7 +124,7 @@ def xp_for_level(level):
     for l in range(1, level):
         total += math.floor(l + 300.0 * 2 ** (l / 7.0))
     return int(math.floor(total / 4.0))
-C["xp_table"] = [xp_for_level(l) for l in range(1, 100)]   # xp needed to BE level index+1
+C["xp_table"] = json.load(open(os.path.join(os.path.dirname(__file__), "xp_table.json")))   # xp needed to BE level index+1. Fitted by rules/fit_curve.py (O1, Nov 2026); the old curve was xp_for_level()
 
 def spread(total, weights):
     vals = [round(total * w) for w in weights]
@@ -213,6 +220,8 @@ for p in PLACES:
 items["x_crate"] = dict(id="x_crate", name="Rift Crate", kind="crate", rarity="rare", icon="x_crate", flavor="It fell out of a hole in time. It is ticking. Probably fine.", place="archive", sell=0)
 for t in C["tonics"]:
     items[t["id"]] = dict(id=t["id"], name=t["name"], kind="tonic", rarity="uncommon", icon=t["id"], flavor=t["text"], place="archive", sell=0)
+for t in C["potions"]:   # kind "tonic" on purpose: the server already budgets brewed tonics, and potions are brewed the same way
+    items[t["id"]] = dict(id=t["id"], name=t["name"], kind="tonic", potion=True, rarity="uncommon", icon=t["id"], flavor=t["text"], place="archive", sell=0)
 items["x_shard"] = dict(id="x_shard", name="Card Shard", kind="loot", rarity="uncommon", icon="x_shard", flavor="A corner of somebody who has already arrived.", place="archive", sell=C["card"]["shard_gold"])
 
 out = dict(C, heroes=heroes, places=places, items=items)

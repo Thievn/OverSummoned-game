@@ -349,24 +349,14 @@ Every Opus step that needs writing ships with stand-in text in a data file and l
 Fable fills in text fields only and never changes the engine or the shape of the data.
 
 Opus plan
-- O1 Pacing and math: run `rules/sim.py`, show a day 1 / 7 / 30 table to Dean BEFORE changing live numbers.
-- O2 Arrivals and bag: search, sort, filters; no fixed "36" in the game screens.
-- O2b Layered Smudge (do after O2, before raids). Dean's words: Smudge "doesn't have enough personality", and outfits must swap "without cutting out images".
-  Today every pose (stamp, fish, pick, dig, sleep) is its own flat drawing cut up after the fact. Replace that with ONE master rig built from parts, with slots.
-  - Art: through the Grok queue only, using `art/raw/sheet1/smudge_1.jpg` as the reference so he stays exactly Smudge. Draw him as separate parts on green, three-quarter view:
-    head, ears, brows, eyes (open, half, closed, wide), mouth (closed, smile, open, o), muzzle, body, hood, cloak back, cloak front, upper arm / forearm / hand for each side
-    (hand open and hand gripping), thigh / shin / foot for each side, tail in three segments, satchel. If Grok will not hold the parts consistent, generate one clean neutral
-    standing Smudge and cut THAT once, carefully, by hand-drawn polygons, then never cut him again.
-  - Slots (empty by default, any image drops in): head_top (hats), face (glasses), neck, back (cloak swap), hand_r and hand_l (tools: stamp, rod, pick, shovel become slot items),
-    plus a fur tint (multiply colour over the fur parts only; eyes, nose and clothes keep their colour).
-  - Animations on the one rig: stamp, fish, pick, dig, sleep, talk, cheer, and the personality set below. Tools come from the hand slots, so a new tool is one image.
-  - Personality set (this is the point of the step): blink at random intervals, eyes follow the cursor, ear flick, tail sway, breathing, yawn then doze when nothing is typed,
-    startle when typing is fast, look at whichever crew member is talking, celebrate on a rare drop, sulk on a failed pick, wave when the page opens. Small, frequent, never looping in sync.
-  - Proof before it goes live: three test accessories (glasses, a hat, a second cloak) and two fur tints, shown side by side with the current Smudge in admin > Movement.
-    At rest he must be indistinguishable from the current art. Old rigs stay in place until Dean says the new one looks better.
-  - Accessory template: a transparent PNG per slot with Smudge ghosted behind it, saved in `art2/slots/`, so any new item is drawn to fit and needs no cutting. Document it in PLAN.md.
-  - The desktop pet (O7) reuses this rig; do not build a second one.
-- O3 Raid engine: rooms, choices, potion slots, slow narration, recovery timer. Text in `data/raids.json` (stand-ins).
+- O1 DONE (Dean approved the table, 26 Nov): no free 3x solo speed (`jobs.solo_mult` 1), every speed bonus bent by one soft cap (`jobs.speed_cap` 2.5, `softCap()` in game.js), mastery speed 0.006, ink 0.2, a fitted XP curve (`rules/xp_table.json`, made by `rules/fit_curve.py` from target days; L99 = 6,000,000), +3% rare-or-better per 10 Summoning levels (`summon.luck_per_10`, server rolls the same). Sim: `rules/sim_web.py`. Server side is `supabase/migrations/20261126100000_os2_pacing_o1.sql` (new os2_lvl, saves moved onto the new curve at the same level, odds bonus in os2_summon_core, cfg). A copy of every save from before is in `os2_save_bak_o1`.
+- O2 DONE: search box, sort and filter chips on the arrivals (names of strangers stay hidden from search) and in the bag + armory; no total hero count anywhere in the game.
+- O2b DONE, built differently from the first plan, on purpose: Smudge's five drawn poses ARE his look, and a rig rebuilt from AI-drawn parts would not look like him. So the poses stay, and everything sits on top of them:
+  - Wardrobe: `puppet.dress({ head_top, face, fur, cloak })` in js/dbcanvas.js. head_top and face are pictures that ride the head bone, placed per pose by `ANCHOR` (picture pixels). Face items have a `front` picture (stamp) and a `side` picture facing right (fish, pick, dig). Fur and cloak are colours, applied through per-pose masks (`rules/wearmask.py` -> `assets/v2/db/smudge_<pose>_mask.webp`, red = fur, green = cloak; props that share the fur's brown are kept out by hand in KEEP_OUT). Rerun wearmask.py if a pose is re-cut.
+  - A new accessory = one transparent picture drawn to the template in `art2/slots/<pose>_<slot>.png` (made by `rules/slot_templates.py` from ANCHOR): centred on the box, as wide as the box. No cutting, ever. Test items (Grok): `assets/v2/wear/crown.webp`, `glasses_front.webp`, `glasses_side.webp`.
+  - Proof: admin > Movement > "Smudge's wardrobe". NOT live in the game until Dean says it looks right (then O7 builds the shop/closet UI on dress()).
+  - Personality (LIVE, every puppet): breathing, idle glances, tail sway on all heroes; Smudge also follows the pointer, yawns and dozes after 40 s of no input (eyes close), wakes with a start, jumps at a flurry of typing, looks at whichever crew member is talking, cheers at rare finds, sulks at some junk, waves when the work scene opens. API: lookAt(x, y, sec), sulk(sec), hello().
+- O3 DONE: played raids. Pick three (resting heroes greyed out) and up to two potions; odds to win shown, and the attack needed when under 50%. Three rooms drawn from the boss's rooms (else `room_pool`), each a choice that rolls one team stat against `raids.room_diff` by place tier, with the odds shown; success weakens the boss 8%, failure costs 12% health. Then the boss fight one line at a time (`raids.line_ms`), potions drunk mid-fight (heal, shield, fury). Weakness counts a stat 1.5x, resistance 0.6x. Lose: the three rest 30 minutes (`S.recover`). Win: loot as before, plus a line in each hero's journal (`S.journal`, for O4). Potions are brewed in the Workshop like tonics (kind `tonic`, `potion: true`, so the server's tonic budget covers them; os2_item rows added in the pacing migration). Tickets unchanged.
 - O4 Expedition engine and hero journal, same story player. Text in `data/expeditions.json` (stand-ins).
 - O5 Roster to 50, the build: art through the Grok queue only, cut, rig, MOUTH, gear stats, pages, sitemap. Needs F3.
 - O6 Loot and gold: era sets 5 pieces to 3, gold sinks, card frames. Names as stand-ins.
@@ -380,10 +370,10 @@ Fable plan
 - F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
 - F6 Loot and gold names. Needs O6.
 
-Order to switch in: Fable F1+F2 (done) · Opus O1, O2 · Opus O2b · Opus O3 · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
+Order to switch in: Fable F1+F2 (done) · Opus O1, O2, O2b, O3 (done) · · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
 
 Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
-- (nothing yet)
+- F4: `data/raids.json` is ALL stand-in (Opus wrote it to make the engine run). Fable writes: for each of the 8 bosses an intro, 6 rooms (text + 2-3 choices, each with stat, label, ok, bad), and lines (open, 3+ hit, low, win, lose); keep or rewrite the 6 `room_pool` rooms; and `reactions` per hero id (tags ok, fail, hurt, boss, win, lose, loot; about 20 lines each), `default` stays as the fallback. Keep the JSON shape exactly. Narrator is neutral (no swearing). Weak/resist per boss may be changed to fit the writing (stats: attack, defense, health, speed, luck).
 
 Email: both letters live in `supabase/functions/{waitlist,beta}/mail.ts` (identical copies; change both and redeploy both).
 Header art is `assets/mail/header.png`. Sending is Resend from hello@oversummoned.com. Admin, Beta tab, "Send me both emails" tests them.
