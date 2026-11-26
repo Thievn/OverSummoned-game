@@ -1,7 +1,7 @@
 // Dashboard mockup: fake numbers, but the live bits are live — the rigs move, the bars fill,
 // the sparkline is drawn, and the haul timer runs. Nothing here touches a save.
 (function () {
-  const $ = id => document.getElementById(id), V = '?v=1126l';
+  const $ = id => document.getElementById(id), V = '?v=1126m';
 
   // ---- the desk: Smudge at work with a crew of three, on the scene he is working
   const scene = $('scene'), crew = $('crew');

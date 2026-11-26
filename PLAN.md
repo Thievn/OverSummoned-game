@@ -225,6 +225,13 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Sunglasses icons (Pam's visor, Max's aviators) had their green lenses keyed out and were patched; regenerate with non-green lenses
 - [ ] Desktop pet: new hero art and rules copied, puppets not wired
 
+## Sound — 25 Nov
+- [x] `js/sound.js`: every button clicks (nav flicks, close tocks, cards flip), stamp, haul by trade, rare drop, crate, summon, level up, raid hits and win; two music loops (home, raid). Switches and volumes in Account, saved per device
+- [x] Sounds made in ElevenLabs (flow "OverSummoned sound samples"), pulled in by the `asset-fetch` edge function into `art/raw/sfx` on the art branch, then trimmed and levelled with ffmpeg into `assets/v2/sfx`
+- [x] Desktop pet: the same sounds replace its old wavs under the same file names
+- [ ] Music per place (dock, beach, fjord...) and a sound for selling
+- [ ] `asset-fetch` lives only in Supabase; copy its source into `supabase/functions/`
+
 ## Still to do on the scenes
 - [ ] Swaying trees, plants and flags need those parts cut out of the scene art and the gap filled, like the hero heads. Not done yet
 - [ ] Desktop pet: it now has the wider safe room picture, but its own placement table has not been checked in Godot

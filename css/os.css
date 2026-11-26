@@ -697,3 +697,8 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 /* phones: the top bar keeps the back arrow, the three counts, a short feedback pill and the account; the wordmark shrinks to its O */
 @media(max-width:600px){.backbtn:not([hidden])+.brand{display:none}.gbar .brand{font-size:0}.gbar .brand .o{font-size:1.5rem}.gbar .wrap{gap:.5rem}.gbar .res{gap:.45rem;margin-left:auto}
   .gbar .fbbtn{font-size:0;padding:.32rem .6rem}.gbar .fbbtn::after{content:"Ideas?";font-size:.7rem}}
+/* landing page: the music is off until somebody asks for it */
+.musicbtn{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:#101938;color:#9fb0d8;cursor:pointer;display:inline-grid;place-items:center;padding:0;vertical-align:middle}
+.musicbtn:hover{border-color:var(--teal);color:var(--teal)}.musicbtn.on{background:var(--teal);border-color:var(--teal);color:#0b1020;animation:mbeat 1.2s ease-in-out infinite}
+@keyframes mbeat{50%{transform:scale(1.08)}}
+.kv input[type=range]{width:min(170px,46%);accent-color:var(--teal)}

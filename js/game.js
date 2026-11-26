@@ -118,7 +118,7 @@
   function gainXP(sk, n, quiet) {
     const b = level(sk); S.xp[sk] = (S.xp[sk] || 0) + Math.round(n * (1 + rebirths(sk) * RB.xp_per)); const a = level(sk);
     if (a >= 99 && b < 99 && !quiet && rebirths(sk) < RB.max) toast(`${sk} has hit 99. Rebirth is open in your account.`);
-    if (a > b && !quiet) { toast(`${sk} is now level ${a}`); R.perks.forEach(p => { if (p.level > b && p.level <= a) toast(`New perk: ${p.name}. ${p.text}.`); }); R.places.forEach(p => { if (p.skill === sk && p.level > b && p.level <= a) toast(`New place open: ${p.name}`); }); }
+    if (a > b && !quiet) { SND('levelup'); toast(`${sk} is now level ${a}`); R.perks.forEach(p => { if (p.level > b && p.level <= a) toast(`New perk: ${p.name}. ${p.text}.`); }); R.places.forEach(p => { if (p.skill === sk && p.level > b && p.level <= a) toast(`New place open: ${p.name}`); }); }
   }
   // one finished action of one job
   function doAction(j, quiet) {
@@ -167,7 +167,7 @@
 
   // ------------------------------------------------------------------ small UI helpers
   const toasts = []; let toasting = false;
-  function toast(msg) { if (toasts.length < 6) toasts.push(msg); if (!toasting) nextToast(); }
+  function toast(msg) { if (toasts.length < 6) toasts.push(msg); if (OS.Sound) OS.Sound.play('toast'); if (!toasting) nextToast(); }
   function nextToast() { const m = toasts.shift(); if (!m) { toasting = false; return; } toasting = true; const t = $('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => { t.classList.remove('on'); setTimeout(nextToast, 260); }, 2200); }
   // a sheet is a step in history too, so Back closes it
   const modal = { open(node) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); if (!$('modal').classList.contains('on')) { $('modal').classList.add('on'); history.pushState({ v: (history.state && history.state.v) || 'home', sheet: 1 }, ''); } },
@@ -182,7 +182,17 @@
   let busy = false;
   async function save(force) { S.last = now(); dirty = true; if (!force || saving || busy) return; saving = true; dirty = false; let r = null; try { r = await Cloud.save(S, summary()); } catch (e) { } saving = false; if (!r) dirty = true; else if (r.ok === false) refused(r); }
   function refused(r) { if (r.why === 'size') return; S = Object.assign(fresh(), r.data || {}); S.v = 3; S.mode = MODES.includes(S.mode) ? S.mode : 'salty'; S.last = now(); dirty = false;
-    toast(r.why === 'stale' ? 'This ledger was open somewhere else. Loaded the newest page.' : 'The ledger did not balance, so the last checked page was loaded.'); render(); }
+    toast(r.why === 'stale' ? 'Smudge kept working on your other device. Caught up to the newest page.' : 'The ledger did not balance, so the last checked page was loaded.'); render(); }
+  // Two devices, one ledger. Whenever this page comes back into view, and every 25 seconds while it is open, ask the
+  // server which page it is on. If another device has played since, load its page quietly, so a phone never shows
+  // crates the desktop already opened.
+  async function sync() {
+    if (Cloud.dev || saving || busy || document.hidden || $('modal').classList.contains('on')) return false;
+    let rev = null; try { rev = await Cloud.peek(); } catch (e) { } if (rev == null || rev <= Cloud.rev) return false;
+    let d = null; try { d = await Cloud.load(); } catch (e) { } if (!d) return false;
+    S = Object.assign(fresh(), d); S.v = 3; S.mode = MODES.includes(S.mode) ? S.mode : 'salty'; dirty = false; render(); return true;
+  }
+  setInterval(sync, 25000); addEventListener('focus', sync);
   async function flush() { while (saving) await new Promise(r => setTimeout(r, 80)); await save(true); while (saving) await new Promise(r => setTimeout(r, 80)); }
   // anything that moves between players happens on the server's copy; it answers with the new numbers and we take them as they are
   async function srv(fn) { await flush(); busy = true; try { const r = await fn(); if (r && r.set) { Object.keys(r.set.bag || {}).forEach(k => S.bag[k] = r.set.bag[k]); if (r.set.gold != null) S.gold = r.set.gold; } return r || { r: 'Already done.' }; } catch (e) { return { r: 'The city is not answering.' }; } finally { busy = false; } }
@@ -212,7 +222,10 @@
     Object.keys(r.add).filter(id => OS.items[id] && rr(OS.items[id].rarity) >= 2 && !OS.items[id].junk).slice(0, 4).forEach(id => toast(`Smudge found: ${OS.items[id].name}${r.add[id] > 1 ? ' ×' + r.add[id] : ''}`));
     if (current === 'bag' || current === 'home') render();
   }
-  function dropPop(id) { const pop = document.querySelector('[data-pop="0"]'), it = OS.items[id]; if (!it) return; const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (FX) FX.splash(); if (crewPups.length && !it.junk) crewPups[Math.floor(Math.random() * crewPups.length)].kick('arm', 30);
+  const SND = (n, o) => { if (OS.Sound) OS.Sound.play(n, o); };
+  const WORKSND = { Fishing: 'splash', Lockpicking: 'lock', Digging: 'dig' }, RAREUP = ['rare', 'epic', 'legendary', 'absurd', 'unhinged'];
+  function dropPop(id) { const pop = document.querySelector('[data-pop="0"]'), it = OS.items[id]; if (!it) return;
+    if (RAREUP.includes(it.rarity)) SND('rare'); else if (current === 'jobs' && S.jobs[0]) SND(WORKSND[places[S.jobs[0].place].skill] || 'haul', { vol: .7 }); const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (FX) FX.splash(); if (crewPups.length && !it.junk) crewPups[Math.floor(Math.random() * crewPups.length)].kick('arm', 30);
     if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } }
   const btn = (cls, text, fn) => { const b = el('button', 'btn ' + cls, text); b.onclick = fn; return b; };
 
@@ -231,6 +244,7 @@
     document.querySelectorAll('#gnav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
     $('go-back').hidden = v === 'home';
     if (!how.silent && v !== was) history.pushState({ v }, '', '#' + v);
+    if (OS.Sound) OS.Sound.music(v === 'raids' ? 'raid' : 'home');
     render(); if (v === 'summon') sfx.layout(); scrollTo(0, 0);
   }
   history.replaceState({ v: 'home' }, '', location.pathname + location.search + '#home');
@@ -447,7 +461,7 @@
   async function summon() {
     if (S.ink < summonCost() || summoning) return; summoning = true;
     const res = await drawSummons(1); if (!res.length) { summoning = false; return; }
-    const { h, had, before, rar } = res[0]; save(true);
+    const { h, had, before, rar } = res[0]; save(true); SND('summon');
     // the ring fills, floods with the rarity's colour, and the card climbs out of it
     const col = R.rarity_color[rar], glow = $('s-glow'), flash = $('s-flash'), prog = $('s-prog'); renderTop(); $('s-go').disabled = true;
     prog.setAttribute('stroke-dasharray', '100 100'); prog.style.transition = 'stroke .5s'; prog.setAttribute('stroke', col); glow.style.transition = 'opacity .6s,fill .6s'; glow.setAttribute('fill', col); glow.setAttribute('opacity', '.75');
@@ -462,7 +476,7 @@
       d.appendChild(btn('', had ? 'Welcome back' : 'Find them somewhere to stand', modal.close)); modal.open(d); render();
     }, 2300 + (rr(rar) >= 4 ? 900 : 0));
   }
-  function stamp() { const t = performance.now(); if (summoning || t - lastStamp < 1000 / R.max_keys_per_second) return; lastStamp = t; S.ink += R.web.stamp_ink * inkBonus(); bump('stamps'); bump('ink', R.web.stamp_ink * inkBonus()); sfx.stamp(); renderTop(); renderSummon(); }
+  function stamp() { const t = performance.now(); if (summoning || t - lastStamp < 1000 / R.max_keys_per_second) return; lastStamp = t; SND('stamp'); S.ink += R.web.stamp_ink * inkBonus(); bump('stamps'); bump('ink', R.web.stamp_ink * inkBonus()); sfx.stamp(); renderTop(); renderSummon(); }
   $('s-go').onclick = summon; $('s-stamp').onclick = stamp; sstage.addEventListener('pointerdown', stamp);
 
   // ------------------------------------------------------------------ arrivals
@@ -535,7 +549,7 @@
   }
   let crating = false;
   async function openCrate(quiet) {
-    if (!(S.bag.x_crate > 0) || crating) return; crating = true;
+    if (!(S.bag.x_crate > 0) || crating) return; crating = true; if (!quiet) SND('crate');
     const open = workPlaces.filter(unlocked), list = []; for (let i = 0; i < R.crate.rolls; i++) { const p = RIFT && Math.random() < R.rift.crate_chance ? RIFT : open[Math.floor(Math.random() * open.length)]; if (p) list.push({ place: p.id, n: 1, luck: fullLuck(p, R.crate.luck) }); }
     const r = await roll(list, { item: 'x_crate', qty: 1 }); crating = false; if (r.err) { if (!quiet) { if (r.err === 'down') noLedger(); else toast(r.err); } return; }
     const got = flat(r.add).filter(id => OS.items[id]);
@@ -632,7 +646,7 @@
     const p = places[b.place], got = [];
     if (win) { roll([{ place: p.id, n: R.raids.loot_rolls, luck: fullLuck(p, R.raids.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); save(true); });
       bump('raids_won'); bump('gold', b.gold); S.gold += b.gold; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5); } else S.gold += Math.round(b.gold * .1);
-    Cloud.log('raid', b.id, win ? 1 : 0); save(true);
+    Cloud.log('raid', b.id, win ? 1 : 0); save(true); [0, 220, 470].forEach(ms => setTimeout(() => SND('hit'), ms)); setTimeout(() => SND(win ? 'win' : 'deny'), 900);
     const d = el('div', 'fight', `<h3 style="font-size:1.5rem">${b.name}</h3><div class="hpbars"><div><span>Your three</span><div class="bar"><i id="f-hp" style="width:100%;background:linear-gradient(90deg,#1f9a49,#6fe394)"></i></div></div><div><span>${b.name}</span><div class="bar"><i id="f-bhp" style="width:100%;background:linear-gradient(90deg,#b3261e,#ff7a70)"></i></div></div></div><div class="flog" id="f-log"></div>`); modal.open(d);
     let i = 0; const step = () => { if (!$('f-log')) return; if (i < log.length) { const L = log[i++], row = el('div', L.cls, L.t); $('f-log').prepend(row); $('f-hp').style.width = pct(L.hp, maxhp); $('f-bhp').style.width = pct(L.bhp, b.hp); setTimeout(step, 380); return; }
       const end = el('div', 'reveal', `<h3 style="font-size:1.6rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3><p class="mut">${win ? `${b.gold} gold and everything below.` : `${Math.round(b.gold * .1)} gold for the trouble. Train them, dress them, or bring luckier friends.`}</p>`);
@@ -731,6 +745,10 @@
       <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links through your browser, below.</p>`;
     const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
     sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
+    if (OS.Sound) { const c0 = OS.Sound.config();
+      const tog = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'checkbox'; i.checked = !!c0[key]; i.onchange = () => OS.Sound.config({ [key]: i.checked }); l.appendChild(i); st.appendChild(l); };
+      const sld = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'range'; i.min = 0; i.max = 100; i.value = Math.round(c0[key] * 100); i.oninput = () => OS.Sound.config({ [key]: i.value / 100 }); i.onchange = () => OS.Sound.play('click'); l.appendChild(i); st.appendChild(l); };
+      tog('Sound effects', 'sfx'); sld('Sound volume', 'vol'); tog('Music', 'music'); sld('Music volume', 'mvol'); }
     const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
     const as = el('label', 'kv', '<span>Smudge summons by himself when the ink is full</span>'), ab = el('input'); ab.type = 'checkbox'; ab.checked = !!S.autoSummon; ab.onchange = () => { S.autoSummon = ab.checked; save(true); }; as.appendChild(ab); st.appendChild(as);
     $('ac-stats').innerHTML = R.skills.map(s => `<div class="kv"><span>${s}${rebirths(s) ? ' ' + '★'.repeat(rebirths(s)) : ''}</span><b>Level ${level(s)}${level(s) >= 99 && rebirths(s) < RB.max ? ` <button class="btn small" data-rb="${s}">Rebirth</button>` : ''}</b></div>`).join('') + `<div class="kv"><span>Hauls</span><b>${OS.num(S.actions)}</b></div><div class="kv"><span>Summons</span><b>${S.summons}</b></div>`;
@@ -767,7 +785,7 @@
   }
   addEventListener('keydown', e => { if (e.repeat || e.metaKey || e.ctrlKey || $('modal').classList.contains('on') || (e.target.closest && e.target.closest('input,select,textarea'))) return; if (current === 'summon') stamp(); });
   setInterval(() => { if (dirty) save(true); }, 20000);
-  addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
+  addEventListener('visibilitychange', () => { if (document.hidden) save(true); else sync().then(() => { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); }); });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home', { silent: true }); if (START && START !== 'home' && VIEWS.includes(START)) show(START); requestAnimationFrame(frame);
   window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
