@@ -1,7 +1,7 @@
 // Dashboard mockup: fake numbers, but the live bits are live — the rigs move, the bars fill,
 // the sparkline is drawn, and the haul timer runs. Nothing here touches a save.
 (function () {
-  const $ = id => document.getElementById(id), V = '?v=1126k';
+  const $ = id => document.getElementById(id), V = '?v=1126l';
 
   // ---- the desk: Smudge at work with a crew of three, on the scene he is working
   const scene = $('scene'), crew = $('crew');
@@ -31,8 +31,8 @@
     const crewOnly = cast.filter(m => m.id); if (!crewOnly.length || document.hidden) return;
     const m = crewOnly[Math.floor(Math.random() * crewOnly.length)], l = (lines[m.id] || {}).say; if (!l || !l.length) return;
     const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
-    OS.Stage.say(crew, { x: m.x, top: m.y - m.tall }, l[Math.floor(Math.random() * l.length)], 3200, cast.filter(q => q !== m).map(box)); m.p.say(2.8);
-  }, 6500);
+    OS.Stage.say(crew, { x: m.x, top: m.y - m.tall }, l[Math.floor(Math.random() * l.length)], 0, cast.filter(q => q !== m).map(box)); m.p.say(4);
+  }, 9500);
   placeRigs(); addEventListener('resize', () => { clearTimeout(crew._t); crew._t = setTimeout(placeRigs, 250); });
 
   // ---- the haul timer, so the strip is never still

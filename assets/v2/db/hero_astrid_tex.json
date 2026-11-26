@@ -1,1 +1,1 @@
-{"name":"hero_astrid","imagePath":"hero_astrid_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":453,"height":650},{"name":"head","x":457,"y":2,"width":110,"height":153},{"name":"mouth","x":569,"y":2,"width":16,"height":10}]}
+{"name":"hero_astrid","imagePath":"hero_astrid_tex.png","width":1024,"height":1024,"SubTexture":[{"name":"base","x":2,"y":2,"width":453,"height":650},{"name":"head","x":457,"y":2,"width":136,"height":143},{"name":"mouth","x":595,"y":2,"width":16,"height":10}]}

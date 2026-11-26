@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Map test · OverSummoned</title><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/css/os.css?v=1126a"></head>
 <body><main class="wrap" style="padding:1.5rem 0"><h1 style="font-size:1.6rem">Map test (made-up visitors)</h1><div class="panel" style="margin-top:1rem"><div class="geomap" id="m"></div></div></main>
-<script src="/js/geomap.js?v=1126k"></script><script>
+<script src="/js/geomap.js?v=1126l"></script><script>
 const P=[['US','Melbourne',28.1,-80.6,14],['US','New York',40.7,-74,9],['US','Los Angeles',34.1,-118.2,6],['GB','London',51.5,-0.1,8],['DE','Berlin',52.5,13.4,4],['BR','Sao Paulo',-23.5,-46.6,3],['JP','Tokyo',35.7,139.7,5],['AU','Sydney',-33.9,151.2,4],['IN','Mumbai',19.1,72.9,2],['ZA','Cape Town',-33.9,18.4,1],['CA','Toronto',43.7,-79.4,3],['FR','Paris',48.9,2.4,2]];
 const places=P.map(p=>({country:p[0],city:p[1],lat:p[2],lon:p[3],visitors:p[4],views:p[4]*3}));
 GeoMap.mount(document.getElementById('m'),{places,recent:places.slice(0,8).map((p,i)=>({...p,path:['/','/heroes','/desktop-pet','/story'][i%4],at:new Date(Date.now()-i*420000).toISOString()}))});

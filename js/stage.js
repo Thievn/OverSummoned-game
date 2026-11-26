@@ -38,6 +38,7 @@
     // the rod tip in host pixels for a pose placed at `at` and `h` tall
     rodTip(pose, at, h, rig) { const t = ROD[pose], e = rig[pose]; if (!t || !e) return null; const k = h / e.size[1];
       return [at[0] + (t[0] - e.foot[0]) * k, at[1] + (t[1] - e.foot[1]) * k]; },
+    holdFor(text) { return Math.min(9000, 3200 + String(text || '').length * 65); },
     flip(id, face) { return !!(LOOKS[id] && LOOKS[id] !== face); },
     // A speech bubble with a tail that points at whoever is talking. who = { x, top } in host pixels (the middle of the
     // head and its top edge); others = [{ x0, y0, x1, y1 }] boxes of everyone else, which the bubble keeps off.
@@ -56,7 +57,9 @@
       if (best.side) { b.classList.add('side-' + best.side); b.style.setProperty('--ty', Math.max(8, Math.min(bh - 8, who.top + 14 - best.y)) + 'px'); }
       else b.style.setProperty('--tx', Math.max(12, Math.min(bw - 12, who.x - best.x)) + 'px');
       requestAnimationFrame(() => b.classList.add('on'));
-      setTimeout(() => { b.classList.remove('on'); setTimeout(() => b.remove(), 250); }, hold || 3200);
+      // long enough to read (longer lines stay longer), then a slow fade rather than a snap
+      const stay = hold || Stage.holdFor(text);
+      setTimeout(() => { b.classList.add('off'); setTimeout(() => b.remove(), 1150); }, stay);
       return b;
     } };
   (typeof OS !== "undefined" ? OS : (window.OS = window.OS || {})).Stage = Stage;

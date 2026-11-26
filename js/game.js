@@ -271,7 +271,7 @@
     ['Dress them', 'When gear turns up, open an arrival from Arrivals and tap a glowing slot on the back of their card.', 'heroes', () => Object.values(S.equip).some(e => e.some(g => g)) || Object.values(S.gear).some(g => Object.values(g).some(x => x))]];
   function renderHome() {
     const hr = new Date().getHours(); $('h-day').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-    $('h-hi').textContent = (hr < 12 ? 'Morning' : hr < 18 ? 'Afternoon' : 'Evening') + ', ' + me.profile.username; $('h-sub').textContent = line('idle');
+    $('h-hi').textContent = (hr < 12 ? 'Morning' : hr < 18 ? 'Afternoon' : 'Evening') + ', ' + me.profile.username; if (!renderHome.at || now() - renderHome.at > 20000) { renderHome.at = now(); $('h-sub').textContent = line('idle'); }
     $('adminbtn').hidden = !me.admin;
     const g = $('guide'), left = GUIDE.filter(s => !s[3]()); g.hidden = !left.length;
     if (left.length) { g.innerHTML = '<div class="tag">Getting started</div>' + GUIDE.map((s, i) => `<div class="gstep ${s[3]() ? 'done' : ''}"><i>${s[3]() ? '✓' : i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div><button class="btn small ${s[3]() ? 'ghost' : ''}" data-go="${s[2]}">${s[3]() ? 'Done' : 'Go'}</button></div>`).join(''); }
@@ -350,19 +350,20 @@
     const host = document.querySelector('[data-who="0"]'); if (!host || !text) return;
     const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
     OS.Stage.say(host, { x: pp.x, top: pp.y - pp.tall }, text, hold, jobPups.filter(q => q !== pp).map(box));
-    pp.say((hold || 3200) / 1000 - .4);
+    pp.say((hold || OS.Stage.holdFor(text)) / 1000 - .3);
   }
   function chatter(dt) {
     if (current !== 'jobs' || !crewPups.length || $('modal').classList.contains('on')) return; chatT -= dt; if (chatT > 0) return; chatT = 11 + Math.random() * 10;
     const a = crewPups[Math.floor(Math.random() * crewPups.length)]; crewSay(a, pickLine(a.id, 'say'));
-    const others = crewPups.filter(x => x !== a); if (others.length && Math.random() < 0.45) { const b = others[Math.floor(Math.random() * others.length)]; setTimeout(() => { if (current === 'jobs') crewSay(b, pickLine(b.id, 'reply'), 2600); }, 2700); chatT += 3; }
+    const others = crewPups.filter(x => x !== a); if (others.length && Math.random() < 0.45) { const b = others[Math.floor(Math.random() * others.length)]; setTimeout(() => { if (current === 'jobs') crewSay(b, pickLine(b.id, 'reply')); }, 5200); chatT += 7; }
   }
   function placeSheet() {
     const j = Object.assign({ place: null, prog: 0, order: 'stay', since: 0 }, S.jobs[0] || {}), d = el('div', '', `<h3 style="font-size:1.5rem">Where should Smudge work?</h3>`);
     const ps = el('div', 'plist');
     workPlaces.forEach(p => { const open = unlocked(p), row = el('div', 'prow' + (open ? '' : ' lock'));
       row.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt=""><div><div class="tag">${p.era} · ${p.skill}</div><h3>${p.name}</h3><p>${open ? p.blurb : 'Needs ' + p.skill + ' level ' + p.level + '.'}</p></div>`;
-      const acts = el('div', 'row acts'); acts.appendChild(btn('small ghost', 'What drops here', e => { e.stopPropagation(); lootSheet(p, placeSheet); })); row.appendChild(acts);
+      const acts = el('div', 'row acts'); if (open) acts.appendChild(btn('small', 'Send now', e => { e.stopPropagation(); j.place = p.id; upd(); go.click(); }));
+      acts.appendChild(btn('small ghost', 'What drops here', e => { e.stopPropagation(); lootSheet(p, placeSheet); })); row.appendChild(acts);
       if (open) row.onclick = () => { j.place = p.id; upd(); }; row.dataset.id = p.id; ps.appendChild(row); });
     d.appendChild(ps);
     d.appendChild(el('div', 'tag', 'Standing orders')).style.marginTop = '1rem';
