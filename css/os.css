@@ -307,7 +307,15 @@ small.ok{color:#3ecf6b}small.bad,.ferr{color:#ff7a70}.ferr{font-weight:800;font-
 .authcard .fine{font-size:.78rem;color:var(--mut);margin:.8rem 0 0}
 @media(max-width:800px){.authwrap{grid-template-columns:1fr;gap:1rem}.authart img{width:150px}.authart p{font-size:1rem}}
 /* ---------- game v2 */
-.boot{position:fixed;inset:0;z-index:300;background:var(--ink);display:grid;place-content:center;justify-items:center;gap:1rem;font:400 1.3rem "Lilita One";color:#cfd7ee}.boot img{width:150px;animation:floaty 2s ease-in-out infinite}
+.boot{position:fixed;inset:0;z-index:300;background:var(--ink);display:grid;place-content:center;justify-items:center;gap:1rem;font:400 1.3rem "Lilita One";color:#cfd7ee}
+/* Smudge says hello while the app opens: he leans in, then winks once. The wink is a second drawing
+   faded over the first, so it needs no rig and shows before any script has run. */
+.boothi{position:relative;width:190px;height:176px;animation:boothi 2.6s cubic-bezier(.2,1.2,.3,1) both}
+.boothi img{position:absolute;inset:0;width:190px;height:auto}
+.boothi .wink{opacity:0;animation:bootwink 4.2s linear 1.05s infinite}
+@keyframes boothi{0%{opacity:0;transform:translateY(14px) scale(.9) rotate(-5deg)}55%{opacity:1;transform:translateY(0) scale(1) rotate(2deg)}100%{opacity:1;transform:none}}
+@keyframes bootwink{0%{opacity:0}1%,6%{opacity:1}7%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.boothi,.boothi .wink{animation:none}.boothi .wink{opacity:0}}
 .avatar{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);background:#16214a;overflow:hidden;padding:0;cursor:pointer}.avatar img{width:160%;max-width:none;margin:-6% 0 0 -30%}
 .res{gap:.7rem;font-size:.95rem}
 .hello{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}.hello h2{margin:.2rem 0}
@@ -667,6 +675,10 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 .osb.on{opacity:1;transform:none}
 .osb.off{opacity:0;transform:translateY(-4px);transition:opacity 1.1s ease,transform 1.1s ease}
 .jscene,.jscene *,.desk-scene,.desk-scene *,.gnav,.gbar,.card,.btn,.rstage{-webkit-user-select:none;user-select:none}
+/* In the app nothing is selectable: a long press or a swipe used to paint half the screen blue and open the
+   copy bar. Anything a person genuinely types in is put back below. */
+body.game,body.game *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body.game input,body.game textarea,body.game [contenteditable],body.game select,body.game .pick-text,body.game .pick-text *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 .gbar .res span[data-go]{cursor:pointer}.prow .acts{flex-direction:column;align-items:stretch;gap:.35rem}
 .osb::before,.osb::after{content:"";position:absolute;left:var(--tx,50%);top:100%;border:9px solid transparent;border-top-color:#1e2a47;border-bottom:0;transform:translateX(-50%)}
 .osb::after{border-width:6px;border-top-color:#fff;border-bottom:0;margin-top:-1px}

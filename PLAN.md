@@ -368,6 +368,7 @@ Opus plan
   - LEFT UNDONE, on purpose: no MOUTH entries for the new 14 (they talk with a head bob, like the 17 older heroes without one), and no TAILS entries (only 9 of the 50 have one), so a few good tails sit still. Both are cosmetic and need a position read off each drawing.
 - O6 Loot and gold: era sets 5 pieces to 3, gold sinks, card frames. Names as stand-ins.
 - O7 Smudge's wardrobe and the desktop pet: later.
+- Small fixes on the way (26 Nov, all live): the dozing eyelid no longer stretches off screen (the blink animation already scales the lid x100 and the doze multiplied on top; `think()` in js/dbcanvas.js now takes the larger of the two). Nothing in the app is selectable any more (`body.game *` user-select none plus touch-callout none, with inputs and textareas put back) after a long press or a swipe painted the screen blue on the phone. App icons rebuilt by `python3 tools/make_icons.py`: Smudge's bust is masked by the circle instead of pasted in as a rectangle, so nothing is cut off at the bottom or the right. The loading screen now leans him in and winks (`assets/v2/smudge/boot.webp` and `boot_wink.webp`, the shut eye drawn at the eye position in data/rig.json; CSS `.boothi`).
 
 Fable plan
 - F1 DONE: no fixed hero count anywhere on the public site or in the page generators. The in-game "N of M met" counters in js/game.js are left for O2.
