@@ -91,6 +91,7 @@
     if (b.dataset.rev) { if (confirm('Switch this code off? People who already used it keep their place.')) { await beta('code_revoke', { code: b.dataset.rev }); paintBeta(); } return; }
     if (b.dataset.fb) { await beta('feedback_status', { id: +b.dataset.fb, status: b.dataset.st }); paintBeta(); return; }
     if (b.id === 'b-invite') { const v = $('b-email').value.trim(); if (v) { await invite(v, b); b.disabled = false; $('b-email').value = ''; } return; }
+    if (b.id === 'b-test') { b.disabled = true; const r = await betaFn({ op: 'test' }); toast(r.ok ? 'Sent the wishlist letter and the invite to ' + r.to : (r.msg || 'That did not send.')); b.disabled = false; return; }
     if (b.id === 'b-code') { const d = await beta('code_new', { note: $('b-note').value, max_uses: +$('b-uses').value || 1 }); if (d && d.made) { toast('Made ' + d.made); $('b-note').value = ''; } paintBeta(); } });
 
   // ---------------------------------------------------------------- movement review

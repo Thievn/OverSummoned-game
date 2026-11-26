@@ -623,6 +623,13 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 .wish .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .wish-msg{grid-column:1/-1;margin:0;min-height:1.3em;font-weight:700;font-size:.92rem;color:var(--mut)}
 .wish-msg.ok{color:var(--teal)}.wish-msg.bad{color:var(--ember)}
+.wish-done{position:relative;background:var(--parch);color:var(--sepia);border-radius:14px;padding:1.1rem 1.2rem 1rem;border:2px solid var(--gold);box-shadow:var(--shadow);animation:wishin .35s ease-out}
+.wish-done strong{display:block;font-size:1.25rem;color:#17224a;margin:0 6.5rem .3rem 0}
+.wish-done p{margin:0 0 .35rem;font-weight:700;line-height:1.45}.wish-done .wish-sub{font-weight:600;font-size:.9rem;opacity:.8;margin:0}
+.wish-stamp{position:absolute;top:.7rem;right:.8rem;font:900 .85rem Nunito;letter-spacing:.14em;text-transform:uppercase;color:#b3261e;border:3px solid #b3261e;border-radius:8px;padding:.2em .55em;transform:rotate(8deg);opacity:.85;animation:wishstamp .45s .15s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes wishin{from{opacity:0;transform:translateY(8px)}}
+@keyframes wishstamp{from{opacity:0;transform:rotate(-14deg) scale(2.4)}}
+@media(prefers-reduced-motion:reduce){.wish-done,.wish-stamp{animation:none}}
 @media(max-width:760px){.wishwrap{grid-template-columns:1fr}.wish{grid-template-columns:1fr}}
 
 /* ---- closed beta ---- */

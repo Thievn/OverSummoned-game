@@ -21,27 +21,7 @@ async function sha256(s: string) {
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ---- mail (Resend). Missing key or a failed send never breaks the request: it is reported, not thrown.
-const MAIL_FROM = Deno.env.get('BETA_MAIL_FROM') || 'Smudge at OverSummoned <hello@oversummoned.com>';
-const NOTIFY_TO = Deno.env.get('BETA_NOTIFY_TO') || 'hello@oversummoned.com';
-const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
-function page(title: string, lines: string[]) {
-  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:24px;color:#1e2a47">
-<h1 style="font-size:22px;margin:0 0 14px">${title}</h1>${lines.map((l) => `<p style="font-size:15px;line-height:1.55;margin:0 0 12px">${l}</p>`).join('')}
-<p style="font-size:12px;color:#7a849c;margin:22px 0 0">OverSummoned · <a href="https://oversummoned.com" style="color:#7a849c">oversummoned.com</a></p></div>`;
-}
-async function sendMail(to: string, subject: string, text: string, html: string): Promise<boolean> {
-  const key = Deno.env.get('RESEND_API_KEY');
-  if (!key) { console.error('mail not sent: RESEND_API_KEY is not set'); return false; }
-  try {
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST', headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: MAIL_FROM, to: [to], reply_to: 'hello@oversummoned.com', subject, text, html }),
-    });
-    if (!r.ok) { console.error('mail not sent:', r.status, (await r.text()).slice(0, 300)); return false; }
-    return true;
-  } catch (e) { console.error('mail not sent:', String(e)); return false; }
-}
+import { NOTIFY_TO, sendMail, wishlistMail, ownerMail } from './mail.ts';
 
 Deno.serve(async (req) => {
   const h = cors(req.headers.get('origin'));
@@ -71,15 +51,9 @@ Deno.serve(async (req) => {
   if (data && data.code === 'bad_email') return J({ ok: false, msg: "That's not an email. That's a cry for help." }, 400);
   if (data && data.dupe) return J({ ok: true, dupe: true });
 
-  // first time on the list: a note to them, and a note to the owner
-  await Promise.allSettled([
-    sendMail(email, "You're on the OverSummoned wishlist",
-      "You're on the list.\n\nOverSummoned is in closed beta. When a seat opens for you, Smudge will send one more email to this address with your way in. That is the only thing we will email you about.\n\nIf this wasn't you, ignore this message and nothing else will arrive.\n\nhttps://oversummoned.com",
-      page("You're on the list.", [
-        'OverSummoned is in closed beta. When a seat opens for you, Smudge will send one more email to this address with your way in. That is the only thing we will email you about.',
-        "If this wasn't you, ignore this message and nothing else will arrive."])),
-    sendMail(NOTIFY_TO, 'Wishlist: ' + email, email + ' joined the OverSummoned wishlist.\n\nInvite them from https://oversummoned.com/admin (Beta tab).',
-      page('New wishlist signup', [esc(email) + ' joined the wishlist.', 'Invite them from the <a href="https://oversummoned.com/admin">owner\'s office</a>, Beta tab.'])),
-  ]);
-  return J({ ok: true });
+  // first time on the list: a letter to them, and a note to the owner
+  const [welcome] = await Promise.allSettled([sendMail(email, wishlistMail()), sendMail(NOTIFY_TO, ownerMail(email))]);
+  const mailed = welcome.status === 'fulfilled' && welcome.value === true;
+  if (mailed) await sb.from('den_waitlist').update({ mailed_at: new Date().toISOString() }).eq('email', email);
+  return J({ ok: true, mailed });
 });

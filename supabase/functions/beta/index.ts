@@ -21,27 +21,7 @@ async function sha256(s: string) {
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ---- mail (Resend). Missing key or a failed send never breaks the request: it is reported, not thrown.
-const MAIL_FROM = Deno.env.get('BETA_MAIL_FROM') || 'Smudge at OverSummoned <hello@oversummoned.com>';
-const NOTIFY_TO = Deno.env.get('BETA_NOTIFY_TO') || 'hello@oversummoned.com';
-const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
-function page(title: string, lines: string[]) {
-  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:24px;color:#1e2a47">
-<h1 style="font-size:22px;margin:0 0 14px">${title}</h1>${lines.map((l) => `<p style="font-size:15px;line-height:1.55;margin:0 0 12px">${l}</p>`).join('')}
-<p style="font-size:12px;color:#7a849c;margin:22px 0 0">OverSummoned · <a href="https://oversummoned.com" style="color:#7a849c">oversummoned.com</a></p></div>`;
-}
-async function sendMail(to: string, subject: string, text: string, html: string): Promise<boolean> {
-  const key = Deno.env.get('RESEND_API_KEY');
-  if (!key) { console.error('mail not sent: RESEND_API_KEY is not set'); return false; }
-  try {
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST', headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: MAIL_FROM, to: [to], reply_to: 'hello@oversummoned.com', subject, text, html }),
-    });
-    if (!r.ok) { console.error('mail not sent:', r.status, (await r.text()).slice(0, 300)); return false; }
-    return true;
-  } catch (e) { console.error('mail not sent:', String(e)); return false; }
-}
+import { MAIL_FROM, NOTIFY_TO, sendMail, wishlistMail, inviteMail } from './mail.ts';
 
 Deno.serve(async (req) => {
   const h = cors(req.headers.get('origin'));
@@ -76,17 +56,21 @@ Deno.serve(async (req) => {
 
   if (b.op === 'check') return J({ ok: true, key: !!Deno.env.get('RESEND_API_KEY'), from: MAIL_FROM, notify: NOTIFY_TO });
 
+  // send both letters to the owner's own address, to see them in a real inbox
+  if (b.op === 'test') {
+    const { data: me } = await asUser.auth.getUser();
+    const to = me?.user?.email;
+    if (!to) return J({ ok: false, msg: 'No email on this account.' }, 400);
+    const sent = await Promise.all([sendMail(to, wishlistMail()), sendMail(to, inviteMail(to))]);
+    return J({ ok: sent.every(Boolean), to, msg: sent.every(Boolean) ? '' : 'The email did not send. Check the Resend key and that the sending domain is verified.' });
+  }
+
   if (b.op === 'invite') {
     const { data, error } = await sb.rpc('os2_beta_invite_email', { p_email: String(b.email || '').slice(0, 200) });
     if (error) return J({ ok: false, msg: 'That did not save.' }, 500);
     if (!data.ok) return J({ ok: false, msg: 'That does not look like an email address.' }, 400);
     const to = data.email as string;
-    const mailed = await sendMail(to, 'Your seat in OverSummoned is open',
-      "Your seat is open.\n\nMake your account at https://oversummoned.com/login using this email address (" + to + "). It is the one on the list, so another address will not get in.\n\nYou are one of the first people in. Things will break. There is an \"Ideas or feedback?\" button at the top of the game; anything you send there comes straight to the person who makes it.\n\nEveryone who joins during the beta keeps the Founding Clerk title for good.",
-      page('Your seat is open.', [
-        'Make your account at <a href="https://oversummoned.com/login">oversummoned.com/login</a> using this email address (<b>' + esc(to) + '</b>). It is the one on the list, so another address will not get in.',
-        'You are one of the first people in. Things will break. There is an <b>Ideas or feedback?</b> button at the top of the game; anything you send there comes straight to the person who makes it.',
-        'Everyone who joins during the beta keeps the <b>Founding Clerk</b> title for good.']));
+    const mailed = await sendMail(to, inviteMail(to));
     if (mailed) await sb.from('os2_beta_invite').update({ mailed: true }).eq('email', to);
     return J({ ok: true, mailed });
   }
