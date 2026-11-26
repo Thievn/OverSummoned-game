@@ -1,53 +1,2220 @@
 {
- "_about": "Raid writing. STAND-IN TEXT written by Opus to make the engine work; Fable rewrites all of it in F4. The engine reads: boss intro, rooms (falls back to room_pool when a boss has none), boss lines, and reactions. A room choice rolls one team stat (attack, defense, health, speed or luck). {name} is the hero who reacts, {boss} the boss, {place} the place. The narrator is neutral: no swearing, whatever Smudge's voice setting.",
+ "_about": "Raid writing (Fable, F4). Built by tools/raids_text.py: edit there, not here. The engine reads: boss intro, rooms (three drawn at random from the boss's six; room_pool is the fallback), boss lines, and reactions by hero id (default is the fallback). A room choice rolls one team stat (attack, defense, health, speed, luck). {name} is the hero who reacts, {boss} the boss. The narrator is neutral: no swearing, whatever Smudge's voice setting. Rooms must make sense in any order.",
  "room_pool": [
-  {"id": "door", "text": "A door, older than anyone in the team, and locked from the other side. Something behind it is breathing.", "choices": [
-   {"stat": "attack", "label": "Kick it in", "ok": "The door gives on the second kick. The breathing stops.", "bad": "The door holds. Somebody's ankle does not."},
-   {"stat": "luck", "label": "Try the handle", "ok": "It was never locked. Nobody mentions it.", "bad": "The handle comes off in a hand. The breathing gets closer."}]},
-  {"id": "floor", "text": "Half the floor is gone. The other half is thinking about it.", "choices": [
-   {"stat": "speed", "label": "Run across", "ok": "Three pairs of feet, three clean landings.", "bad": "Somebody finds out where the floor went."},
-   {"stat": "defense", "label": "Edge along the wall", "ok": "Slow, careful, and nobody falls.", "bad": "The wall was the part holding the floor up."}]},
-  {"id": "guards", "text": "Two guards, both asleep, both enormous, both lying across the only way through.", "choices": [
-   {"stat": "luck", "label": "Tiptoe over them", "ok": "Not a twitch. The team is through.", "bad": "One of them wakes up mid-step and is not pleased about it."},
-   {"stat": "attack", "label": "Wake them up properly", "ok": "They do not stay awake for long.", "bad": "They were only pretending to be asleep."},
-   {"stat": "speed", "label": "Go round the long way", "ok": "Longer, quieter, fine.", "bad": "The long way has its own guards."}]},
-  {"id": "trap", "text": "The corridor is very clean, very quiet, and full of small holes in the walls.", "choices": [
-   {"stat": "defense", "label": "Shields up and walk", "ok": "Darts bounce off. The team walks out tutting.", "bad": "Darts do not bounce off everything."},
-   {"stat": "speed", "label": "Sprint", "ok": "The darts arrive just after everybody has left.", "bad": "Some of the darts are faster than some of the team."}]},
-  {"id": "stash", "text": "A strongbox, half buried, with a note on it that says DO NOT.", "choices": [
-   {"stat": "luck", "label": "Open it", "ok": "Inside: something useful, and a second note that says FINE.", "bad": "Inside: a spring, a glove, and a very fast punch."},
-   {"stat": "health", "label": "Leave it and push on", "ok": "The team saves its strength for what is ahead.", "bad": "Pushing on means walking through the thing that guards the box."}]},
-  {"id": "storm", "text": "The weather turns, all at once, as if someone flipped it.", "choices": [
-   {"stat": "health", "label": "Push through it", "ok": "Soaked, cold, still standing.", "bad": "The cold gets into everybody's bones."},
-   {"stat": "luck", "label": "Find shelter", "ok": "A dry hollow, right where it needed to be.", "bad": "The shelter is occupied."}]}
+  {
+   "id": "door",
+   "text": "A door, older than anyone in the team, and locked from the other side. Something behind it is breathing.",
+   "choices": [
+    {
+     "stat": "attack",
+     "label": "Kick it in",
+     "ok": "The door gives on the second kick. The breathing stops.",
+     "bad": "The door holds. Somebody's ankle does not."
+    },
+    {
+     "stat": "luck",
+     "label": "Try the handle",
+     "ok": "It was never locked. Nobody mentions it.",
+     "bad": "The handle comes off in a hand. The breathing gets closer."
+    }
+   ]
+  },
+  {
+   "id": "floor",
+   "text": "Half the floor is gone. The other half is thinking about it.",
+   "choices": [
+    {
+     "stat": "speed",
+     "label": "Run across",
+     "ok": "Three pairs of feet, three clean landings.",
+     "bad": "Somebody finds out where the floor went."
+    },
+    {
+     "stat": "defense",
+     "label": "Edge along the wall",
+     "ok": "Slow, careful, and nobody falls.",
+     "bad": "The wall was the part holding the floor up."
+    }
+   ]
+  },
+  {
+   "id": "guards",
+   "text": "Two guards, both asleep, both enormous, both lying across the only way through.",
+   "choices": [
+    {
+     "stat": "luck",
+     "label": "Tiptoe over them",
+     "ok": "Not a twitch. The team is through.",
+     "bad": "One of them wakes up mid-step and is not pleased about it."
+    },
+    {
+     "stat": "attack",
+     "label": "Wake them up properly",
+     "ok": "They do not stay awake for long.",
+     "bad": "They were only pretending to be asleep."
+    },
+    {
+     "stat": "speed",
+     "label": "Go round the long way",
+     "ok": "Longer, quieter, fine.",
+     "bad": "The long way has its own guards."
+    }
+   ]
+  },
+  {
+   "id": "trap",
+   "text": "The corridor is very clean, very quiet, and full of small holes in the walls.",
+   "choices": [
+    {
+     "stat": "defense",
+     "label": "Shields up and walk",
+     "ok": "Darts bounce off. The team walks out tutting.",
+     "bad": "Darts do not bounce off everything."
+    },
+    {
+     "stat": "speed",
+     "label": "Sprint",
+     "ok": "The darts arrive just after everybody has left.",
+     "bad": "Some of the darts are faster than some of the team."
+    }
+   ]
+  },
+  {
+   "id": "stash",
+   "text": "A strongbox, half buried, with a note on it that says DO NOT.",
+   "choices": [
+    {
+     "stat": "luck",
+     "label": "Open it",
+     "ok": "Inside: something useful, and a second note that says FINE.",
+     "bad": "Inside: a spring, a glove, and a very fast punch."
+    },
+    {
+     "stat": "health",
+     "label": "Leave it and push on",
+     "ok": "The team saves its strength for what is ahead.",
+     "bad": "Pushing on means walking through the thing that guards the box."
+    }
+   ]
+  },
+  {
+   "id": "storm",
+   "text": "The weather turns, all at once, as if someone flipped it.",
+   "choices": [
+    {
+     "stat": "health",
+     "label": "Push through it",
+     "ok": "Soaked, cold, still standing.",
+     "bad": "The cold gets into everybody's bones."
+    },
+    {
+     "stat": "luck",
+     "label": "Find shelter",
+     "ok": "A dry hollow, right where it needed to be.",
+     "bad": "The shelter is occupied."
+    }
+   ]
+  }
  ],
  "bosses": {
-  "tiber": {"weak": "speed", "resist": "attack", "intro": "The water off the Roman dock goes very still. Then a long shape moves under it, and keeps moving, and keeps on being the same shape.", "rooms": [],
-   "lines": {"open": "{boss} rises out of the Tiber with most of the river still on it.", "hit": ["{boss} lashes out with something that is mostly teeth.", "A wave of river water and bad intentions hits the team.", "{boss} drags somebody under for a moment, then thinks better of it."], "low": "{boss} is slowing down. The water around it is turning a worrying colour.", "win": "{boss} sinks back into the river and, for now, stays there.", "lose": "The team is washed back onto the dock, coughing up the Tiber."}},
-  "tony": {"weak": "luck", "resist": "speed", "intro": "Behind the speakeasy, in the room with the safe, four gentlemen in good suits are waiting. They have been waiting a while.", "rooms": [],
-   "lines": {"open": "{boss} straighten their ties and crack their knuckles in the same order.", "hit": ["One of {boss} swings a chair with real feeling.", "{boss} explain, using fists, how they feel about the safe.", "A gentleman in a good suit throws a very good punch."], "low": "Two of {boss} are looking at the door.", "win": "{boss} leave by the window. All of them. One at a time.", "lose": "{boss} put the team out on the street and dust off their hands."}},
-  "vanguard": {"weak": "attack", "resist": "speed", "intro": "Across the wheat, a line of emus. Disciplined. Watching. One of them has a medal.", "rooms": [],
-   "lines": {"open": "{boss} charge, all at once, faster than anything with those legs should go.", "hit": ["{boss} run straight through the team and turn for another go.", "An emu kicks with the force of a small car.", "{boss} scatter, regroup, and come back from the side."], "low": "{boss} are thinning out. The one with the medal looks thoughtful.", "win": "{boss} withdraw in good order. They will remember this.", "lose": "The team retreats across the wheat. The emus do not chase. They do not need to."}},
-  "gary": {"weak": "defense", "resist": "luck", "intro": "Between the flags at Bondi, a fin, going round in slow, confident circles.", "rooms": [],
-   "lines": {"open": "{boss} comes up out of the surf with a mouth full of very bad news.", "hit": ["{boss} takes a bite out of the afternoon.", "{boss} thrashes, and half the rock pool goes with him.", "{boss} circles once and comes back in from below."], "low": "{boss} is swimming crooked. He is thinking about the open sea.", "win": "{boss} heads out past the flags and keeps going.", "lose": "The lifeguards drag the team out of the water and close the beach."}},
-  "nephew": {"weak": "luck", "resist": "attack", "intro": "Inside the Doge's vault, the Doge's nephew. He has a sword, a lot of training, and nobody has ever told him no.", "rooms": [],
-   "lines": {"open": "{boss} salutes, very correctly, and then attacks without waiting for anyone to salute back.", "hit": ["{boss} lunges, perfectly, as he was taught.", "{boss} disarms somebody and hands the weapon back, which is worse.", "{boss} parries everything and then some."], "low": "{boss} has started checking his hair between strikes.", "win": "{boss} yields, very correctly, and asks not to be mentioned to his uncle.", "lose": "{boss} has the team escorted out of the vault, politely, by eight guards."}},
-  "well": {"weak": "attack", "resist": "luck", "intro": "In the witch's clearing, the old well has a new lid, and the lid is moving.", "rooms": [],
-   "lines": {"open": "{boss} climbs out of the well. It takes a long time. There is a lot of it.", "hit": ["{boss} reaches out of the dark and pulls.", "Something from the well whispers, and everyone hears their own name.", "{boss} lashes the clearing with roots that were not there a moment ago."], "low": "{boss} is sinking back towards the well, as if it is tired.", "win": "{boss} goes back down the well. The lid goes back on. Someone sits on it.", "lose": "The team runs from the clearing and does not look back, which is wise."}},
-  "antlers": {"weak": "health", "resist": "defense", "intro": "Under the ice at Lofoten, something with antlers is looking up at the team through a hole it made itself.", "rooms": [],
-   "lines": {"open": "{boss} breaks the ice from below, antlers first.", "hit": ["{boss} swings its antlers in a wide, freezing arc.", "The ice cracks under the team and {boss} is waiting underneath.", "{boss} breathes out, and the cold is a weapon."], "low": "{boss} is breathing hard. The ice around it is going soft.", "win": "{boss} sinks back under the ice, and the hole freezes over behind it.", "lose": "The team is pulled out of the fjord half frozen. The hole is still open."}},
-  "brenda": {"weak": "speed", "resist": "luck", "intro": "Brenda is back from leave. She has seen the supply closet. She is standing in the doorway.", "rooms": [],
-   "lines": {"open": "{boss} rolls up her sleeves and closes the closet door behind her.", "hit": ["{boss} throws a stapler with frightening accuracy.", "{boss} asks who used the last of the printer paper, and it hurts.", "{boss} reorganises somebody, by force."], "low": "{boss} is looking at the clock. It is nearly five.", "win": "{boss} signs out for the day and leaves the closet to the team.", "lose": "{boss} sends the team to HR. It is the worst thing that has happened to any of them."}}
+  "tiber": {
+   "weak": "speed",
+   "resist": "attack",
+   "intro": "The water off the Roman dock goes very still. Then a long shape moves under it, and keeps moving, and is still the same shape a full minute later. The fishermen of Ostia call it the Tiber Thing, because nobody has seen enough of it to call it anything else.",
+   "rooms": [
+    {
+     "id": "nets",
+     "text": "The fishermen have left their nets, their lunch and one sandal on the quay. None of them is coming back for any of it.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Follow the wet footprints",
+       "ok": "The prints lead the long way round, past the stretch of river that is watching.",
+       "bad": "The prints stop at the water's edge. So, briefly, does somebody on the team."
+      },
+      {
+       "stat": "luck",
+       "label": "Eat the lunch",
+       "ok": "Bread, olives, and a fisherman's sketch of where not to stand. A useful meal.",
+       "bad": "The fish sauce has been in the sun since Tuesday."
+      }
+     ]
+    },
+    {
+     "id": "barge",
+     "text": "A grain barge drifts sideways across the channel with nobody at the oar. Something bumps it from below, twice, politely, like a knock.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Pole it aside",
+       "ok": "The barge swings clear. The knocking moves off downstream, sounding put out.",
+       "bad": "The pole comes back shorter, and wet at the wrong end."
+      },
+      {
+       "stat": "defense",
+       "label": "Climb across while it knocks",
+       "ok": "Slow hands, steady feet. The barge rocks and nobody goes in.",
+       "bad": "The third knock is not polite."
+      }
+     ]
+    },
+    {
+     "id": "customs",
+     "text": "A customs officer blocks the pier. He has not noticed the monster. He has noticed that the team has no paperwork.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Hand him any scroll",
+       "ok": "He stamps a laundry list and waves the team through.",
+       "bad": "It is his own laundry list. He would like to know how the team came by it."
+      },
+      {
+       "stat": "speed",
+       "label": "Walk briskly and look official",
+       "ok": "Nobody in Rome stops a group walking that fast.",
+       "bad": "He blows a whistle. Ostia has more customs officers than anyone guessed."
+      },
+      {
+       "stat": "attack",
+       "label": "Move him",
+       "ok": "He is set down gently on a pile of nets, still quoting regulations.",
+       "bad": "He is heavier than he looks, and he knows the law."
+      }
+     ]
+    },
+    {
+     "id": "neptune",
+     "text": "Somebody has left an offering bowl at a small statue of Neptune. The bowl is full. The statue appears to be looking at the team.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Leave a coin",
+       "ok": "The river goes a shade calmer. Probably a coincidence.",
+       "bad": "The coin bounces out. Neptune has standards."
+      },
+      {
+       "stat": "health",
+       "label": "Walk past with heads high",
+       "ok": "A wave breaks over the pier and finds nobody willing to fall over.",
+       "bad": "A wave breaks over the pier at chest height, exactly on time."
+      }
+     ]
+    },
+    {
+     "id": "planks",
+     "text": "The far end of the pier is green with weed and missing every third plank. Under the gaps, the water is not moving the way water moves.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Hop the gaps",
+       "ok": "Three hops each, no hesitation. Whatever was waiting has to keep waiting.",
+       "bad": "The fourth plank was also missing. It had only looked present."
+      },
+      {
+       "stat": "defense",
+       "label": "Go plank by plank, roped together",
+       "ok": "Slow and dull and entirely safe.",
+       "bad": "When one goes through, the rope makes sure everybody joins in."
+      }
+     ]
+    },
+    {
+     "id": "garum",
+     "text": "A stack of amphorae, taller than the team, sways in the river wind. Each one is labelled GARUM. The smell says so too.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Push the stack into the river",
+       "ok": "Forty jars of fish sauce hit the water. Something below gets a faceful and rethinks its evening.",
+       "bad": "The stack falls the other way. Everyone will smell of this for a week."
+      },
+      {
+       "stat": "defense",
+       "label": "Edge underneath it",
+       "ok": "The stack leans, considers, and stays up.",
+       "bad": "One jar comes down. It is enough."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} comes up out of the Tiber, and keeps coming up, with most of the river still running off it.",
+    "hit": [
+     "{boss} lashes out with the end that is mostly teeth.",
+     "A wall of river water hits the team, with {boss} somewhere inside it.",
+     "{boss} drags somebody under for a moment, then seems to think better of the taste.",
+     "A coil the width of a barrel sweeps the pier clean."
+    ],
+    "low": "{boss} is slowing down. More of it is under the water than above it now.",
+    "win": "{boss} sinks back into the river, length after length, and the water closes over it. For now it stays there.",
+    "lose": "The team is washed back up the dock, coughing out the Tiber. The long shape goes back to circling."
+   }
+  },
+  "tony": {
+   "weak": "luck",
+   "resist": "speed",
+   "intro": "Behind the speakeasy, in the room with the safe, four gentlemen in good suits are reading four newspapers. Big Tony is not here. Big Tony does not need to be here. That is what the boys are for.",
+   "rooms": [
+    {
+     "id": "slot",
+     "text": "A slot opens in the door. Two eyes look out. A voice asks for the password, and adds that it changed this morning.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Guess",
+       "ok": "'Swordfish.' The door opens. It is always swordfish.",
+       "bad": "The slot closes. A larger door opens round the side, and not to be friendly."
+      },
+      {
+       "stat": "attack",
+       "label": "Knock harder",
+       "ok": "The door comes off its hinges. The eyes turn out to belong to quite a small man.",
+       "bad": "The door is steel. The knuckles are not."
+      }
+     ]
+    },
+    {
+     "id": "band",
+     "text": "The band stops playing when the team walks in. All eight of them. The trumpet player sets his case on the table and opens it slowly.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Start dancing",
+       "ok": "The team hits the floor in step and the band, out of habit, picks the tune back up.",
+       "bad": "Nobody on the team can dance. It is now a matter of public record."
+      },
+      {
+       "stat": "defense",
+       "label": "Stand firm and stare",
+       "ok": "The case contains a trumpet. Everybody breathes out.",
+       "bad": "The case does not contain a trumpet."
+      }
+     ]
+    },
+    {
+     "id": "cards",
+     "text": "The only way to the back room is through a card game. The players have been at it since Thursday, and a seat has just come free because of how the last player left.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Sit in for one hand",
+       "ok": "Four aces. Nobody is more surprised than the team.",
+       "bad": "Five aces, one of them the team's. The table does the arithmetic."
+      },
+      {
+       "stat": "health",
+       "label": "Walk through and take the shoving",
+       "ok": "Elbows, chairs, one thrown ashtray. The team arrives on the far side upright.",
+       "bad": "The players put down their cards to do it properly."
+      }
+     ]
+    },
+    {
+     "id": "kitchen",
+     "text": "The kitchen is a shortcut. The cook has a cleaver, a temper, and forty pots of something that is, for legal purposes, soup.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Run it",
+       "ok": "In one door and out the other before the cleaver leaves the block.",
+       "bad": "The floor is as greasy as the soup."
+      },
+      {
+       "stat": "defense",
+       "label": "Go through behind pot lids",
+       "ok": "Three clangs, no injuries, and a lid each to keep.",
+       "bad": "He throws the pots as well."
+      }
+     ]
+    },
+    {
+     "id": "ledger",
+     "text": "A small man with a ledger sits outside the back room. He looks the team over and writes down a number. It is not a big number.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Change his mind",
+       "ok": "He crosses the number out and writes a larger one. Respectfully.",
+       "bad": "He rings a little bell. The number was how many men it would take."
+      },
+      {
+       "stat": "luck",
+       "label": "Ask what he wrote",
+       "ok": "He turns the ledger round. It is the odds. He has money on the team.",
+       "bad": "It is what the team's clothes would fetch. He was being generous."
+      }
+     ]
+    },
+    {
+     "id": "stairs",
+     "text": "The cellar stairs are dark, steep, and lined with crates stamped OLIVE OIL. The crates clink.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Go down one step at a time",
+       "ok": "Every step tested, every crate left alone. Quiet as a church.",
+       "bad": "The ninth step is not attached to anything."
+      },
+      {
+       "stat": "speed",
+       "label": "Slide down the rail",
+       "ok": "Fast, silent, and nobody at the bottom has time to look up.",
+       "bad": "The rail ends before the stairs do."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} fold their newspapers, all four at once, and stand up in order of size.",
+    "hit": [
+     "One of {boss} swings a chair with real feeling.",
+     "{boss} explain, with their fists, how they feel about the safe.",
+     "A gentleman in a good suit throws a very good punch.",
+     "{boss} take turns. They are organised about it."
+    ],
+    "low": "Two of {boss} are looking at the door. A third is looking at the window.",
+    "win": "{boss} leave by the window, one at a time, in order of size. The last one comes back for his hat.",
+    "lose": "{boss} put the team out in the alley, dust off their hands, and go back to their newspapers."
+   }
+  },
+  "vanguard": {
+   "weak": "attack",
+   "resist": "speed",
+   "intro": "Across the wheat, a line of emus, evenly spaced, perfectly still. They beat the Australian army in 1932 and have been waiting ever since for somebody to send another one. The bird at the centre of the line has a medal. Nobody knows who gave it to him.",
+   "rooms": [
+    {
+     "id": "trench",
+     "text": "The army's old trench runs toward the birds. In it: spent cartridges, a kettle, and a note that says only WE TRIED.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Crawl along the trench",
+       "ok": "Heads down the whole way. The line of birds never turns.",
+       "bad": "The trench ends early. The army left in a hurry and did not finish it."
+      },
+      {
+       "stat": "speed",
+       "label": "Go over the top at a sprint",
+       "ok": "Up, across and down again before a single neck swivels.",
+       "bad": "It is the plan the army used."
+      }
+     ]
+    },
+    {
+     "id": "scout",
+     "text": "One emu stands on a rise, facing the team. It blinks once. Somewhere behind it, a great many feet shift.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Rush it before it reports",
+       "ok": "It gets three steps. The report is never filed.",
+       "bad": "It was never the scout. It was the bait."
+      },
+      {
+       "stat": "luck",
+       "label": "Stand very still too",
+       "ok": "After a long minute the emu decides the team is a shrub.",
+       "bad": "After a long minute the emu decides the team is lunch."
+      }
+     ]
+    },
+    {
+     "id": "wheat",
+     "text": "Head-high wheat in every direction. Something is moving through it in a line, and the line is turning.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Cut a path straight through",
+       "ok": "A straight road through the crop, and whatever was circling loses the scent.",
+       "bad": "The noise of cutting tells the whole field exactly where to come."
+      },
+      {
+       "stat": "luck",
+       "label": "Pick a direction and commit",
+       "ok": "The team walks out of the wheat on the right side of it, by no skill at all.",
+       "bad": "The team walks out of the wheat where it walked in. There are tracks over its tracks."
+      }
+     ]
+    },
+    {
+     "id": "gun",
+     "text": "An abandoned Lewis gun sits on its tripod, pointed at the horizon. There is a beak mark on the barrel.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Get it working",
+       "ok": "It fires for nine glorious seconds. The birds remember that sound, and not fondly.",
+       "bad": "It jams at once. The army could have told them that."
+      },
+      {
+       "stat": "defense",
+       "label": "Take the armour plate off it",
+       "ok": "A decent shield, lightly pecked.",
+       "bad": "It is bolted on. The clanging carries for miles."
+      }
+     ]
+    },
+    {
+     "id": "fence",
+     "text": "The rabbit-proof fence runs to both horizons. It was never meant to be emu-proof, as the large emu-shaped hole in it explains.",
+     "choices": [
+      {
+       "stat": "health",
+       "label": "Climb it",
+       "ok": "Wire, splinters, and over. Nothing that will not heal.",
+       "bad": "The top strand is barbed. So is the second, and the third."
+      },
+      {
+       "stat": "speed",
+       "label": "Go through the hole before its owner comes back",
+       "ok": "Through and gone. The hole stays empty.",
+       "bad": "Its owner had not gone far."
+      }
+     ]
+    },
+    {
+     "id": "farmer",
+     "text": "A farmer leans on a gatepost and watches the team pass. 'After the birds, are you,' he says. It is not a question. He has seen this before.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Ask his advice",
+       "ok": "'Don't run in a straight line.' It is the best advice anyone has had all year.",
+       "bad": "'Go home.' He means it kindly, and he will not say more."
+      },
+      {
+       "stat": "health",
+       "label": "Accept a cup of tea",
+       "ok": "The tea could hold a spoon upright. Everyone feels braver.",
+       "bad": "The tea has been in the pot since 1929."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} charge all at once, in silence, faster than anything with those legs should move.",
+    "hit": [
+     "{boss} run straight through the team and wheel round for another pass.",
+     "One emu kicks with the force of a small car.",
+     "{boss} scatter, re-form, and come back in from the side.",
+     "A beak finds a gap in somebody's guard. Then several more beaks find it."
+    ],
+    "low": "{boss} are thinning out. The one with the medal has stopped to think.",
+    "win": "{boss} withdraw in good order, without looking back. They will remember this, and they have long memories.",
+    "lose": "The team retreats across the wheat. The emus do not give chase. They have never needed to."
+   }
+  },
+  "gary": {
+   "weak": "defense",
+   "resist": "luck",
+   "intro": "Between the flags at Bondi, a fin, going round in slow, confident circles. The lifeguards know him. The council knows him. He is Gary, he is a great white, and he has decided that the safe swimming area is his.",
+   "rooms": [
+    {
+     "id": "signs",
+     "text": "The sign says BEACH CLOSED. Under it, a second sign says WE MEAN IT. Under that, a third, handwritten: GARY.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Go round by the rocks",
+       "ok": "Careful feet on wet stone. The long way, and the dry way.",
+       "bad": "The rocks are covered in oysters. Oysters are sharp all over."
+      },
+      {
+       "stat": "speed",
+       "label": "Vault the barrier",
+       "ok": "Over in one and down the sand before anyone can blow a whistle.",
+       "bad": "The barrier was the dry part. The team lands in the wet part."
+      }
+     ]
+    },
+    {
+     "id": "rip",
+     "text": "A rip current runs out through the middle of the bay, flat and fast and harmless-looking.",
+     "choices": [
+      {
+       "stat": "health",
+       "label": "Swim straight across it",
+       "ok": "Hard going, lungs burning, and out the other side.",
+       "bad": "The sea wins that one and does not rush it."
+      },
+      {
+       "stat": "speed",
+       "label": "Ride it out and cut sideways",
+       "ok": "Out past the break and round the back, the way the lifeguards teach it.",
+       "bad": "The rip delivers the team somewhere, at speed. It is not the somewhere they wanted."
+      }
+     ]
+    },
+    {
+     "id": "tourists",
+     "text": "Forty tourists stand at the waterline filming the fin. None of them will move, in case they miss something.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Clear the beach",
+       "ok": "Forty people discover they can run in thongs after all.",
+       "bad": "Forty people film the team instead, and do not get out of the way."
+      },
+      {
+       "stat": "luck",
+       "label": "Shout 'free sunscreen'",
+       "ok": "The beach empties toward the kiosk. Nobody has to be eaten today.",
+       "bad": "They already have sunscreen. They would like to know what else is free."
+      }
+     ]
+    },
+    {
+     "id": "gulls",
+     "text": "A flock of seagulls has claimed the path to the rock pool. Somebody on the team is holding chips.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Run for it",
+       "ok": "Gone before the first gull has finished shouting about it.",
+       "bad": "Nothing on this beach outruns a seagull."
+      },
+      {
+       "stat": "defense",
+       "label": "Hand over the chips",
+       "ok": "A fair toll. The gulls stand aside, almost respectfully.",
+       "bad": "The gulls take the chips and then, on principle, a hat."
+      }
+     ]
+    },
+    {
+     "id": "blueys",
+     "text": "The tide has left a line of bluebottles across the sand, blue and shiny and thin as a mistake.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Pick a way through",
+       "ok": "Eyes down, one careful step at a time. Not a single sting.",
+       "bad": "The one nobody saw is always the one."
+      },
+      {
+       "stat": "health",
+       "label": "Walk straight over them",
+       "ok": "Thick hide and thicker boots. Nothing gets through.",
+       "bad": "How bad could it be? Quite bad. The answer was quite bad."
+      }
+     ]
+    },
+    {
+     "id": "tower",
+     "text": "The lifeguard tower is empty. The radio is still on. A voice keeps asking whether anyone has eyes on Gary.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Take the binoculars",
+       "ok": "From up here the pattern is plain: he always turns left.",
+       "bad": "The binoculars show Gary very clearly. He is looking back."
+      },
+      {
+       "stat": "attack",
+       "label": "Take the rescue board",
+       "ok": "Eight feet of fibreglass. As clubs go, it has reach.",
+       "bad": "It snaps on the first wave. Half a board each."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} comes up out of the surf, mouth first.",
+    "hit": [
+     "{boss} takes a bite out of the afternoon.",
+     "{boss} thrashes, and half the rock pool goes with him.",
+     "{boss} circles once and comes back in from below.",
+     "A tail the size of a door catches somebody mid-stride."
+    ],
+    "low": "{boss} is swimming crooked. He keeps glancing at the open sea.",
+    "win": "{boss} turns out past the flags and keeps going, as if leaving had been his idea.",
+    "lose": "The lifeguards haul the team up the sand and put the BEACH CLOSED sign back. Gary resumes his circles."
+   }
+  },
+  "nephew": {
+   "weak": "luck",
+   "resist": "attack",
+   "intro": "The Doge's vault has one guard who matters: the Doge's nephew. He has a sword, eleven years of the best lessons in Venice, and a face nobody has ever said no to. He is not good at guarding. He is very good at the other thing.",
+   "rooms": [
+    {
+     "id": "gondola",
+     "text": "The only way in is by water. The gondolier names a price, looks at the team again, and doubles it.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Haggle",
+       "ok": "He is so pleased to be argued with properly that he throws in a song.",
+       "bad": "He doubles it again, and the song is extra."
+      },
+      {
+       "stat": "speed",
+       "label": "Take the gondola while he talks",
+       "ok": "The team is three bridges away before he reaches the end of the sentence.",
+       "bad": "It is harder to steer than he makes it look. The canal is cold."
+      }
+     ]
+    },
+    {
+     "id": "ball",
+     "text": "The palace is holding a masked ball. Every guest has a mask. The team has, between them, one napkin.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Walk in as if invited",
+       "ok": "A footman bows. Somebody is handed a drink. Venice assumes the best of the well dressed.",
+       "bad": "The napkin fools nobody, and the footmen are larger up close."
+      },
+      {
+       "stat": "speed",
+       "label": "Cross the floor during the dance",
+       "ok": "In at one door, out at the other, and never out of step.",
+       "bad": "The dance changes partners. The team is separated, twirled, and returned bruised."
+      }
+     ]
+    },
+    {
+     "id": "portraits",
+     "text": "A corridor of portraits: six hundred years of Doges, every one painted looking disappointed. The floorboards beneath them creak in sequence.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Move between the creaks",
+       "ok": "Step, wait, step. Not a sound.",
+       "bad": "The floor keeps time better than the team does."
+      },
+      {
+       "stat": "defense",
+       "label": "Walk normally and own it",
+       "ok": "Nobody questions people who walk as if they are late for a meeting.",
+       "bad": "A guard questions people who walk as if they are late for a meeting."
+      }
+     ]
+    },
+    {
+     "id": "lock",
+     "text": "The vault door has a lock made by a genius: forty tumblers, three false keyholes, and a small brass plate that says GOOD LUCK in Latin.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Pick it",
+       "ok": "The fortieth tumbler drops. The genius, wherever he is, feels a chill.",
+       "bad": "The second keyhole was false. It was also sharp."
+      },
+      {
+       "stat": "attack",
+       "label": "Take the hinges off instead",
+       "ok": "The genius did not make the hinges. A nobody made the hinges.",
+       "bad": "The genius also made the hinges."
+      }
+     ]
+    },
+    {
+     "id": "guard",
+     "text": "The guard is asleep on a chair with the keys on his belt. He was hired by the nephew. It shows.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Lift the keys",
+       "ok": "He snores through it and smiles at something in a dream.",
+       "bad": "He sleeps with one hand on the keys. The other hand holds a bell."
+      },
+      {
+       "stat": "luck",
+       "label": "Leave him and try the door",
+       "ok": "The door is open. He was hired by the nephew.",
+       "bad": "The door is locked, and the handle squeaks."
+      }
+     ]
+    },
+    {
+     "id": "master",
+     "text": "The nephew's fencing master is in the anteroom, practising against six straw dummies. Five are already in pieces.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Hold a guard and edge past",
+       "ok": "He nods at the footwork and lets it go by. A professional courtesy.",
+       "bad": "He corrects the guard. With the point."
+      },
+      {
+       "stat": "attack",
+       "label": "Offer him a real opponent",
+       "ok": "He is delighted, then beaten, then delighted again. He bows the team through.",
+       "bad": "He has waited years for a real opponent. He makes it last."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} salutes, very correctly, and attacks before anybody can salute back.",
+    "hit": [
+     "{boss} lunges, perfectly, exactly as he was taught.",
+     "{boss} disarms somebody and hands the weapon back, which is worse.",
+     "{boss} parries three blows and answers all three.",
+     "A flick of the wrist, and somebody has a new buttonhole."
+    ],
+    "low": "{boss} has started checking his hair between strikes. It is no longer perfect, and it is bothering him.",
+    "win": "{boss} yields, very correctly, and asks only that nobody mention this to his uncle.",
+    "lose": "{boss} has the team shown out of the vault, politely, by eight guards. He waves."
+   }
+  },
+  "well": {
+   "weak": "attack",
+   "resist": "luck",
+   "intro": "In the witch's clearing there is an old well with a new lid, and the lid is moving. Whatever is under it was put there a long time ago by people who knew what they were doing. Then Smudge came along with a shovel.",
+   "rooms": [
+    {
+     "id": "fork",
+     "text": "The path into the forest forks. One way has a carved sign. The other has a newer sign, in different handwriting, saying that the first sign lies.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Pick a sign and trust it",
+       "ok": "It was the honest one. There is no way to know that, even afterwards.",
+       "bad": "Both signs lie. The forest has a sense of humour."
+      },
+      {
+       "stat": "speed",
+       "label": "Ignore both and cut through the trees",
+       "ok": "Straight through, branches whipping, and out before the forest can rearrange itself.",
+       "bad": "The trees are closer together than they were a moment ago."
+      }
+     ]
+    },
+    {
+     "id": "cottage",
+     "text": "A cottage made of gingerbread stands by the path, with smoke in the chimney and a welcome mat. The mat is also gingerbread. The whole thing is extremely obvious.",
+     "choices": [
+      {
+       "stat": "health",
+       "label": "Eat some anyway",
+       "ok": "It is very good gingerbread. Whatever comes next, the team meets it fed.",
+       "bad": "It is very old gingerbread."
+      },
+      {
+       "stat": "defense",
+       "label": "Walk past, touching nothing",
+       "ok": "The door opens a crack as the team passes, and closes again, disappointed.",
+       "bad": "The path past the cottage is gingerbread too. It gives way."
+      }
+     ]
+    },
+    {
+     "id": "ravens",
+     "text": "Every branch above the path has a raven on it. None of them makes a sound. All of them face the same way: toward the team.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Greet them politely",
+       "ok": "One raven nods. The rest look away. Manners still count for something out here.",
+       "bad": "The ravens confer, briefly, and reach a decision."
+      },
+      {
+       "stat": "attack",
+       "label": "Scatter them",
+       "ok": "A storm of black wings, and then an empty sky.",
+       "bad": "They scatter, and then they come back, and now it is personal."
+      }
+     ]
+    },
+    {
+     "id": "hole",
+     "text": "The ground here has been dug and filled in many times, by many different shovels. The newest hole is still open, and it is the right size for the whole team.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Jump it",
+       "ok": "Over, one after another, without looking down.",
+       "bad": "It is wider at the far side than it was at the near side."
+      },
+      {
+       "stat": "attack",
+       "label": "Fill it in",
+       "ok": "Whatever was on its way up finds the way blocked, and goes back down to think.",
+       "bad": "Something on the other side of the dirt is digging faster."
+      }
+     ]
+    },
+    {
+     "id": "roots",
+     "text": "The roots across the path were not across the path a moment ago.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Chop through them",
+       "ok": "They part, twitching, and do not grow back while anyone is looking.",
+       "bad": "They grow back while everyone is looking."
+      },
+      {
+       "stat": "speed",
+       "label": "Step through before they close",
+       "ok": "Quick feet. The roots close on empty air.",
+       "bad": "The roots close on an ankle."
+      }
+     ]
+    },
+    {
+     "id": "lantern",
+     "text": "A lantern hangs from a branch, burning green, with nobody holding it. It swings toward the team like a head turning.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Follow it",
+       "ok": "It leads the long way round, past everything with teeth, and goes out at the clearing's edge like a job done.",
+       "bad": "It leads the team in a circle and goes out laughing."
+      },
+      {
+       "stat": "defense",
+       "label": "Put it out",
+       "ok": "Dark, but an honest dark.",
+       "bad": "It does not go out. It goes somewhere else, and takes the light with it."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} climbs out of the well. It takes a long time. There is a great deal of it.",
+    "hit": [
+     "{boss} reaches out of the dark and pulls.",
+     "Something in the well whispers, and everyone hears their own name.",
+     "{boss} lashes the clearing with roots that were not there a moment ago.",
+     "The ground under the team opens, a little, experimentally."
+    ],
+    "low": "{boss} is sagging back toward the well, as if the daylight is heavy.",
+    "win": "{boss} goes back down the well. The lid goes back on. Somebody sits on it until the knocking stops.",
+    "lose": "The team runs from the clearing and does not look back, which is the only wise thing anyone has done all day."
+   }
+  },
+  "antlers": {
+   "weak": "health",
+   "resist": "defense",
+   "intro": "Far out on the fjord there is a hole in the ice that nobody cut. Something with antlers lives under it, older than the village, older than the name of the fjord. The fishermen leave it a cod each winter and do not ask what it does with them.",
+   "rooms": [
+    {
+     "id": "ice",
+     "text": "The fjord ice groans underfoot. Toward the middle it changes colour, from white to grey to a dark that is not an ice colour at all.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Spread out and go slowly",
+       "ok": "The ice complains the whole way and holds the whole way.",
+       "bad": "The ice had been waiting for exactly that much weight."
+      },
+      {
+       "stat": "speed",
+       "label": "Run the thin part",
+       "ok": "Light feet, long strides. The cracks open behind the team, not under it.",
+       "bad": "The cracks are faster."
+      }
+     ]
+    },
+    {
+     "id": "hut",
+     "text": "A fishing hut stands alone on the ice. The fire inside is still lit. The line through the floor is still out, and it is pulling the hut, slowly, toward the middle of the fjord.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Haul the line in",
+       "ok": "A cod the size of a door comes up. Not what they came for, but supper, and proof the line holds.",
+       "bad": "The line hauls back."
+      },
+      {
+       "stat": "luck",
+       "label": "Cut the line and warm up",
+       "ok": "Ten minutes by a fire is worth a great deal up here.",
+       "bad": "The hut, cut loose, was the only thing holding that patch of ice in place."
+      }
+     ]
+    },
+    {
+     "id": "storm",
+     "text": "The snow comes in sideways, all at once, and takes the far shore with it.",
+     "choices": [
+      {
+       "stat": "health",
+       "label": "Walk into it",
+       "ok": "Heads down, one foot and then the other. The storm gives up first.",
+       "bad": "The cold gets into the bones and takes a seat."
+      },
+      {
+       "stat": "luck",
+       "label": "Wait it out",
+       "ok": "It passes in minutes, as if it had somewhere else to be.",
+       "bad": "It does not pass. It settles in and gets comfortable."
+      }
+     ]
+    },
+    {
+     "id": "ship",
+     "text": "A longship is frozen into the ice at an angle, oars still out. Someone carved a warning on the prow, and under it, in a later hand, a tally of the people who ignored it.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Shelter along the hull",
+       "ok": "Out of the wind for the length of a ship. A small mercy, gratefully taken.",
+       "bad": "The hull shifts. It has been waiting a hundred years to finish sinking."
+      },
+      {
+       "stat": "attack",
+       "label": "Break off the oars for spears",
+       "ok": "Good ash, seasoned by a century of frost. They will do.",
+       "bad": "The oars are frozen in. The ice lets go of the team's footing first."
+      }
+     ]
+    },
+    {
+     "id": "seals",
+     "text": "A colony of seals lies across the only solid ice. They are large, numerous, and have the look of creatures that have never once been made to move.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Dart between them",
+       "ok": "Through the gaps and away before a single head lifts.",
+       "bad": "A seal rolls over at the wrong moment. It is like being hit by a wet sofa."
+      },
+      {
+       "stat": "health",
+       "label": "Wade through and take the slaps",
+       "ok": "Flippers from every side, and the team keeps walking.",
+       "bad": "There are more seals than there is team."
+      }
+     ]
+    },
+    {
+     "id": "shadow",
+     "text": "Under the clear ice, something keeps pace with the team. When they stop, it stops. Its shadow has too many points.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Outrun it to the hole",
+       "ok": "It loses interest, or pretends to.",
+       "bad": "It knew where the team was going. It gets there first."
+      },
+      {
+       "stat": "defense",
+       "label": "Stand still until it leaves",
+       "ok": "A long minute. Then the shadow sinks, and the ice is only ice again.",
+       "bad": "It does not leave. It taps once, from below, to see what the ice will take."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} breaks the ice from below, antlers first, and the whole fjord rings like a bell.",
+    "hit": [
+     "{boss} swings its antlers in a wide, freezing arc.",
+     "The ice cracks under the team, and {boss} is waiting underneath.",
+     "{boss} breathes out, and the cold arrives like a blow.",
+     "A point of antler the length of an oar comes up through the ice between somebody's feet."
+    ],
+    "low": "{boss} is breathing hard. The ice around it has gone soft and grey.",
+    "win": "{boss} sinks back under the ice without a sound, and the hole freezes over behind it, smooth as glass.",
+    "lose": "The team is dragged off the fjord half frozen. Behind them the hole is still open, and something in it is still looking up."
+   }
+  },
+  "brenda": {
+   "weak": "speed",
+   "resist": "luck",
+   "intro": "Brenda from Facilities is back from leave. In three weeks away she has not forgotten one thing about this office, and in ten minutes back she has seen the state of the supply closet. She has the only key. She is standing in the doorway. She would like a word.",
+   "rooms": [
+    {
+     "id": "signin",
+     "text": "Reception wants every visitor signed in. The sheet asks for name, company, time in and purpose of visit. The pen is on a chain. The chain is too short.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Write 'meeting'",
+       "ok": "Nobody in this building has ever questioned a meeting.",
+       "bad": "The receptionist asks which meeting. The pause lasts most of a quarter."
+      },
+      {
+       "stat": "speed",
+       "label": "Walk past on a phone call",
+       "ok": "'No, I hear you, I hear you.' The team is through the barrier before the nod is finished.",
+       "bad": "The barrier needs a pass. It closes at hip height."
+      }
+     ]
+    },
+    {
+     "id": "printer",
+     "text": "The printer in the corridor is jammed, flashing, and blocking the way. A sign taped to it reads DO NOT TOUCH. BRENDA KNOWS.",
+     "choices": [
+      {
+       "stat": "attack",
+       "label": "Unjam it by force",
+       "ok": "One sheet comes out. Then two hundred more. The way is clear and the team is, briefly, popular.",
+       "bad": "PC LOAD LETTER. The printer bites."
+      },
+      {
+       "stat": "defense",
+       "label": "Squeeze past without touching it",
+       "ok": "Breath held, elbows in. The printer flashes on, none the wiser.",
+       "bad": "An elbow brushes the paper tray. Somewhere, a log is updated."
+      }
+     ]
+    },
+    {
+     "id": "floor",
+     "text": "The open-plan floor. Sixty desks. Anyone who makes eye contact will be asked whether they have five minutes.",
+     "choices": [
+      {
+       "stat": "speed",
+       "label": "Cross it fast",
+       "ok": "Eyes front, pace brisk. Sixty heads stay down.",
+       "bad": "'Quick one while you're passing.' It is not a quick one."
+      },
+      {
+       "stat": "luck",
+       "label": "Carry a laptop and look worried",
+       "ok": "The universal pass. Nobody stops a person carrying a laptop and looking worried.",
+       "bad": "Somebody needs that exact laptop."
+      }
+     ]
+    },
+    {
+     "id": "fridge",
+     "text": "The kitchen. In the fridge is a yoghurt with a label on it. The label says BRENDA. It went out of date while she was away.",
+     "choices": [
+      {
+       "stat": "health",
+       "label": "Eat it and remove the evidence",
+       "ok": "A brave act and a terrible yoghurt. No evidence remains.",
+       "bad": "It fights back, from the inside."
+      },
+      {
+       "stat": "luck",
+       "label": "Change the date on the label",
+       "ok": "A steady hand and the right pen. It will buy a day.",
+       "bad": "The pen is permanent. The handwriting is not hers. She will know."
+      }
+     ]
+    },
+    {
+     "id": "meeting",
+     "text": "A meeting has spilled out into the corridor. It was booked for thirty minutes. That was this morning.",
+     "choices": [
+      {
+       "stat": "defense",
+       "label": "Sit through it",
+       "ok": "Forty minutes of slides. The team comes out older, unharmed, and aligned on next steps.",
+       "bad": "There are action items. The team now owns three of them."
+      },
+      {
+       "stat": "speed",
+       "label": "Say 'hard stop' and keep walking",
+       "ok": "The two words nobody can argue with. The meeting parts like a sea.",
+       "bad": "'Before you go.' Nobody has ever escaped a 'before you go'."
+      }
+     ]
+    },
+    {
+     "id": "warden",
+     "text": "The key cupboard is where it has always been, behind the fire warden's desk. The fire warden is at the desk. He takes the role seriously.",
+     "choices": [
+      {
+       "stat": "luck",
+       "label": "Ask to borrow the closet key",
+       "ok": "He hands over a form. It is one page long. A miracle.",
+       "bad": "He hands over a form. The form has a form."
+      },
+      {
+       "stat": "speed",
+       "label": "Wait for his tea break",
+       "ok": "Half past ten exactly. He is a man of routine. The cupboard is unguarded for four minutes.",
+       "bad": "Today he takes his tea at the desk."
+      }
+     ]
+    }
+   ],
+   "lines": {
+    "open": "{boss} rolls up her sleeves and closes the closet door behind her. The lock clicks.",
+    "hit": [
+     "{boss} throws a stapler with frightening accuracy.",
+     "{boss} asks who used the last of the printer paper, and it lands like a blow.",
+     "{boss} reorganises somebody, by force.",
+     "{boss} produces the sign-out sheet. Nobody on the team has ever signed it. She reads the blanks aloud."
+    ],
+    "low": "{boss} has looked at the clock twice. It is nearly five.",
+    "win": "{boss} signs herself out for the day, to the minute, and leaves the closet to the team. She will be back at nine.",
+    "lose": "{boss} sends the team to HR. It is the worst thing that has ever happened to any of them."
+   }
+  }
  },
  "reactions": {
   "default": {
-   "ok": ["{name}: That went well. Suspicious.", "{name}: Told you.", "{name}: Easy. Next."],
-   "fail": ["{name}: Nobody saw that.", "{name}: That was the plan. Probably.", "{name}: Ow."],
-   "hurt": ["{name}: Still standing. Mostly.", "{name}: I have had worse. Not recently."],
-   "boss": ["{name}: That is a lot bigger than the drawing.", "{name}: Right. Everybody pick a side of it."],
-   "win": ["{name}: We should do that again. Not soon.", "{name}: Who is carrying the loot?"],
-   "lose": ["{name}: We were holding back.", "{name}: Next time, bring a bigger team."],
-   "loot": ["{name}: Mine. Probably."]
+   "ok": [
+    "{name}: That went well. Suspicious.",
+    "{name}: Told you.",
+    "{name}: Easy. Next."
+   ],
+   "fail": [
+    "{name}: Nobody saw that.",
+    "{name}: That was the plan. Probably.",
+    "{name}: Ow."
+   ],
+   "hurt": [
+    "{name}: Still standing. Mostly.",
+    "{name}: I have had worse. Not recently."
+   ],
+   "boss": [
+    "{name}: That is a lot bigger than the drawing.",
+    "{name}: Right. Everybody pick a side of it."
+   ],
+   "win": [
+    "{name}: We should do that again. Not soon.",
+    "{name}: Who is carrying the loot?"
+   ],
+   "lose": [
+    "{name}: We were holding back.",
+    "{name}: Next time, bring a bigger team."
+   ],
+   "loot": [
+    "{name}: Mine. Probably."
+   ]
+  },
+  "kevin": {
+   "ok": [
+    "{name}: Let's capture that as a win.",
+    "{name}: Good. Nobody has to stay late."
+   ],
+   "fail": [
+    "{name}: I'll take that offline.",
+    "{name}: That's a learning."
+   ],
+   "hurt": [
+    "{name}: I'm going to need a sick day.",
+    "{name}: Is this covered by the dental plan?"
+   ],
+   "boss": [
+    "{name}: Is this in my job description?",
+    "{name}: I'd like it minuted that I objected."
+   ],
+   "win": [
+    "{name}: Great. Can we go home at five?",
+    "{name}: I'll write it up Monday. Late Monday."
+   ],
+   "lose": [
+    "{name}: Let's circle back on winning.",
+    "{name}: We'll regroup after lunch."
+   ],
+   "loot": [
+    "{name}: Is this taxable?"
+   ]
+  },
+  "marco": {
+   "ok": [
+    "{name}: Delivered. Signed for.",
+    "{name}: Ahead of schedule. Mark it."
+   ],
+   "fail": [
+    "{name}: Wrong address. My fault.",
+    "{name}: Traffic."
+   ],
+   "hurt": [
+    "{name}: Still faster than you lot.",
+    "{name}: I've crashed worse. In the rain."
+   ],
+   "boss": [
+    "{name}: I've had worse customers.",
+    "{name}: Leave it at the door? That thing?"
+   ],
+   "win": [
+    "{name}: Five stars. Tip in cash.",
+    "{name}: Next drop."
+   ],
+   "lose": [
+    "{name}: Returned to sender.",
+    "{name}: Nobody home. We'll try again."
+   ],
+   "loot": [
+    "{name}: No tip, but this'll do."
+   ]
+  },
+  "maya": {
+   "ok": [
+    "{name}: Clean. Nobody hurt. Lovely.",
+    "{name}: That's how it's done, team."
+   ],
+   "fail": [
+    "{name}: Okay. Who's bleeding?",
+    "{name}: Nobody move. Actually, everybody move."
+   ],
+   "hurt": [
+    "{name}: I'm fine. I say that to patients too.",
+    "{name}: Pressure on it. Keep going."
+   ],
+   "boss": [
+    "{name}: Stay calm. I'm talking to myself.",
+    "{name}: I've seen worse. Not bigger, though."
+   ],
+   "win": [
+    "{name}: Everyone count your fingers.",
+    "{name}: Good job, all. Good team. Sorry. Habit."
+   ],
+   "lose": [
+    "{name}: We're alive. In my job that's a win.",
+    "{name}: Stretchers, everyone. Yes, you too."
+   ],
+   "loot": [
+    "{name}: Is it sterile? No? Mine anyway."
+   ]
+  },
+  "brokk": {
+   "ok": [
+    "{name}: Brokk do. Is done.",
+    "{name}: Easy. Like small mammoth."
+   ],
+   "fail": [
+    "{name}: Brokk blame wheel.",
+    "{name}: Was trick. Brokk not like trick."
+   ],
+   "hurt": [
+    "{name}: Brokk bleed before. Brokk bleed again.",
+    "{name}: Is scratch. Big scratch."
+   ],
+   "boss": [
+    "{name}: Finally. Big thing.",
+    "{name}: Brokk hunt bigger. Once."
+   ],
+   "win": [
+    "{name}: We eat it now?",
+    "{name}: Good hunt. Bring it to cave."
+   ],
+   "lose": [
+    "{name}: Bigger stick next time.",
+    "{name}: Brokk not run. Brokk walk fast."
+   ],
+   "loot": [
+    "{name}: Shiny. Brokk keep."
+   ]
+  },
+  "gaius": {
+   "ok": [
+    "{name}: Textbook. The Ninth would approve.",
+    "{name}: Formation held. Good."
+   ],
+   "fail": [
+    "{name}: In the Ninth, someone would be flogged for that.",
+    "{name}: The knee. It was the knee."
+   ],
+   "hurt": [
+    "{name}: Twenty years of this. I know the feeling.",
+    "{name}: A legionary stands. So. Standing."
+   ],
+   "boss": [
+    "{name}: Shields up. Any shields. Anything.",
+    "{name}: I fought worse in Gaul. Smaller, but worse."
+   ],
+   "win": [
+    "{name}: Send word to Rome.",
+    "{name}: A triumph. A modest one."
+   ],
+   "lose": [
+    "{name}: A tactical withdrawal.",
+    "{name}: We do not tell the Senate."
+   ],
+   "loot": [
+    "{name}: Spoils. Properly divided, mind."
+   ]
+  },
+  "edith": {
+   "ok": [
+    "{name}: As calculated.",
+    "{name}: Simple mechanics, really."
+   ],
+   "fail": [
+    "{name}: A design flaw. Not mine.",
+    "{name}: Well. That was not load-bearing."
+   ],
+   "hurt": [
+    "{name}: Nothing a splint and strong tea won't fix.",
+    "{name}: Structurally sound. Mostly."
+   ],
+   "boss": [
+    "{name}: Who designed that? It shouldn't stand up.",
+    "{name}: Every structure has a weak point."
+   ],
+   "win": [
+    "{name}: Sound work. I'll draw up the report.",
+    "{name}: It came apart beautifully."
+   ],
+   "lose": [
+    "{name}: Back to the drawing board. Literally.",
+    "{name}: We were under-engineered."
+   ],
+   "loot": [
+    "{name}: Good brass. I can use that."
+   ]
+  },
+  "albrecht": {
+   "ok": [
+    "{name}: The humours are in balance.",
+    "{name}: As I prescribed."
+   ],
+   "fail": [
+    "{name}: Bad air. I said so.",
+    "{name}: This calls for leeches."
+   ],
+   "hurt": [
+    "{name}: I shall treat myself. Stand back.",
+    "{name}: A flesh wound. I think. Leeches."
+   ],
+   "boss": [
+    "{name}: That is not in any of my books.",
+    "{name}: It looks unwell. Good."
+   ],
+   "win": [
+    "{name}: The patient did not survive. For once, on purpose.",
+    "{name}: A full recovery. Ours."
+   ],
+   "lose": [
+    "{name}: I prescribe retreat.",
+    "{name}: We needed more leeches."
+   ],
+   "loot": [
+    "{name}: For my collection of remedies."
+   ]
+  },
+  "vincenzo": {
+   "ok": [
+    "{name}: Nice and quiet. How I like it.",
+    "{name}: You saw nothing."
+   ],
+   "fail": [
+    "{name}: Somebody talked.",
+    "{name}: This never happened."
+   ],
+   "hurt": [
+    "{name}: I've been shot at by friends. This is nothing.",
+    "{name}: Mind the suit. The suit."
+   ],
+   "boss": [
+    "{name}: We can discuss this like gentlemen. No? Fine.",
+    "{name}: Big fella. They fall the same."
+   ],
+   "win": [
+    "{name}: A pleasure doing business.",
+    "{name}: Send flowers."
+   ],
+   "lose": [
+    "{name}: We'll send somebody. Somebody bigger.",
+    "{name}: I got a cousin for this."
+   ],
+   "loot": [
+    "{name}: My cut. And a little for the trouble."
+   ]
+  },
+  "slapton": {
+   "ok": [
+    "{name}: Got it in one take.",
+    "{name}: And that's why I'm on the poster."
+   ],
+   "fail": [
+    "{name}: Cut! We'll fix it in the edit.",
+    "{name}: My stunt double does that part."
+   ],
+   "hurt": [
+    "{name}: Not the face. Not the face!",
+    "{name}: I'm acting hurt. Mostly acting."
+   ],
+   "boss": [
+    "{name}: Finally, a co-star my size.",
+    "{name}: Who's his agent?"
+   ],
+   "win": [
+    "{name}: And scene.",
+    "{name}: I'd like to thank me."
+   ],
+   "lose": [
+    "{name}: The critics won't hear of this.",
+    "{name}: It tested badly. We reshoot."
+   ],
+   "loot": [
+    "{name}: For my trophy room."
+   ]
+  },
+  "napoleon": {
+   "ok": [
+    "{name}: As I planned. From down here.",
+    "{name}: A manoeuvre for the textbooks."
+   ],
+   "fail": [
+    "{name}: My marshals have failed me.",
+    "{name}: I was misinformed about the terrain."
+   ],
+   "hurt": [
+    "{name}: An emperor does not bleed. He leaks, with dignity.",
+    "{name}: My stepladder. And a bandage."
+   ],
+   "boss": [
+    "{name}: It is tall. Everything is tall. Attack!",
+    "{name}: I have conquered bigger. Ask Europe."
+   ],
+   "win": [
+    "{name}: Another for the monuments.",
+    "{name}: History will remember this. I will remind it."
+   ],
+   "lose": [
+    "{name}: This is not Waterloo. This is a rehearsal.",
+    "{name}: We retreat. To advance later. Taller."
+   ],
+   "loot": [
+    "{name}: For the Louvre. My Louvre."
+   ]
+  },
+  "cleocatra": {
+   "ok": [
+    "{name}: Naturally.",
+    "{name}: I allowed that to go well."
+   ],
+   "fail": [
+    "{name}: Who is responsible? Not me. Find them.",
+    "{name}: I did not see that. Nobody saw that."
+   ],
+   "hurt": [
+    "{name}: Fetch the royal physician. And the milk.",
+    "{name}: A queen does not limp. I am strolling."
+   ],
+   "boss": [
+    "{name}: It may kneel now.",
+    "{name}: I have had bigger things made into rugs."
+   ],
+   "win": [
+    "{name}: Have it stuffed.",
+    "{name}: Egypt is pleased. I am Egypt."
+   ],
+   "lose": [
+    "{name}: We do not speak of this. Ever.",
+    "{name}: I was not here. I was bathing."
+   ],
+   "loot": [
+    "{name}: Tribute. Finally."
+   ]
+  },
+  "blackbear": {
+   "ok": [
+    "{name}: Arr. The good kind.",
+    "{name}: Smooth as a stolen sloop."
+   ],
+   "fail": [
+    "{name}: Arr. The bad kind.",
+    "{name}: That's what the rum's for."
+   ],
+   "hurt": [
+    "{name}: Tis but a... no, that's a proper wound.",
+    "{name}: I've a spare leg somewhere."
+   ],
+   "boss": [
+    "{name}: Now that's a beast worth the telling.",
+    "{name}: Me beard's on fire and I'm still not worried."
+   ],
+   "win": [
+    "{name}: Loot it, then bury it.",
+    "{name}: A tale for the tavern."
+   ],
+   "lose": [
+    "{name}: Abandon ship. There's no ship. Abandon anyway.",
+    "{name}: We'll be back with cannons."
+   ],
+   "loot": [
+    "{name}: X marks this one."
+   ]
+  },
+  "astrid": {
+   "ok": [
+    "{name}: Too easy. Next.",
+    "{name}: Finally, something happened."
+   ],
+   "fail": [
+    "{name}: A small defeat. I only count large ones.",
+    "{name}: The saga will leave that out."
+   ],
+   "hurt": [
+    "{name}: Good. Now it's a fight.",
+    "{name}: Scars are only long stories."
+   ],
+   "boss": [
+    "{name}: At last. Someone my size.",
+    "{name}: This one goes in the saga."
+   ],
+   "win": [
+    "{name}: Valhalla can wait. I'm having fun.",
+    "{name}: A proper fight. Good."
+   ],
+   "lose": [
+    "{name}: We live to raid again.",
+    "{name}: I was not finished. Remember that."
+   ],
+   "loot": [
+    "{name}: Plunder. My favourite word."
+   ]
+  },
+  "kenji": {
+   "ok": [
+    "{name}: A clean cut.",
+    "{name}: The still mind prevails."
+   ],
+   "fail": [
+    "{name}: I dishonoured the plan.",
+    "{name}: The rice ball distracted me."
+   ],
+   "hurt": [
+    "{name}: Pain is a teacher. A loud one.",
+    "{name}: I have walked further on worse."
+   ],
+   "boss": [
+    "{name}: A worthy opponent. At last.",
+    "{name}: One breath. One cut."
+   ],
+   "win": [
+    "{name}: The sword is pleased. Good boy.",
+    "{name}: Now. Rice ball."
+   ],
+   "lose": [
+    "{name}: We withdraw. With honour. Quickly.",
+    "{name}: I will meditate on this. Angrily."
+   ],
+   "loot": [
+    "{name}: A fitting offering."
+   ]
+  },
+  "emu": {
+   "ok": [
+    "{name}: Objective taken. No casualties.",
+    "{name}: As drilled."
+   ],
+   "fail": [
+    "{name}: A setback. Strike it from the record.",
+    "{name}: Regroup. Not you."
+   ],
+   "hurt": [
+    "{name}: A scratch. I outran machine guns.",
+    "{name}: Still undefeated. Technically."
+   ],
+   "boss": [
+    "{name}: I have beaten an army. This is one thing.",
+    "{name}: Flank it. Both flanks. All flanks."
+   ],
+   "win": [
+    "{name}: Undefeated. Still.",
+    "{name}: Victory. Tastes of gravel."
+   ],
+   "lose": [
+    "{name}: A strategic relocation.",
+    "{name}: We never lost. We paused."
+   ],
+   "loot": [
+    "{name}: Spoils of war. Catalogue it."
+   ]
+  },
+  "troffea": {
+   "ok": [
+    "{name}: Danced right through it!",
+    "{name}: Step, step, turn, done."
+   ],
+   "fail": [
+    "{name}: My feet did that. Not me.",
+    "{name}: Wrong foot. They're all wrong feet."
+   ],
+   "hurt": [
+    "{name}: Still dancing. Can't not.",
+    "{name}: Ow-two-three, ow-two-three."
+   ],
+   "boss": [
+    "{name}: Does it dance? Everything dances eventually.",
+    "{name}: Oh good. A partner."
+   ],
+   "win": [
+    "{name}: Five days now! Personal best!",
+    "{name}: And bow. I can't bow. Still dancing."
+   ],
+   "lose": [
+    "{name}: Dancing away! Dancing away!",
+    "{name}: Same time tomorrow? I'll be up."
+   ],
+   "loot": [
+    "{name}: I'll hold it while I spin."
+   ]
+  },
+  "joost": {
+   "ok": [
+    "{name}: A sound investment.",
+    "{name}: Up twelve percent already."
+   ],
+   "fail": [
+    "{name}: A correction. Markets correct.",
+    "{name}: I'm not worried. Am I sweating?"
+   ],
+   "hurt": [
+    "{name}: I've lost more than blood. I had cows.",
+    "{name}: This is priced in."
+   ],
+   "boss": [
+    "{name}: What's it worth? Alive? Hmm.",
+    "{name}: Big. Like my losses in February."
+   ],
+   "win": [
+    "{name}: We sell at the top!",
+    "{name}: Profit! Finally! Real profit!"
+   ],
+   "lose": [
+    "{name}: The market is merely resting.",
+    "{name}: We are long-term holders of this defeat."
+   ],
+   "loot": [
+    "{name}: This is worth a house. Trust me."
+   ]
+  },
+  "chad": {
+   "ok": [
+    "{name}: Called it. Screenshot this.",
+    "{name}: Number go up."
+   ],
+   "fail": [
+    "{name}: It's a dip. Buy the dip.",
+    "{name}: Zoom out."
+   ],
+   "hurt": [
+    "{name}: Diamond paws. Still holding.",
+    "{name}: This is fine. Bullish, actually."
+   ],
+   "boss": [
+    "{name}: Wen dead?",
+    "{name}: Big whale energy."
+   ],
+   "win": [
+    "{name}: To the moon!",
+    "{name}: We're all gonna make it."
+   ],
+   "lose": [
+    "{name}: Rugged.",
+    "{name}: Have fun staying alive, I guess."
+   ],
+   "loot": [
+    "{name}: Not selling. Ever."
+   ]
+  },
+  "bella": {
+   "ok": [
+    "{name}: Got it all on camera. Obviously.",
+    "{name}: Hashtag nailed it."
+   ],
+   "fail": [
+    "{name}: Delete that. Delete it.",
+    "{name}: We're not posting that."
+   ],
+   "hurt": [
+    "{name}: It's fine. It's content.",
+    "{name}: Does the bruise show on camera? Good."
+   ],
+   "boss": [
+    "{name}: Hold on, the light on him is perfect.",
+    "{name}: This is going to do numbers."
+   ],
+   "win": [
+    "{name}: Link in bio for the full fight.",
+    "{name}: Hashtag blessed. Hashtag still alive."
+   ],
+   "lose": [
+    "{name}: We're calling this a soft launch.",
+    "{name}: Taking a break from posting. One hour."
+   ],
+   "loot": [
+    "{name}: Unboxing later."
+   ]
+  },
+  "florida": {
+   "ok": [
+    "{name}: Told y'all it'd work.",
+    "{name}: And I only lost one flip-flop."
+   ],
+   "fail": [
+    "{name}: That one's on me. And the slushie.",
+    "{name}: Worked last time. Different animal, though."
+   ],
+   "hurt": [
+    "{name}: I've had worse from a ceiling fan.",
+    "{name}: That'll be a story for the judge."
+   ],
+   "boss": [
+    "{name}: Hold my slushie.",
+    "{name}: I wrestled one of them behind a gas station."
+   ],
+   "win": [
+    "{name}: Somebody film it? Nobody filmed it?",
+    "{name}: And that's why they put me in the paper."
+   ],
+   "lose": [
+    "{name}: We leave before the sirens.",
+    "{name}: I know a shortcut out. It's illegal."
+   ],
+   "loot": [
+    "{name}: Finders keepers. That's the law. Probably."
+   ]
+  },
+  "lola": {
+   "ok": [
+    "{name}: Darling, we were magnificent.",
+    "{name}: Encore!"
+   ],
+   "fail": [
+    "{name}: A little stumble. Audiences love a stumble.",
+    "{name}: Smile through it, darlings."
+   ],
+   "hurt": [
+    "{name}: I've danced on worse. In heels.",
+    "{name}: Careful with the feathers."
+   ],
+   "boss": [
+    "{name}: What a big, handsome brute. Has he a watch?",
+    "{name}: Every star needs a villain."
+   ],
+   "win": [
+    "{name}: Flowers, please. To my dressing room.",
+    "{name}: And the crowd goes wild. I assume."
+   ],
+   "lose": [
+    "{name}: We exit, stage left. Gracefully.",
+    "{name}: Tomorrow's matinee will be better."
+   ],
+   "loot": [
+    "{name}: Oh, is this mine? It is now."
+   ]
+  },
+  "morwenna": {
+   "ok": [
+    "{name}: The moon approves.",
+    "{name}: As foretold. Roughly."
+   ],
+   "fail": [
+    "{name}: I cursed the wrong thing.",
+    "{name}: Oh! A light. Sorry. What happened?"
+   ],
+   "hurt": [
+    "{name}: A little moth dust. I'm fine.",
+    "{name}: The dark keeps me together."
+   ],
+   "boss": [
+    "{name}: It's glowing. Don't look at it. I'm looking at it.",
+    "{name}: I curse this one. Unkindly."
+   ],
+   "win": [
+    "{name}: It was written in the stars. In pencil.",
+    "{name}: Back to the dark with it."
+   ],
+   "lose": [
+    "{name}: The moon was wrong tonight.",
+    "{name}: We flutter away. Bravely."
+   ],
+   "loot": [
+    "{name}: Shiny. Not as good as a lantern."
+   ]
+  },
+  "sable": {
+   "ok": [
+    "{name}: In and out. Like I was never here.",
+    "{name}: Smooth. Check your pockets, though."
+   ],
+   "fail": [
+    "{name}: That alarm wasn't on the plans.",
+    "{name}: I was just rinsing it."
+   ],
+   "hurt": [
+    "{name}: Hands are fine. That's what matters.",
+    "{name}: I've fallen off better roofs."
+   ],
+   "boss": [
+    "{name}: Does it have pockets?",
+    "{name}: Everything can be robbed. Even that."
+   ],
+   "win": [
+    "{name}: I took its wallet during the fight.",
+    "{name}: The Doge sends his regards."
+   ],
+   "lose": [
+    "{name}: We were never here. Agreed?",
+    "{name}: I know a window."
+   ],
+   "loot": [
+    "{name}: Whose is this? Mine now."
+   ]
+  },
+  "jacko": {
+   "ok": [
+    "{name}: Beauty. No worries.",
+    "{name}: Textbook rescue, that."
+   ],
+   "fail": [
+    "{name}: Yeah, nah. That went sideways.",
+    "{name}: Should've stayed between the flags."
+   ],
+   "hurt": [
+    "{name}: She'll be right.",
+    "{name}: Bit of a knock. Walk it off, mate."
+   ],
+   "boss": [
+    "{name}: Crikey. He's a big unit.",
+    "{name}: Everyone out of the water. Except us, apparently."
+   ],
+   "win": [
+    "{name}: Legends. Absolute legends.",
+    "{name}: Flags back up. Beach is open."
+   ],
+   "lose": [
+    "{name}: Back to the tower, team.",
+    "{name}: We'll get him next tide."
+   ],
+   "loot": [
+    "{name}: Lost property. I'll mind it."
+   ]
+  },
+  "raspawtin": {
+   "ok": [
+    "{name}: It was fated. I checked.",
+    "{name}: Look into my eyes. See? Easy."
+   ],
+   "fail": [
+    "{name}: I have survived worse plans.",
+    "{name}: A small death. I have had larger."
+   ],
+   "hurt": [
+    "{name}: This? I have been poisoned at dinner.",
+    "{name}: The river could not finish me. Nor will this."
+   ],
+   "boss": [
+    "{name}: I saw it in a dream. It loses. Or we do. Unclear.",
+    "{name}: It cannot kill what will not die."
+   ],
+   "win": [
+    "{name}: Is there cake now?",
+    "{name}: As I foresaw. Mostly."
+   ],
+   "lose": [
+    "{name}: I have been dead before. This is only losing.",
+    "{name}: We rise again. I always do."
+   ],
+   "loot": [
+    "{name}: The spirits wish me to have this."
+   ]
+  },
+  "madjack": {
+   "ok": [
+    "{name}: Jolly good show!",
+    "{name}: Smashing. Absolutely smashing."
+   ],
+   "fail": [
+    "{name}: Bit of a cock-up. Carry on!",
+    "{name}: Never mind. Pipes, anyone?"
+   ],
+   "hurt": [
+    "{name}: Only a scratch. I've a spare arm somewhere.",
+    "{name}: Stings a bit. Marvellous!"
+   ],
+   "boss": [
+    "{name}: Splendid! A proper scrap!",
+    "{name}: Any monster without a sword is improperly dressed."
+   ],
+   "win": [
+    "{name}: Capital! Shall I play something?",
+    "{name}: Home in time for tea."
+   ],
+   "lose": [
+    "{name}: A fighting withdrawal. Best kind.",
+    "{name}: We'll have another crack at it. With pipes."
+   ],
+   "loot": [
+    "{name}: Spoils! How frightfully nice."
+   ]
+  },
+  "vesper": {
+   "ok": [
+    "{name}: Fine. That was almost interesting.",
+    "{name}: How efficient. How dull."
+   ],
+   "fail": [
+    "{name}: Of course it went wrong. Everything does.",
+    "{name}: I'm not sighing. I'm breathing with intent."
+   ],
+   "hurt": [
+    "{name}: At last, something to feel.",
+    "{name}: Pain. How terribly vivid."
+   ],
+   "boss": [
+    "{name}: Oh good. Something that might kill me.",
+    "{name}: So big and so pointless. I adore it."
+   ],
+   "win": [
+    "{name}: It died. Wake me for the next one.",
+    "{name}: How dreadfully triumphant."
+   ],
+   "lose": [
+    "{name}: Defeat suits me. It goes with everything.",
+    "{name}: Back to the dark. Lovely."
+   ],
+   "loot": [
+    "{name}: Is it black? Close enough."
+   ]
+  },
+  "roxy": {
+   "ok": [
+    "{name}: Nailed it! Louder next time!",
+    "{name}: One take. No rehearsal."
+   ],
+   "fail": [
+    "{name}: Right. Who's out of tune?",
+    "{name}: That was rubbish. I loved it."
+   ],
+   "hurt": [
+    "{name}: I've had worse in a mosh pit.",
+    "{name}: Bleeding's just loud on the inside."
+   ],
+   "boss": [
+    "{name}: Oi! Ugly! Yeah, you!",
+    "{name}: One, two, three, four!"
+   ],
+   "win": [
+    "{name}: Encore? Nah. Smash the amp.",
+    "{name}: Loudest thing I've done all week."
+   ],
+   "lose": [
+    "{name}: We got bottled off. Happens.",
+    "{name}: Same time next week. Angrier."
+   ],
+   "loot": [
+    "{name}: That'll buy strings."
+   ]
+  },
+  "jazzmin": {
+   "ok": [
+    "{name}: Yes! That's the energy!",
+    "{name}: Flawless form, everybody!"
+   ],
+   "fail": [
+    "{name}: No such thing as failing! Only reps!",
+    "{name}: Shake it off! And again!"
+   ],
+   "hurt": [
+    "{name}: Feel that? That's the burn!",
+    "{name}: Pain is just weakness doing aerobics!"
+   ],
+   "boss": [
+    "{name}: Look at the size of that warm-up!",
+    "{name}: And lift! And dodge! And lift!"
+   ],
+   "win": [
+    "{name}: And cool down! Deep breaths!",
+    "{name}: You all did amazing! I did best!"
+   ],
+   "lose": [
+    "{name}: Recovery day! Very important!",
+    "{name}: One more try! I said that last time too!"
+   ],
+   "loot": [
+    "{name}: Is it a medal? I'm calling it a medal."
+   ]
+  },
+  "stella": {
+   "ok": [
+    "{name}: Steady as she goes.",
+    "{name}: Right on the flight plan."
+   ],
+   "fail": [
+    "{name}: A minor course correction.",
+    "{name}: I've crashed better ships than this."
+   ],
+   "hurt": [
+    "{name}: Hull breach. Minor. Carry on.",
+    "{name}: I've escaped worse. Weekly."
+   ],
+   "boss": [
+    "{name}: By the rings of Saturn, look at it.",
+    "{name}: Ray guns hot, everyone."
+   ],
+   "win": [
+    "{name}: Tune in next time.",
+    "{name}: Another one for the Rocket Patrol."
+   ],
+   "lose": [
+    "{name}: Eject! We'll be back next episode.",
+    "{name}: A cliffhanger. I hate cliffhangers."
+   ],
+   "loot": [
+    "{name}: For the ship's museum."
+   ]
+  },
+  "pam": {
+   "ok": [
+    "{name}: Perfect run.",
+    "{name}: That's a combo."
+   ],
+   "fail": [
+    "{name}: Lag. That was lag.",
+    "{name}: Lost a life. Got two more."
+   ],
+   "hurt": [
+    "{name}: Half a heart. Plenty.",
+    "{name}: Still not game over."
+   ],
+   "boss": [
+    "{name}: Boss music. Finally.",
+    "{name}: It's got a pattern. They've all got a pattern."
+   ],
+   "win": [
+    "{name}: New high score. P-A-M.",
+    "{name}: Too easy. Next cabinet."
+   ],
+   "lose": [
+    "{name}: Continue? Ten, nine, eight...",
+    "{name}: Got a quarter?"
+   ],
+   "loot": [
+    "{name}: Power-up. Mine."
+   ]
+  },
+  "gorm": {
+   "ok": [
+    "{name}: GORM APPROVES!",
+    "{name}: GORM DID THAT! MOSTLY!"
+   ],
+   "fail": [
+    "{name}: GORM MEANT TO DO THAT!",
+    "{name}: GORM WAS TRICKED!"
+   ],
+   "hurt": [
+    "{name}: GORM FEELS NOTHING! GORM FEELS SOME OF IT!",
+    "{name}: ONLY A SCRATCH ON GORM!"
+   ],
+   "boss": [
+    "{name}: FINALLY! SOMETHING GORM-SIZED!",
+    "{name}: BY THE POWER OF THIS GENERAL VICINITY!"
+   ],
+   "win": [
+    "{name}: GORM! GORM! GORM!",
+    "{name}: IS IT TIME TO HOLD THE SWORD UP? IT IS!"
+   ],
+   "lose": [
+    "{name}: GORM WILL GUARD. FROM FURTHER AWAY.",
+    "{name}: GORM RETURNS! LATER!"
+   ],
+   "loot": [
+    "{name}: GORM'S! ACCESSORIES SOLD SEPARATELY!"
+   ]
+  },
+  "flap": {
+   "ok": [
+    "{name}: Smooth air all the way!",
+    "{name}: A textbook landing."
+   ],
+   "fail": [
+    "{name}: Bit of turbulence. Nothing to it.",
+    "{name}: Landing is a state of mind."
+   ],
+   "hurt": [
+    "{name}: Lost a few feathers. Still airworthy.",
+    "{name}: One wing's plenty!"
+   ],
+   "boss": [
+    "{name}: Bandit, twelve o'clock! Big one!",
+    "{name}: Chocks away!"
+   ],
+   "win": [
+    "{name}: Up and at 'em, and down they go!",
+    "{name}: Home for cocoa, chaps."
+   ],
+   "lose": [
+    "{name}: Bailing out! See you on the ground!",
+    "{name}: We'll fly again tomorrow."
+   ],
+   "loot": [
+    "{name}: A souvenir for the cockpit."
+   ]
+  },
+  "max": {
+   "ok": [
+    "{name}: Too easy. I don't like easy.",
+    "{name}: Clean. Too clean."
+   ],
+   "fail": [
+    "{name}: I'm getting too old for this.",
+    "{name}: It was quiet. Too quiet. Then that."
+   ],
+   "hurt": [
+    "{name}: Pain don't hurt. It does, actually.",
+    "{name}: Just a flesh wound. All my wounds are flesh."
+   ],
+   "boss": [
+    "{name}: Now that's a target.",
+    "{name}: I work alone. Everybody get behind me."
+   ],
+   "win": [
+    "{name}: Mission over. I hate it.",
+    "{name}: Chalk up another one."
+   ],
+   "lose": [
+    "{name}: We don't leave. We relocate.",
+    "{name}: I'll be back. With more of me."
+   ],
+   "loot": [
+    "{name}: I'll carry it. Alone."
+   ]
+  },
+  "rex": {
+   "ok": [
+    "{name}: Nailed the solo.",
+    "{name}: That one's for the fans."
+   ],
+   "fail": [
+    "{name}: Wrong key. My bad.",
+    "{name}: The monitors were off."
+   ],
+   "hurt": [
+    "{name}: Not the hair. The hair's insured.",
+    "{name}: I've been hurt worse by reviews."
+   ],
+   "boss": [
+    "{name}: Are you ready to rock? It looks ready.",
+    "{name}: Now that's a stadium-sized problem."
+   ],
+   "win": [
+    "{name}: Thank you, good night!",
+    "{name}: Platinum. That fight went platinum."
+   ],
+   "lose": [
+    "{name}: Thank you, good night! Seriously. Run.",
+    "{name}: Creative differences. We're leaving."
+   ],
+   "loot": [
+    "{name}: For the tour bus."
+   ]
+  },
+  "ajolote": {
+   "ok": [
+    "{name}: For the people!",
+    "{name}: The mask stays on. The win stays won."
+   ],
+   "fail": [
+    "{name}: A champion falls. A champion gets up.",
+    "{name}: He cheated. I felt it."
+   ],
+   "hurt": [
+    "{name}: I grow it back. I always grow it back.",
+    "{name}: Nine hundred fights. This is a tickle."
+   ],
+   "boss": [
+    "{name}: At last! A bigger opponent!",
+    "{name}: From the top rope, I think."
+   ],
+   "win": [
+    "{name}: Nine hundred and two!",
+    "{name}: One, two, three! Ring the bell!"
+   ],
+   "lose": [
+    "{name}: The rematch will sell out.",
+    "{name}: I am not pinned. I am resting."
+   ],
+   "loot": [
+    "{name}: A new belt? Close enough."
+   ]
   }
  }
 }
