@@ -169,7 +169,9 @@
   const toasts = []; let toasting = false;
   function toast(msg) { if (toasts.length < 6) toasts.push(msg); if (!toasting) nextToast(); }
   function nextToast() { const m = toasts.shift(); if (!m) { toasting = false; return; } toasting = true; const t = $('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => { t.classList.remove('on'); setTimeout(nextToast, 260); }, 2200); }
-  const modal = { open(node) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); $('modal').classList.add('on'); }, close() { $('modal').classList.remove('on'); } };
+  // a sheet is a step in history too, so Back closes it
+  const modal = { open(node) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); if (!$('modal').classList.contains('on')) { $('modal').classList.add('on'); history.pushState({ v: (history.state && history.state.v) || 'home', sheet: 1 }, ''); } },
+    close() { if (!$('modal').classList.contains('on')) return; $('modal').classList.remove('on'); if (history.state && history.state.sheet) { closing = true; history.back(); } } };
   $('modal-x').onclick = modal.close; $('modal').addEventListener('click', e => { if (e.target === $('modal')) modal.close(); });
   const line = ev => { const l = OS.voice[S.mode][ev] || OS.voice[S.mode].idle; return l[Math.floor(Math.random() * l.length)]; };
   const fmt = s => s >= 3600 ? Math.floor(s / 3600) + 'h ' + Math.floor(s % 3600 / 60) + 'm' : s >= 60 ? Math.floor(s / 60) + 'm ' + Math.floor(s % 60) + 's' : Math.ceil(s) + 's';
@@ -215,13 +217,39 @@
   const btn = (cls, text, fn) => { const b = el('button', 'btn ' + cls, text); b.onclick = fn; return b; };
 
   // ------------------------------------------------------------------ navigation
-  let current = 'home';
-  function show(v) {
-    current = v; document.querySelectorAll('.view').forEach(n => n.classList.toggle('on', n.id === 'v-' + v)); document.querySelectorAll('#gnav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  // Every screen is a step in the browser's history, so Back and Forward (the browser's own, the phone's swipe-back,
+  // and the arrow in the top bar) move between screens instead of leaving the game. An open sheet is a step too.
+  let current = 'home', closing = false, queued = null;
+  const START = (location.hash || '').slice(1);
+  const VIEWS = ['home', 'jobs', 'summon', 'heroes', 'bag', 'workshop', 'training', 'raids', 'board', 'shop', 'account'], TABS = VIEWS.slice(0, 5);
+  function show(v, how) {
+    if (closing) { queued = [v, how]; return; }      // a sheet is still stepping back out of history: go there once it has
+    if (!VIEWS.includes(v)) v = 'home'; how = how || {};
+    const dir = how.dir || 0, was = current; current = v;
+    document.querySelectorAll('.view').forEach(n => { n.classList.remove('fromL', 'fromR'); n.classList.toggle('on', n.id === 'v-' + v); });
+    const el2 = $('v-' + v); if (dir) { void el2.offsetWidth; el2.classList.add(dir > 0 ? 'fromR' : 'fromL'); }
+    document.querySelectorAll('#gnav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    $('go-back').hidden = v === 'home';
+    if (!how.silent && v !== was) history.pushState({ v }, '', '#' + v);
     render(); if (v === 'summon') sfx.layout(); scrollTo(0, 0);
   }
-  $('gnav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v); });
-  document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
+  history.replaceState({ v: 'home' }, '', location.pathname + location.search + '#home');
+  addEventListener('popstate', e => {
+    if (closing) { closing = false; const q = queued; queued = null; if (q) show(q[0], q[1]); return; }
+    if ($('modal').classList.contains('on')) { $('modal').classList.remove('on'); return; }      // Back closes an open sheet first
+    show((e.state && e.state.v) || (location.hash || '#home').slice(1), { silent: true });
+  });
+  $('go-back').onclick = () => history.back();
+  $('gnav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v, { dir: Math.sign(VIEWS.indexOf(b.dataset.v) - VIEWS.indexOf(current)) }); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go, { dir: b.dataset.go === 'home' ? -1 : 1 }); });
+  // One thumb: swipe left or right anywhere on the page to move between the five main screens.
+  (() => { let sx = 0, sy = 0, ok = false;
+    addEventListener('touchstart', e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
+      ok = e.touches.length === 1 && !$('modal').classList.contains('on') && !e.target.closest('input,textarea,select,.noswipe,.plist,.chat,[data-noswipe]') && !(() => { for (let n = e.target; n && n !== document.body; n = n.parentElement) if (n.scrollWidth > n.clientWidth + 4 && /auto|scroll/.test(getComputedStyle(n).overflowX)) return true; return false; })(); }, { passive: true });
+    addEventListener('touchend', e => { if (!ok) return; const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * .6) return; const i = TABS.indexOf(current); if (i < 0) return;
+      const k = i + (dx < 0 ? 1 : -1); if (k >= 0 && k < TABS.length) show(TABS[k], { dir: dx < 0 ? 1 : -1 }); }, { passive: true });
+  })();
   OS.founder = !!(me.profile && me.profile.founder);   // the beta mark, worn on every card
   $('go-account').onclick = () => show('account');
   // beta: a note straight to the owner
@@ -740,6 +768,6 @@
   setInterval(() => { if (dirty) save(true); }, 20000);
   addEventListener('visibilitychange', () => { if (document.hidden) save(true); else { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); } });
   addEventListener('pagehide', () => save(true));
-  Cloud.track(); $('boot').remove(); show('home'); requestAnimationFrame(frame);
+  Cloud.track(); $('boot').remove(); show('home', { silent: true }); if (START && START !== 'home' && VIEWS.includes(START)) show(START); requestAnimationFrame(frame);
   window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
 })();

@@ -671,3 +671,25 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 .rmoves,.rmark{gap:.25rem;flex-wrap:wrap}.rmoves .btn,.rmark .btn{padding:.18rem .42rem;font-size:.7rem}
 .rnote{width:100%;background:#0b1020;border:1px solid var(--line);border-radius:8px;color:#dfe6fa;font:400 .74rem/1.3 Nunito,sans-serif;padding:.3rem .4rem;resize:vertical}
 .rwhen{font-size:.68rem;min-height:1em}
+/* ---- getting around: a back arrow, screens that slide the way you went, a rail on wide screens */
+.backbtn{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:#101938;color:#fff;font:400 1.5rem/1 "Lilita One";cursor:pointer;display:grid;place-items:center;padding:0 2px 3px 0;margin-right:-.4rem}
+.backbtn:hover{border-color:var(--teal);color:var(--teal)}.backbtn[hidden]{display:none}
+.view.on.fromR{animation:vinR .28s cubic-bezier(.2,.8,.2,1)}.view.on.fromL{animation:vinL .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes vinR{from{opacity:0;transform:translateX(46px)}}@keyframes vinL{from{opacity:0;transform:translateX(-46px)}}
+.gnav .more{display:none}
+.gnav button{-webkit-tap-highlight-color:transparent;transition:transform .12s}.gnav button:active{transform:scale(.92)}
+@media(min-width:1000px){
+  body.game{padding-bottom:0;padding-left:96px}
+  .gnav{top:57px;right:auto;bottom:0;width:96px;flex-direction:column;justify-content:flex-start;gap:.15rem;padding:.6rem .4rem;border-top:0;border-right:2px solid var(--line);overflow-y:auto}
+  .gnav button{flex:none;max-width:none;width:100%;font-size:.78rem;padding:.4rem .1rem}
+  .gnav button img{width:28px;height:28px}
+  .gnav .more{display:flex}
+  .gnav button[data-v="workshop"]{margin-top:.5rem;position:relative}
+  .gnav button[data-v="workshop"]::before{content:"";position:absolute;top:-.3rem;left:18%;right:18%;border-top:2px solid var(--line)}
+  .gbar{margin-left:-96px}
+}
+@media(prefers-reduced-motion:reduce){.view.on.fromR,.view.on.fromL{animation:none}}
+@media(min-width:1000px){body.game main.wrap{width:min(1100px,calc(100vw - 96px - 3rem))}}
+/* phones: the top bar keeps the back arrow, the three counts, a short feedback pill and the account; the wordmark shrinks to its O */
+@media(max-width:600px){.backbtn:not([hidden])+.brand{display:none}.gbar .brand{font-size:0}.gbar .brand .o{font-size:1.5rem}.gbar .wrap{gap:.5rem}.gbar .res{gap:.45rem;margin-left:auto}
+  .gbar .fbbtn{font-size:0;padding:.32rem .6rem}.gbar .fbbtn::after{content:"Ideas?";font-size:.7rem}}

@@ -23,11 +23,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1126a">
+<link rel="stylesheet" href="/css/os.css?v=1126j">
 </head>
 <body class="game">
 <div class="boot" id="boot"><img src="/assets/v2/smudge/stamp.webp?v=1126a" alt=""><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
+  <button class="backbtn" id="go-back" type="button" aria-label="Back" hidden>&#8249;</button>
   <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
   <div class="res">
     <span title="Energy. Spend it on training."><img src="/assets/v2/loot/x_energy.webp" alt="Energy"><b id="r-energy">0</b></span>
@@ -148,18 +149,23 @@
   <button data-v="summon"><img src="/assets/v2/loot/x_ink.webp" alt="">Summon</button>
   <button data-v="heroes"><img src="/assets/v2/loot/x_shard.webp" alt="">Arrivals</button>
   <button data-v="bag"><img src="/assets/v2/loot/x_crate.webp" alt="">Bag</button>
+  <button data-v="workshop" class="more"><img src="/assets/v2/loot/x_anvil.webp" alt="">Workshop</button>
+  <button data-v="training" class="more"><img src="/assets/v2/loot/x_dumbbell.webp" alt="">Training</button>
+  <button data-v="raids" class="more"><img src="/assets/v2/loot/x_sword.webp" alt="">Raids</button>
+  <button data-v="board" class="more"><img src="/assets/v2/loot/x_friends.webp" alt="">City</button>
+  <button data-v="shop" class="more"><img src="/assets/v2/loot/x_gold.webp" alt="">Shop</button>
 </nav>
 
 <div class="modal" id="modal"><div class="sheet"><button class="x" id="modal-x" aria-label="Close">X</button><div id="modal-body"></div></div></div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/cloud.js"></script>
-<script src="/js/os.js?v=1126i"></script>
-<script src="/js/stage.js?v=1126i"></script>
-<script src="/js/scenefx.js?v=1126i"></script>
+<script src="/js/os.js?v=1126j"></script>
+<script src="/js/stage.js?v=1126j"></script>
+<script src="/js/scenefx.js?v=1126j"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1126i"></script>
-<script src="/js/game.js?v=1126i"></script>
+<script src="/js/dbcanvas.js?v=1126j"></script>
+<script src="/js/game.js?v=1126j"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>
 </html>
