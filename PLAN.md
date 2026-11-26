@@ -225,6 +225,15 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [ ] Sunglasses icons (Pam's visor, Max's aviators) had their green lenses keyed out and were patched; regenerate with non-green lenses
 - [ ] Desktop pet: new hero art and rules copied, puppets not wired
 
+## The plan from here — 25 Nov (full detail in the doc "OverSummoned: the plan from here", https://claude.ai/artifact/1PoE9u158tA5VhGhX1QJ4w)
+Order: 1 pacing and math, 2 arrivals and bag search (drop the fixed count), 3 raids you play, 4 expedition stories, 5 roster to 50, 6 loot and gold cleanup, 7 Smudge wardrobe and the desktop pet.
+How things are done here, for whoever builds next:
+- Art: insert a row in `public.os_art_job`, POST its id to the `art-studio` edge function (via `net.http_post`), the image lands on the `art` branch. Never Recraft
+- Sound: generate in ElevenLabs, queue the signed link in `os_art_job` with a path under `art/raw/sfx/`, POST to `asset-fetch`, then ffmpeg into `assets/v2/sfx`
+- Deploy: `git push origin fable:main` does not trigger a build. Create the Vercel deployment by hand for project `prj_Xy14sobH76t23Die4cAYO0C2b0Z5` from the pushed sha
+- Test: `python3 rules/gametest.py '<steps json>'` runs the game locally at `play.html?dev=1`; check scenes and screens by screenshot before shipping
+- Bump the asset version (`OS.VER`, the `?v=` strings and `V` in `sw.js`) whenever art, data, css or js changes
+
 ## Sound — 25 Nov
 - [x] `js/sound.js`: every button clicks (nav flicks, close tocks, cards flip), stamp, haul by trade, rare drop, crate, summon, level up, raid hits and win; two music loops (home, raid). Switches and volumes in Account, saved per device
 - [x] Sounds made in ElevenLabs (flow "OverSummoned sound samples"), pulled in by the `asset-fetch` edge function into `art/raw/sfx` on the art branch, then trimmed and levelled with ffmpeg into `assets/v2/sfx`
