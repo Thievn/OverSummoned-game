@@ -229,7 +229,8 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] `js/sound.js`: every button clicks (nav flicks, close tocks, cards flip), stamp, haul by trade, rare drop, crate, summon, level up, raid hits and win; two music loops (home, raid). Switches and volumes in Account, saved per device
 - [x] Sounds made in ElevenLabs (flow "OverSummoned sound samples"), pulled in by the `asset-fetch` edge function into `art/raw/sfx` on the art branch, then trimmed and levelled with ffmpeg into `assets/v2/sfx`
 - [x] Desktop pet: the same sounds replace its old wavs under the same file names
-- [ ] Music per place (dock, beach, fjord...) and a sound for selling
+- [x] Place music while watching Smudge work: four loops shared by eight places (med: dock, vault; sun: bondi, outback; north: fjord, blackforest; jazz: speakeasy, closet), see `PLACETUNE` in `js/game.js`. Coin sound on selling. Button sounds on every public page
+- [ ] Give each place its own track if the pairs feel wrong (900 credits each)
 - [ ] `asset-fetch` lives only in Supabase; copy its source into `supabase/functions/`
 
 ## Still to do on the scenes

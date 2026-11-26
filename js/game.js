@@ -244,9 +244,12 @@
     document.querySelectorAll('#gnav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
     $('go-back').hidden = v === 'home';
     if (!how.silent && v !== was) history.pushState({ v }, '', '#' + v);
-    if (OS.Sound) OS.Sound.music(v === 'raids' ? 'raid' : 'home');
+    tune();
     render(); if (v === 'summon') sfx.layout(); scrollTo(0, 0);
   }
+  // the music follows where you are: a battle theme on Raids, the place's own tune while watching Smudge work, the archive theme elsewhere
+  const PLACETUNE = { dock: 'med', vault: 'med', bondi: 'sun', outback: 'sun', fjord: 'north', blackforest: 'north', speakeasy: 'jazz', closet: 'jazz' };
+  function tune() { if (!OS.Sound) return; const j = S.jobs[0]; OS.Sound.music(current === 'raids' ? 'raid' : current === 'jobs' && j && PLACETUNE[j.place] ? PLACETUNE[j.place] : 'home'); }
   history.replaceState({ v: 'home' }, '', location.pathname + location.search + '#home');
   addEventListener('popstate', e => {
     if (closing) { closing = false; const q = queued; queued = null; if (q) show(q[0], q[1]); return; }
@@ -384,7 +387,7 @@
     const os = el('div', 'orders'), oh = el('p', 'mut', ''); oh.style.cssText = 'margin:.4rem 0 0;font-size:.9rem'; os.style.cssText = 'display:flex;gap:.5rem;flex-wrap:wrap';
     Object.keys(ORDERS).forEach(k => { const b = el('button', 'btn small ghost', ORDERS[k][0]); b.type = 'button'; b.dataset.o = k; b.onclick = () => { j.order = k; upd(); }; os.appendChild(b); });
     d.append(os, oh);
-    const go = btn('', 'Send him', () => { if (!j.place) return; j.prog = 0; j.since = 0; if (j.order === 'hunt') j.place = huntPlace(j); S.jobs = [j]; save(true); modal.close(); render(); toast(`Smudge is off to ${places[j.place].name}.`); }), row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(go); d.appendChild(row);
+    const go = btn('', 'Send him', () => { if (!j.place) return; j.prog = 0; j.since = 0; if (j.order === 'hunt') j.place = huntPlace(j); S.jobs = [j]; save(true); modal.close(); render(); tune(); SND('confirm'); toast(`Smudge is off to ${places[j.place].name}.`); }), row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(go); d.appendChild(row);
     function upd() { const ord = j.order || 'stay'; os.querySelectorAll('button').forEach(b => { const on = b.dataset.o === ord; b.classList.toggle('ghost', !on); b.setAttribute('aria-pressed', on); }); oh.textContent = ORDERS[ord][1];
       ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !j.place; }
     upd(); modal.open(d);
@@ -564,7 +567,7 @@
     Object.keys(S.bag).forEach(id => { const it = OS.items[id]; if (!it || it.kind !== 'loot' || id === 'x_shard') return; const n = S.bag[id] - (it.junk ? 0 : 1); if (n > 0) { map[id] = n; earned += n * it.sell; } });
     if (!earned) return toast('Nothing to sell. Junk all goes; one of each treasure is kept.');
     if (Cloud.dev) { Object.keys(map).forEach(id => S.bag[id] -= map[id]); S.gold += earned; } else { const r = await srv(() => Cloud.sell(map)); if (r.r !== 'ok') return toast(r.r); earned = r.earned; }
-    S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(`Sold the spares for ${earned} gold.`); };
+    SND('coin'); S.sold += earned; bump('gold', earned); bump('gold_sold', earned); save(true); render(); toast(`Sold the spares for ${earned} gold.`); };
 
   // ------------------------------------------------------------------ workshop
   const spare = rar => Object.keys(S.bag).filter(id => OS.items[id] && OS.items[id].kind === 'loot' && !OS.items[id].junk && OS.items[id].rarity === rar && id !== 'x_shard').reduce((a, id) => a + Math.max(0, S.bag[id] - 1), 0);

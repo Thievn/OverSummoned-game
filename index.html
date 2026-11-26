@@ -188,7 +188,7 @@
 <script src="/js/land.js"></script>
 <script src="/js/wish.js?v=1126a"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
-<script src="/js/sound.js?v=1126m"></script>
+<script src="/js/sound.js?v=1126n"></script>
 <script>(function () { var b = document.getElementById('music-btn'), on = false; if (!b || !window.OSSound) return;
   b.onclick = function () { on = !on; OSSound.unlock(); OSSound.config({ music: true }); OSSound.music(on ? 'home' : null); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Stop the music' : 'Play the music'); b.classList.toggle('on', on); }; })();</script>
 </body>

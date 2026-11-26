@@ -2,13 +2,13 @@
 // Settings are per device (localStorage) and are changed from the account screen. Nothing plays until the
 // first tap or key press, because browsers do not allow it sooner.
 (function () {
-  const BASE = '/assets/v2/sfx/', VER = '?v=1126m';
+  const BASE = '/assets/v2/sfx/', VER = '?v=1126n';
   // name: [volume, pitch wobble (so a sound heard hundreds of times never sounds mechanical), least seconds between plays]
   const SFX = { click: [.5, .05, .04], tab: [.5, .04, .06], back: [.5, .03, .06], confirm: [.6, .02, .08], stamp: [.6, .06, .05],
     haul: [.55, .05, .12], splash: [.5, .06, .15], lock: [.55, .04, .15], dig: [.55, .06, .15], rare: [.7, 0, .3], coin: [.6, .04, .1],
     crate: [.75, 0, .2], summon: [.85, 0, .5], levelup: [.8, 0, .5], flip: [.5, .05, .08], toast: [.3, .03, .25], deny: [.5, 0, .15],
     hit: [.55, .08, .07], win: [.8, 0, .5] };
-  const MUSIC = { home: 'music_home', raid: 'music_raid' };
+  const MUSIC = { home: 'music_home', raid: 'music_raid', med: 'music_med', sun: 'music_sun', north: 'music_north', jazz: 'music_jazz' };
   const KEY = 'os_sound', DEF = { sfx: true, music: true, vol: .8, mvol: .35 };
   let set = Object.assign({}, DEF); try { Object.assign(set, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { }
   let ctx = null, master = null, mgain = null, bufs = {}, last = {}, cur = null, want = null, unlocked = false;
