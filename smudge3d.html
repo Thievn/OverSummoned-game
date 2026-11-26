@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><title>Smudge in 3D · test · OverSummoned</title>
+<link rel="icon" href="/icon-192.png">
+<style>
+:root{--ink:#101936;--gold:#f2b935;--teal:#3fe0c5}
+html,body{margin:0;height:100%;background:#0b1020;color:#e8edfb;font:600 14px/1.3 system-ui,sans-serif;-webkit-user-select:none;user-select:none}
+#stage{position:fixed;inset:0;background:#0b1020 center/cover no-repeat;touch-action:none}
+#stage canvas{display:block}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:linear-gradient(transparent,rgba(11,16,32,.92) 35%)}
+.bar button{font:800 13px system-ui;border:2px solid #2a3560;background:var(--ink);color:#fff;border-radius:999px;padding:8px 13px}
+.bar button.on{border-color:var(--teal);color:var(--teal)}
+.top{position:fixed;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;opacity:.85}
+.top b{color:var(--gold)}#msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+</style>
+<script type="importmap">{"imports":{"three":"/js/vendor/three/three.module.min.js"}}</script>
+</head><body>
+<div id="stage"></div>
+<div class="top"><span><b>Smudge 3D</b> · test page, not in the game yet · drag to turn him</span><span id="fps"></span></div>
+<div id="msg">Loading Smudge…</div>
+<div class="bar" id="bar"></div>
+<script type="module">
+import { mount } from '/js/smudge3d.js';
+const stage = document.getElementById('stage'), bar = document.getElementById('bar');
+const BG = ['archive', 'dock', 'bondi', 'fjord', 'speakeasy', 'vault', 'closet', 'outback', 'blackforest'];
+let st = { look: 'toon', clip: 'idle', bg: 0, spin: true }, s = null, ang = 0;
+async function build() {
+  if (s) s.dispose();
+  s = await mount(stage, { toon: st.look !== 'plain', ink: st.look === 'toon' ? 0.006 : 0, clip: st.clip, zoom: innerWidth < 600 ? 1.75 : 1.35, lookAt: innerWidth < 600 ? 0.4 : 0.48 });
+  document.getElementById('msg').style.display = 'none'; s.turn(ang);
+}
+function setBg() { stage.style.backgroundImage = `url(/assets/v2/scenes/${BG[st.bg]}.webp)`; }
+function btn(label, on, fn) { const b = document.createElement('button'); b.textContent = label; if (on) b.className = 'on'; b.onclick = () => { fn(); ui(); }; bar.appendChild(b); }
+function ui() {
+  bar.innerHTML = '';
+  [['toon', 'Cartoon + outline'], ['flat', 'Cartoon, no outline'], ['plain', 'Plain 3D']].forEach(([k, l]) => btn(l, st.look === k, () => { st.look = k; build(); }));
+  ['idle', 'walk', 'run'].forEach(k => btn(k[0].toUpperCase() + k.slice(1), st.clip === k, () => { st.clip = k; s && s.play(k); }));
+  btn('Background: ' + BG[st.bg], false, () => { st.bg = (st.bg + 1) % BG.length; setBg(); });
+  btn(st.spin ? 'Stop turning' : 'Turn slowly', st.spin, () => { st.spin = !st.spin; });
+}
+let drag = null;
+stage.addEventListener('pointerdown', e => { drag = e.clientX; st.spin = false; ui(); });
+addEventListener('pointermove', e => { if (drag === null) return; ang += (e.clientX - drag) * 0.012; drag = e.clientX; s && s.turn(ang); });
+addEventListener('pointerup', () => drag = null);
+let last = performance.now(), frames = 0, t0 = last;
+(function tick(t) { if (st.spin && s) { ang += (t - last) * 0.0006; s.turn(ang); } last = t; frames++;
+  if (t - t0 > 1000) { document.getElementById('fps').textContent = frames + ' fps'; frames = 0; t0 = t; } requestAnimationFrame(tick); })(last);
+setBg(); ui(); build().catch(e => { document.getElementById('msg').textContent = 'Could not load: ' + e; });
+</script>
+</body></html>
