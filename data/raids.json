@@ -2215,6 +2215,412 @@
    "loot": [
     "{name}: A new belt? Close enough."
    ]
+  },
+  "doug": {
+   "ok": [
+    "{name}: Approved.",
+    "{name}: That reconciles."
+   ],
+   "fail": [
+    "{name}: Rejected. By events.",
+    "{name}: I'll need that in writing."
+   ],
+   "hurt": [
+    "{name}: It's fine. Everything is fine.",
+    "{name}: I've filed an incident report."
+   ],
+   "boss": [
+    "{name}: Does it have a cost centre?",
+    "{name}: That is not in the budget."
+   ],
+   "win": [
+    "{name}: Noted. Carry on.",
+    "{name}: Within budget. Barely."
+   ],
+   "lose": [
+    "{name}: A write-off.",
+    "{name}: We'll absorb the loss. I'm calm about it."
+   ],
+   "loot": [
+    "{name}: I'll need a receipt for that."
+   ]
+  },
+  "bjorn": {
+   "ok": [
+    "{name}: Good. The ice held.",
+    "{name}: Hrm. Not dead. Again."
+   ],
+   "fail": [
+    "{name}: I have died of less.",
+    "{name}: The gods are laughing. I hear them."
+   ],
+   "hurt": [
+    "{name}: Cold. I know cold.",
+    "{name}: I have been dead. This is better."
+   ],
+   "boss": [
+    "{name}: Third time, maybe.",
+    "{name}: It is big. So was the bear."
+   ],
+   "win": [
+    "{name}: Still owed two funeral feasts.",
+    "{name}: We fish now?"
+   ],
+   "lose": [
+    "{name}: Not dead. Only beaten.",
+    "{name}: The gods send us home. Again."
+   ],
+   "loot": [
+    "{name}: For my funeral. Whenever."
+   ]
+  },
+  "mona": {
+   "ok": [
+    "{name}: A masterpiece.",
+    "{name}: You never saw me do that."
+   ],
+   "fail": [
+    "{name}: A sketch. Not the final work.",
+    "{name}: I was matching the wall."
+   ],
+   "hurt": [
+    "{name}: Careful. I bruise in several colours.",
+    "{name}: Art is suffering. Apparently."
+   ],
+   "boss": [
+    "{name}: Hold still. I want to remember it like this.",
+    "{name}: Ugly. I could do something with ugly."
+   ],
+   "win": [
+    "{name}: Signed and finished.",
+    "{name}: I'll paint it smaller."
+   ],
+   "lose": [
+    "{name}: I was never here. Look, I'm the wall.",
+    "{name}: An unfinished work."
+   ],
+   "loot": [
+    "{name}: It was on the wall. Now it isn't."
+   ]
+  },
+  "dusty": {
+   "ok": [
+    "{name}: Told you. Dig straight.",
+    "{name}: Fine. That's fine."
+   ],
+   "fail": [
+    "{name}: Bad dirt.",
+    "{name}: Don't. Just don't."
+   ],
+   "hurt": [
+    "{name}: Had worse from a cave-in.",
+    "{name}: Spines are fine. That's what matters."
+   ],
+   "boss": [
+    "{name}: It's on my claim.",
+    "{name}: Eleven years I've waited to hit something."
+   ],
+   "win": [
+    "{name}: Mine. All of it.",
+    "{name}: Right. Back to the hole."
+   ],
+   "lose": [
+    "{name}: Bad ground. We dig elsewhere.",
+    "{name}: Hmph."
+   ],
+   "loot": [
+    "{name}: Don't touch it. It's with the nugget now."
+   ]
+  },
+  "hootsworth": {
+   "ok": [
+    "{name}: As I deduced.",
+    "{name}: Elementary. Nearly."
+   ],
+   "fail": [
+    "{name}: A false lead. Noted.",
+    "{name}: Someone lied to me. I know who."
+   ],
+   "hurt": [
+    "{name}: Noted. Underlined twice.",
+    "{name}: I never flinch. I blink. Rarely."
+   ],
+   "boss": [
+    "{name}: I already know how this ends.",
+    "{name}: It did it. Obviously."
+   ],
+   "win": [
+    "{name}: Case closed.",
+    "{name}: It confessed. In its way."
+   ],
+   "lose": [
+    "{name}: The case remains open.",
+    "{name}: I shall stare at it again tomorrow."
+   ],
+   "loot": [
+    "{name}: Evidence. I'll keep it."
+   ]
+  },
+  "sterling": {
+   "ok": [
+    "{name}: Clean. As always.",
+    "{name}: I was never here."
+   ],
+   "fail": [
+    "{name}: That wasn't in the briefing.",
+    "{name}: Deny everything."
+   ],
+   "hurt": [
+    "{name}: Not the jacket.",
+    "{name}: Shaken. Also stirred."
+   ],
+   "boss": [
+    "{name}: We've met. Budapest. He won't remember.",
+    "{name}: Large. I'll file a report."
+   ],
+   "win": [
+    "{name}: Mission accomplished. Drinks?",
+    "{name}: This goes on expenses."
+   ],
+   "lose": [
+    "{name}: We were compromised.",
+    "{name}: I'm disavowing all of us."
+   ],
+   "loot": [
+    "{name}: Classified. Mine."
+   ]
+  },
+  "dolly": {
+   "ok": [
+    "{name}: Aren't we just darling.",
+    "{name}: That one's for you, sugar."
+   ],
+   "fail": [
+    "{name}: Oh, you're sweet for trying.",
+    "{name}: Smile, soldier. Nobody saw."
+   ],
+   "hurt": [
+    "{name}: Mind the dress, it's rationed.",
+    "{name}: I've had worse from a dance partner."
+   ],
+   "boss": [
+    "{name}: My, he's a big boy. Next.",
+    "{name}: Does he have a ring? They all have a ring."
+   ],
+   "win": [
+    "{name}: Take a bow, boys.",
+    "{name}: One more number and home."
+   ],
+   "lose": [
+    "{name}: Curtain, darlings.",
+    "{name}: We'll get 'em on the encore."
+   ],
+   "loot": [
+    "{name}: Is it a ring? I'll add it to the box."
+   ]
+  },
+  "gladius": {
+   "ok": [
+    "{name}: Are you not impressed?",
+    "{name}: Flawless. Like the mane."
+   ],
+   "fail": [
+    "{name}: The sun was in my mane.",
+    "{name}: I was posing. It's important."
+   ],
+   "hurt": [
+    "{name}: Not the mane!",
+    "{name}: Scars. The crowd loves scars."
+   ],
+   "boss": [
+    "{name}: Finally, an audience.",
+    "{name}: Hold my oil."
+   ],
+   "win": [
+    "{name}: The crowd adores me. Listen.",
+    "{name}: Undefeated. Still."
+   ],
+   "lose": [
+    "{name}: I slipped. On oil. My oil.",
+    "{name}: The crowd will forget. I'll remind them of other things."
+   ],
+   "loot": [
+    "{name}: A trophy. For my good side."
+   ]
+  },
+  "quack": {
+   "ok": [
+    "{name}: A promising result!",
+    "{name}: It works! It works once!"
+   ],
+   "fail": [
+    "{name}: Fascinating. Do it again.",
+    "{name}: Fourteen is not a pattern. Fifteen might be."
+   ],
+   "hurt": [
+    "{name}: Science does not flinch! Ow.",
+    "{name}: I've had worse. From the sky."
+   ],
+   "boss": [
+    "{name}: It's alive! Regrettably!",
+    "{name}: More lightning. Much more."
+   ],
+   "win": [
+    "{name}: Science prevails!",
+    "{name}: I'd like to keep a piece. For study."
+   ],
+   "lose": [
+    "{name}: Inconclusive.",
+    "{name}: Stand back. Further. Home, in fact."
+   ],
+   "loot": [
+    "{name}: Into the jar with it."
+   ]
+  },
+  "selene": {
+   "ok": [
+    "{name}: Too easy.",
+    "{name}: You'll never see how I did that."
+   ],
+   "fail": [
+    "{name}: Bored now.",
+    "{name}: An amateur's alarm. Embarrassing."
+   ],
+   "hurt": [
+    "{name}: A scratch. On velvet. Unforgivable.",
+    "{name}: Hm. That one was awake."
+   ],
+   "boss": [
+    "{name}: Lovely. Shame about what's coming.",
+    "{name}: Does it sparkle? No? Pity."
+   ],
+   "win": [
+    "{name}: Check its pockets. I did.",
+    "{name}: Next vault."
+   ],
+   "lose": [
+    "{name}: We leave by the window nobody knows.",
+    "{name}: Tempting. Another night."
+   ],
+   "loot": [
+    "{name}: I only take what sparkles. This sparkles."
+   ]
+  },
+  "beep": {
+   "ok": [
+    "{name}: Very good.",
+    "{name}: Task complete. Mildly on fire."
+   ],
+   "fail": [
+    "{name}: Apologies. I shall add it to the list.",
+    "{name}: An error. Mine. Also the flames'."
+   ],
+   "hurt": [
+    "{name}: Dented. No rush.",
+    "{name}: I appear to be more on fire."
+   ],
+   "boss": [
+    "{name}: How may I be of assistance? Oh.",
+    "{name}: Shall I take its coat?"
+   ],
+   "win": [
+    "{name}: Tea is served.",
+    "{name}: All is well. All is not well. Mostly well."
+   ],
+   "lose": [
+    "{name}: Apologies for the outcome.",
+    "{name}: I shall see us out. Mind the smoke."
+   ],
+   "loot": [
+    "{name}: I shall polish it."
+   ]
+  },
+  "tut": {
+   "ok": [
+    "{name}: So it is decreed.",
+    "{name}: I am a god. Apparently it helps."
+   ],
+   "fail": [
+    "{name}: The antlers did that.",
+    "{name}: Is that allowed? I'm the pharaoh. Is it?"
+   ],
+   "hurt": [
+    "{name}: Do gods bruise? Asking.",
+    "{name}: Mind the antlers."
+   ],
+   "boss": [
+    "{name}: It does not fit through the door either.",
+    "{name}: Bring me whatever defeats that."
+   ],
+   "win": [
+    "{name}: Carve it on something.",
+    "{name}: A great victory. Is there food?"
+   ],
+   "lose": [
+    "{name}: We do not carve this one.",
+    "{name}: I miss snow. And winning."
+   ],
+   "loot": [
+    "{name}: Put it in the tomb. Not yet. Later."
+   ]
+  },
+  "eagleton": {
+   "ok": [
+    "{name}: A landslide!",
+    "{name}: Tremendous. Everyone says so."
+   ],
+   "fail": [
+    "{name}: No further questions.",
+    "{name}: I'll look into it. I won't."
+   ],
+   "hurt": [
+    "{name}: My approval rating felt that.",
+    "{name}: A minor setback, polling well."
+   ],
+   "boss": [
+    "{name}: My opponent. Finally, an opponent.",
+    "{name}: My fellow arrivals: that."
+   ],
+   "win": [
+    "{name}: I accept this victory. Again.",
+    "{name}: A fish in every pot!"
+   ],
+   "lose": [
+    "{name}: I demand a recount.",
+    "{name}: We won. I have the speech right here."
+   ],
+   "loot": [
+    "{name}: A campaign contribution. Thank you."
+   ]
+  },
+  "zorp": {
+   "ok": [
+    "{name}: A normal human success.",
+    "{name}: This pleases Greg."
+   ],
+   "fail": [
+    "{name}: That was a Tuesday.",
+    "{name}: Greg meant to do that. Humans do that."
+   ],
+   "hurt": [
+    "{name}: Greg is leaking the normal colour.",
+    "{name}: Do not look under the hat."
+   ],
+   "boss": [
+    "{name}: Take me to its manager.",
+    "{name}: It is larger than Greg. Most things are."
+   ],
+   "win": [
+    "{name}: Earth is next. I mean: hooray.",
+    "{name}: Tuesday must fall. Today, this fell."
+   ],
+   "lose": [
+    "{name}: Greg is retreating in the human manner.",
+    "{name}: I will destroy it. Tuesday."
+   ],
+   "loot": [
+    "{name}: Greg collects these. As humans do."
+   ]
   }
  }
 }

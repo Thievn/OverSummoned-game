@@ -1,6 +1,6 @@
 # The 14 new arrivals, for approval
 
-Nothing here has been drawn yet. Cross out, rename or swap anyone, then say which ones are approved.
+Approved by Dean on 26 Nov 2026. Art comes next.
 
 | # | Name | What | When and where | Rarity |
 |---|---|---|---|---|

@@ -364,8 +364,7 @@ Opus plan
 
 Fable plan
 - F1 DONE: no fixed hero count anywhere on the public site or in the page generators. The in-game "N of M met" counters in js/game.js are left for O2.
-- F2 DONE (waiting on Dean): the 14 are written in `tools/arrivals_draft.py`, which builds `data/arrivals_draft.json` (bio, fact, three announce lines, gear and set names with flavour, crew lines, two history paragraphs, the full Grok prompt) and `ARRIVALS.md` (the sheet Dean approves). NO ART until Dean approves names. Two need a new `beyond` backdrop. Stats, set bonuses and gear numbers are Opus's (O5).
-- F3 Arrival sheets, final: the approved 14 written into the data files Opus reads.
+- F2 + F3 DONE, APPROVED: Dean approved all 14 as written (26 Nov). `tools/arrivals_draft.py` builds `data/arrivals.json`: per hero id, name, title, era, species, rarity, bg, place, bio, fact, lines (sweet/salty/unhinged), gear (3, with flavour), set (name + 3 pieces), say, reply, history (2 paragraphs), and `prompt` (the full Grok art prompt; ref `art/raw/sheet1/smudge_1.jpg`, 1:1, n 2). Their raid lines are already in `tools/raids_text.py` (V_NEW). O5 can start: queue the art, check each for extra limbs, cut, rig, MOUTH, stats and set bonuses, pages, os2_item rows. Two need a new `beyond` backdrop and three new bgs (office exists; check `stage`, `egypt`, `london`, `castle`, `beach`).
 - F4 DONE: `tools/raids_text.py` builds `data/raids.json` (edit the script, not the JSON): 8 boss intros, 48 rooms, boss lines, and 13 lines per hero for all 36. room_pool and default reactions kept as fallbacks. New heroes (O5) need a row in V there.
 - F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
 - F6 Loot and gold names. Needs O6.

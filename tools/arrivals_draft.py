@@ -155,8 +155,8 @@ for a in A:
     a['gear'] = [dict(slot=s, name=n, flavor=f) for s, (n, f) in zip(('weapon', 'armor', 'trinket'), a['gear'])]
     n, p = a.pop('set'); a['set'] = dict(name=n, pieces=[dict(slot=s, name=x) for s, x in zip(('head', 'body', 'feet'), p)])
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-json.dump(dict(status='DRAFT: waiting for Dean to approve the list. No art has been made.', arrivals=A), open(os.path.join(root, 'data/arrivals_draft.json'), 'w'), indent=1, ensure_ascii=False)
-md = ["# The 14 new arrivals, for approval", "", "Nothing here has been drawn yet. Cross out, rename or swap anyone, then say which ones are approved.", "",
+json.dump(dict(status='APPROVED by Dean, 26 Nov 2026, all 14 as written. Art not made yet (O5).', arrivals=A), open(os.path.join(root, 'data/arrivals.json'), 'w'), indent=1, ensure_ascii=False)
+md = ["# The 14 new arrivals, for approval", "", "Approved by Dean on 26 Nov 2026. Art comes next.", "",
       "| # | Name | What | When and where | Rarity |", "|---|---|---|---|---|"]
 md += ["| %d | **%s** | %s, %s | %s | %s |" % (i + 1, a['name'], a['species'], a['title'].lower(), a['era'], a['rarity'].capitalize()) for i, a in enumerate(A)]
 for i, a in enumerate(A):
