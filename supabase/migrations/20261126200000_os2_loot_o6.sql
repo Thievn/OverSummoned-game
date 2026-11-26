@@ -1,0 +1,11 @@
+-- O6, 26 Nov 2026: reload the server's loot table from data/rules.json.
+--  * The 72 era weapons and charms of the first 36 heroes no longer drop (era sets are three pieces now).
+--    Their os2_item rows are kept on purpose: players own ~330 of them, and saves holding them must stay valid.
+--  * The 14 heroes added in O5 had never been loaded here, so their era sets could not drop live. They are now.
+-- Applied by fetching the deployed rules file with pg_net and replacing every row in one statement:
+--   select net.http_get('https://oversummoned.com/data/rules.json');   -- then, with that request id:
+--   with r as (select content::jsonb j from net._http_response where id = <id> and status_code = 200),
+--        gone as (delete from public.os2_loot where exists (select 1 from r))
+--   insert into public.os2_loot(place, item, weight)
+--   select p->>'id', l->>0, (l->>1)::numeric from r, jsonb_array_elements(r.j->'places') p, jsonb_array_elements(p->'loot') l;
+-- Rows before: 484. Rows after: 496 (72 retired out, 84 for the new heroes in).

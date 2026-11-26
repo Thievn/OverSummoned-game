@@ -370,7 +370,12 @@ Opus plan
   - Server: `supabase/migrations/20261126170000_os2_wave3_items.sql`, applied. 98 rows (14 heroes, 84 gear) so saves holding them are accepted.
   - Pages and sitemap rebuilt (`python3 tools/build_pages.py`); their history paragraphs went into `data/lore.json`. New art copied into desktop-fable.
   - LEFT UNDONE, on purpose: no MOUTH entries for the new 14 (they talk with a head bob, like the 17 older heroes without one), and no TAILS entries (only 9 of the 50 have one), so a few good tails sit still. Both are cosmetic and need a position read off each drawing.
-- O6 Loot and gold: era sets 5 pieces to 3, gold sinks, card frames. Names as stand-ins.
+- O6 DONE (26 Nov): loot and gold.
+  - Era sets are three pieces everywhere. The first 36 heroes' era weapon and charm (72 items) are RETIRED, not deleted: players own ~330 of them, so they stay in the game, wearable and sellable, marked `retired` in rules.json (rules/build.py) and shown as "No longer found anywhere" in the tooltip. No place drops them. The armory count and the completion % only count a retired piece if you own it.
+  - Server loot table reloaded from rules.json (`supabase/migrations/20261126200000_os2_loot_o6.sql` records how): 484 rows to 496. This also FIXED an O5 bug: the 14 new heroes' era sets and their own three pieces (84 rows) had never been loaded on the server, so none of it could drop live. Reload `os2_loot` the same way whenever rules.json loot changes.
+  - Gold sinks: (1) card frames, below. (2) Gold for ink, from the Summon page: 100 gold for 250 ink, the rate that was always in the rules and never wired, capped at 30 lots a day (`gold.ink_pack.daily`) so gold cannot undo O1's summon pacing. (3) Patch up heroes resting after a lost raid: 12 gold per minute of rest left, per hero (`gold.patch_per_minute`), a button on the raid sheet.
+  - Card frames: `R.frames`, five tiers bought with gold per hero, each needing the card at a level first (Bronze 500 at Lv 1, Silver 2,000 Lv 3, Gilt 6,000 Lv 5, Foil 15,000 Lv 7, Ledger 40,000 Lv 10). Buying one unlocks the ones below; "Frame" on the hero sheet opens the picker, which previews the card in every frame and asks twice before spending. Pure CSS, no art: the card's outer band widens and takes the metal, so rarity still reads on the name bar, window and gem. Foil and Ledger animate (off for reduced motion). Save field `S.frames[id] = [best bought, shown]`. Gold is spent in the browser, the same trust as gear upgrades: a cheater could give themselves a frame. Fine while frames are only cosmetic; move it to the server before frames are ever sold for money.
+  - Stand-in names for F6: the five frame names, and the wording of the frame picker, the ink trade and the patch-up button.
 - O7 Smudge's wardrobe and the desktop pet: later, and the wardrobe half is now BLOCKED on a decision (see below).
 
 ### Wardrobe, where it actually stands after 26 Nov
@@ -389,9 +394,10 @@ Fable plan
 - F5 DONE: `tools/exped_text.py` builds `data/expeditions.json` (edit the script, not the JSON; it refuses to build if a hero or place is missing, a placeholder is unknown or a line repeats). 8 places x 6 openers, 8 turns, 4 good and 4 poor endings (48 opener-and-turn pairings each before endings), 22 closing lines across the five tones, and 3 lines in their own voice for all 50 heroes, written about the one place each of them is always sent. The narrator is not Smudge and never calls the hero he or she. A hero added later needs a VOICE row; a place added later needs BEATS. One engine touch, flagged to Dean: `short()` in js/game.js now drops a trailing comma, because Zorp's name was printing as "Zorp," in expeditions and raids.
 - F6 Loot and gold names. Needs O6.
 
-Order to switch in: done so far: Fable F1+F2+F3+F4+F5 · Opus O1, O2, O2b, O3, O4, O5. Left: Opus O6 (loot and gold) · Fable F6 (loot names) · Opus O7 (Smudge's wardrobe in the game, desktop pet).
+Order to switch in: done so far: Fable F1+F2+F3+F4+F5 · Opus O1, O2, O2b, O3, O4, O5, O6. Left: Fable F6 (loot names) · Opus O7 (Smudge's wardrobe in the game, desktop pet).
 
 Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
+- F6: O6's stand-ins: frame names (Bronze, Silver, Gilt, Foil, Ledger in `rules/build.py` frames) and the copy in `frameSheet`, `inkTrade` and the patch-up button in js/game.js. Text only; keep prices and levels.
 - F6 (or sooner): the 42 era-set piece flavour lines for the new 14 are Opus stand-ins, in `rules/wave3.py` SETFLAV. Everything else about the 14 is Fable's own words.
 
 Email: both letters live in `supabase/functions/{waitlist,beta}/mail.ts` (identical copies; change both and redeploy both).

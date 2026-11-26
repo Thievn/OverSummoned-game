@@ -29,7 +29,7 @@
   const expSlots = () => R.exped.slots.filter(t => totalLevel() >= t).length;
   const away = id => S.exped.some(e => e.hero === id);
   const sellCap = () => R.gold.daily_sell_cap_base + R.gold.daily_sell_cap_per_level * totalLevel();
-  const rollDay = () => { const d = new Date().toISOString().slice(0, 10); if (S.day !== d) { S.day = d; S.sold = 0; } };
+  const rollDay = () => { const d = new Date().toISOString().slice(0, 10); if (S.day !== d) { S.day = d; S.sold = 0; S.packs = 0; } };
   const tonic = eff => (S.tonics[eff] || 0) > now() ? R.tonics.find(t => t.effect === eff).amount : 0;
   const gearMult = (g, hero) => (1 + R.gear_up.per_level * (S.gearLv[g] || 0)) * (OS.items[g].owner === hero ? 1 + R.gear.signature_bonus : 1);
   const trainCap = id => R.energy.cap_base + R.energy.cap_per_card_level * cardLevel(S.roster[id] || 1);
@@ -296,7 +296,7 @@
     const g = $('guide'), left = GUIDE.filter(s => !s[3]()); g.hidden = !left.length;
     if (left.length) { g.innerHTML = '<div class="tag">Getting started</div>' + GUIDE.map((s, i) => `<div class="gstep ${s[3]() ? 'done' : ''}"><i>${s[3]() ? '✓' : i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div><button class="btn small ${s[3]() ? 'ghost' : ''}" data-go="${s[2]}">${s[3]() ? 'Done' : 'Go'}</button></div>`).join(''); }
     $('h-stats').innerHTML = [['Arrivals met', Object.keys(S.roster).length], ['Total level', totalLevel()], ['Hauls', OS.num(S.actions)], ['Raid tickets', S.tickets + ' / ' + R.raids.tickets], ['Crates', S.bag.x_crate || 0]].map(([a, b]) => `<div class="stat"><b>${b}</b><span>${a}</span></div>`).join('');
-    const comp = (() => { const g = Object.values(OS.items).filter(i => i.kind === 'gear'), parts = [[Object.keys(S.roster).length, R.heroes.length], [Object.keys(S.cabinet).length, treasures.length], [g.filter(i => owns(i.id)).length, g.length], [Object.keys(S.raids).length, R.raids.bosses.length], [Math.min(99 * 4, totalLevel()), 99 * 4]]; return parts.reduce((t, [a, b]) => t + a / b, 0) / parts.length * 100; })();
+    const comp = (() => { const g = Object.values(OS.items).filter(i => i.kind === 'gear' && (!i.retired || owns(i.id))), parts = [[Object.keys(S.roster).length, R.heroes.length], [Object.keys(S.cabinet).length, treasures.length], [g.filter(i => owns(i.id)).length, g.length], [Object.keys(S.raids).length, R.raids.bosses.length], [Math.min(99 * 4, totalLevel()), 99 * 4]]; return parts.reduce((t, [a, b]) => t + a / b, 0) / parts.length * 100; })();
     let cp = $('h-comp'); if (!cp) { cp = el('div', 'panel'); cp.id = 'h-comp'; cp.style.marginBottom = '1rem'; $('h-stats').after(cp); }
     cp.innerHTML = `<div class="spread"><h3 style="margin:0">The whole ledger</h3><b style="font:400 1.5rem 'Lilita One';color:#f3b930">${comp.toFixed(1)}%</b></div><div class="bar" style="margin-top:.5rem"><i style="width:${comp}%;background:linear-gradient(90deg,#c98a18,#f3b930)"></i></div><p class="mut" style="margin:.4rem 0 0;font-size:.85rem">Heroes met, cabinet, gear found, bosses beaten and levels, all in one number.</p>`;
     freshUp(); let pc = $('h-pace'); if (!pc) { pc = el('div', 'panel'); pc.id = 'h-pace'; pc.style.marginBottom = '1rem'; $('h-stats').after(pc); pc.addEventListener('click', e => { const b = e.target.closest('[data-claim]'); if (b) claim(+b.dataset.claim); }); }
@@ -507,6 +507,17 @@
     if (oddsAt !== luckSteps()) { oddsAt = luckSteps(); const w = summonWeights(), tot = Object.values(w).reduce((a, b) => a + b, 0), mx = Math.max(...Object.values(w));
       $('s-odds').innerHTML = RAR.map(r => `<span class="r-${r}" style="color:var(--rc)">${OS.cap(r)}</span><i class="r-${r}"><b style="width:${Math.sqrt(w[r] / mx) * 100}%"></b></i><span>${(w[r] / tot * 100).toFixed(w[r] < 1 ? 2 : 1)}%</span>`).join('') + (oddsBump() ? `<p class="odds-note">Summoning level ${l}: rare or better is ${Math.round(oddsBump() * 100)}% more likely than the base odds.</p>` : `<p class="odds-note">Every 10 Summoning levels makes rare or better ${Math.round((R.summon.luck_per_10 || 0) * 100)}% more likely.</p>`); }
   }
+  // ---- gold for ink (O6 gold sink): the rate was always in the rules; capped a day so it cannot undo the summon pacing
+  function inkTrade() {
+    rollDay(); const P = R.gold.ink_pack, left = Math.max(0, P.daily - (S.packs || 0)), can = Math.min(left, Math.floor(S.gold / P.gold));
+    const d = el('div', '', `<h3 style="font-size:1.4rem">Trade gold for ink</h3>
+      <p class="mut" style="font-size:.9rem;margin:.3rem 0 .8rem">${OS.num(P.gold)} gold buys ${OS.num(P.ink)} ink. The Archive's ink-seller takes up to ${P.daily} lots a day; ${left ? `${left} left today` : 'none left today. Back tomorrow'}. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
+    const row = el('div', 'row'); row.style.flexWrap = 'wrap';
+    [1, 5, 10, can].filter((n, i, a) => n > 0 && a.indexOf(n) === i && n <= can).forEach(n => row.appendChild(btn(n === can && n > 10 ? '' : 'small', `${n === can && n > 10 ? 'All ' + n : n} · ${OS.num(n * P.gold)} gold → ${OS.num(n * P.ink)} ink`, () => {
+      S.gold -= n * P.gold; S.ink += n * P.ink; S.packs = (S.packs || 0) + n; bump('gold_spent', n * P.gold); SND('coin'); save(true); render(); toast(`${OS.num(n * P.ink)} ink, fresh from the pot.`); inkTrade(); })));
+    if (!can) row.appendChild(el('p', 'mut', left ? 'Not enough gold for a lot.' : ''));
+    d.appendChild(row); modal.open(d);
+  }
   let summoning = false, lastStamp = 0;
   // the roll itself: spend the ink, pick a rarity by the published odds, pick anybody of that rarity
   function rollSummonLocal(quiet) {
@@ -542,7 +553,7 @@
     }, 2300 + (rr(rar) >= 4 ? 900 : 0));
   }
   function stamp() { const t = performance.now(); if (summoning || t - lastStamp < 1000 / R.max_keys_per_second) return; lastStamp = t; SND('stamp'); S.ink += R.web.stamp_ink * inkBonus(); bump('stamps'); bump('ink', R.web.stamp_ink * inkBonus()); sfx.stamp(); renderTop(); renderSummon(); }
-  $('s-go').onclick = summon; $('s-stamp').onclick = stamp; sstage.addEventListener('pointerdown', stamp);
+  $('s-go').onclick = summon; $('s-stamp').onclick = stamp; $('s-trade').onclick = inkTrade; sstage.addEventListener('pointerdown', stamp);
 
   // ------------------------------------------------------------------ arrivals
   // ---- finding things: one search box, one sort, a row of filter chips, on the arrivals and in the bag
@@ -601,7 +612,37 @@
     row.append(btn('small', 'Flip the card', () => card.click()), btn('small ghost', 'Train', () => { modal.close(); show('training'); }), btn('small ghost', 'Armory', () => { modal.close(); show('bag'); }));
     const log = ((S.journal || {})[id] || []);
     row.appendChild(btn('small ghost', `Journal${log.length ? ' · ' + log.length : ''}`, () => journalSheet(id)));
+    const fr = OS.frameOf(id); row.appendChild(btn('small ghost', `Frame${fr ? ' · ' + FR.find(f => f.id === fr).name : ''}`, () => frameSheet(id)));
     side.appendChild(row); d.append(card, side); modal.open(d);
+  }
+  // ---- card frames (O6). S.frames[id] = [best frame bought, frame shown], both indexes into R.frames, -1 for none.
+  // Buying a frame unlocks every frame below it for that hero. Gold only; nothing about a frame changes a number.
+  const FR = R.frames || [];
+  const frameRec = id => (S.frames || {})[id] || [-1, -1];
+  OS.frameOf = id => { const f = frameRec(id); return S.roster[id] && f[1] >= 0 && FR[f[1]] ? FR[f[1]].id : null; };
+  function frameSheet(id, armed) {
+    const h = OS.heroes[id], lv = cardLevel(S.roster[id]), [own, on] = frameRec(id), first = short(id);
+    const d = el('div', '', `<h3 style="font-size:1.4rem">A frame for ${h.name}</h3>
+      <p class="mut" style="margin:.2rem 0 0;font-size:.9rem">For show only. Buying a frame unlocks every frame below it, for ${first}. The better frames need ${first}'s card at a higher level first. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
+    const g = el('div', 'frpick');
+    const set = i => { S.frames = S.frames || {}; S.frames[id] = [Math.max(own, i), i]; save(true); render(); };
+    const opt = (i) => {
+      const f = FR[i], w = el('div', 'fopt' + (i === on ? ' on' : ''));
+      const card = OS.card(h, { mini: true, level: lv, frame: f ? f.id : null, noflip: true });
+      let label, act = null, why = '';
+      if (i === on) label = 'In use';
+      else if (i < 0 || i <= own) { label = 'Use'; act = () => { set(i); frameSheet(id); }; }
+      else if (lv < f.level) { label = `Needs card level ${f.level}`; w.classList.add('lockd'); }
+      else if (S.gold < f.gold) { label = `${OS.num(f.gold)} gold`; why = `${OS.num(f.gold - S.gold)} short`; }
+      else if (armed === i) { label = `Yes, spend ${OS.num(f.gold)}`; act = () => { S.gold -= f.gold; set(i); SND('coin'); bump('gold_spent', f.gold); toast(`${first} has a ${f.name} frame.`); frameSheet(id); }; }
+      else { label = `Buy · ${OS.num(f.gold)} gold`; act = () => frameSheet(id, i); }
+      const b = btn('small' + (armed === i ? '' : ' ghost'), label, act || (() => {})); b.disabled = !act;
+      const note = i < 0 ? 'The card as it comes.' : i <= own ? 'Yours.' : `Card level ${f.level}${why ? ' · <b>' + why + '</b>' : ''}`;
+      w.append(card, el('div', 'fn', i < 0 ? 'No frame' : f.name), el('div', 'fp', note), b); g.appendChild(w);
+    };
+    opt(-1); FR.forEach((_, i) => opt(i));
+    d.append(g, el('div', 'row', '')); d.lastChild.style.marginTop = '.9rem'; d.lastChild.appendChild(btn('small ghost', 'Back to the card', () => heroSheet(id)));
+    modal.open(d);
   }
   function gearPicker(id, k) {
     const h = OS.heroes[id], own = k.indexOf('own') === 0, i = own ? +k[3] : 0, w = wornG(id), eq = S.equip[id], cur = own ? eq[i] : w[k];
@@ -632,7 +673,7 @@
     const wearer = {}; Object.keys(S.gear).forEach(hid => Object.values(S.gear[hid]).forEach(x => { if (x) wearer[x] = hid; })); Object.keys(S.equip).forEach(hid => (S.equip[hid] || []).forEach(x => { if (x) wearer[x] = hid; }));
     const mine = Object.values(OS.items).filter(i => i.kind === 'gear' && owns(i.id)), tabs = [['all', 'All'], ['weapon', 'Weapons'], ['head', 'Head'], ['body', 'Body'], ['feet', 'Feet'], ['charm', 'Charms'], ['own', 'Hero’s own']];
     const pick = mine.filter(i => (armF === 'all' ? true : armF === 'own' ? !!i.owner : !i.owner && i.slot === armF) && (!FIND.bq || hits(FIND.bq, i.name, i.rarity, i.slot, i.owner ? OS.heroes[i.owner].name : '', i.set ? R.gear_sets[i.set].name : ''))).sort((a, c) => rr(c.rarity) - rr(a.rarity) || (a.set || 'zz').localeCompare(c.set || 'zz') || a.name.localeCompare(c.name));
-    arm.innerHTML = `<div class="spread"><h3 style="margin:0">The armory</h3><span class="mut">${mine.length} of ${Object.values(OS.items).filter(i => i.kind === 'gear').length} pieces found</span></div>
+    arm.innerHTML = `<div class="spread"><h3 style="margin:0">The armory</h3><span class="mut">${mine.length} of ${Object.values(OS.items).filter(i => i.kind === 'gear' && (!i.retired || owns(i.id))).length} pieces found</span></div>
       <div class="row" style="flex-wrap:wrap;gap:.4rem;margin:.6rem 0">${tabs.map(([k, t]) => `<button class="btn small ${armF === k ? '' : 'ghost'}" data-af="${k}">${t}</button>`).join('')}</div><div class="armgrid"></div>`;
     arm.hidden = FIND.bf !== 'all' && FIND.bf !== 'gear';
     const ag = arm.querySelector('.armgrid'); if (!pick.length) ag.appendChild(el('p', 'mut', 'Nothing here yet.'));
@@ -763,7 +804,13 @@
     Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const rest = resting(id), c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) });
       if (rest) { c.classList.add('resting'); c.appendChild(el('span', 'restlbl', 'Resting ' + fmt(rest / 1000))); }
       c.onclick = () => { if (resting(id)) return toast(`${OS.heroes[id].name} is still recovering from the last raid.`); const k = team.indexOf(id); if (k >= 0) team.splice(k, 1); else if (team.length < 3) team.push(id); c.classList.toggle('sel', team.includes(id)); upd(); }; heroes.appendChild(c); });
+    const tired = Object.keys(S.roster).filter(id => resting(id)), patchCost = () => tired.reduce((a, id) => a + Math.ceil(resting(id) / 60000) * R.gold.patch_per_minute, 0);
+    let patch = null;
+    if (tired.length) { const c0 = patchCost(); patch = btn('small ghost', `Patch up ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length + ' resting'} · ${OS.num(c0)} gold`, () => {
+        const c = patchCost(); if (S.gold < c) return toast(`That takes ${OS.num(c)} gold.`); S.gold -= c; tired.forEach(id => S.recover[id] = 0); bump('gold_spent', c); SND('coin'); save(true); render(); toast('Bandaged, fed and back on their feet.'); raidSheet(b); });
+      patch.disabled = S.gold < c0; patch.style.marginBottom = '.6rem'; }
     const go = btn('', `Go in (1 ticket)`, () => { if (S.tickets < 1) return toast('No raid tickets left. One comes back every ' + RD.regen_minutes / 60 + ' hours.'); runRaid(b, B, team.slice(), pots.slice()); });
+    if (patch) d.appendChild(patch);
     d.append(heroes, el('h4', '', `Potions (${RD.potion_slots} slots)`), potRow, info, go);
     function drawPots() {
       const have = potionsHave(); potRow.innerHTML = have.length ? '' : `<p class="mut">No potions. Brew them in the Workshop: ${R.potions.map(x => x.name).join(', ')}.</p>`;
@@ -986,5 +1033,5 @@
   addEventListener('visibilitychange', () => { if (document.hidden) save(true); else sync().then(() => { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); }); });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home', { silent: true }); if (START && START !== 'home' && VIEWS.includes(START)) show(START); requestAnimationFrame(frame);
-  window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render };   // for testing
+  window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render, frameSheet, inkTrade, raidSheet };   // for testing
 })();

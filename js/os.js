@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1126y';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1126z';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -120,7 +120,8 @@ window.OS = (function () {
     } else s += `<div class="sub"><span>${it.junk ? 'Junk' : 'Treasure'}</span><span>${it.junk ? 'sells only' : OS.cap(it.rarity)}</span></div>`;
     s += `<div class="fl">"${it.flavor}"</div>`;
     const pl = R.places.find(p => p.id === it.place);
-    if (pl) s += `<div class="src">Found at ${pl.name}, by ${pl.skill.toLowerCase()}${opt.chance ? ' · ' + opt.chance : ''}</div>`;
+    if (it.retired) s += `<div class="src">No longer found anywhere. Came from ${pl ? pl.name : 'the rift'}, once.</div>`;
+    else if (pl) s += `<div class="src">Found at ${pl.name}, by ${pl.skill.toLowerCase()}${opt.chance ? ' · ' + opt.chance : ''}</div>`;
     s += `<div class="src">Sells for ${it.sell} gold${opt.have ? ' · you have ' + opt.have : ''}</div>`;
     return s;
   };
@@ -170,13 +171,14 @@ window.OS = (function () {
      back), onSlot(key), noflip. */
   OS.card = function (h, opt) {
     opt = opt || {}; const owned = opt.owned !== false, R = OS.R, L = opt.load || {}, g = L.g || {}, own = L.own || [null, null, null];
-    const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : '') + (OS.founder && owned ? ' founder' : ''));
+    const frame = owned ? (opt.frame !== undefined ? opt.frame : (OS.frameOf ? OS.frameOf(h.id) : null)) : null;
+    const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : '') + (OS.founder && owned ? ' founder' : '') + (frame ? ' framed fr-' + frame : ''));
     const stats = opt.stats || h.stats, base = opt.base || stats, power = L.power != null ? L.power : stats.attack + stats.defense + stats.health;
     const col = id => id && OS.items[id] ? R.rarity_color[OS.items[id].rarity] : '';
     const GS = R.slots.general, keys = GS.concat(['own0', 'own1', 'own2']), at = k => k.indexOf('own') === 0 ? own[+k[3]] : g[k];
     const dots = keys.map((k, i) => (i === 5 ? '<u></u>' : '') + `<i class="${k === 'charm' ? 'o' : ''}" style="${at(k) ? 'background:' + col(at(k)) : ''}"></i>`).join('');
     const lv = opt.level > 1 ? `<span class="lv">Lv ${opt.level}</span>` : '';
-    let front = `<div class="face front tcg">${OS.founder && owned ? '<span class="seal" title="Founding Clerk: this ledger was opened during the closed beta">FC</span>' : ''}
+    let front = `<div class="face front tcg">${frame ? '<i class="frm"></i>' : ''}${OS.founder && owned ? '<span class="seal" title="Founding Clerk: this ledger was opened during the closed beta">FC</span>' : ''}
       <div class="nbar"><span class="nm">${owned ? h.name : '???'}</span>${lv}</div>
       <div class="win"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>
         <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div></div>
@@ -194,7 +196,7 @@ window.OS = (function () {
       const st = R.gear_sets['set_' + h.id], k2 = st ? Object.keys(st.two)[0] : '';
       const lines = L.lines || (st ? [`<s>${st.name} set · 2 worn: +${st.two[k2]} ${OS.statWord[k2]} · all 3: +${Math.round(st.three.amount * 100)}% ${OS.FX[st.three.kind]}</s>`, `<s>${h.name.split(' ')[0]}’s kit · 2 worn: +${Math.round(R.kit.two * 100)}% all stats · all 3: +${Math.round(R.kit.three * 100)}%</s>`] : []);
       const cp = L.copies ? `<span class="cl">Lv ${opt.level || 1} <i><b style="width:${Math.min(100, L.copies[0] / L.copies[1] * 100)}%"></b></i> ${L.copies[0]} / ${L.copies[1]} copies</span>` : `<span class="cl">Lv ${opt.level || 1}</span>`;
-      back = `<div class="face back tcg bk">
+      back = `<div class="face back tcg bk">${frame ? '<i class="frm"></i>' : ''}
         <div class="nbar"><span class="nm">${h.name}</span><button class="ib" type="button" aria-label="About ${h.name}">i</button></div>
         <div class="doll"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div><div class="live"><img src="${OS.img('heroes', h.id)}" alt=""></div>
           <div class="gcol l">${left}</div><div class="gcol r">${right}</div></div>

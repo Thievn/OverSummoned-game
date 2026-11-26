@@ -766,3 +766,40 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .jent.exp{border-left-color:var(--teal)}.jent.raid{border-left-color:#b3261e}
 .jent time{font:800 .72rem Nunito;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);white-space:nowrap;padding-top:.15rem}
 .jent p{margin:0;font-size:.92rem;line-height:1.45}
+/* ---- card frames (O6): bought with gold, one hero at a time, for show. Only the outer band changes, so the
+   rarity colour still reads on the name bar, the window and the gem. The band is the front face's own background,
+   seen around the dark inner panel; a framed card widens it. .frm sits over the face for the bevel and the gems. */
+.card.framed{--fg:#888;--f1:#fff;--f3:#333;--gem:#f2b935;--bw:9px}
+.card.mini.framed{--bw:5px}
+.card.framed .face{box-shadow:0 0 0 2px var(--f3),0 0 0 3.5px var(--f1),var(--shadow)}
+.card.framed .face.tcg{background:var(--fg)!important;background-size:300% 300%!important}
+.card.framed .face.tcg::before{inset:var(--bw);border-radius:8px}
+.tcg>.frm{position:absolute;inset:0;left:0;right:0;z-index:3;pointer-events:none;border-radius:13px}
+.tcg>.frm::before{content:"";position:absolute;inset:calc(var(--bw) - 1px);border-radius:9px;box-shadow:0 0 0 1px var(--f3),0 0 0 2px rgba(255,255,255,.16)}
+.tcg>.frm::after{content:"";position:absolute;inset:0;border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.25)}
+.card.fr-bronze{--fg:linear-gradient(135deg,#f3bd85,#b0652f 22%,#6d3514 45%,#d08a52 66%,#7a3c16 84%,#c98a55);--f1:#e6a26a;--f3:#4a2209}
+.card.fr-silver{--fg:linear-gradient(135deg,#ffffff,#cdd4de 20%,#7d8796 42%,#eef2f7 62%,#8b94a3 82%,#dfe5ee);--f1:#e9eef5;--f3:#4b5361}
+.card.fr-gilt{--fg:linear-gradient(135deg,#fff4c9,#f2b935 20%,#9c6a10 42%,#ffe08a 62%,#a87412 82%,#ffd35c);--f1:#ffe39a;--f3:#5c3d05;--gem:#e0384f}
+.card.fr-foil{--fg:linear-gradient(115deg,#ff8ab8,#ffd36b,#8af3c9,#79b8ff,#c7a0ff,#ff8ab8,#ffd36b);--f1:#fff;--f3:#3a2a5a;--gem:#79e8ff}
+.card.fr-foil .face.tcg{animation:frfoil 6s linear infinite}
+.card.fr-ledger{--fg:linear-gradient(110deg,#141f48 0%,#1d2b63 34%,#f2c14e 46%,#fff1bf 50%,#f2c14e 54%,#1d2b63 66%,#141f48 100%);--f1:#f2c14e;--f3:#05081a;--gem:#3fe0c5}
+.card.fr-ledger .face.tcg{animation:frglint 7s ease-in-out infinite}
+.card.fr-ledger .tcg>.frm::before{box-shadow:0 0 0 1px #05081a,0 0 0 2px #f2c14e,0 0 10px rgba(242,193,78,.35)}
+@keyframes frfoil{from{background-position:0% 50%}to{background-position:300% 50%}}
+@keyframes frglint{0%,100%{background-position:100% 50%}50%{background-position:0% 50%}}
+/* gems on the band, top and bottom, for the three best frames; too small to read on a mini card */
+.card.fr-gilt:not(.mini) .tcg>.frm,.card.fr-foil:not(.mini) .tcg>.frm,.card.fr-ledger:not(.mini) .tcg>.frm{background:
+  radial-gradient(circle at 50% calc(var(--bw) / 2),#fff 0 .9px,var(--gem) 1.6px 2.7px,var(--f3) 3.2px,transparent 3.7px),
+  radial-gradient(circle at 50% calc(100% - var(--bw) / 2),#fff 0 .9px,var(--gem) 1.6px 2.7px,var(--f3) 3.2px,transparent 3.7px),
+  radial-gradient(circle at calc(var(--bw) / 2) 50%,#fff 0 .9px,var(--gem) 1.6px 2.7px,var(--f3) 3.2px,transparent 3.7px),
+  radial-gradient(circle at calc(100% - var(--bw) / 2) 50%,#fff 0 .9px,var(--gem) 1.6px 2.7px,var(--f3) 3.2px,transparent 3.7px)}
+@media (prefers-reduced-motion:reduce){.card.fr-foil .face.tcg,.card.fr-ledger .face.tcg{animation:none}}
+/* the frame picker */
+.frpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:.8rem}
+.frpick .fopt{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:.6rem .4rem .7rem;border-radius:12px;background:var(--ink2);border:2px solid var(--line)}
+.frpick .fopt.on{border-color:var(--teal)}
+.frpick .fopt .card{width:118px}
+.frpick .fopt .fn{font:400 1rem/1 "Lilita One";color:#fff}
+.frpick .fopt .fp{font:800 .72rem/1.2 Nunito;color:var(--mut);text-align:center;min-height:2.4em}
+.frpick .fopt .fp b{color:var(--gold)}
+.frpick .fopt.lockd .card{filter:grayscale(.85) brightness(.6)}

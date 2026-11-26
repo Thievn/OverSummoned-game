@@ -56,7 +56,20 @@ C = dict(
                 "power_needed": {"1": 60, "2": 140, "3": 260}, "min_chance": 0.10, "max_chance": 0.95, "luck": 0.5,
                 "slots": [{"total_level": 0}, {"total_level": 50}, {"total_level": 150}]},
     # ---- gold
-    gold={"daily_sell_cap_base": 2000, "daily_sell_cap_per_level": 20, "ink_pack": {"gold": 100, "ink": 250}},
+    gold={"daily_sell_cap_base": 2000, "daily_sell_cap_per_level": 20,
+          # O6 gold sinks. ink_pack was in the rules from the start but never in the game; wired now, with a daily
+          # cap so gold cannot undo O1's summon pacing (30 packs = 7,500 ink a day, under one summon past 12 heroes).
+          "ink_pack": {"gold": 100, "ink": 250, "daily": 30},
+          # Patch up heroes resting after a lost raid: gold per minute of rest left, per hero, rounded up.
+          "patch_per_minute": 12},
+    # O6 card frames: bought with gold, one hero at a time, for show only. Owning a frame unlocks the frames below it.
+    # A frame needs that hero's card at a level first, so the best frames say how long you have kept someone.
+    # Names are stand-ins for Fable (F6).
+    frames=[{"id": "bronze", "name": "Bronze", "gold": 500, "level": 1},
+            {"id": "silver", "name": "Silver", "gold": 2000, "level": 3},
+            {"id": "gilt", "name": "Gilt", "gold": 6000, "level": 5},
+            {"id": "foil", "name": "Foil", "gold": 15000, "level": 7},
+            {"id": "ledger", "name": "Ledger", "gold": 40000, "level": 10}],
 )
 
 BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome", edith="london", albrecht="medieval", vincenzo="chicago", slapton="hollywood", napoleon="france",
@@ -173,6 +186,9 @@ era_items, gear_sets = gear2.expand(C["gear"]["budget"])
 hero_place = {h["id"]: h["place"] for h in HEROES}
 for it in era_items:
     it["place"] = hero_place[it["era"]]; it["sell"] = C["gear"]["sell"][it["rarity"]]; art_desc = it.pop("desc"); items[it["id"]] = it
+    # O6: era sets are three pieces (head, body, feet). The older heroes' era weapon and charm stay in the game,
+    # because players already own them, but they are retired: no place drops them any more.
+    if it["slot"] in ("weapon", "charm"): it["retired"] = True
 C["gear_sets"] = gear_sets
 C["slots"] = {"general": ["weapon", "head", "body", "feet", "charm"], "own": ["weapon", "armor", "trinket"], "charm_level": 5}
 
@@ -216,7 +232,7 @@ for p in PLACES:
             for g in h["gear"]:
                 table.append([g, C["gear"]["drop_weight"][items[g]["rarity"]]])
             for it in era_items:
-                if it["era"] == h["id"]: table.append([it["id"], C["gear"]["drop_weight"][it["rarity"]]])
+                if it["era"] == h["id"] and not it.get("retired"): table.append([it["id"], C["gear"]["drop_weight"][it["rarity"]]])
     places.append(dict(id=p["id"], name=p["name"], era=p["era"], skill=p["skill"], level=p["level"], tier=p["tier"], blurb=p["blurb"], loot=table))
 items["x_crate"] = dict(id="x_crate", name="Rift Crate", kind="crate", rarity="rare", icon="x_crate", flavor="It fell out of a hole in time. It is ticking. Probably fine.", place="archive", sell=0)
 for t in C["tonics"]:
