@@ -1,0 +1,58 @@
+{
+ "_about": "Expedition stories. STAND-IN TEXT written by Opus to make the engine work; Fable rewrites all of it in F5. The engine reads: beats[placeId] = {open, turn, end:{good,poor}}, each an array of lines; tone[] lines chosen by what happened (rich, thin, early, rare, junk); and voice[heroId] = lines that hero brings back. {name} is the hero, {place} the place, {era} their era, {n} how many things, {ink} ink earned. A run shows one open, one turn and one end, picked at random but fixed once written into the journal. Keep the shape exactly.",
+ "beats": {
+  "dock": {
+   "open": ["{name} steps out onto the boards at Ostia with the tide going out and the whole river smelling of yesterday's fish.", "The dock at Ostia is busy, and nobody looks twice at {name}: everyone here is carrying something they would rather not explain."],
+   "turn": ["A grain ship comes in short of two crates, and the argument that follows empties half the quay.", "The customs man wants a word. {name} gives him several, in the wrong order, and walks on while he is still working them out.", "Something heavy turns over in the water under the pier. Nobody on the dock mentions it, so neither does {name}."],
+   "end": {"good": ["{name} comes back along the boards with both arms full and sand in every seam."], "poor": ["{name} comes back with wet boots and not much else. The tide was in the wrong mood."]}
+  },
+  "bondi": {
+   "open": ["{name} arrives at Bondi in the flat white light of the early afternoon, when the sand is too hot to stand on.", "The beach is packed. {name} walks the length of it twice before anyone even looks up."],
+   "turn": ["The tide goes out further than it should and leaves a line of other people's belongings behind it.", "A rip takes the swimmers out past the flags and the lifeguards take an interest in everything except {name}.", "A seagull takes something out of {name}'s hands. Most of a chase follows."],
+   "end": {"good": ["{name} comes back salt-crusted and sunburnt, carrying more than they went with."], "poor": ["{name} comes back sunburnt and empty-handed. The rock pool had been picked over already."]}
+  },
+  "fjord": {
+   "open": ["{name} walks out onto the Lofoten ice while the light is still grey and the cold has not got its hands warm yet.", "The fjord is frozen hard enough to stand on and nobody at the village will say for how much longer."],
+   "turn": ["A hole somebody else cut has frozen half over, and the line left in it is still taut.", "The weather comes in sideways for an hour and leaves everything a different shape.", "Something under the ice follows {name} for a while and then loses interest, or pretends to."],
+   "end": {"good": ["{name} comes back off the ice stiff, slow, and well loaded."], "poor": ["{name} comes back off the ice with very cold hands and almost nothing in them."]}
+  },
+  "speakeasy": {
+   "open": ["{name} goes down the steps off the alley in Chicago and gives the door whatever today's word is.", "The band is loud enough that nobody hears {name} come in, which is the point of the band."],
+   "turn": ["A card game two tables over turns into a discussion, and then into furniture.", "Somebody important arrives, and for four minutes every eye in the room is pointed the wrong way.", "A raid alarm goes off. It is a false one, but the cellar empties and stays empty for a while."],
+   "end": {"good": ["{name} comes up the steps at dawn with a full coat and a good story."], "poor": ["{name} comes up the steps at dawn with a thin coat and a worse story."]}
+  },
+  "vault": {
+   "open": ["{name} crosses Venice by water, because in Venice everything arrives by water, including trouble.", "The palace is holding something that needs a lot of guests, and {name} goes in among them."],
+   "turn": ["The guard on the strongroom goes for his supper and takes his time about it.", "A masked ball fills the corridors with people who all think {name} is somebody else's guest.", "A ledger goes missing somewhere in the building and every servant is questioned except the ones who matter."],
+   "end": {"good": ["{name} leaves Venice by a window and a boat, in that order, carrying plenty."], "poor": ["{name} leaves Venice by the front door, politely, carrying very little."]}
+  },
+  "closet": {
+   "open": ["{name} signs in at reception as a contractor and is given a badge that opens almost nothing.", "The office is between meetings, which is the only time anything can be done in it."],
+   "turn": ["The printer jams, and for twenty minutes the whole floor is about the printer.", "A fire drill empties the building. {name} drifts the wrong way down the stairwell.", "Facilities leaves the key cupboard open while they take a call they did not want."],
+   "end": {"good": ["{name} comes back through reception with a full tote bag and a visitor badge they forgot to return."], "poor": ["{name} comes back through reception with a lanyard and a biro."]}
+  },
+  "outback": {
+   "open": ["{name} walks out into the wheat country with the heat already standing up off the ground.", "The old trench is where it was left in 1932, and so is most of what was in it."],
+   "turn": ["A line of emus watches from the rise for most of an hour and then decides {name} is not worth it.", "The wind gets up and moves enough dust to uncover something that was buried on purpose.", "A farmer comes past on a tractor and offers advice, tea, and no help at all."],
+   "end": {"good": ["{name} comes back red with dust and carrying a good haul."], "poor": ["{name} comes back red with dust and carrying very little but opinions."]}
+  },
+  "blackforest": {
+   "open": ["{name} goes into the Black Forest by the path that is marked and comes off it almost at once.", "The clearing is quiet in the way that means something is listening."],
+   "turn": ["The trees are not where they were on the way in. {name} notes this and keeps walking.", "A lantern burns green on a branch with nobody holding it, and goes out when looked at directly.", "Fresh digging, filled in badly, and whatever did it has not gone far."],
+   "end": {"good": ["{name} comes out of the trees at dusk, muddy, loaded, and not keen to discuss it."], "poor": ["{name} comes out of the trees at dusk, muddy, and carrying almost nothing."]}
+  },
+  "archive": {
+   "open": ["{name} goes through the rift the short way, which the Archive insists is not possible.", "The ledger opens on a page nobody wrote and {name} steps into it."],
+   "turn": ["Two eras touch for a moment and something falls through from the wrong one.", "The way back closes for an hour and then opens somewhere else entirely."],
+   "end": {"good": ["{name} falls back out of the rift onto the Archive floor with both arms full."], "poor": ["{name} falls back out of the rift onto the Archive floor with nothing but dust."]}
+  }
+ },
+ "tone": {
+  "rich": ["It was a good trip. Smudge has written it up twice.", "The pile on the Archive floor takes a while to sort."],
+  "thin": ["Smudge writes it down anyway. Everything gets written down.", "Not much to show. It happens."],
+  "early": ["Called home early, so the work was left half done.", "Pulled back before the end, and it shows in the load."],
+  "rare": ["Something in the pile is worth more than the rest of it together.", "One of these should not exist. Smudge has stamped it twice to be sure."],
+  "junk": ["Most of it is junk. Some of the junk is interesting junk."]
+ },
+ "voice": {}
+}

@@ -758,3 +758,11 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .rchoices{display:grid;gap:.45rem;margin:.8rem 0 .4rem}.rchoice{display:flex;justify-content:space-between;align-items:center;gap:.8rem;text-align:left}.rchoice span{font-size:.78rem;opacity:.85;white-space:nowrap}
 .rpots{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
 @media(prefers-reduced-motion:reduce){.rline{transition:none;opacity:1;transform:none}}
+/* expedition return and the hero journal */
+.rstory.exps{min-height:120px;max-height:34vh}
+.expback .raidhead.small{margin-bottom:.7rem}
+.jlog{display:grid;gap:.45rem;max-height:52vh;overflow:auto}
+.jent{display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;background:#0b1020;border:2px solid var(--line);border-left-width:5px;border-radius:12px;padding:.55rem .7rem}
+.jent.exp{border-left-color:var(--teal)}.jent.raid{border-left-color:#b3261e}
+.jent time{font:800 .72rem Nunito;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);white-space:nowrap;padding-top:.15rem}
+.jent p{margin:0;font-size:.92rem;line-height:1.45}

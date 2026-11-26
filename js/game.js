@@ -353,7 +353,7 @@
       if (open) c.onclick = () => crewSheet(i); cr.appendChild(c); });
     box.appendChild(cw);
     // ---- expeditions
-    const ex = el('div', 'panel'); ex.innerHTML = `<div class="spread"><h3 style="margin:0">Expeditions</h3><span class="mut">${S.exped.length} of ${expSlots()} away</span></div><p class="mut" style="margin:.3rem 0 .7rem;font-size:.9rem">Anybody not in the crew can go home to their own time for a while and bring back whatever they find there.</p><div class="exlist"></div>`;
+    const ex = el('div', 'panel'); ex.innerHTML = `<div class="spread"><h3 style="margin:0">Expeditions</h3><span class="mut">${S.exped.length} of ${expSlots()} away</span></div><p class="mut" style="margin:.3rem 0 .7rem;font-size:.9rem">Anybody not in the crew can go back through the rift for a while and bring home whatever they find, plus the story of how they found it.</p><div class="exlist"></div>`;
     const xl = ex.querySelector('.exlist');
     S.exped.forEach((e, i) => { const h = OS.heroes[e.hero], left = (e.end - now()) / 1000, row = el('div', 'exrow2 r-' + h.rarity);
       row.innerHTML = `<img src="${OS.img('heroes', e.hero)}" alt=""><div><b>${h.name}</b><span class="mut">${left > 0 ? h.era + ' · back in <span data-exleft="' + i + '">' + fmt(left) + '</span>' : 'Back from ' + h.era}</span><div class="bar"><i data-ex="${i}" style="width:${pct(e.dur - Math.max(0, left), e.dur)}"></i></div></div>`;
@@ -407,11 +407,23 @@
     heroPick('Who stands here?', 'Speed makes Smudge faster. Luck brings up better things. Their gear bonuses count, and they get better at each trade the longer they stand at it.',
       id => away(id) ? 'Away on an expedition.' : S.crew.some((x, k) => x === id && k !== i) ? 'Already in the crew.' : '', id => { S.crew[i] = id; save(true); modal.close(); render(); }, row);
   }
+  // everything this one has done: expeditions and raids, newest first
+  function journalSheet(id) {
+    const h = OS.heroes[id], log = ((S.journal || {})[id] || []).slice().reverse();
+    const d = el('div', '', `<div class="tag">${h.era} · ${h.species}</div><h3 style="font-size:1.5rem;margin:.1rem 0 .2rem">${h.name}'s journal</h3>
+      <p class="mut">What Smudge has written down about them. Expeditions and raids both end up here.</p>`);
+    if (!log.length) d.appendChild(el('p', 'mut', 'Nothing yet. Send them home on an expedition, or take them on a raid.'));
+    else { const list = el('div', 'jlog'); log.forEach(x => { const r = el('div', 'jent ' + (x.k === 'raid' ? 'raid' : 'exp'));
+      r.innerHTML = `<time>${new Date(x.d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</time><p></p>`;
+      r.querySelector('p').textContent = x.t; list.appendChild(r); }); d.appendChild(list); }
+    const row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(btn('small ghost', 'Back', () => heroSheet(id))); d.appendChild(row); modal.open(d);
+  }
+
   function expedSheet() {
     let hours = R.exped.hours[1]; const row = el('div', 'row'); row.style.cssText = 'margin-top:1rem;flex-wrap:wrap;gap:.5rem';
     R.exped.hours.forEach(h => { const b = btn('small' + (h === hours ? '' : ' ghost'), h + (h === 1 ? ' hour' : ' hours'), () => { hours = h; row.querySelectorAll('button').forEach(x => x.classList.toggle('ghost', x !== b)); }); row.appendChild(b); });
-    heroPick('Send somebody home for a while', 'They go back to their own time and return with treasure, junk and gear from there. Longer trips bring more. Luck helps.',
-      id => S.crew.includes(id) ? 'In the crew. Stand them down first.' : away(id) ? 'Already away.' : '', id => { const dur = hours * 3600; S.exped.push({ hero: id, end: now() + dur * 1000, dur }); save(true); modal.close(); render(); toast(`${OS.heroes[id].name} has gone back to ${OS.heroes[id].era}.`); }, row);
+    heroPick('Send somebody through the rift', 'Each of them has a place the ledger keeps pulling them back to. They go there alone and return with treasure, junk and gear from it, and a story. Longer trips bring more. Luck helps.',
+      id => S.crew.includes(id) ? 'In the crew. Stand them down first.' : away(id) ? 'Already away.' : '', id => { const dur = hours * 3600; S.exped.push({ hero: id, end: now() + dur * 1000, dur }); save(true); modal.close(); render(); toast(`${OS.heroes[id].name} has gone to ${places[OS.heroes[id].place].name}.`); }, row);
   }
   async function haul(e, frac) {
     const h = OS.heroes[e.hero], p = places[h.place], hrs = e.dur / 3600 * frac, st = heroStats(e.hero), luck = st.luck / R.jobs.luck_div + fx(e.hero, 'luck');
@@ -422,14 +434,55 @@
     const m = S.mastery[e.hero] || (S.mastery[e.hero] = {}); m[p.skill] = (m[p.skill] || 0) + Math.round(hrs * R.exped.mastery_per_hour);
     return { got, ink, h, p };
   }
-  function showHaul(r, early) {
-    const d = el('div', '', `<h3 style="font-size:1.5rem">${r.h.name} is back from ${r.h.era}</h3><p class="mut">${early ? 'Called back early, so a lighter load. ' : ''}${r.got.length} things and ${OS.num(r.ink)} ink.</p>`), g = el('div', 'itemrow'), cnt = {};
-    r.got.forEach(id => cnt[id] = (cnt[id] || 0) + 1); Object.keys(cnt).sort((a, c) => rr(OS.items[c].rarity) - rr(OS.items[a].rarity) || (OS.items[a].junk ? 1 : 0) - (OS.items[c].junk ? 1 : 0)).forEach(id => g.appendChild(OS.slot(id, { count: cnt[id] })));
-    d.appendChild(g); const row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(btn('', 'Good', modal.close)); d.appendChild(row); modal.open(d);
+  // ---- what happened while they were away. Three beats from the place they went to, picked once and written
+  //      into their journal, so the story in the sheet and the story in the journal are the same story.
+  function expStory(e, r, early) {
+    const B = (EXP && EXP.beats[r.p.id]) || (EXP && EXP.beats.archive) || null, T = (EXP && EXP.tone) || {};
+    const rare = r.got.some(id => RAREUP.includes(OS.items[id].rarity));
+    const rich = r.got.length >= Math.max(4, Math.round(e.dur / 3600 * R.exped.rolls_per_hour * .7));
+    const fill = t => fillIn(t, { name: short(e.hero), place: r.p.name, era: r.h.era, n: r.got.length, ink: OS.num(r.ink) });
+    const lines = [];
+    if (B) { lines.push(fill(pick1(B.open))); lines.push(fill(pick1(B.turn))); lines.push(fill(pick1((rich ? B.end.good : B.end.poor)))); }
+    const v = EXP && EXP.voice && EXP.voice[e.hero]; if (v && v.length) lines.push(short(e.hero) + ': ' + fill(pick1(v)));
+    const tone = early ? T.early : rare ? T.rare : rich ? T.rich : r.got.every(id => OS.items[id].junk) ? T.junk : T.thin;
+    if (tone && tone.length) lines.push(fill(pick1(tone)));
+    return lines;
+  }
+  // every hero keeps a journal: expeditions and raids, newest last, capped so a save cannot grow forever
+  function journal(id, text, kind) {
+    S.journal = S.journal || {}; const j = S.journal[id] || (S.journal[id] = []);
+    j.push({ d: Date.now(), t: text, k: kind || 'exp' }); while (j.length > 40) j.shift();
+  }
+  function showHaul(r, early, lines) {
+    const d = el('div', 'expback', `<div class="raidhead small" style="background-image:url(${OS.img('scenes', r.p.id)})"><div><div class="tag">${r.p.name} · ${r.p.era}</div><h3>${r.h.name} is back</h3></div></div>`);
+    const story = el('div', 'rstory exps'); d.appendChild(story);
+    const tail = el('div'); d.appendChild(tail);
+    modal.open(d);
+    const wait = ms => new Promise(ok => setTimeout(ok, ms));
+    (async () => {
+      for (const t of (lines || [])) {
+        if (!document.body.contains(story)) return;
+        const pp = el('p', 'rline scene', t); story.appendChild(pp); story.scrollTop = story.scrollHeight;
+        requestAnimationFrame(() => pp.classList.add('in')); await wait(RD.line_ms || 1300);
+      }
+      if (!document.body.contains(story)) return;
+      tail.innerHTML = `<p class="mut" style="margin:.8rem 0 .4rem">${early ? 'Called back early, so a lighter load. ' : ''}${r.got.length} things and ${OS.num(r.ink)} ink.</p>`;
+      const g = el('div', 'itemrow'), cnt = {};
+      r.got.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
+      Object.keys(cnt).sort((a, c) => rr(OS.items[c].rarity) - rr(OS.items[a].rarity) || (OS.items[a].junk ? 1 : 0) - (OS.items[c].junk ? 1 : 0)).forEach(id => g.appendChild(OS.slot(id, { count: cnt[id] })));
+      tail.appendChild(g); const row = el('div', 'row'); row.style.marginTop = '1rem'; row.appendChild(btn('', 'Good', modal.close)); tail.appendChild(row);
+      SND(r.got.length ? 'haul' : 'toast');
+    })();
   }
   const noLedger = () => toast('Could not reach the ledger just now. Nothing was lost; try again in a moment.');
-  async function collect(i) { const e = S.exped[i]; if (!e || e.end > now() || e.busy) return; e.busy = 1; const r = await haul(e, 1); delete e.busy; if (!r) return noLedger(); S.exped.splice(S.exped.indexOf(e), 1); save(true); render(); showHaul(r); }
-  async function recall(i) { const e = S.exped[i]; if (!e || e.busy) return; const frac = Math.max(0, 1 - (e.end - now()) / 1000 / e.dur) * .8; e.busy = 1; const r = await haul(e, frac); delete e.busy; if (!r) return noLedger(); S.exped.splice(S.exped.indexOf(e), 1); save(true); render(); showHaul(r, true); }
+  async function finishExped(e, frac, early) {
+    e.busy = 1; const r = await haul(e, frac); delete e.busy; if (!r) return noLedger();
+    await expReady; const lines = expStory(e, r, early);
+    journal(e.hero, `${early ? 'Called home early from' : 'Back from'} ${r.p.name}: ${r.got.length} things, ${OS.num(r.ink)} ink. ${lines[lines.length - 1] || ''}`.trim(), 'exp');
+    S.exped.splice(S.exped.indexOf(e), 1); save(true); render(); showHaul(r, early, lines);
+  }
+  async function collect(i) { const e = S.exped[i]; if (!e || e.end > now() || e.busy) return; await finishExped(e, 1, false); }
+  async function recall(i) { const e = S.exped[i]; if (!e || e.busy) return; await finishExped(e, Math.max(0, 1 - (e.end - now()) / 1000 / e.dur) * .8, true); }
   function lootSheet(p, back) {
     const d = el('div', '', `<div class="tag">${p.era} · ${p.skill}</div><h3 style="font-size:1.6rem">${p.name}</h3><p class="mut">Everything that can turn up here. Things you have not found yet stay in shadow. Skill level, perks, a lucky arrival and the right tonic all push the odds toward the good stuff.</p>`);
     ['Treasure', 'Signature gear'].forEach((title, gi) => { const rows = p.loot.filter(([id]) => (OS.items[id].kind === 'gear') === !!gi); if (!rows.length) return; d.appendChild(el('div', 'tag', title)); const g = el('div', 'itemrow'); g.style.margin = '.4rem 0 1rem'; rows.forEach(([id]) => g.appendChild(OS.slot(id, { dim: !owns(id), chance: dropChance(p, id), have: S.bag[id] }))); d.appendChild(g); });
@@ -546,6 +599,8 @@
       <p class="mut" style="font-size:.9rem;margin:0 0 .8rem">${gone ? 'Away on an expedition.' : job ? 'Standing crew at ' + places[job.place].name + '.' : S.crew.includes(id) ? 'In the crew.' : 'At a loose end.'} Tap a slot on the card to change what is in it. A glowing slot means something in your armory fits.</p>`;
     const row = el('div', 'row'); row.style.flexWrap = 'wrap';
     row.append(btn('small', 'Flip the card', () => card.click()), btn('small ghost', 'Train', () => { modal.close(); show('training'); }), btn('small ghost', 'Armory', () => { modal.close(); show('bag'); }));
+    const log = ((S.journal || {})[id] || []);
+    row.appendChild(btn('small ghost', `Journal${log.length ? ' · ' + log.length : ''}`, () => journalSheet(id)));
     side.appendChild(row); d.append(card, side); modal.open(d);
   }
   function gearPicker(id, k) {
@@ -672,6 +727,7 @@
   // ---- raids you play: pick three and two potions, walk three rooms, then fight the boss at reading speed.
   //      Room choices roll one team stat; wounds carry into the boss fight; a lost raid sends the team to rest.
   //      The words live in data/raids.json (Fable writes them); this is only the engine.
+  let EXP = null; const expReady = fetch('/data/expeditions.json' + OS.VER).then(r => r.json()).then(j => EXP = j).catch(() => EXP = { beats: {}, tone: {}, voice: {} });
   const RD = R.raids; let RAIDS = null; const raidsReady = fetch('/data/raids.json' + OS.VER).then(r => r.json()).then(j => RAIDS = j).catch(() => RAIDS = { room_pool: [], bosses: {}, reactions: { default: {} } });
   const STATW = { attack: 'Attack', defense: 'Defense', health: 'Health', speed: 'Speed', luck: 'Luck' };
   const resting = id => Math.max(0, ((S.recover || {})[id] || 0) - now());
@@ -784,7 +840,7 @@
       if (win) { line(B.lines.win ? say(B.lines.win) : `${b.name} goes down.`, 'good'); voice('win'); SND('win');
         roll([{ place: p.id, n: RD.loot_rolls, luck: fullLuck(p, RD.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); showGot(); save(true); });
         bump('raids_won'); bump('gold', b.gold); S.gold += b.gold; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5);
-        S.journal = S.journal || {}; team.forEach(id => { const j = S.journal[id] || (S.journal[id] = []); j.push({ d: Date.now(), t: `Beat ${b.name} at ${p.name}.` }); if (j.length > 40) j.shift(); });
+        team.forEach(id => journal(id, `Beat ${b.name} at ${p.name}.`, 'raid'));
       } else { line(B.lines.lose ? say(B.lines.lose) : 'The team limps home.', 'bad'); voice('lose'); SND('deny'); const cons = Math.round(b.gold * .1); S.gold += cons;
         S.recover = S.recover || {}; team.forEach(id => S.recover[id] = now() + RD.recover_minutes * 60000); }
       Cloud.log('raid', b.id, win ? 1 : 0); save(true);
