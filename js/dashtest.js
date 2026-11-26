@@ -1,18 +1,19 @@
 // Dashboard mockup: fake numbers, but the live bits are live — the rigs move, the bars fill,
 // the sparkline is drawn, and the haul timer runs. Nothing here touches a save.
 (function () {
-  const $ = id => document.getElementById(id), V = '?v=1126e';
+  const $ = id => document.getElementById(id), V = '?v=1126f';
 
   // ---- the desk: Smudge at work with a crew of three, on the scene he is working
   const scene = $('scene'), crew = $('crew');
   const CREW = ['astrid', 'gaius', 'blackbear'];
   const PLACE = 'dock', POSE = 'fish';
-  let rig = null, cast = [];
+  let rig = null, cast = [], fx = null;
   function placeRigs() {
     const w = crew.clientWidth, h = crew.clientHeight; if (!w || !rig) return;
     cast.forEach(m => m.p.destroy()); cast = [];
     // the scene picture sits whole on the right of the strip, and everybody stands where the stage says (js/stage.js)
     const r = OS.Stage.rect(PLACE, w, h, w > 900 ? .68 : .5), lay = OS.Stage.layout(PLACE, r), bg = $('desk-bg');
+    if (fx) fx.destroy(); fx = new OS.SceneFX(crew, PLACE, r);
     bg.style.cssText = `left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`;
     const all = CREW.map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, b) => a.q.at[1] - b.q.at[1]);
     all.forEach(m => {
@@ -20,6 +21,7 @@
       const p = new DBCanvas.Puppet(crew, m.id || POSE, sc, { hero: !!m.id, px: m.q.at, ver: V }); if (m.id) p.flip = OS.Stage.flip(m.id, m.q.face);
       cast.push({ id: m.id, p, x: m.q.at[0], y: m.q.at[1], tall: m.q.h, wide: m.q.h * e.size[0] / e.size[1] });
     });
+    fx.rod(OS.Stage.rodTip(POSE, lay.smudge.at, lay.smudge.h, rig));
   }
   fetch('/data/rig.json' + V).then(r => r.json()).then(j => { rig = j; placeRigs(); });
   // the crew talk, one at a time, in a proper bubble
@@ -38,7 +40,7 @@
     t = (t + 0.1) % HAUL; const p = t / HAUL;
     $('runbar').style.width = (p * 100).toFixed(1) + '%';
     $('runtxt').textContent = 'Next haul in ' + Math.max(1, Math.ceil(HAUL - t)) + 's';
-    if (p < 0.012) { const n = $('hauls'); n.textContent = (+n.textContent.replace(/,/g, '') + 1).toLocaleString(); bump(n); }
+    if (p < 0.012) { if (fx) fx.splash(); const n = $('hauls'); n.textContent = (+n.textContent.replace(/,/g, '') + 1).toLocaleString(); bump(n); }
   }, 100);
   const bump = n => { n.style.transform = 'scale(1.25)'; n.style.color = '#9ffff0'; setTimeout(() => { n.style.transition = 'transform .3s,color .3s'; n.style.transform = ''; n.style.color = ''; }, 60); };
 

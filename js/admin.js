@@ -93,9 +93,51 @@
     if (b.id === 'b-invite') { const v = $('b-email').value.trim(); if (v) { await invite(v, b); b.disabled = false; $('b-email').value = ''; } return; }
     if (b.id === 'b-code') { const d = await beta('code_new', { note: $('b-note').value, max_uses: +$('b-uses').value || 1 }); if (d && d.made) { toast('Made ' + d.made); $('b-note').value = ''; } paintBeta(); } });
 
-  const renderers = { overview: renderOverview, players: renderPlayers, heroes: renderHeroes, items: renderItems, economy: renderEconomy, studio: renderStudio, beta: renderBeta }; let cur = 'overview';
+  // ---------------------------------------------------------------- movement review
+  // Every arrival standing the way they do in the game, so Dean can watch each one and flag a bad cut.
+  // His notes live in os2_rig_note and Claude reads them back.
+  let RIGN = {}, GPUPS = [];
+  async function rigNotes(op, payload) {
+    if (Cloud.dev) { if (op === 'set') RIGN[payload.hero] = payload; if (op === 'clear') delete RIGN[payload.hero]; return true; }
+    const { data, error } = await Cloud.sb.rpc('os2_rig_notes', { op: op || 'list', payload: payload || {} });
+    if (error || !data || !data.ok) { toast('Could not reach the notes.'); return false; }
+    RIGN = {}; (data.notes || []).forEach(n => RIGN[n.hero] = n); return true;
+  }
+  async function renderRigs() {
+    const grid = $('g-grid'); if (!grid._init) { grid._init = true; await rigNotes('list'); }
+    GPUPS.forEach(p => p.destroy()); GPUPS = []; grid.innerHTML = '';
+    const want = $('g-filter').value;
+    R.heroes.forEach(h => {
+      const n = RIGN[h.id] || { status: 'open', note: '' };
+      if (want && n.status !== want) return;
+      const c = document.createElement('div'); c.className = 'rcell s-' + n.status;
+      c.innerHTML = `<div class="rstage"></div><div class="rname"><b>${h.name}</b><i>${h.species}</i></div>
+        <div class="row rmoves"><button class="btn small ghost" data-m="act">Work</button><button class="btn small ghost" data-m="talk">Talk</button><button class="btn small ghost" data-m="cheer">Cheer</button><button class="btn small ghost" data-m="swing">Swing</button></div>
+        <div class="row rmark"><button class="btn small ${n.status === 'ok' ? '' : 'ghost'}" data-s="ok">Looks right</button><button class="btn small ${n.status === 'problem' ? '' : 'ghost'}" data-s="problem">Problem</button></div>
+        <textarea class="rnote" rows="2" placeholder="What looks wrong?">${(n.note || '').replace(/</g, '&lt;')}</textarea>
+        <div class="rwhen mut">${n.status === 'fixed' ? 'Claude says this is fixed. Have another look.' : n.updated_at ? 'Noted ' + new Date(n.updated_at).toLocaleDateString() : ''}</div>`;
+      grid.appendChild(c);
+      const host = c.querySelector('.rstage'), e = OS.rig['h_' + h.id];
+      if (window.DBCanvas && e) {
+        const sc = Math.min(210 / e.size[1], 150 / e.size[0]);
+        const p = new DBCanvas.Puppet(host, h.id, sc, { hero: true, px: [75, 214], ver: OS.VER }); GPUPS.push(p); c._p = p;
+      }
+      c.querySelector('.rmoves').onclick = ev => { const b = ev.target.closest('button'); if (!b || !c._p) return;
+        if (b.dataset.m === 'swing') { const a = c._p.an; if (a && a.hasAnimation('act')) { const st = c._p.over('act', 1, 1); if (st) st.timeScale = 0.35; } }
+        else if (b.dataset.m === 'talk') c._p.say(3); else if (b.dataset.m === 'cheer') c._p.cheer(3); else c._p.act(); };
+      const save = async st => { const note = c.querySelector('.rnote').value.trim();
+        if (await rigNotes('set', { hero: h.id, status: st, note })) renderRigs(); };
+      c.querySelector('.rmark').onclick = ev => { const b = ev.target.closest('button'); if (b) save(b.dataset.s); };
+      c.querySelector('.rnote').onchange = () => save(RIGN[h.id] && RIGN[h.id].status !== 'open' ? RIGN[h.id].status : 'problem');
+    });
+    if (!grid.children.length) grid.innerHTML = '<p class="mut">Nothing here.</p>';
+  }
+
+  const renderers = { rigs: renderRigs, overview: renderOverview, players: renderPlayers, heroes: renderHeroes, items: renderItems, economy: renderEconomy, studio: renderStudio, beta: renderBeta }; let cur = 'overview';
   function show(t) { cur = t; document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'a-' + t)); document.querySelectorAll('#atabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); renderers[t](); }
   $('atabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.t); });
+  $('g-filter').onchange = renderRigs;
+  $('g-all').onclick = () => { GPUPS.forEach((p, i) => setTimeout(() => { p.act(); setTimeout(() => p.say(2), 700); }, i * 120)); };
   $('p-search').addEventListener('input', renderPlayers); $('i-kind').onchange = renderItems; $('i-place').onchange = renderItems; R.places.forEach(p => $('i-place').appendChild(new Option(p.name, p.id)));
   $('refresh').onclick = async () => { await load(); show(cur); toast('Fresh numbers.'); };
   await load(); $('boot').remove(); show('overview');

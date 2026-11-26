@@ -9,13 +9,15 @@
     dock: { w: 1.99, s: [.47, .665], c: [[.33, .53, 'r'], [.6, .51, 'l'], [.74, .575, 'l']] },
     bondi: { w: 1.99, s: [.43, .655], c: [[.23, .71, 'r'], [.33, .655, 'r'], [.61, .5, 'l']] },
     fjord: { w: 2.12, s: [.6, .6], c: [[.15, .57, 'r'], [.43, .57, 'r'], [.88, .51, 'l']] },
-    speakeasy: { w: 1.28, k: .86, s: [.52, .8], c: [[.2, .83, 'r'], [.36, .895, 'r'], [.78, .85, 'l']] },
+    speakeasy: { w: 2.01, s: [.62, .62], c: [[.22, .78, 'r'], [.36, .7, 'r'], [.8, .72, 'l']] },
     vault: { w: 1.91, s: [.58, .78], c: [[.2, .78, 'r'], [.31, .72, 'r'], [.42, .8, 'r']] },
     closet: { w: 1.87, s: [.55, .75], c: [[.2, .75, 'r'], [.31, .69, 'r'], [.41, .8, 'r']] },
     outback: { w: 2.05, s: [.46, .71], c: [[.1, .74, 'r'], [.21, .67, 'r'], [.32, .78, 'r']] },
     blackforest: { w: 1.95, s: [.5, .8], c: [[.22, .77, 'r'], [.35, .65, 'r'], [.9, .7, 'l']] } };
   // heroes whose picture looks to one side; everyone else looks out at you and is never mirrored
   const LOOKS = { albrecht: 'l', astrid: 'l', marco: 'r', emu: 'r' };
+  // where Smudge's rod tip is in the fishing picture, so the line starts from the rod and not from thin air
+  const ROD = { fish: [452, 62] };
   const HERO = 0.357, SMUDGE = 0.41;      // how tall a hero and Smudge stand, as a share of the scene picture's height
 
   const Stage = {
@@ -28,6 +30,9 @@
       const sp = STAND[place] || STAND.dock, k = sp.k || 1, at = q => [r.x + q[0] * r.w, r.y + q[1] * r.h];
       return { smudge: { at: at(sp.s), h: SMUDGE * r.h * k }, crew: sp.c.map(q => ({ at: at(q), h: HERO * r.h * k, face: q[2] })) };
     },
+    // the rod tip in host pixels for a pose placed at `at` and `h` tall
+    rodTip(pose, at, h, rig) { const t = ROD[pose], e = rig[pose]; if (!t || !e) return null; const k = h / e.size[1];
+      return [at[0] + (t[0] - e.foot[0]) * k, at[1] + (t[1] - e.foot[1]) * k]; },
     flip(id, face) { return !!(LOOKS[id] && LOOKS[id] !== face); },
     // A speech bubble with a tail that points at whoever is talking. who = { x, top } in host pixels (the middle of the
     // head and its top edge); others = [{ x0, y0, x1, y1 }] boxes of everyone else, which the bubble keeps off.

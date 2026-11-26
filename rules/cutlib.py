@@ -38,7 +38,7 @@ def save(piece, pose, name):
     return [int(x0), int(y0)]
 
 
-def cut_head(a, base, pts, soft, fill, quill=None):
+def cut_head(a, base, pts, soft, fill, quill=None, swing=None):
     """Head on top of the body. pts: outline hugging the hood. soft: polygon where the lower edge is
     feathered into the collar. fill: polygon where the collar is painted in underneath.
     quill: polygon where anything that is not hood (the feather behind it) is left on the body."""
@@ -60,6 +60,11 @@ def cut_head(a, base, pts, soft, fill, quill=None):
     base[..., 3][hm] = 0
     known = base[..., 3] > 200
     near = ndimage.binary_dilation(known, iterations=24) & hm & poly(a, fill)
+    if swing is not None:
+        # Heroes: the head leaves a hole in the body. Turning the head uncovers the rim of that hole, which used to show
+        # as a slit or a stuck-looking second head. So the body is painted in all round the join, as far in as there is
+        # body to copy from, rather than only under the chin.
+        near = ndimage.binary_dilation(known, iterations=34) & hm
     painted = cv2.inpaint(np.ascontiguousarray(base[..., :3]), (~known).astype(np.uint8) * 255, 5, cv2.INPAINT_TELEA)
     base[..., :3][near] = painted[near]; base[..., 3][near] = 255
     return piece

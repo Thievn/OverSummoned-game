@@ -210,7 +210,7 @@
     Object.keys(r.add).filter(id => OS.items[id] && rr(OS.items[id].rarity) >= 2 && !OS.items[id].junk).slice(0, 4).forEach(id => toast(`Smudge found: ${OS.items[id].name}${r.add[id] > 1 ? ' ×' + r.add[id] : ''}`));
     if (current === 'bag' || current === 'home') render();
   }
-  function dropPop(id) { const pop = document.querySelector('[data-pop="0"]'), it = OS.items[id]; if (!it) return; const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (crewPups.length && !it.junk) crewPups[Math.floor(Math.random() * crewPups.length)].kick('arm', 30);
+  function dropPop(id) { const pop = document.querySelector('[data-pop="0"]'), it = OS.items[id]; if (!it) return; const pp = jobPups[0]; if (pp) pp.kick('arm', 30); if (FX) FX.splash(); if (crewPups.length && !it.junk) crewPups[Math.floor(Math.random() * crewPups.length)].kick('arm', 30);
     if (pop) { const d = el('div', 'drop', `<img src="${OS.img('loot', it.icon)}" alt=""><span style="color:${R.rarity_color[it.rarity]}">${it.name}</span>`); pop.appendChild(d); setTimeout(() => d.remove(), 1900); } }
   const btn = (cls, text, fn) => { const b = el('button', 'btn ' + cls, text); b.onclick = fn; return b; };
 
@@ -269,7 +269,7 @@
   // ------------------------------------------------------------------ jobs
   const POSE = { Fishing: 'fish', Lockpicking: 'pick', Digging: 'dig' };
   function renderJobs() {
-    const box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; crewPups = []; box.innerHTML = ''; const j = S.jobs[0], n = crewSlots();
+    const box = $('joblist'); jobPups.forEach(p => p && p.destroy()); jobPups = []; crewPups = []; if (FX) { FX.destroy(); FX = null; } box.innerHTML = ''; const j = S.jobs[0], n = crewSlots();
     $('j-slots').textContent = j ? `crew ${crew().length} of ${n} · away ${S.exped.length} of ${expSlots()}` : 'Smudge is idle';
     // ---- Smudge at work
     const card = el('div', 'job work');
@@ -284,11 +284,13 @@
       box.appendChild(card);
       // everybody's spot and size come from the stage (js/stage.js), the same table the dashboard uses
       const host = card.querySelector('.who'), H = host.clientHeight, lay = OS.Stage.layout(p.id, OS.Stage.rect(p.id, host.clientWidth, H));
+      const rect = OS.Stage.rect(p.id, host.clientWidth, H); FX = new OS.SceneFX(host, p.id, rect);
       // back to front, so whoever stands lower in the picture is drawn in front
       const cast = crew().map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, c) => a.q.at[1] - c.q.at[1]);
       cast.forEach(m => { const [x, y] = m.q.at;
         if (m.id) { const pp = OS.heroPuppet(host, m.id, m.q.h); if (pp) { pp.flip = OS.Stage.flip(m.id, m.q.face); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = m.q.h; pp.wide = m.q.h * OS.rig['h_' + m.id].size[0] / OS.rig['h_' + m.id].size[1]; crewPups.push(pp); } }
         else { const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
+      if (p.skill === 'Fishing') FX.rod(OS.Stage.rodTip('fish', lay.smudge.at, lay.smudge.h, OS.rig));
       jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
     }
     // ---- the crew
@@ -311,7 +313,7 @@
     else if (S.exped.length < expSlots()) { const r = el('div', 'row'); r.appendChild(btn('small', 'Send somebody', expedSheet)); xl.appendChild(r); }
     box.appendChild(ex);
   }
-  let jobPups = [], crewPups = [], chatT = 6;
+  let jobPups = [], crewPups = [], chatT = 6, FX = null;
   // ---- crew chatter: one voice at a time. Somebody says a line; now and then one other answers. Never a pile-up.
   let CHAT = {}; fetch('/data/chatter.json' + OS.VER).then(r => r.json()).then(j => CHAT = j).catch(() => { });
   const pickLine = (id, kind) => { const l = (CHAT[id] || {})[kind]; return l && l.length ? l[Math.floor(Math.random() * l.length)] : null; };

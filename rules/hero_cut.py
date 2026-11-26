@@ -11,7 +11,7 @@ import cutlib
 from cutlib import poly, cut_head, save, crumbs, ROOT
 
 HP = os.path.join(ROOT, 'art2', 'hpuppet')
-NECK = {'stella': (190, 238)}   # id: (left, right) of the neck in the hero's picture
+SWING = 7   # degrees: a little more than a head ever turns in any animation (idle reaches about 4.5)
 
 
 def tables():
@@ -37,10 +37,7 @@ def run(ids=None):
         xs = [p[0] for p in pts]; bottom = max(p[1] for p in pts); x0, x1 = min(xs) - 12, max(xs) + 12
         soft = [(x0, bottom - 16), (x1, bottom - 16), (x1, bottom + 12), (x0, bottom + 12)]
         fill = [(x0, bottom - 46), (x1, bottom - 46), (x1, bottom + 12), (x0, bottom + 12)]
-        head = cut_head(a, base, [tuple(p) for p in pts], soft=soft, fill=fill)
-        if hid in NECK:   # the painted-in neck is trimmed to the neck's real width, so no dark wings show when the head tilts
-            lo, hi = NECK[hid]; m = poly(a, [tuple(p) for p in pts]) & (base[..., 3] > 0); xx = np.arange(a.shape[1])[None, :]
-            base[..., 3][m & ((xx < lo) | (xx > hi))] = 0
+        head = cut_head(a, base, [tuple(p) for p in pts], soft=soft, fill=fill, swing=(pivot, SWING))
         parts.append(dict(name='head', mode='front', pivot=list(pivot), offset=save(head, pose, 'head')))
         crumbs(base)
         Image.fromarray(base, 'RGBA').save(os.path.join(HP, pose + '_base.png'))
