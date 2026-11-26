@@ -351,6 +351,21 @@ Fable fills in text fields only and never changes the engine or the shape of the
 Opus plan
 - O1 Pacing and math: run `rules/sim.py`, show a day 1 / 7 / 30 table to Dean BEFORE changing live numbers.
 - O2 Arrivals and bag: search, sort, filters; no fixed "36" in the game screens.
+- O2b Layered Smudge (do after O2, before raids). Dean's words: Smudge "doesn't have enough personality", and outfits must swap "without cutting out images".
+  Today every pose (stamp, fish, pick, dig, sleep) is its own flat drawing cut up after the fact. Replace that with ONE master rig built from parts, with slots.
+  - Art: through the Grok queue only, using `art/raw/sheet1/smudge_1.jpg` as the reference so he stays exactly Smudge. Draw him as separate parts on green, three-quarter view:
+    head, ears, brows, eyes (open, half, closed, wide), mouth (closed, smile, open, o), muzzle, body, hood, cloak back, cloak front, upper arm / forearm / hand for each side
+    (hand open and hand gripping), thigh / shin / foot for each side, tail in three segments, satchel. If Grok will not hold the parts consistent, generate one clean neutral
+    standing Smudge and cut THAT once, carefully, by hand-drawn polygons, then never cut him again.
+  - Slots (empty by default, any image drops in): head_top (hats), face (glasses), neck, back (cloak swap), hand_r and hand_l (tools: stamp, rod, pick, shovel become slot items),
+    plus a fur tint (multiply colour over the fur parts only; eyes, nose and clothes keep their colour).
+  - Animations on the one rig: stamp, fish, pick, dig, sleep, talk, cheer, and the personality set below. Tools come from the hand slots, so a new tool is one image.
+  - Personality set (this is the point of the step): blink at random intervals, eyes follow the cursor, ear flick, tail sway, breathing, yawn then doze when nothing is typed,
+    startle when typing is fast, look at whichever crew member is talking, celebrate on a rare drop, sulk on a failed pick, wave when the page opens. Small, frequent, never looping in sync.
+  - Proof before it goes live: three test accessories (glasses, a hat, a second cloak) and two fur tints, shown side by side with the current Smudge in admin > Movement.
+    At rest he must be indistinguishable from the current art. Old rigs stay in place until Dean says the new one looks better.
+  - Accessory template: a transparent PNG per slot with Smudge ghosted behind it, saved in `art2/slots/`, so any new item is drawn to fit and needs no cutting. Document it in PLAN.md.
+  - The desktop pet (O7) reuses this rig; do not build a second one.
 - O3 Raid engine: rooms, choices, potion slots, slow narration, recovery timer. Text in `data/raids.json` (stand-ins).
 - O4 Expedition engine and hero journal, same story player. Text in `data/expeditions.json` (stand-ins).
 - O5 Roster to 50, the build: art through the Grok queue only, cut, rig, MOUTH, gear stats, pages, sitemap. Needs F3.
@@ -365,7 +380,7 @@ Fable plan
 - F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
 - F6 Loot and gold names. Needs O6.
 
-Order to switch in: Fable F1+F2 · Opus O1, O2 · Opus O3 · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
+Order to switch in: Fable F1+F2 (done) · Opus O1, O2 · Opus O2b · Opus O3 · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
 
 Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
 - (nothing yet)
