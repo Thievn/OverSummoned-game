@@ -111,7 +111,6 @@
     ['As now', {}],
     ['Crown and glasses', { head_top: CROWN, face: GLASSES }],
     ['Jetpack', { back: JET }],
-    ['Cloak off', { cloaked: false }],
     ['Ginger, red cloak', { fur: '#c2652a', cloak: '#9b2335' }],
     ['Grey, purple cloak, glasses', { fur: '#8d8f99', cloak: '#5b3c8c', face: GLASSES }],
   ];
