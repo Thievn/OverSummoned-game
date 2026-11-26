@@ -6,19 +6,23 @@
   // and a body's width apart. The third letter is the way that spot faces. w = picture width / height.
   // k (optional) scales everybody in a scene that is drawn closer up.
   const STAND = {
-    dock: { w: 1.99, s: [.47, .665], c: [[.33, .53, 'r'], [.6, .51, 'l'], [.74, .575, 'l']] },
-    bondi: { w: 1.99, s: [.43, .655], c: [[.23, .71, 'r'], [.33, .655, 'r'], [.61, .5, 'l']] },
-    fjord: { w: 2.12, s: [.6, .6], c: [[.15, .57, 'r'], [.43, .57, 'r'], [.88, .51, 'l']] },
+    dock: { w: 1.99, s: [.495, .64], c: [[.3, .52, 'r'], [.43, .485, 'r'], [.72, .55, 'l']] },
+    bondi: { w: 1.99, s: [.44, .615], c: [[.21, .7, 'r'], [.31, .645, 'r'], [.62, .5, 'l']] },
+    fjord: { w: 2.12, s: [.52, .545], c: [[.14, .565, 'r'], [.4, .565, 'r'], [.88, .51, 'l']] },
     speakeasy: { w: 2.01, s: [.62, .62], c: [[.22, .78, 'r'], [.36, .7, 'r'], [.8, .72, 'l']] },
     vault: { w: 1.91, s: [.58, .78], c: [[.2, .78, 'r'], [.31, .72, 'r'], [.42, .8, 'r']] },
-    closet: { w: 1.87, s: [.55, .75], c: [[.2, .75, 'r'], [.31, .69, 'r'], [.41, .8, 'r']] },
+    closet: { w: 1.68, s: [.58, .66], c: [[.16, .78, 'r'], [.29, .71, 'r'], [.42, .82, 'r']] },
     outback: { w: 2.05, s: [.46, .71], c: [[.1, .74, 'r'], [.21, .67, 'r'], [.32, .78, 'r']] },
     blackforest: { w: 1.95, s: [.5, .8], c: [[.22, .77, 'r'], [.35, .65, 'r'], [.9, .7, 'l']] } };
   // heroes whose picture looks to one side; everyone else looks out at you and is never mirrored
   const LOOKS = { albrecht: 'l', astrid: 'l', marco: 'r', emu: 'r' };
   // where Smudge's rod tip is in the fishing picture, so the line starts from the rod and not from thin air
   const ROD = { fish: [452, 62] };
-  const HERO = 0.357, SMUDGE = 0.41;      // how tall a hero and Smudge stand, as a share of the scene picture's height
+  // How tall everybody is, as a share of the scene picture's height. Smudge is sitting in some poses and standing in
+  // others, so each pose has its own number: an otter kneeling at a lock has to read as shorter than a standing wolf.
+  const HERO = 0.40, SMUDGE = { fish: 0.335, pick: 0.325, dig: 0.385, stamp: 0.355 };
+  // Scenes where there is no edge to sit on, so a crate is put under him
+  const CRATE = { bondi: 1, fjord: 1 };
 
   const Stage = {
     STAND, LOOKS,
@@ -26,9 +30,10 @@
     // cx = where its middle sits (0.5 = centred).
     rect(place, W, H, cx) { const sp = STAND[place] || STAND.dock, h = H * 1.12, w = h * sp.w; return { x: W * (cx == null ? .5 : cx) - w / 2, y: -H * .06, w, h }; },
     // Everybody's feet in host pixels, and their heights. r = the picture's box from rect().
-    layout(place, r) {
+    layout(place, r, pose) {
       const sp = STAND[place] || STAND.dock, k = sp.k || 1, at = q => [r.x + q[0] * r.w, r.y + q[1] * r.h];
-      return { smudge: { at: at(sp.s), h: SMUDGE * r.h * k }, crew: sp.c.map(q => ({ at: at(q), h: HERO * r.h * k, face: q[2] })) };
+      pose = pose || 'stamp';
+      return { pose, crate: !!CRATE[place], smudge: { at: at(sp.s), h: (SMUDGE[pose] || 0.355) * r.h * k }, crew: sp.c.map(q => ({ at: at(q), h: HERO * r.h * k, face: q[2] })) };
     },
     // the rod tip in host pixels for a pose placed at `at` and `h` tall
     rodTip(pose, at, h, rig) { const t = ROD[pose], e = rig[pose]; if (!t || !e) return null; const k = h / e.size[1];

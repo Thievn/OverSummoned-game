@@ -33,6 +33,9 @@
     }
     // Where Smudge's rod tip is: told to us once he is placed, as [x, y] in host pixels.
     rod(xy) { this.tip = xy; }
+    // Scenes with no edge to sit on get a crate under him. top-centre at [x, y], h tall.
+    crate(xy, h) { this.crt = { x: xy[0], y: xy[1], h };
+      if (!SceneFX.img) { const i = SceneFX.img = new Image(); i.src = '/assets/v2/scenes/prop_crate.webp' + (OS.VER || ''); } }
     at(f) { const r = this.rect; return [r.x + f[0] * r.w, r.y + f[1] * r.h]; }
     // a haul: the bobber dips and a ring spreads
     splash() { if (!this.cfg.bob) return; this.rings.push({ a: 0 }); this.dip = 1; }
@@ -58,6 +61,9 @@
           g.beginPath(); g.ellipse(b[0], b[1], k.a * r.w * .07, k.a * r.h * .028, 0, 0, 7); g.stroke(); });
         g.restore();
       }
+      const ci = SceneFX.img;
+      if (this.crt && ci && ci.complete && ci.naturalWidth) { const k = this.crt.h / ci.naturalHeight, w2 = ci.naturalWidth * k;
+        g.drawImage(ci, this.crt.x - w2 / 2, this.crt.y, w2, this.crt.h); }
       if (c.lamp) c.lamp.forEach(([lx, ly, rad]) => { const [x, y] = this.at([lx, ly]), R = rad * r.h / 460 * 3.2, f = .55 + .45 * (0.5 + 0.5 * Math.sin(T * 2.3) * Math.sin(T * 1.1));
         const gr = g.createRadialGradient(x, y, 0, x, y, R); gr.addColorStop(0, `rgba(255,214,140,${.3 * f})`); gr.addColorStop(1, 'rgba(255,200,120,0)');
         g.fillStyle = gr; g.beginPath(); g.arc(x, y, R, 0, 7); g.fill(); });

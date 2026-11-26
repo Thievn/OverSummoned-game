@@ -283,14 +283,15 @@
       const r = card.querySelector('.row'); r.append(btn('small', 'Move him', placeSheet), btn('small ghost', 'What drops here', () => lootSheet(p, modal.close)), btn('small ghost', 'Bring him home', () => { S.jobs = []; save(true); render(); }));
       box.appendChild(card);
       // everybody's spot and size come from the stage (js/stage.js), the same table the dashboard uses
-      const host = card.querySelector('.who'), H = host.clientHeight, lay = OS.Stage.layout(p.id, OS.Stage.rect(p.id, host.clientWidth, H));
+      const host = card.querySelector('.who'), H = host.clientHeight, pose = POSE[p.skill] || 'stamp', lay = OS.Stage.layout(p.id, OS.Stage.rect(p.id, host.clientWidth, H), pose);
       const rect = OS.Stage.rect(p.id, host.clientWidth, H); FX = new OS.SceneFX(host, p.id, rect);
       // back to front, so whoever stands lower in the picture is drawn in front
       const cast = crew().map((id, k) => ({ id, q: lay.crew[k] })).concat([{ q: lay.smudge }]).sort((a, c) => a.q.at[1] - c.q.at[1]);
       cast.forEach(m => { const [x, y] = m.q.at;
         if (m.id) { const pp = OS.heroPuppet(host, m.id, m.q.h); if (pp) { pp.flip = OS.Stage.flip(m.id, m.q.face); pp.place(x, y); jobPups.push(pp); pp.id = m.id; pp.tall = m.q.h; pp.wide = m.q.h * OS.rig['h_' + m.id].size[0] / OS.rig['h_' + m.id].size[1]; crewPups.push(pp); } }
-        else { const pose = POSE[p.skill] || 'stamp', se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
+        else { const se = OS.rig[pose], sm = new OS.Puppet(host, pose, m.q.h / se.size[1]); sm.place(x, y); sm.me = true; sm.tall = m.q.h; sm.wide = m.q.h; jobPups.push(sm); } });
       if (p.skill === 'Fishing') FX.rod(OS.Stage.rodTip('fish', lay.smudge.at, lay.smudge.h, OS.rig));
+      if (lay.crate) FX.crate([lay.smudge.at[0] - lay.smudge.h * .08, lay.smudge.at[1] + lay.smudge.h * .03], lay.smudge.h * .55);
       jobPups.sort((a, c) => (c.me ? 1 : 0) - (a.me ? 1 : 0));
     }
     // ---- the crew
