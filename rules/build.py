@@ -63,8 +63,9 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
           cleocatra="egypt", blackbear="caribbean", astrid="norway", kenji="japan", emu="outback", troffea="medieval", joost="amsterdam", chad="office", bella="beach", florida="beach",
           lola="paris", morwenna="forest", sable="venice", jacko="beach", raspawtin="russia", madjack="normandy")
 import wave2 as _w2
+import wave3 as _w3
 from facts import FACTS
-BG.update(_w2.BG)
+BG.update(_w2.BG); BG.update(_w3.BG)
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.006, "mastery_cap": 50, "wander_minutes": 15,
           # Smudge does the work, one place at a time; up to three heroes stand behind him as crew
@@ -162,7 +163,7 @@ for h in HEROES:
         items[iid] = it
         gear_ids.append(iid)
     heroes.append(dict(id=h["id"], name=h["name"], title=h["title"], era=h["era"], species=h["species"], rarity=h["rarity"],
-                       bio=h["bio"], fact=h.get("fact") or FACTS.get(h["id"], ""), rift=1 if h["id"] in _w2.BG else 0, lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
+                       bio=h["bio"], fact=h.get("fact") or FACTS.get(h["id"], ""), rift=1 if (h["id"] in _w2.BG or h["id"] in _w3.BG) else 0, lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
                        gear=gear_ids, place=h["place"]))
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)

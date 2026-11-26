@@ -171,6 +171,9 @@ ERA = {
 }
 
 
+import wave3 as _w3
+ERA.update(_w3.ERA)
+
 def expand(budget):
     """-> list of item dicts for build.py, and the set table."""
     SPREAD = {'weapon': (('attack', .75), ('speed', .25)), 'head': (('defense', .6), ('luck', .4)), 'body': (('defense', .5), ('health', .5)),

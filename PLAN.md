@@ -358,7 +358,14 @@ Opus plan
   - Personality (LIVE, every puppet): breathing, idle glances, tail sway on all heroes; Smudge also follows the pointer, yawns and dozes after 40 s of no input (eyes close), wakes with a start, jumps at a flurry of typing, looks at whichever crew member is talking, cheers at rare finds, sulks at some junk, waves when the work scene opens. API: lookAt(x, y, sec), sulk(sec), hello().
 - O3 DONE: played raids. Pick three (resting heroes greyed out) and up to two potions; odds to win shown, and the attack needed when under 50%. Three rooms drawn from the boss's rooms (else `room_pool`), each a choice that rolls one team stat against `raids.room_diff` by place tier, with the odds shown; success weakens the boss 8%, failure costs 12% health. Then the boss fight one line at a time (`raids.line_ms`), potions drunk mid-fight (heal, shield, fury). Weakness counts a stat 1.5x, resistance 0.6x. Lose: the three rest 30 minutes (`S.recover`). Win: loot as before, plus a line in each hero's journal (`S.journal`, for O4). Potions are brewed in the Workshop like tonics (kind `tonic`, `potion: true`, so the server's tonic budget covers them; os2_item rows added in the pacing migration). Tickets unchanged.
 - O4 Expedition engine and hero journal, same story player. Text in `data/expeditions.json` (stand-ins).
-- O5 Roster to 50, the build: art through the Grok queue only, cut, rig, MOUTH, gear stats, pages, sitemap. Needs F3.
+- O5 DONE: the roster is 50. All art through the Grok queue (~$2.90 of credits).
+  - Source of truth: `rules/wave3.py` reads `data/arrivals.json` (Fable's words, never edited here) and adds only archetype, era-set bonuses and a picture description per icon. Wired in through content.py, build.py and gear2.py; `python3 rules/build.py` then `cp rules/rules.json data/rules.json desktop-fable/rules.json`.
+  - Art: 14 portraits (two takes each, the better one picked in `rules/wave3_cut.py` PICK), one new `beyond` backdrop, 84 gear icons as ten 3x3 green sheets (`rules/wave3_icons.py plan` then `slice`; sheet map in `rules/wave3_sheets.json`). Every portrait was checked for extra limbs before cutting.
+  - Rigs: head outlines added to `rules/heropup.py` HEADS (found with `rules/wave3_heads.py`, which reads the neck row off NECK and leaves raised arms and props out through XLIM), then `python3 rules/heropup.py` and `python3 rules/hero_cut.py`, then `python3 rules/dbexport.py heroes <ids>`. hero_cut now seeds a pose that data/rig.json has not seen before. Re-running the whole pipeline left all 36 older heroes byte-identical.
+  - Era sets for the new 14 are three pieces (head, body, feet), no era weapon or charm: the shape O6 is moving the older sets to.
+  - Server: `supabase/migrations/20261126170000_os2_wave3_items.sql`, applied. 98 rows (14 heroes, 84 gear) so saves holding them are accepted.
+  - Pages and sitemap rebuilt (`python3 tools/build_pages.py`); their history paragraphs went into `data/lore.json`. New art copied into desktop-fable.
+  - LEFT UNDONE, on purpose: no MOUTH entries for the new 14 (they talk with a head bob, like the 17 older heroes without one), and no TAILS entries (only 9 of the 50 have one), so a few good tails sit still. Both are cosmetic and need a position read off each drawing.
 - O6 Loot and gold: era sets 5 pieces to 3, gold sinks, card frames. Names as stand-ins.
 - O7 Smudge's wardrobe and the desktop pet: later.
 
@@ -369,10 +376,10 @@ Fable plan
 - F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
 - F6 Loot and gold names. Needs O6.
 
-Order to switch in: Fable F1+F2 (done) · Opus O1, O2, O2b, O3 (done) · · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
+Order to switch in: done so far: Fable F1+F2+F3+F4 · Opus O1, O2, O2b, O3, O5. Left: Opus O4 (expeditions) · Fable F5 (expedition stories) · Opus O6 (loot and gold) · Fable F6 (loot names) · Opus O7 (Smudge's wardrobe in the game, desktop pet).
 
 Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
-- (nothing waiting)
+- F6 (or sooner): the 42 era-set piece flavour lines for the new 14 are Opus stand-ins, in `rules/wave3.py` SETFLAV. Everything else about the 14 is Fable's own words.
 
 Email: both letters live in `supabase/functions/{waitlist,beta}/mail.ts` (identical copies; change both and redeploy both).
 Header art is `assets/mail/header.png`. Sending is Resend from hello@oversummoned.com. Admin, Beta tab, "Send me both emails" tests them.

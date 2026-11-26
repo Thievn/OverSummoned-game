@@ -42,7 +42,11 @@ def run(ids=None):
         crumbs(base)
         Image.fromarray(base, 'RGBA').save(os.path.join(HP, pose + '_base.png'))
         Image.fromarray(base, 'RGBA').save(os.path.join(cutlib.WEB, pose + '_base.webp'), quality=92, method=6)
-        for r in rigs.values(): r[pose]['parts'] = parts
+        src = rigs[os.path.join(HP, 'rig.json')]
+        for r in rigs.values():
+            if pose not in r:            # a hero cut for the first time: take the pose heropup just built
+                r[pose] = {k: v for k, v in src[pose].items()}
+            r[pose]['parts'] = parts
         done.append(hid)
     json.dump(rigs[os.path.join(HP, 'rig.json')], open(os.path.join(HP, 'rig.json'), 'w'))
     json.dump(rigs[os.path.join(ROOT, 'data', 'rig.json')], open(os.path.join(ROOT, 'data', 'rig.json'), 'w'), separators=(',', ':'))

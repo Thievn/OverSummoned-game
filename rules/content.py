@@ -168,6 +168,8 @@ import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 import wave2 as _w2
 HEROES += _w2.HEROES
+import wave3 as _w3
+HEROES += _w3.HEROES
 
 # id, name, era, skill, level needed, tier, art prompt, blurb, general loot (name, art prompt, rarity, flavor)
 PLACES = [

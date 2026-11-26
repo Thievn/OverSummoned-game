@@ -1,0 +1,112 @@
+{
+ "w3_01": [
+  "doug_weapon",
+  "doug_armor",
+  "doug_trinket",
+  "bjorn_weapon",
+  "bjorn_armor",
+  "bjorn_trinket",
+  "mona_weapon",
+  "mona_armor",
+  "mona_trinket"
+ ],
+ "w3_02": [
+  "dusty_weapon",
+  "dusty_armor",
+  "dusty_trinket",
+  "hootsworth_weapon",
+  "hootsworth_armor",
+  "hootsworth_trinket",
+  "sterling_weapon",
+  "sterling_armor",
+  "sterling_trinket"
+ ],
+ "w3_03": [
+  "dolly_weapon",
+  "dolly_armor",
+  "dolly_trinket",
+  "gladius_weapon",
+  "gladius_armor",
+  "gladius_trinket",
+  "quack_weapon",
+  "quack_armor",
+  "quack_trinket"
+ ],
+ "w3_04": [
+  "selene_weapon",
+  "selene_armor",
+  "selene_trinket",
+  "beep_weapon",
+  "beep_armor",
+  "beep_trinket",
+  "tut_weapon",
+  "tut_armor",
+  "tut_trinket"
+ ],
+ "w3_05": [
+  "eagleton_weapon",
+  "eagleton_armor",
+  "eagleton_trinket",
+  "zorp_weapon",
+  "zorp_armor",
+  "zorp_trinket",
+  "e_doug_head",
+  "e_doug_body",
+  "e_doug_feet"
+ ],
+ "w3_06": [
+  "e_bjorn_head",
+  "e_bjorn_body",
+  "e_bjorn_feet",
+  "e_mona_head",
+  "e_mona_body",
+  "e_mona_feet",
+  "e_dusty_head",
+  "e_dusty_body",
+  "e_dusty_feet"
+ ],
+ "w3_07": [
+  "e_hootsworth_head",
+  "e_hootsworth_body",
+  "e_hootsworth_feet",
+  "e_sterling_head",
+  "e_sterling_body",
+  "e_sterling_feet",
+  "e_dolly_head",
+  "e_dolly_body",
+  "e_dolly_feet"
+ ],
+ "w3_08": [
+  "e_gladius_head",
+  "e_gladius_body",
+  "e_gladius_feet",
+  "e_quack_head",
+  "e_quack_body",
+  "e_quack_feet",
+  "e_selene_head",
+  "e_selene_body",
+  "e_selene_feet"
+ ],
+ "w3_09": [
+  "e_beep_head",
+  "e_beep_body",
+  "e_beep_feet",
+  "e_tut_head",
+  "e_tut_body",
+  "e_tut_feet",
+  "e_eagleton_head",
+  "e_eagleton_body",
+  "e_eagleton_feet"
+ ],
+ "w3_10": [
+  "e_zorp_head",
+  "e_zorp_body",
+  "e_zorp_feet",
+  "x_pad84",
+  "x_pad85",
+  "x_pad86",
+  "x_pad87",
+  "x_pad88",
+  "x_pad89"
+ ]
+}

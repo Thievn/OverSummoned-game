@@ -1189,6 +1189,244 @@
     "e_madjack_feet"
    ]
   },
+  "set_doug": {
+   "id": "set_doug",
+   "name": "Month-End",
+   "hero": "doug",
+   "two": {
+    "defense": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.03
+   },
+   "pieces": [
+    "e_doug_head",
+    "e_doug_body",
+    "e_doug_feet"
+   ]
+  },
+  "set_bjorn": {
+   "id": "set_bjorn",
+   "name": "Thin Ice",
+   "hero": "bjorn",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.06
+   },
+   "pieces": [
+    "e_bjorn_head",
+    "e_bjorn_body",
+    "e_bjorn_feet"
+   ]
+  },
+  "set_mona": {
+   "id": "set_mona",
+   "name": "Sfumato",
+   "hero": "mona",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.05
+   },
+   "pieces": [
+    "e_mona_head",
+    "e_mona_body",
+    "e_mona_feet"
+   ]
+  },
+  "set_dusty": {
+   "id": "set_dusty",
+   "name": "Claim Jumper",
+   "hero": "dusty",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "speed",
+    "amount": 0.05
+   },
+   "pieces": [
+    "e_dusty_head",
+    "e_dusty_body",
+    "e_dusty_feet"
+   ]
+  },
+  "set_hootsworth": {
+   "id": "set_hootsworth",
+   "name": "Scotland Yard",
+   "hero": "hootsworth",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.09
+   },
+   "pieces": [
+    "e_hootsworth_head",
+    "e_hootsworth_body",
+    "e_hootsworth_feet"
+   ]
+  },
+  "set_sterling": {
+   "id": "set_sterling",
+   "name": "Top Secret",
+   "hero": "sterling",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.07
+   },
+   "pieces": [
+    "e_sterling_head",
+    "e_sterling_body",
+    "e_sterling_feet"
+   ]
+  },
+  "set_dolly": {
+   "id": "set_dolly",
+   "name": "Sweetheart",
+   "hero": "dolly",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.06
+   },
+   "pieces": [
+    "e_dolly_head",
+    "e_dolly_body",
+    "e_dolly_feet"
+   ]
+  },
+  "set_gladius": {
+   "id": "set_gladius",
+   "name": "Crowd Favourite",
+   "hero": "gladius",
+   "two": {
+    "attack": 6
+   },
+   "three": {
+    "kind": "raid",
+    "amount": 0.08
+   },
+   "pieces": [
+    "e_gladius_head",
+    "e_gladius_body",
+    "e_gladius_feet"
+   ]
+  },
+  "set_quack": {
+   "id": "set_quack",
+   "name": "It's Alive",
+   "hero": "quack",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "xp",
+    "amount": 0.11
+   },
+   "pieces": [
+    "e_quack_head",
+    "e_quack_body",
+    "e_quack_feet"
+   ]
+  },
+  "set_selene": {
+   "id": "set_selene",
+   "name": "Moonless",
+   "hero": "selene",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.1
+   },
+   "pieces": [
+    "e_selene_head",
+    "e_selene_body",
+    "e_selene_feet"
+   ]
+  },
+  "set_beep": {
+   "id": "set_beep",
+   "name": "Service Model",
+   "hero": "beep",
+   "two": {
+    "defense": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.09
+   },
+   "pieces": [
+    "e_beep_head",
+    "e_beep_body",
+    "e_beep_feet"
+   ]
+  },
+  "set_tut": {
+   "id": "set_tut",
+   "name": "Divine Antler",
+   "hero": "tut",
+   "two": {
+    "health": 6
+   },
+   "three": {
+    "kind": "ink",
+    "amount": 0.13
+   },
+   "pieces": [
+    "e_tut_head",
+    "e_tut_body",
+    "e_tut_feet"
+   ]
+  },
+  "set_eagleton": {
+   "id": "set_eagleton",
+   "name": "Landslide",
+   "hero": "eagleton",
+   "two": {
+    "luck": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.15
+   },
+   "pieces": [
+    "e_eagleton_head",
+    "e_eagleton_body",
+    "e_eagleton_feet"
+   ]
+  },
+  "set_zorp": {
+   "id": "set_zorp",
+   "name": "Normal Human Man",
+   "hero": "zorp",
+   "two": {
+    "speed": 6
+   },
+   "three": {
+    "kind": "luck",
+    "amount": 0.18
+   },
+   "pieces": [
+    "e_zorp_head",
+    "e_zorp_body",
+    "e_zorp_feet"
+   ]
+  },
   "set_vesper": {
    "id": "set_vesper",
    "name": "Batcave",
@@ -2455,6 +2693,426 @@
     "ajolote_trinket"
    ],
    "place": "dock"
+  },
+  {
+   "id": "doug",
+   "name": "Doug from Accounts",
+   "title": "Expense Auditor",
+   "era": "Today",
+   "species": "Capybara",
+   "rarity": "common",
+   "bio": "Doug has rejected your expenses. Not yours in particular: everyone's, since 2019. He was summoned halfway through a spreadsheet and has asked twice whether the ledger has been reconciled. It has not. He is fine with that. He is fine with everything. That is the unsettling part.",
+   "fact": "The capybara is the largest rodent alive, and can stay underwater for up to five minutes.",
+   "rift": 1,
+   "lines": [
+    "A capybara in a lanyard! He looks so calm!",
+    "Doug. Accounts. He will need a receipt for that.",
+    "It's Doug from fucking Accounts. Calmest bastard alive. He's already denied your lunch."
+   ],
+   "bg": "office",
+   "stats": {
+    "attack": 5,
+    "defense": 18,
+    "health": 13,
+    "speed": 4,
+    "luck": 7
+   },
+   "gear": [
+    "doug_weapon",
+    "doug_armor",
+    "doug_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "bjorn",
+   "name": "Bjorn the Twice-Dead",
+   "title": "Ice Fisherman",
+   "era": "Norway, 870",
+   "species": "Walrus",
+   "rarity": "common",
+   "bio": "Bjorn has fallen through the ice twice and been declared dead both times. Both times he walked back into the village in time for supper. The gods keep sending him home and he has stopped asking why. He fishes. He waits. He is owed two funeral feasts and intends to collect.",
+   "fact": "A walrus's tusks are teeth that never stop growing, and it uses them to haul itself out onto the ice.",
+   "rift": 1,
+   "lines": [
+    "A big walrus with a fishing pole! So whiskery!",
+    "Bjorn. Died twice. Bad at it.",
+    "Bjorn drowned twice and Valhalla sent the fat bastard back both times. Even the gods didn't want him."
+   ],
+   "bg": "norway",
+   "stats": {
+    "attack": 11,
+    "defense": 14,
+    "health": 16,
+    "speed": 3,
+    "luck": 5
+   },
+   "gear": [
+    "bjorn_weapon",
+    "bjorn_armor",
+    "bjorn_trinket"
+   ],
+   "place": "fjord"
+  },
+  {
+   "id": "mona",
+   "name": "Mona Lisard",
+   "title": "Portrait Painter",
+   "era": "Venice, 1610",
+   "species": "Chameleon",
+   "rarity": "uncommon",
+   "bio": "The most sought-after portrait painter in Venice, and no two clients agree on what she looks like. She turns the colour of whatever she stands beside, which is usually your valuables. Her sitters get a lovely painting. Later, they notice the room is emptier.",
+   "fact": "A chameleon's eyes move separately, so it can look in two directions at once.",
+   "rift": 1,
+   "lines": [
+    "A lizard with a paintbrush! She changed colour!",
+    "Mona Lisard. Paints you. Then blends in with your silverware.",
+    "Mona'll paint your portrait and rob you blind in the same sitting, the sneaky little shit. Count the spoons."
+   ],
+   "bg": "venice",
+   "stats": {
+    "attack": 18,
+    "defense": 3,
+    "health": 5,
+    "speed": 19,
+    "luck": 17
+   },
+   "gear": [
+    "mona_weapon",
+    "mona_armor",
+    "mona_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "dusty",
+   "name": "Dusty Belle",
+   "title": "Gold Prospector",
+   "era": "Western Australia, 1932",
+   "species": "Echidna",
+   "rarity": "uncommon",
+   "bio": "Dusty has been digging the same claim for eleven years and has found, in total, one nugget and a great many opinions. She watched the army lose a war to some birds from her front step and did not get up. She has a pickaxe, a grudge, and no intention of sharing either.",
+   "fact": "Echidnas and the platypus are the only mammals that lay eggs.",
+   "rift": 1,
+   "lines": [
+    "A spiky digger with a pickaxe! Careful, pointy!",
+    "Dusty Belle. Eleven years, one nugget, no patience.",
+    "Dusty's been digging that hole eleven fucking years. Do not ask her how it's going."
+   ],
+   "bg": "outback",
+   "stats": {
+    "attack": 23,
+    "defense": 8,
+    "health": 14,
+    "speed": 11,
+    "luck": 4
+   },
+   "gear": [
+    "dusty_weapon",
+    "dusty_armor",
+    "dusty_trinket"
+   ],
+   "place": "outback"
+  },
+  {
+   "id": "hootsworth",
+   "name": "Inspector Hootsworth",
+   "title": "Consulting Detective",
+   "era": "London, 1888",
+   "species": "Tawny Owl",
+   "rarity": "rare",
+   "bio": "The Inspector solves every case the same way: she stares at the suspect, in silence, without blinking, until they confess. It has never taken longer than four minutes. She can turn her head to look directly behind her and does so at dinner parties, which is why she is no longer invited.",
+   "fact": "An owl cannot move its eyes in their sockets, so it turns its head instead, up to 270 degrees.",
+   "rift": 1,
+   "lines": [
+    "An owl detective! She has a tiny hat!",
+    "Inspector Hootsworth. She already knows what you did.",
+    "Hootsworth just stares at you till you fucking confess. I told her about the biscuits. I told her EVERYTHING."
+   ],
+   "bg": "london",
+   "stats": {
+    "attack": 21,
+    "defense": 8,
+    "health": 15,
+    "speed": 13,
+    "luck": 22
+   },
+   "gear": [
+    "hootsworth_weapon",
+    "hootsworth_armor",
+    "hootsworth_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "sterling",
+   "name": "Agent Sterling Stoat",
+   "title": "Gentleman Spy",
+   "era": "Chicago, 1927",
+   "species": "Stoat",
+   "rarity": "rare",
+   "bio": "Nobody knows who Sterling works for, including, by now, Sterling. He has infiltrated every speakeasy in Chicago and filed a detailed report on the cocktails. His white dinner jacket has never had a mark on it, which in his line of work is either great skill or a very bad sign.",
+   "fact": "In cold places a stoat's coat turns pure white for winter. The white fur is called ermine.",
+   "rift": 1,
+   "lines": [
+    "A fancy weasel in a white suit! So smooth!",
+    "Agent Stoat. Licensed to mingle.",
+    "Slick little bastard's been 'undercover' in a bar for six years. On expenses. Doug is furious."
+   ],
+   "bg": "chicago",
+   "stats": {
+    "attack": 20,
+    "defense": 6,
+    "health": 8,
+    "speed": 25,
+    "luck": 21
+   },
+   "gear": [
+    "sterling_weapon",
+    "sterling_armor",
+    "sterling_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "dolly",
+   "name": "Dolly LaRue",
+   "title": "Canteen Sweetheart",
+   "era": "Sydney, 1942",
+   "species": "Fallow Deer",
+   "rarity": "rare",
+   "bio": "Dolly sang at the servicemen's canteen every night of the war, and every man in the room was certain she was singing to him. She was singing to the back wall, where the clock was. She has had forty-one proposals, kept all the rings, and now runs a very successful jeweller's.",
+   "fact": "Reindeer are the only deer in which the females grow antlers too.",
+   "rift": 1,
+   "lines": [
+    "A singing deer! She has a flower in her hair!",
+    "Dolly LaRue. Forty-one proposals. Kept every ring.",
+    "Dolly'll wink at you, take your ring and your whole damn paycheck, and you'll thank her. I did."
+   ],
+   "bg": "beach",
+   "stats": {
+    "attack": 10,
+    "defense": 16,
+    "health": 24,
+    "speed": 15,
+    "luck": 12
+   },
+   "gear": [
+    "dolly_weapon",
+    "dolly_armor",
+    "dolly_trinket"
+   ],
+   "place": "bondi"
+  },
+  {
+   "id": "gladius",
+   "name": "Gladius Maximus",
+   "title": "People's Champion",
+   "era": "Rome, 80 AD",
+   "species": "Lion",
+   "rarity": "rare",
+   "bio": "Undefeated in the arena, mainly because his opponents get distracted. Gladius has not worn a shirt since boyhood and oils his mane before every bout. He owns a sword and has rarely needed it. He simply flexes at the crowd until the other man gives up and asks for an autograph.",
+   "fact": "A lion's roar can be heard from five miles away.",
+   "rift": 1,
+   "lines": [
+    "A big strong lion! Look at his fluffy mane!",
+    "Gladius Maximus. Undefeated. Mostly by posing.",
+    "Shirtless prick oils his mane for an hour and wins by flexing. I hate how well it fucking works."
+   ],
+   "bg": "rome",
+   "stats": {
+    "attack": 29,
+    "defense": 16,
+    "health": 14,
+    "speed": 15,
+    "luck": 6
+   },
+   "gear": [
+    "gladius_weapon",
+    "gladius_armor",
+    "gladius_trinket"
+   ],
+   "place": "dock"
+  },
+  {
+   "id": "quack",
+   "name": "Dr. Quackenstein",
+   "title": "Galvanic Physician",
+   "era": "Black Forest, 1790",
+   "species": "Pekin Duck",
+   "rarity": "epic",
+   "bio": "The Doctor is certain that enough lightning can fix anything: a cold, a broken heart, death. He has been struck fourteen times while proving it and has called every one 'promising'. The villagers gave up on torches years ago. Now they leave soup at the gate and back away.",
+   "fact": "A duck can sleep with one eye open and half its brain awake.",
+   "rift": 1,
+   "lines": [
+    "A duck doctor with a lightning stick! Zap!",
+    "Dr. Quackenstein. Fourteen lightning strikes. Learned nothing.",
+    "Mad fucking duck's been hit by lightning fourteen times and thinks it's GOING WELL. Do not shake his hand."
+   ],
+   "bg": "castle",
+   "stats": {
+    "attack": 26,
+    "defense": 13,
+    "health": 17,
+    "speed": 15,
+    "luck": 24
+   },
+   "gear": [
+    "quack_weapon",
+    "quack_armor",
+    "quack_trinket"
+   ],
+   "place": "blackforest"
+  },
+  {
+   "id": "selene",
+   "name": "Selene Nightbloom",
+   "title": "Jewel Thief",
+   "era": "Venice, 1610",
+   "species": "Black Panther",
+   "rarity": "epic",
+   "bio": "Every noble house in Venice has been robbed by Selene, and every one of them has since invited her to dinner, hoping to learn how. She arrives through the front door, in velvet, and leaves through a window nobody knew could open. She has never been caught. She has occasionally been bored.",
+   "fact": "A black panther is not its own species. It is a leopard or jaguar with a dark coat, and the spots are still there in the right light.",
+   "rift": 1,
+   "lines": [
+    "A sleek black cat lady! She moves so quietly!",
+    "Selene Nightbloom. Your vault called. It's empty.",
+    "Selene could steal the ring off your goddamn finger while shaking your hand. She did. Check."
+   ],
+   "bg": "venice",
+   "stats": {
+    "attack": 30,
+    "defense": 6,
+    "health": 9,
+    "speed": 19,
+    "luck": 26
+   },
+   "gear": [
+    "selene_weapon",
+    "selene_armor",
+    "selene_trinket"
+   ],
+   "place": "vault"
+  },
+  {
+   "id": "beep",
+   "name": "Unit B33-P",
+   "title": "Butler, Slightly On Fire",
+   "era": "Beyond",
+   "species": "Robot",
+   "rarity": "epic",
+   "bio": "A household robot from a future that has not happened yet, summoned halfway through serving tea. Unit B33-P is unfailingly polite, extremely well read, and has been slightly on fire since it arrived. It has raised this several times. Everyone agrees something should be done.",
+   "fact": "The word 'robot' comes from a 1920 Czech play, and is taken from 'robota', meaning forced labour.",
+   "rift": 1,
+   "lines": [
+    "A robot butler! Oh no, is that smoke?",
+    "Unit B33-P. Polite. Helpful. Mildly ablaze.",
+    "The robot's on fucking fire and it keeps APOLOGISING. Somebody get a bucket. It's been a week."
+   ],
+   "bg": "beyond",
+   "stats": {
+    "attack": 8,
+    "defense": 24,
+    "health": 19,
+    "speed": 20,
+    "luck": 18
+   },
+   "gear": [
+    "beep_weapon",
+    "beep_armor",
+    "beep_trinket"
+   ],
+   "place": "closet"
+  },
+  {
+   "id": "tut",
+   "name": "Pharaoh Tutankhamoose",
+   "title": "Boy King, Wrong Continent",
+   "era": "Egypt, 1330 BC",
+   "species": "Moose",
+   "rarity": "legendary",
+   "bio": "Nobody in Egypt had ever seen a moose, so they assumed he was a god and gave him the throne. He was nine. He has gone along with it ever since, because the food is excellent. His antlers do not fit through any door in the palace. The doors have been rebuilt. Twice.",
+   "fact": "A moose sheds its antlers every winter and grows a whole new set by the end of summer.",
+   "rift": 1,
+   "lines": [
+    "A moose king with golden antlers! So shiny!",
+    "Pharaoh Tutankhamoose. Divine ruler. Does not fit through doors.",
+    "They saw a moose, panicked, and made him a fucking GOD. He's nine feet wide. Nobody's told him."
+   ],
+   "bg": "egypt",
+   "stats": {
+    "attack": 15,
+    "defense": 47,
+    "health": 31,
+    "speed": 10,
+    "luck": 13
+   },
+   "gear": [
+    "tut_weapon",
+    "tut_armor",
+    "tut_trinket"
+   ],
+   "place": "dock"
+  },
+  {
+   "id": "eagleton",
+   "name": "President Baldwin Eagleton",
+   "title": "Candidate for Everything",
+   "era": "A campaign trail, every year",
+   "species": "Bald Eagle",
+   "rarity": "absurd",
+   "bio": "Baldwin Eagleton has been running for president for as long as anyone can remember, of nowhere in particular, against nobody. He has never held office and has given the victory speech nine times. He promises a fish in every pot and has no idea how pots work. His approval rating is, by his own count, tremendous.",
+   "fact": "The fierce scream you hear from eagles in films is usually a red-tailed hawk. A real bald eagle makes a high, chirping whistle.",
+   "rift": 1,
+   "lines": [
+    "An eagle in a suit! He's waving at everybody!",
+    "President Eagleton. President of what? Don't ask him.",
+    "Pompous feathered windbag's president of jack shit and he will NOT stop shaking my hand."
+   ],
+   "bg": "stage",
+   "stats": {
+    "attack": 11,
+    "defense": 10,
+    "health": 32,
+    "speed": 18,
+    "luck": 64
+   },
+   "gear": [
+    "eagleton_weapon",
+    "eagleton_armor",
+    "eagleton_trinket"
+   ],
+   "place": "speakeasy"
+  },
+  {
+   "id": "zorp",
+   "name": "Zorp, Destroyer of Tuesdays",
+   "title": "Definitely a Human",
+   "era": "Beyond",
+   "species": "Alien",
+   "rarity": "unhinged",
+   "bio": "Zorp came to conquer Earth, landed on a Tuesday, and found it so disappointing that he swore to destroy Tuesdays specifically. He wears a trench coat and a hat and insists he is a normal human man named Greg. He is three feet tall and grey. Everyone has agreed, quietly, to play along.",
+   "fact": "In 1977 a radio telescope in Ohio picked up a 72-second signal from space so strong that the astronomer wrote 'Wow!' on the printout. Nobody has explained it for certain.",
+   "rift": 1,
+   "lines": [
+    "A little grey person in a big coat! Hello, Greg!",
+    "Zorp. Says he's Greg. He is not Greg.",
+    "That's a fucking ALIEN in a trench coat and we're all just calling him Greg?? Fine. Hi, Greg."
+   ],
+   "bg": "beyond",
+   "stats": {
+    "attack": 13,
+    "defense": 20,
+    "health": 30,
+    "speed": 39,
+    "luck": 47
+   },
+   "gear": [
+    "zorp_weapon",
+    "zorp_armor",
+    "zorp_trinket"
+   ],
+   "place": "closet"
   }
  ],
  "places": [
@@ -2769,6 +3427,54 @@
     [
      "e_ajolote_charm",
      1.2
+    ],
+    [
+     "gladius_weapon",
+     0.375
+    ],
+    [
+     "gladius_armor",
+     0.375
+    ],
+    [
+     "gladius_trinket",
+     0.375
+    ],
+    [
+     "e_gladius_head",
+     0.375
+    ],
+    [
+     "e_gladius_body",
+     0.375
+    ],
+    [
+     "e_gladius_feet",
+     0.375
+    ],
+    [
+     "tut_weapon",
+     0.06
+    ],
+    [
+     "tut_armor",
+     0.06
+    ],
+    [
+     "tut_trinket",
+     0.06
+    ],
+    [
+     "e_tut_head",
+     0.06
+    ],
+    [
+     "e_tut_body",
+     0.06
+    ],
+    [
+     "e_tut_feet",
+     0.06
     ]
    ]
   },
@@ -2995,6 +3701,30 @@
     ],
     [
      "e_jazzmin_charm",
+     0.375
+    ],
+    [
+     "dolly_weapon",
+     0.375
+    ],
+    [
+     "dolly_armor",
+     0.375
+    ],
+    [
+     "dolly_trinket",
+     0.375
+    ],
+    [
+     "e_dolly_head",
+     0.375
+    ],
+    [
+     "e_dolly_body",
+     0.375
+    ],
+    [
+     "e_dolly_feet",
      0.375
     ]
    ]
@@ -3254,6 +3984,30 @@
     ],
     [
      "e_flap_charm",
+     1.2
+    ],
+    [
+     "bjorn_weapon",
+     0.75
+    ],
+    [
+     "bjorn_armor",
+     0.75
+    ],
+    [
+     "bjorn_trinket",
+     0.75
+    ],
+    [
+     "e_bjorn_head",
+     1.2
+    ],
+    [
+     "e_bjorn_body",
+     1.2
+    ],
+    [
+     "e_bjorn_feet",
      1.2
     ]
    ]
@@ -3518,6 +4272,54 @@
     [
      "e_roxy_charm",
      1.2
+    ],
+    [
+     "sterling_weapon",
+     0.375
+    ],
+    [
+     "sterling_armor",
+     0.375
+    ],
+    [
+     "sterling_trinket",
+     0.375
+    ],
+    [
+     "e_sterling_head",
+     0.375
+    ],
+    [
+     "e_sterling_body",
+     0.375
+    ],
+    [
+     "e_sterling_feet",
+     0.375
+    ],
+    [
+     "eagleton_weapon",
+     0.03
+    ],
+    [
+     "eagleton_armor",
+     0.03
+    ],
+    [
+     "eagleton_trinket",
+     0.03
+    ],
+    [
+     "e_eagleton_head",
+     0.03
+    ],
+    [
+     "e_eagleton_body",
+     0.03
+    ],
+    [
+     "e_eagleton_feet",
+     0.03
     ]
    ]
   },
@@ -3777,6 +4579,78 @@
     [
      "e_rex_charm",
      1.2
+    ],
+    [
+     "mona_weapon",
+     0.75
+    ],
+    [
+     "mona_armor",
+     0.75
+    ],
+    [
+     "mona_trinket",
+     0.75
+    ],
+    [
+     "e_mona_head",
+     0.75
+    ],
+    [
+     "e_mona_body",
+     0.75
+    ],
+    [
+     "e_mona_feet",
+     0.75
+    ],
+    [
+     "hootsworth_weapon",
+     0.375
+    ],
+    [
+     "hootsworth_armor",
+     0.375
+    ],
+    [
+     "hootsworth_trinket",
+     0.375
+    ],
+    [
+     "e_hootsworth_head",
+     0.375
+    ],
+    [
+     "e_hootsworth_body",
+     0.375
+    ],
+    [
+     "e_hootsworth_feet",
+     0.375
+    ],
+    [
+     "selene_weapon",
+     0.15
+    ],
+    [
+     "selene_armor",
+     0.15
+    ],
+    [
+     "selene_trinket",
+     0.15
+    ],
+    [
+     "e_selene_head",
+     0.15
+    ],
+    [
+     "e_selene_body",
+     0.15
+    ],
+    [
+     "e_selene_feet",
+     0.15
     ]
    ]
   },
@@ -4004,6 +4878,78 @@
     [
      "e_pam_charm",
      0.15
+    ],
+    [
+     "doug_weapon",
+     0.75
+    ],
+    [
+     "doug_armor",
+     0.75
+    ],
+    [
+     "doug_trinket",
+     0.75
+    ],
+    [
+     "e_doug_head",
+     1.2
+    ],
+    [
+     "e_doug_body",
+     1.2
+    ],
+    [
+     "e_doug_feet",
+     1.2
+    ],
+    [
+     "beep_weapon",
+     0.15
+    ],
+    [
+     "beep_armor",
+     0.15
+    ],
+    [
+     "beep_trinket",
+     0.15
+    ],
+    [
+     "e_beep_head",
+     0.15
+    ],
+    [
+     "e_beep_body",
+     0.15
+    ],
+    [
+     "e_beep_feet",
+     0.15
+    ],
+    [
+     "zorp_weapon",
+     0.012
+    ],
+    [
+     "zorp_armor",
+     0.012
+    ],
+    [
+     "zorp_trinket",
+     0.012
+    ],
+    [
+     "e_zorp_head",
+     0.012
+    ],
+    [
+     "e_zorp_body",
+     0.012
+    ],
+    [
+     "e_zorp_feet",
+     0.012
     ]
    ]
   },
@@ -4263,6 +5209,30 @@
     [
      "e_max_charm",
      0.15
+    ],
+    [
+     "dusty_weapon",
+     0.75
+    ],
+    [
+     "dusty_armor",
+     0.75
+    ],
+    [
+     "dusty_trinket",
+     0.75
+    ],
+    [
+     "e_dusty_head",
+     0.75
+    ],
+    [
+     "e_dusty_body",
+     0.75
+    ],
+    [
+     "e_dusty_feet",
+     0.75
     ]
    ]
   },
@@ -4490,6 +5460,30 @@
     [
      "e_gorm_charm",
      0.375
+    ],
+    [
+     "quack_weapon",
+     0.15
+    ],
+    [
+     "quack_armor",
+     0.15
+    ],
+    [
+     "quack_trinket",
+     0.15
+    ],
+    [
+     "e_quack_head",
+     0.15
+    ],
+    [
+     "e_quack_body",
+     0.15
+    ],
+    [
+     "e_quack_feet",
+     0.15
     ]
    ]
   }
@@ -6404,6 +7398,754 @@
    "equip": {
     "skill": "Fishing",
     "speed": 10
+   }
+  },
+  "doug_weapon": {
+   "id": "doug_weapon",
+   "name": "Red Pen of Rejection",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "doug_weapon",
+   "flavor": "Three strokes and the words 'see me'.",
+   "owner": "doug",
+   "place": "closet",
+   "stats": {
+    "attack": 4,
+    "speed": 3
+   },
+   "sell": 30
+  },
+  "doug_armor": {
+   "id": "doug_armor",
+   "name": "Short-Sleeve Shirt, Tie Optional",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "doug_armor",
+   "flavor": "Breathable. Unremarkable. Proof against small talk.",
+   "owner": "doug",
+   "place": "closet",
+   "stats": {
+    "defense": 4,
+    "health": 5
+   },
+   "sell": 30
+  },
+  "doug_trinket": {
+   "id": "doug_trinket",
+   "name": "Lanyard With Nine Keycards",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "doug_trinket",
+   "flavor": "Only one of them opens anything. He knows which.",
+   "owner": "doug",
+   "place": "closet",
+   "stats": {
+    "speed": 4,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "bjorn_weapon": {
+   "id": "bjorn_weapon",
+   "name": "Whalebone Ice Spear",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "bjorn_weapon",
+   "flavor": "For the fish. And, once, for a very surprised bear.",
+   "owner": "bjorn",
+   "place": "fjord",
+   "stats": {
+    "attack": 5,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "bjorn_armor": {
+   "id": "bjorn_armor",
+   "name": "Sealskin Coat, Still Damp",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "bjorn_armor",
+   "flavor": "It has never fully dried. Neither has he.",
+   "owner": "bjorn",
+   "place": "fjord",
+   "stats": {
+    "defense": 5,
+    "health": 2
+   },
+   "sell": 30
+  },
+  "bjorn_trinket": {
+   "id": "bjorn_trinket",
+   "name": "His Own Funeral Coin",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "bjorn_trinket",
+   "flavor": "They left it on his eyes. He kept it. Seemed fair.",
+   "owner": "bjorn",
+   "place": "fjord",
+   "stats": {
+    "speed": 4,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 2
+   }
+  },
+  "mona_weapon": {
+   "id": "mona_weapon",
+   "name": "Palette Knife, Sharpened",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "mona_weapon",
+   "flavor": "For oils. Mostly.",
+   "owner": "mona",
+   "place": "vault",
+   "stats": {
+    "attack": 7,
+    "speed": 1
+   },
+   "sell": 30
+  },
+  "mona_armor": {
+   "id": "mona_armor",
+   "name": "Paint-Stained Smock",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "mona_armor",
+   "flavor": "Every colour she has ever been.",
+   "owner": "mona",
+   "place": "vault",
+   "stats": {
+    "defense": 4,
+    "health": 5
+   },
+   "sell": 30
+  },
+  "mona_trinket": {
+   "id": "mona_trinket",
+   "name": "The Unfinished Smile",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "mona_trinket",
+   "flavor": "A small canvas. She says it is done. Everyone else has questions.",
+   "owner": "mona",
+   "place": "vault",
+   "stats": {
+    "speed": 3,
+    "luck": 5
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 2
+   }
+  },
+  "dusty_weapon": {
+   "id": "dusty_weapon",
+   "name": "Old Faithful",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "uncommon",
+   "icon": "dusty_weapon",
+   "flavor": "A pickaxe. Named after the only thing that never let her down.",
+   "owner": "dusty",
+   "place": "outback",
+   "stats": {
+    "attack": 6,
+    "speed": 2
+   },
+   "sell": 30
+  },
+  "dusty_armor": {
+   "id": "dusty_armor",
+   "name": "Canvas Dungarees, Patched",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "uncommon",
+   "icon": "dusty_armor",
+   "flavor": "More patch than dungaree by now.",
+   "owner": "dusty",
+   "place": "outback",
+   "stats": {
+    "defense": 3,
+    "health": 4
+   },
+   "sell": 30
+  },
+  "dusty_trinket": {
+   "id": "dusty_trinket",
+   "name": "The One Nugget",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "uncommon",
+   "icon": "dusty_trinket",
+   "flavor": "She will not tell you where. She will not tell you how big.",
+   "owner": "dusty",
+   "place": "outback",
+   "stats": {
+    "speed": 2,
+    "luck": 6
+   },
+   "sell": 30,
+   "equip": {
+    "skill": "Digging",
+    "speed": 2
+   }
+  },
+  "hootsworth_weapon": {
+   "id": "hootsworth_weapon",
+   "name": "Magnifying Glass, Large",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "hootsworth_weapon",
+   "flavor": "She does not need it. It is for your benefit.",
+   "owner": "hootsworth",
+   "place": "vault",
+   "stats": {
+    "attack": 10,
+    "speed": 2,
+    "luck": 3
+   },
+   "sell": 80
+  },
+  "hootsworth_armor": {
+   "id": "hootsworth_armor",
+   "name": "Inverness Cape",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "hootsworth_armor",
+   "flavor": "Wool. Rainproof. Conceals a remarkable wingspan.",
+   "owner": "hootsworth",
+   "place": "vault",
+   "stats": {
+    "defense": 8,
+    "health": 5,
+    "luck": 2
+   },
+   "sell": 80
+  },
+  "hootsworth_trinket": {
+   "id": "hootsworth_trinket",
+   "name": "Notebook of Things You Said",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "hootsworth_trinket",
+   "flavor": "Dated. Cross-referenced. Underlined twice.",
+   "owner": "hootsworth",
+   "place": "vault",
+   "stats": {
+    "defense": 2,
+    "speed": 6,
+    "luck": 5
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 4
+   }
+  },
+  "sterling_weapon": {
+   "id": "sterling_weapon",
+   "name": "Cocktail Stick, Weighted",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "sterling_weapon",
+   "flavor": "Olive optional. Dangerous either way.",
+   "owner": "sterling",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 11,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "sterling_armor": {
+   "id": "sterling_armor",
+   "name": "White Dinner Jacket",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "sterling_armor",
+   "flavor": "Spotless. He will not say how.",
+   "owner": "sterling",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 6,
+    "health": 7,
+    "luck": 2
+   },
+   "sell": 80
+  },
+  "sterling_trinket": {
+   "id": "sterling_trinket",
+   "name": "Cufflink Camera",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "sterling_trinket",
+   "flavor": "Forty exposures. Thirty-eight are of canapes.",
+   "owner": "sterling",
+   "place": "speakeasy",
+   "stats": {
+    "speed": 6,
+    "luck": 7
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 4
+   }
+  },
+  "dolly_weapon": {
+   "id": "dolly_weapon",
+   "name": "Chrome Stage Microphone",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "dolly_weapon",
+   "flavor": "Heavy base. Excellent swing.",
+   "owner": "dolly",
+   "place": "bondi",
+   "stats": {
+    "attack": 9,
+    "defense": 2,
+    "speed": 3
+   },
+   "sell": 80
+  },
+  "dolly_armor": {
+   "id": "dolly_armor",
+   "name": "Polka-Dot Halter Dress",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "dolly_armor",
+   "flavor": "Rationed fabric. Unrationed effect.",
+   "owner": "dolly",
+   "place": "bondi",
+   "stats": {
+    "attack": 2,
+    "defense": 6,
+    "health": 5
+   },
+   "sell": 80
+  },
+  "dolly_trinket": {
+   "id": "dolly_trinket",
+   "name": "Box of Forty-One Rings",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "dolly_trinket",
+   "flavor": "She remembers every name. That is the cruel part.",
+   "owner": "dolly",
+   "place": "bondi",
+   "stats": {
+    "attack": 2,
+    "speed": 7,
+    "luck": 6
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "gladius_weapon": {
+   "id": "gladius_weapon",
+   "name": "Ceremonial Gladius",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "rare",
+   "icon": "gladius_weapon",
+   "flavor": "Still has the price tag. Never swung in anger.",
+   "owner": "gladius",
+   "place": "dock",
+   "stats": {
+    "attack": 11,
+    "speed": 4
+   },
+   "sell": 80
+  },
+  "gladius_armor": {
+   "id": "gladius_armor",
+   "name": "Single Shoulder Guard",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "rare",
+   "icon": "gladius_armor",
+   "flavor": "Covers one shoulder. The other is for the fans.",
+   "owner": "gladius",
+   "place": "dock",
+   "stats": {
+    "defense": 7,
+    "health": 8
+   },
+   "sell": 80
+  },
+  "gladius_trinket": {
+   "id": "gladius_trinket",
+   "name": "Flask of Mane Oil",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "rare",
+   "icon": "gladius_trinket",
+   "flavor": "Olive, with a hint of victory.",
+   "owner": "gladius",
+   "place": "dock",
+   "stats": {
+    "speed": 6,
+    "luck": 9
+   },
+   "sell": 80,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 4
+   }
+  },
+  "quack_weapon": {
+   "id": "quack_weapon",
+   "name": "Copper Lightning Rod",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "quack_weapon",
+   "flavor": "Works every time. That is the problem.",
+   "owner": "quack",
+   "place": "blackforest",
+   "stats": {
+    "attack": 18,
+    "speed": 6
+   },
+   "sell": 220
+  },
+  "quack_armor": {
+   "id": "quack_armor",
+   "name": "Scorched Lab Coat",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "quack_armor",
+   "flavor": "It was white once. So was he.",
+   "owner": "quack",
+   "place": "blackforest",
+   "stats": {
+    "defense": 11,
+    "health": 9,
+    "speed": 2
+   },
+   "sell": 220
+  },
+  "quack_trinket": {
+   "id": "quack_trinket",
+   "name": "Jar With Something In It",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "quack_trinket",
+   "flavor": "It blinked. He says that is normal.",
+   "owner": "quack",
+   "place": "blackforest",
+   "stats": {
+    "speed": 9,
+    "luck": 13
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Digging",
+    "speed": 6
+   }
+  },
+  "selene_weapon": {
+   "id": "selene_weapon",
+   "name": "Silk Grappling Line",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "selene_weapon",
+   "flavor": "Holds a panther and a chandelier's worth of diamonds.",
+   "owner": "selene",
+   "place": "vault",
+   "stats": {
+    "attack": 11,
+    "speed": 7,
+    "luck": 3
+   },
+   "sell": 220
+  },
+  "selene_armor": {
+   "id": "selene_armor",
+   "name": "Midnight Velvet Catsuit",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "selene_armor",
+   "flavor": "Makes no sound. Neither does she.",
+   "owner": "selene",
+   "place": "vault",
+   "stats": {
+    "defense": 11,
+    "health": 8,
+    "speed": 4
+   },
+   "sell": 220
+  },
+  "selene_trinket": {
+   "id": "selene_trinket",
+   "name": "The Doge's Signet",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "selene_trinket",
+   "flavor": "He thinks it is in his vault. Bless him.",
+   "owner": "selene",
+   "place": "vault",
+   "stats": {
+    "speed": 13,
+    "luck": 11
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "beep_weapon": {
+   "id": "beep_weapon",
+   "name": "Silver Serving Tray",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "epic",
+   "icon": "beep_weapon",
+   "flavor": "Deflects blades, arrows and unwanted guests.",
+   "owner": "beep",
+   "place": "closet",
+   "stats": {
+    "attack": 13,
+    "health": 3,
+    "speed": 6
+   },
+   "sell": 220
+  },
+  "beep_armor": {
+   "id": "beep_armor",
+   "name": "Riveted Tailcoat Chassis",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "epic",
+   "icon": "beep_armor",
+   "flavor": "Rust-proof. Not, it turns out, fire-proof.",
+   "owner": "beep",
+   "place": "closet",
+   "stats": {
+    "defense": 9,
+    "health": 15
+   },
+   "sell": 220
+  },
+  "beep_trinket": {
+   "id": "beep_trinket",
+   "name": "Small Persistent Flame",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "epic",
+   "icon": "beep_trinket",
+   "flavor": "It has been raised at three meetings.",
+   "owner": "beep",
+   "place": "closet",
+   "stats": {
+    "attack": 3,
+    "speed": 6,
+    "luck": 11
+   },
+   "sell": 220,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 6
+   }
+  },
+  "tut_weapon": {
+   "id": "tut_weapon",
+   "name": "Crook and Flail, Chewed",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "legendary",
+   "icon": "tut_weapon",
+   "flavor": "Symbols of divine kingship. He thought they were snacks.",
+   "owner": "tut",
+   "place": "dock",
+   "stats": {
+    "attack": 20,
+    "defense": 5,
+    "speed": 7
+   },
+   "sell": 600
+  },
+  "tut_armor": {
+   "id": "tut_armor",
+   "name": "Gold Broad Collar",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "legendary",
+   "icon": "tut_armor",
+   "flavor": "Forty pounds of gold. He has not noticed.",
+   "owner": "tut",
+   "place": "dock",
+   "stats": {
+    "defense": 16,
+    "health": 15
+   },
+   "sell": 600
+  },
+  "tut_trinket": {
+   "id": "tut_trinket",
+   "name": "Scarab of the Wrong Continent",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "legendary",
+   "icon": "tut_trinket",
+   "flavor": "Carved in lapis. Shows, for some reason, a pine tree.",
+   "owner": "tut",
+   "place": "dock",
+   "stats": {
+    "defense": 5,
+    "speed": 10,
+    "luck": 15
+   },
+   "sell": 600,
+   "equip": {
+    "skill": "Fishing",
+    "speed": 10
+   }
+  },
+  "eagleton_weapon": {
+   "id": "eagleton_weapon",
+   "name": "Gavel of Order",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "absurd",
+   "icon": "eagleton_weapon",
+   "flavor": "He bangs it to open meetings, close meetings and win arguments.",
+   "owner": "eagleton",
+   "place": "speakeasy",
+   "stats": {
+    "attack": 24,
+    "health": 7,
+    "speed": 12
+   },
+   "sell": 1500
+  },
+  "eagleton_armor": {
+   "id": "eagleton_armor",
+   "name": "Navy Campaign Suit",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "absurd",
+   "icon": "eagleton_armor",
+   "flavor": "Flag pin included. Flag unspecified.",
+   "owner": "eagleton",
+   "place": "speakeasy",
+   "stats": {
+    "defense": 22,
+    "health": 19
+   },
+   "sell": 1500
+  },
+  "eagleton_trinket": {
+   "id": "eagleton_trinket",
+   "name": "'I Voted For Me' Button",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "absurd",
+   "icon": "eagleton_trinket",
+   "flavor": "The only confirmed vote so far.",
+   "owner": "eagleton",
+   "place": "speakeasy",
+   "stats": {
+    "health": 8,
+    "speed": 16,
+    "luck": 19
+   },
+   "sell": 1500,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 13
+   }
+  },
+  "zorp_weapon": {
+   "id": "zorp_weapon",
+   "name": "Ray Gun Disguised as an Umbrella",
+   "kind": "gear",
+   "slot": "weapon",
+   "rarity": "unhinged",
+   "icon": "zorp_weapon",
+   "flavor": "It is not disguised well. It hums.",
+   "owner": "zorp",
+   "place": "closet",
+   "stats": {
+    "attack": 35,
+    "defense": 7,
+    "speed": 10
+   },
+   "sell": 4000
+  },
+  "zorp_armor": {
+   "id": "zorp_armor",
+   "name": "Human Trench Coat, Adult Size",
+   "kind": "gear",
+   "slot": "armor",
+   "rarity": "unhinged",
+   "icon": "zorp_armor",
+   "flavor": "Four feet too long. He calls it 'the fashion'.",
+   "owner": "zorp",
+   "place": "closet",
+   "stats": {
+    "attack": 1,
+    "defense": 20,
+    "health": 24,
+    "luck": 7
+   },
+   "sell": 4000
+  },
+  "zorp_trinket": {
+   "id": "zorp_trinket",
+   "name": "Earth Calendar, Tuesdays Removed",
+   "kind": "gear",
+   "slot": "trinket",
+   "rarity": "unhinged",
+   "icon": "zorp_trinket",
+   "flavor": "Scorched out one by one. He is up to 2041.",
+   "owner": "zorp",
+   "place": "closet",
+   "stats": {
+    "attack": 6,
+    "speed": 24,
+    "luck": 27
+   },
+   "sell": 4000,
+   "equip": {
+    "skill": "Lockpicking",
+    "speed": 16
    }
   },
   "e_kevin_weapon": {
@@ -8805,6 +10547,739 @@
     "amount": 0.06
    },
    "place": "outback",
+   "sell": 4000
+  },
+  "e_doug_head": {
+   "id": "e_doug_head",
+   "name": "Reading Glasses on a Cord",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_doug_head",
+   "flavor": "Worn on the end of the nose, for looking over.",
+   "stats": {
+    "defense": 2,
+    "luck": 3
+   },
+   "era": "doug",
+   "set": "set_doug",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_doug_body": {
+   "id": "e_doug_body",
+   "name": "Fleece Vest, Company Logo",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_doug_body",
+   "flavor": "The uniform of a man who controls the thermostat.",
+   "stats": {
+    "defense": 3,
+    "health": 2
+   },
+   "era": "doug",
+   "set": "set_doug",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_doug_feet": {
+   "id": "e_doug_feet",
+   "name": "Orthopaedic Loafers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_doug_feet",
+   "flavor": "Arch support. Eleven years of corridor.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "doug",
+   "set": "set_doug",
+   "place": "closet",
+   "sell": 15
+  },
+  "e_bjorn_head": {
+   "id": "e_bjorn_head",
+   "name": "Frost-Rimmed Fur Hood",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "common",
+   "icon": "e_bjorn_head",
+   "flavor": "The frost never fully leaves it. Nor does he.",
+   "stats": {
+    "defense": 3,
+    "luck": 2
+   },
+   "era": "bjorn",
+   "set": "set_bjorn",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_bjorn_body": {
+   "id": "e_bjorn_body",
+   "name": "Twice-Mended Fishing Smock",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "common",
+   "icon": "e_bjorn_body",
+   "flavor": "Mended twice, by two different widows.",
+   "stats": {
+    "defense": 2,
+    "health": 3
+   },
+   "era": "bjorn",
+   "set": "set_bjorn",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_bjorn_feet": {
+   "id": "e_bjorn_feet",
+   "name": "Hobnailed Ice Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "common",
+   "icon": "e_bjorn_feet",
+   "flavor": "Iron studs. For ice, and for standing on it.",
+   "stats": {
+    "speed": 3,
+    "luck": 1
+   },
+   "era": "bjorn",
+   "set": "set_bjorn",
+   "place": "fjord",
+   "sell": 15
+  },
+  "e_mona_head": {
+   "id": "e_mona_head",
+   "name": "Floppy Velvet Beret",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_mona_head",
+   "flavor": "Worn at an angle that says the work is going badly.",
+   "stats": {
+    "defense": 4,
+    "luck": 3
+   },
+   "era": "mona",
+   "set": "set_mona",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_mona_body": {
+   "id": "e_mona_body",
+   "name": "Master's Apron",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_mona_body",
+   "flavor": "Every colour she has ever been is on it somewhere.",
+   "stats": {
+    "defense": 4,
+    "health": 2
+   },
+   "era": "mona",
+   "set": "set_mona",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_mona_feet": {
+   "id": "e_mona_feet",
+   "name": "Soft Studio Slippers",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_mona_feet",
+   "flavor": "Silent on marble. That matters more than it should.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "mona",
+   "set": "set_mona",
+   "place": "vault",
+   "sell": 30
+  },
+  "e_dusty_head": {
+   "id": "e_dusty_head",
+   "name": "Sweat-Stained Slouch Hat",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "uncommon",
+   "icon": "e_dusty_head",
+   "flavor": "Eleven years of sun and no shade.",
+   "stats": {
+    "defense": 5,
+    "luck": 3
+   },
+   "era": "dusty",
+   "set": "set_dusty",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_dusty_body": {
+   "id": "e_dusty_body",
+   "name": "Prospector's Swag Vest",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "uncommon",
+   "icon": "e_dusty_body",
+   "flavor": "Holds a bedroll, a canteen and one grudge.",
+   "stats": {
+    "defense": 3,
+    "health": 4
+   },
+   "era": "dusty",
+   "set": "set_dusty",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_dusty_feet": {
+   "id": "e_dusty_feet",
+   "name": "Steel-Toed Digging Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "uncommon",
+   "icon": "e_dusty_feet",
+   "flavor": "Steel toes, red dust, no apologies.",
+   "stats": {
+    "speed": 4,
+    "luck": 2
+   },
+   "era": "dusty",
+   "set": "set_dusty",
+   "place": "outback",
+   "sell": 30
+  },
+  "e_hootsworth_head": {
+   "id": "e_hootsworth_head",
+   "name": "Deerstalker, Not in the Books",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_hootsworth_head",
+   "flavor": "Never mentioned in the case files. Worn anyway.",
+   "stats": {
+    "attack": 2,
+    "defense": 5,
+    "luck": 4
+   },
+   "era": "hootsworth",
+   "set": "set_hootsworth",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_hootsworth_body": {
+   "id": "e_hootsworth_body",
+   "name": "Tweed Waistcoat with Fob Chain",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_hootsworth_body",
+   "flavor": "The chain holds a watch she never looks at.",
+   "stats": {
+    "defense": 4,
+    "health": 7,
+    "luck": 2
+   },
+   "era": "hootsworth",
+   "set": "set_hootsworth",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_hootsworth_feet": {
+   "id": "e_hootsworth_feet",
+   "name": "Silent-Soled Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_hootsworth_feet",
+   "flavor": "You do not hear her arrive. You hear her ask.",
+   "stats": {
+    "health": 2,
+    "speed": 7,
+    "luck": 3
+   },
+   "era": "hootsworth",
+   "set": "set_hootsworth",
+   "place": "vault",
+   "sell": 80
+  },
+  "e_sterling_head": {
+   "id": "e_sterling_head",
+   "name": "Low-Brimmed Fedora",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_sterling_head",
+   "flavor": "Low brim. Half a face is plenty.",
+   "stats": {
+    "attack": 2,
+    "defense": 6,
+    "luck": 4
+   },
+   "era": "sterling",
+   "set": "set_sterling",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_sterling_body": {
+   "id": "e_sterling_body",
+   "name": "Hidden-Pocket Cummerbund",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_sterling_body",
+   "flavor": "Holds a camera, a file and one spare bow tie.",
+   "stats": {
+    "defense": 7,
+    "health": 6
+   },
+   "era": "sterling",
+   "set": "set_sterling",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_sterling_feet": {
+   "id": "e_sterling_feet",
+   "name": "Patent Leather Sneaking Shoes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_sterling_feet",
+   "flavor": "Polished to a shine. Ruinous on gravel.",
+   "stats": {
+    "defense": 1,
+    "speed": 7,
+    "luck": 3
+   },
+   "era": "sterling",
+   "set": "set_sterling",
+   "place": "speakeasy",
+   "sell": 80
+  },
+  "e_dolly_head": {
+   "id": "e_dolly_head",
+   "name": "Victory Rolls and a Hibiscus",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_dolly_head",
+   "flavor": "Fresh every night. Nobody knows where from.",
+   "stats": {
+    "attack": 2,
+    "defense": 8,
+    "luck": 3
+   },
+   "era": "dolly",
+   "set": "set_dolly",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_dolly_body": {
+   "id": "e_dolly_body",
+   "name": "Sailor-Collar Jacket",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_dolly_body",
+   "flavor": "Borrowed from the navy. Never given back.",
+   "stats": {
+    "defense": 5,
+    "health": 4,
+    "luck": 2
+   },
+   "era": "dolly",
+   "set": "set_dolly",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_dolly_feet": {
+   "id": "e_dolly_feet",
+   "name": "Peep-Toe Dancing Heels",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_dolly_feet",
+   "flavor": "Danced through four years and two soles.",
+   "stats": {
+    "speed": 7,
+    "luck": 3
+   },
+   "era": "dolly",
+   "set": "set_dolly",
+   "place": "bondi",
+   "sell": 80
+  },
+  "e_gladius_head": {
+   "id": "e_gladius_head",
+   "name": "Laurel Wreath, Slightly Tilted",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "rare",
+   "icon": "e_gladius_head",
+   "flavor": "Bent in a fall nobody is allowed to mention.",
+   "stats": {
+    "defense": 7,
+    "luck": 6
+   },
+   "era": "gladius",
+   "set": "set_gladius",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_gladius_body": {
+   "id": "e_gladius_body",
+   "name": "Champion's Leather Harness",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "rare",
+   "icon": "e_gladius_body",
+   "flavor": "Straps arranged to show the most chest legally possible.",
+   "stats": {
+    "attack": 2,
+    "defense": 5,
+    "health": 6
+   },
+   "era": "gladius",
+   "set": "set_gladius",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_gladius_feet": {
+   "id": "e_gladius_feet",
+   "name": "Arena Sandals",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "rare",
+   "icon": "e_gladius_feet",
+   "flavor": "Sand still in the laces from the last bout.",
+   "stats": {
+    "health": 2,
+    "speed": 5,
+    "luck": 3
+   },
+   "era": "gladius",
+   "set": "set_gladius",
+   "place": "dock",
+   "sell": 80
+  },
+  "e_quack_head": {
+   "id": "e_quack_head",
+   "name": "Brass Storm Goggles",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_quack_head",
+   "flavor": "Cracked in the sixth strike. Still worn in the seventh.",
+   "stats": {
+    "defense": 11,
+    "health": 2,
+    "luck": 7
+   },
+   "era": "quack",
+   "set": "set_quack",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_quack_body": {
+   "id": "e_quack_body",
+   "name": "Rubber Apron, Too Late",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_quack_body",
+   "flavor": "Rubber. He thought of it after the eleventh.",
+   "stats": {
+    "defense": 6,
+    "health": 13
+   },
+   "era": "quack",
+   "set": "set_quack",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_quack_feet": {
+   "id": "e_quack_feet",
+   "name": "Insulated Galoshes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_quack_feet",
+   "flavor": "Insulated. Mostly.",
+   "stats": {
+    "health": 3,
+    "speed": 12,
+    "luck": 4
+   },
+   "era": "quack",
+   "set": "set_quack",
+   "place": "blackforest",
+   "sell": 220
+  },
+  "e_selene_head": {
+   "id": "e_selene_head",
+   "name": "Black Lace Bauta Mask",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_selene_head",
+   "flavor": "Bought in a shop that does not exist in daylight.",
+   "stats": {
+    "defense": 10,
+    "luck": 9
+   },
+   "era": "selene",
+   "set": "set_selene",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_selene_body": {
+   "id": "e_selene_body",
+   "name": "Thief's Bandolier",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_selene_body",
+   "flavor": "Nine pouches. Eight of them yours.",
+   "stats": {
+    "defense": 8,
+    "health": 7,
+    "speed": 2
+   },
+   "era": "selene",
+   "set": "set_selene",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_selene_feet": {
+   "id": "e_selene_feet",
+   "name": "Soft-Pad Rooftop Boots",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_selene_feet",
+   "flavor": "Soft as a thought on a tiled roof.",
+   "stats": {
+    "attack": 3,
+    "speed": 9,
+    "luck": 5
+   },
+   "era": "selene",
+   "set": "set_selene",
+   "place": "vault",
+   "sell": 220
+  },
+  "e_beep_head": {
+   "id": "e_beep_head",
+   "name": "Antenna With Bow Tie Attachment",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "epic",
+   "icon": "e_beep_head",
+   "flavor": "The bow tie is screwed on. It was a gift.",
+   "stats": {
+    "defense": 11,
+    "luck": 7
+   },
+   "era": "beep",
+   "set": "set_beep",
+   "place": "closet",
+   "sell": 220
+  },
+  "e_beep_body": {
+   "id": "e_beep_body",
+   "name": "Polished Brass Waistcoat Plate",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "epic",
+   "icon": "e_beep_body",
+   "flavor": "Polished daily, by itself, out of habit.",
+   "stats": {
+    "defense": 13,
+    "health": 6
+   },
+   "era": "beep",
+   "set": "set_beep",
+   "place": "closet",
+   "sell": 220
+  },
+  "e_beep_feet": {
+   "id": "e_beep_feet",
+   "name": "Quiet-Tread Rubber Feet",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "epic",
+   "icon": "e_beep_feet",
+   "flavor": "Never squeaks. Never has.",
+   "stats": {
+    "speed": 15,
+    "luck": 4
+   },
+   "era": "beep",
+   "set": "set_beep",
+   "place": "closet",
+   "sell": 220
+  },
+  "e_tut_head": {
+   "id": "e_tut_head",
+   "name": "Nemes Headcloth, Cut for Antlers",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "legendary",
+   "icon": "e_tut_head",
+   "flavor": "Recut three times. The antlers kept growing.",
+   "stats": {
+    "defense": 13,
+    "speed": 4,
+    "luck": 10
+   },
+   "era": "tut",
+   "set": "set_tut",
+   "place": "dock",
+   "sell": 600
+  },
+  "e_tut_body": {
+   "id": "e_tut_body",
+   "name": "Royal Pleated Kilt",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "legendary",
+   "icon": "e_tut_body",
+   "flavor": "Pleated by eleven people over four days.",
+   "stats": {
+    "defense": 15,
+    "health": 13
+   },
+   "era": "tut",
+   "set": "set_tut",
+   "place": "dock",
+   "sell": 600
+  },
+  "e_tut_feet": {
+   "id": "e_tut_feet",
+   "name": "Gilded Hoof Sandals",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "legendary",
+   "icon": "e_tut_feet",
+   "flavor": "Gilded. Worn over hooves. Nobody mentioned it.",
+   "stats": {
+    "speed": 18,
+    "luck": 8
+   },
+   "era": "tut",
+   "set": "set_tut",
+   "place": "dock",
+   "sell": 600
+  },
+  "e_eagleton_head": {
+   "id": "e_eagleton_head",
+   "name": "Straw Boater with Ribbon",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "absurd",
+   "icon": "e_eagleton_head",
+   "flavor": "Raised to crowds that were not there.",
+   "stats": {
+    "defense": 18,
+    "speed": 4,
+    "luck": 12
+   },
+   "era": "eagleton",
+   "set": "set_eagleton",
+   "place": "speakeasy",
+   "sell": 1500
+  },
+  "e_eagleton_body": {
+   "id": "e_eagleton_body",
+   "name": "Rosette-Covered Sash",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "absurd",
+   "icon": "e_eagleton_body",
+   "flavor": "Every rosette from every race he has lost.",
+   "stats": {
+    "defense": 12,
+    "health": 17,
+    "luck": 5
+   },
+   "era": "eagleton",
+   "set": "set_eagleton",
+   "place": "speakeasy",
+   "sell": 1500
+  },
+  "e_eagleton_feet": {
+   "id": "e_eagleton_feet",
+   "name": "Podium-Polished Wingtips",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "absurd",
+   "icon": "e_eagleton_feet",
+   "flavor": "Polished before every speech. Both of them.",
+   "stats": {
+    "attack": 5,
+    "speed": 25,
+    "luck": 7
+   },
+   "era": "eagleton",
+   "set": "set_eagleton",
+   "place": "speakeasy",
+   "sell": 1500
+  },
+  "e_zorp_head": {
+   "id": "e_zorp_head",
+   "name": "Hat That Hides Nothing",
+   "kind": "gear",
+   "slot": "head",
+   "rarity": "unhinged",
+   "icon": "e_zorp_head",
+   "flavor": "It hides nothing. Greg believes otherwise.",
+   "stats": {
+    "defense": 19,
+    "speed": 8,
+    "luck": 17
+   },
+   "era": "zorp",
+   "set": "set_zorp",
+   "place": "closet",
+   "sell": 4000
+  },
+  "e_zorp_body": {
+   "id": "e_zorp_body",
+   "name": "Fake Moustache, Upside Down",
+   "kind": "gear",
+   "slot": "body",
+   "rarity": "unhinged",
+   "icon": "e_zorp_body",
+   "flavor": "Humans wear these. Greg has researched it.",
+   "stats": {
+    "defense": 26,
+    "health": 17
+   },
+   "era": "zorp",
+   "set": "set_zorp",
+   "place": "closet",
+   "sell": 4000
+  },
+  "e_zorp_feet": {
+   "id": "e_zorp_feet",
+   "name": "Two Left Human Shoes",
+   "kind": "gear",
+   "slot": "feet",
+   "rarity": "unhinged",
+   "icon": "e_zorp_feet",
+   "flavor": "Two left. Greg says this is the fashion.",
+   "stats": {
+    "attack": 6,
+    "speed": 27,
+    "luck": 11
+   },
+   "era": "zorp",
+   "set": "set_zorp",
+   "place": "closet",
    "sell": 4000
   },
   "e_vesper_weapon": {

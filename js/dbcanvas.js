@@ -277,7 +277,10 @@
       if (b.head) { b.head.offset.rotation = M.tilt; b.head.invalidUpdate(); }
       if (b.body) { b.body.offset.scaleY = 1 + Math.sin(M.breath) * 0.011; b.body.offset.scaleX = 1 - Math.sin(M.breath) * 0.004; b.body.invalidUpdate(); }
       if (b.tail) { b.tail.offset.rotation = Math.sin(M.tail) * 0.05; b.tail.invalidUpdate(); }
-      b.lids.forEach(l => { l.offset.scaleY = 1 + M.lid * 95; l.invalidUpdate(); });
+      // Closing the eyes for a doze. The lid bone is bound squashed flat (0.01) and an animation opens it by
+      // scaling x100, so a plain offset multiplied on top of a blink and shot the lid off the screen. Take the
+      // larger of the two instead: whatever the animation is already doing wins, and the doze only adds to it.
+      b.lids.forEach(l => { const ap = l.animationPose.scaleY || 1; l.offset.scaleY = Math.max(1, (0.01 + 0.99 * M.lid) / (0.01 * ap)); l.invalidUpdate(); });
     }
     // look toward a point on the page (a crew member who is talking) for a moment
     lookAt(clientX, clientY, sec) { const M = this.mood, hm = this.mb && this.mb.head && this.mb.head.globalTransformMatrix; if (!M || !this.cv || !this.at) return;
