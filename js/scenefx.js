@@ -4,7 +4,7 @@
 (function () {
   const FX = {
     // water: [x0,y0,x1,y1] of the open water, with the fishing spot inside it
-    dock: { water: [.42, .64, 1, .95], bob: [.72, .79], tint: [120, 220, 205], dust: 0 },
+    dock: { water: [.42, .64, 1, .95], bob: [.79, .8], tint: [120, 220, 205], dust: 0 },
     bondi: { water: [.52, .55, 1, .95], bob: [.78, .71], tint: [110, 215, 240] },
     fjord: { water: [.63, .46, .79, .58], bob: [.71, .52], tint: [120, 200, 235], fire: [[.26, .45, 26]], snow: 1 },
     speakeasy: { lamp: [[.79, .3, 40]], dust: 1 },
@@ -18,7 +18,7 @@
     constructor(host, place, rect) {
       this.place = place; this.cfg = FX[place] || {}; this.rect = rect; this.t = 0; this.rings = []; this.dead = false;
       const c = this.cv = document.createElement('canvas');
-      c.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1';
+      c.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0';
       host.insertBefore(c, host.firstChild); this.host = host;
       const t = this.topcv = document.createElement('canvas');   // the rod line goes over everybody
       t.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:7'; host.appendChild(t);

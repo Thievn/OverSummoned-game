@@ -1,7 +1,7 @@
 // Dashboard mockup: fake numbers, but the live bits are live — the rigs move, the bars fill,
 // the sparkline is drawn, and the haul timer runs. Nothing here touches a save.
 (function () {
-  const $ = id => document.getElementById(id), V = '?v=1126g';
+  const $ = id => document.getElementById(id), V = '?v=1126h';
 
   // ---- the desk: Smudge at work with a crew of three, on the scene he is working
   const scene = $('scene'), crew = $('crew');
@@ -22,7 +22,7 @@
       cast.push({ id: m.id, p, x: m.q.at[0], y: m.q.at[1], tall: m.q.h, wide: m.q.h * e.size[0] / e.size[1] });
     });
     fx.rod(OS.Stage.rodTip(POSE, lay.smudge.at, lay.smudge.h, rig));
-    if (lay.crate) fx.crate([lay.smudge.at[0] - lay.smudge.h * .08, lay.smudge.at[1] + lay.smudge.h * .03], lay.smudge.h * .55);
+    if (lay.crate) fx.crate([lay.smudge.at[0] - lay.smudge.h * .04, lay.smudge.at[1] - lay.smudge.h * .05], lay.smudge.h * .6);
   }
   fetch('/data/rig.json' + V).then(r => r.json()).then(j => { rig = j; placeRigs(); });
   // the crew talk, one at a time, in a proper bubble
