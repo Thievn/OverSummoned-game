@@ -340,3 +340,35 @@ yet. To be planned after the quick fixes, the beta invites and the dashboard
 redesign. Open questions: where it lives (expeditions are the natural home), what
 it costs per player per day, and how generated text is kept inside the game's
 voice and the 13+ default.
+
+## Two plans: Opus builds, Fable writes
+
+Dean switches models by label: "Read PLAN.md and do O3", "Read PLAN.md and do F4".
+Opus owns code, numbers and pipelines (`js/`, `rules/`, `supabase/`, `tools/`). Fable owns what a player reads.
+Every Opus step that needs writing ships with stand-in text in a data file and lists it under "Writing needed" below;
+Fable fills in text fields only and never changes the engine or the shape of the data.
+
+Opus plan
+- O1 Pacing and math: run `rules/sim.py`, show a day 1 / 7 / 30 table to Dean BEFORE changing live numbers.
+- O2 Arrivals and bag: search, sort, filters; no fixed "36" in the game screens.
+- O3 Raid engine: rooms, choices, potion slots, slow narration, recovery timer. Text in `data/raids.json` (stand-ins).
+- O4 Expedition engine and hero journal, same story player. Text in `data/expeditions.json` (stand-ins).
+- O5 Roster to 50, the build: art through the Grok queue only, cut, rig, MOUTH, gear stats, pages, sitemap. Needs F3.
+- O6 Loot and gold: era sets 5 pieces to 3, gold sinks, card frames. Names as stand-ins.
+- O7 Smudge's wardrobe and the desktop pet: later.
+
+Fable plan
+- F1 Site copy pass: remove "36" from index.html (meta, JSON-LD, FAQ), heroes/index.html, llms.txt, build_pages/seo.
+- F2 The 14 arrivals on paper: name, hook, bio, three lost items, crew lines, Grok art prompt. Dean approves the list before any art.
+- F3 Arrival sheets, final: the approved 14 written into the data files Opus reads.
+- F4 Raid writing: every boss, rooms, choices, outcomes, potion names. Needs O3.
+- F5 Expedition stories: beats per place, lines that change with who was sent. Needs O4.
+- F6 Loot and gold names. Needs O6.
+
+Order to switch in: Fable F1+F2 · Opus O1, O2 · Opus O3 · Fable F4 (+F3 once approved) · Opus O4 · Fable F5 · Opus O5+O6 · Fable F6 and a read-through.
+
+Writing needed (Opus adds a line here when a step leaves stand-in text; Fable removes it when done)
+- (nothing yet)
+
+Email: both letters live in `supabase/functions/{waitlist,beta}/mail.ts` (identical copies; change both and redeploy both).
+Header art is `assets/mail/header.png`. Sending is Resend from hello@oversummoned.com. Admin, Beta tab, "Send me both emails" tests them.
