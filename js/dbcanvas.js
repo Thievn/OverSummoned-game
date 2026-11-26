@@ -102,6 +102,7 @@
   function draw(ctx, display, x, y, scale, opt) {
     const arm = display.armature; if (!arm) return;
     ctx.save(); ctx.translate(x, y); ctx.scale(opt && opt.flip ? -scale : scale, scale);
+    if (opt && opt.before) opt.before(ctx);
     for (const s of arm.getSlots()) {
       const td = s._textureData; if (!s.shown || s._displayIndex < 0 || !td || s.alpha <= 0.003) continue;
       const img = td.parent.image, r = td.region; if (!img) continue;
@@ -148,12 +149,18 @@
   // ------------------------------------------------------------------ the wardrobe
   // Where things sit on Smudge in each pose, in picture pixels: [x, y, tilt in degrees, width]. head_top is the top of the hood,
   // face is between the eyes. A new hat or pair of glasses is ONE picture drawn to the template in art2/slots/, never a cut.
+  // where each worn thing sits, in the pose drawing's own pixels: [x, y, tilt, width, view].
+  // head_top and face ride the head bone, so they turn and nod with it; back rides the body.
   const ANCHOR = {
-    stamp: { foot: [300, 520], head_top: [262, 30, -8, 118], face: [304, 137, 5, 118, 'front'] },
-    fish:  { foot: [250, 355], head_top: [200, 24, 8, 92],   face: [204, 80, 4, 96, 'side'] },
-    pick:  { foot: [257, 522], head_top: [305, 34, 6, 98],   face: [340, 115, 4, 96, 'side'] },
-    dig:   { foot: [300, 535], head_top: [312, 22, 10, 98],  face: [330, 101, 4, 96, 'side'] },
+    // back takes a 5th value: 1 draws it over him, 0 behind. A pack is worn outside the cloak, so from
+    // the side it goes over; face on, his own body hides it and it sits behind, peeking past his shoulders.
+    stamp: { foot: [300, 520], head_top: [258, 38, -8, 150], face: [304, 141, 5, 126, 'front'], back: [300, 150, 0, 262, 0] },
+    fish:  { foot: [250, 355], head_top: [196, 30, 8, 122],  face: [204, 82, 4, 104, 'side'],   back: [104, 236, 4, 150, 1] },
+    pick:  { foot: [257, 522], head_top: [301, 42, 6, 128],  face: [340, 117, 4, 104, 'side'],  back: [138, 250, -4, 160, 1] },
+    dig:   { foot: [300, 535], head_top: [308, 30, 10, 128], face: [330, 103, 4, 104, 'side'],  back: [132, 242, 8, 166, 1] },
   };
+  const SLOTS = { head_top: { bone: 'head', over: 1 }, face: { bone: 'head', over: 1 }, back: { bone: 'body', over: 0 } };
+  const SLOTK = Object.keys(SLOTS);
   // fur and cloak colours: every pixel of that colour family is moved to the new colour, keeping its light and shade
   function hsl(r, g, b) { r /= 255; g /= 255; b /= 255; const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2; if (mx === mn) return [0, 0, l];
     const d = mx - mn, s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); const h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; return [h * 60, s, l]; }
@@ -221,31 +228,65 @@
         if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
         const ox = this.px ? this.px[0] : w * this.fx, oy = this.px ? this.px[1] : h * this.fy; this.at = [ox, oy];
-        draw(ctx, this.p, ox, oy, this.scale, { bones: this.bones, flip: this.flip, after: this.worn ? c => this.paintWear(c) : null });
+        draw(ctx, this.p, ox, oy, this.scale, { bones: this.bones, flip: this.flip,
+          before: this.worn ? c => this.paintWear(c, 0) : null, after: this.worn ? c => this.paintWear(c, 1) : null });
         this.raf = requestAnimationFrame(frame);
       };
       this.raf = requestAnimationFrame(frame);
     }
     // ---------------- wardrobe: dress({ head_top: url, face: url, fur: '#hex', cloak: '#hex' }); null takes a thing off
     bindWear() {
-      const A = ANCHOR[this.pose], head = this.p.armature.getBone('head'); this.wearAt = {}; this.worn = null; if (!A || !head || this.stem.indexOf('hero_') === 0) return;
-      const m = head.globalTransformMatrix, det = m.a * m.d - m.b * m.c, ang0 = Math.atan2(m.b, m.a), sc0 = Math.hypot(m.a, m.b);
-      ['head_top', 'face'].forEach(k => { const v = A[k]; if (!v) return; const ax = v[0] - A.foot[0], ay = v[1] - A.foot[1], dx = ax - m.tx, dy = ay - m.ty;
-        this.wearAt[k] = { lx: (m.d * dx - m.c * dy) / det, ly: (-m.b * dx + m.a * dy) / det, rot: v[2] * Math.PI / 180 - ang0, w: v[3] / sc0, view: v[4] || '' }; });
-      this.head = head;
+      const A = ANCHOR[this.pose]; this.wearAt = {}; this.bone = {}; this.worn = null;
+      if (!A || this.stem.indexOf('hero_') === 0) return;
+      SLOTK.forEach(k => {
+        const v = A[k], bone = this.p.armature.getBone(SLOTS[k].bone); if (!v || !bone) return;
+        // the anchor is given in the drawing's pixels; store it in the bone's own frame so the item
+        // travels with that bone for free, however the animation moves it
+        const m = bone.globalTransformMatrix, det = m.a * m.d - m.b * m.c, ang0 = Math.atan2(m.b, m.a), sc0 = Math.hypot(m.a, m.b);
+        const dx = (v[0] - A.foot[0]) - m.tx, dy = (v[1] - A.foot[1]) - m.ty;
+        this.wearAt[k] = { lx: (m.d * dx - m.c * dy) / det, ly: (-m.b * dx + m.a * dy) / det,
+                           rot: v[2] * Math.PI / 180 - ang0, w: v[3] / sc0,
+                           view: typeof v[4] === 'string' ? v[4] : '',
+                           over: typeof v[4] === 'number' ? v[4] : SLOTS[k].over };
+        this.bone[k] = bone;
+      });
+      this.head = this.p.armature.getBone('head');
     }
+    // dress({ head_top, face, back, fur, cloak, cloaked })
+    //   a slot takes a url, or { front, side } by view; null takes the thing off.
+    //   '{pose}' in a url is filled in, so one line covers an item drawn once per pose.
+    //   cloaked: false strips the cloak off the drawing itself and leaves the otter underneath.
     async dress(o) {
-      const w = this.worn || {}; this.dressing = o;
-      for (const k of ['head_top', 'face']) if (k in o) { if (!o[k]) delete w[k]; else { const u = typeof o[k] === 'string' ? o[k] : o[k][this.wearAt[k] && this.wearAt[k].view] || o[k].front; const im = await pic(u); if (im) w[k] = im; } }
-      if (('fur' in o || 'cloak' in o) && this.atlas) { this.tint = Object.assign(this.tint || {}, { fur: 'fur' in o ? o.fur : (this.tint || {}).fur, cloak: 'cloak' in o ? o.cloak : (this.tint || {}).cloak });
-        const mask = ANCHOR[this.pose] && this.stem.indexOf('smudge_') === 0 ? await pic(this.base + this.stem + '_mask.webp' + this.ver) : null; const c = recolor(this.img0, this.tint.fur, this.tint.cloak, mask); (Array.isArray(this.atlas) ? this.atlas : [this.atlas]).forEach(a => a.image = c); }
+      const w = this.worn || {}; this.dressing = Object.assign(this.dressing || {}, o);
+      for (const k of SLOTK) if (k in o) {
+        if (!o[k]) { delete w[k]; continue; }
+        const q = this.wearAt[k] || {};
+        let u = typeof o[k] === 'string' ? o[k] : (o[k][q.view] || o[k].front);
+        if (u) u = u.replace('{pose}', this.pose);
+        const im = u && await pic(u); if (im) w[k] = im;
+      }
+      if (('fur' in o || 'cloak' in o || 'cloaked' in o) && this.atlas) {
+        this.tint = Object.assign(this.tint || {}, { fur: 'fur' in o ? o.fur : (this.tint || {}).fur, cloak: 'cloak' in o ? o.cloak : (this.tint || {}).cloak });
+        if ('cloaked' in o) this.tint.cloaked = o.cloaked !== false;
+        const mine = ANCHOR[this.pose] && this.stem.indexOf('smudge_') === 0;
+        const bare = mine && this.tint.cloaked === false;
+        const src = bare ? (await pic(this.base + this.stem + '_nocloak.webp' + this.ver)) || this.img0 : this.img0;
+        const mask = mine ? await pic(this.base + this.stem + '_mask.webp' + this.ver) : null;
+        const c = recolor(src, this.tint.fur, bare ? null : this.tint.cloak, mask);
+        (Array.isArray(this.atlas) ? this.atlas : [this.atlas]).forEach(a => a.image = c);
+      }
       this.worn = Object.keys(w).length ? w : null; return this;
     }
-    paintWear(ctx) {
-      const m = this.head && this.head.globalTransformMatrix; if (!m) return;
-      for (const k of ['head_top', 'face']) { const im = this.worn[k], q = this.wearAt[k]; if (!im || !q) continue;
-        const x = m.a * q.lx + m.c * q.ly + m.tx, y = m.b * q.lx + m.d * q.ly + m.ty, sc = Math.hypot(m.a, m.b), W = q.w * sc, H = W * im.height / im.width;
-        ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(m.b, m.a) + q.rot); ctx.drawImage(im, -W / 2, -H / 2, W, H); ctx.restore(); }
+    paintWear(ctx, over) {
+      if (!this.worn) return;
+      for (const k of SLOTK) {
+        const im = this.worn[k], q = this.wearAt[k], bone = this.bone[k];
+        if (!im || !q || !bone || !!q.over !== !!over) continue;
+        const m = bone.globalTransformMatrix;
+        const x = m.a * q.lx + m.c * q.ly + m.tx, y = m.b * q.lx + m.d * q.ly + m.ty;
+        const sc = Math.hypot(m.a, m.b), W = q.w * sc, H = W * im.height / im.width;
+        ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(m.b, m.a) + q.rot); ctx.drawImage(im, -W / 2, -H / 2, W, H); ctx.restore();
+      }
     }
     // ---------------- mind
     bindMind() {

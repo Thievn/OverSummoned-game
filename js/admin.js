@@ -104,9 +104,17 @@
     if (error || !data || !data.ok) { toast('Could not reach the notes.'); return false; }
     RIGN = {}; (data.notes || []).forEach(n => RIGN[n.hero] = n); return true;
   }
-  // ---- Smudge's wardrobe proof: every pose, as now and in three test looks
-  const WEAR = '/assets/v2/wear/', GLASSES = { front: WEAR + 'glasses_front.webp', side: WEAR + 'glasses_side.webp' };
-  const LOOKS = [['As now', {}], ['Crown and glasses', { head_top: WEAR + 'crown.webp', face: GLASSES }], ['Ginger, red cloak', { fur: '#c2652a', cloak: '#9b2335' }], ['Grey, purple cloak, glasses', { fur: '#8d8f99', cloak: '#5b3c8c', face: GLASSES }]];
+  // ---- Smudge's wardrobe proof: every pose, as now and in five test looks.
+  // '{pose}' is filled in per puppet, so each item is the copy drawn for that pose's own angle.
+  const WEAR = '/assets/v2/wear/', CROWN = WEAR + 'crown_{pose}.webp', GLASSES = WEAR + 'glasses_{pose}.webp', JET = WEAR + 'jetpack_{pose}.webp';
+  const LOOKS = [
+    ['As now', {}],
+    ['Crown and glasses', { head_top: CROWN, face: GLASSES }],
+    ['Jetpack', { back: JET }],
+    ['Cloak off', { cloaked: false }],
+    ['Ginger, red cloak', { fur: '#c2652a', cloak: '#9b2335' }],
+    ['Grey, purple cloak, glasses', { fur: '#8d8f99', cloak: '#5b3c8c', face: GLASSES }],
+  ];
   let WPUPS = [];
   function renderWardrobe() {
     const g = $('w-grid'); WPUPS.forEach(p => p.destroy()); WPUPS = []; g.innerHTML = '';
