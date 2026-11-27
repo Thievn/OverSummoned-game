@@ -13930,7 +13930,8 @@
   ],
   "practice": {
    "bracket": "silver",
-   "paid_per_day": 3,
+   "paid_per_day": 5,
+   "repeat_share": 0.2,
    "gold": 40,
    "min_deck": 8
   },
@@ -14112,14 +14113,14 @@
      "stat": "health",
      "x": 5
     },
-    "tag": "Back on top, +5 Hea",
+    "tag": "Comes back",
     "icon": "\u21ba"
    },
    "gaius": {
     "name": "Hold the Line",
     "text": "Sap and burn do nothing to your side this turn.",
     "fx": "guard",
-    "tag": "Blocks sap",
+    "tag": "Shield",
     "icon": "\u26e8"
    },
    "napoleon": {
@@ -14128,7 +14129,7 @@
     "on": "behind",
     "fx": "boost",
     "x": 8,
-    "tag": "+8 when behind",
+    "tag": "+8 if behind",
     "icon": "+"
    },
    "gorm": {
@@ -14136,7 +14137,7 @@
     "text": "+3 each time he has been played before.",
     "fx": "ramp",
     "x": 3,
-    "tag": "+3 each time",
+    "tag": "+3 per play",
     "icon": "\u25b2"
    },
    "ajolote": {
@@ -14144,14 +14145,14 @@
     "text": "Clears burn from your side, and your other cards +2.",
     "fx": "mend",
     "x": 2,
-    "tag": "Clears burn, +2",
+    "tag": "Mend, +2",
     "icon": "\u271a"
    },
    "doug": {
     "name": "Unbothered",
     "text": "Sap and burn do nothing to your side this turn.",
     "fx": "guard",
-    "tag": "Blocks sap",
+    "tag": "Shield",
     "icon": "\u26e8"
    },
    "bjorn": {
@@ -14160,7 +14161,7 @@
     "fx": "boost",
     "stat": "health",
     "x": 6,
-    "tag": "+6 on Hea",
+    "tag": "+6 Health",
     "icon": "+"
    },
    "tut": {
@@ -14169,7 +14170,7 @@
     "fx": "burn",
     "x": 4,
     "n": 2,
-    "tag": "Burn 4 x2",
+    "tag": "Burn 4",
     "icon": "\u2668"
    },
    "brokk": {
@@ -14178,7 +14179,7 @@
     "fx": "boost",
     "stat": "attack",
     "x": 5,
-    "tag": "+5 on Att",
+    "tag": "+5 Attack",
     "icon": "+"
    },
    "blackbear": {
@@ -14186,7 +14187,7 @@
     "text": "Their best card this turn -8.",
     "fx": "sap",
     "x": 8,
-    "tag": "Their best -8",
+    "tag": "Sap 8",
     "icon": "\u2702"
    },
    "astrid": {
@@ -14198,7 +14199,7 @@
      "oldworld"
     ],
     "x": 4,
-    "tag": "Old World +4",
+    "tag": "Olden +4",
     "icon": "\u2638"
    },
    "florida": {
@@ -14207,7 +14208,7 @@
     "on": "ahead",
     "fx": "boost",
     "x": 10,
-    "tag": "+10 when ahead",
+    "tag": "+10 if ahead",
     "icon": "+"
    },
    "madjack": {
@@ -14216,7 +14217,7 @@
     "fx": "boost",
     "stat": "attack",
     "x": 12,
-    "tag": "+12 on Att",
+    "tag": "+12 Attack",
     "icon": "+"
    },
    "roxy": {
@@ -14224,7 +14225,7 @@
     "text": "Their best card this turn -6.",
     "fx": "sap",
     "x": 6,
-    "tag": "Their best -6",
+    "tag": "Sap 6",
     "icon": "\u2702"
    },
    "max": {
@@ -14232,7 +14233,7 @@
     "text": "+4 each time he has been played before.",
     "fx": "ramp",
     "x": 4,
-    "tag": "+4 each time",
+    "tag": "+4 per play",
     "icon": "\u25b2"
    },
    "dusty": {
@@ -14241,7 +14242,7 @@
     "fx": "burn",
     "x": 3,
     "n": 2,
-    "tag": "Burn 3 x2",
+    "tag": "Burn 3",
     "icon": "\u2668"
    },
    "gladius": {
@@ -14270,7 +14271,7 @@
     "fx": "boost",
     "stat": "speed",
     "x": 4,
-    "tag": "+4 on Spe",
+    "tag": "+4 Speed",
     "icon": "+"
    },
    "emu": {
@@ -14286,7 +14287,7 @@
     "text": "Your other cards this turn +2.",
     "fx": "lift",
     "x": 2,
-    "tag": "Others +2",
+    "tag": "Allies +2",
     "icon": "\u2191"
    },
    "jazzmin": {
@@ -14304,7 +14305,7 @@
     "on": "behind",
     "fx": "boost",
     "x": 5,
-    "tag": "+5 when behind",
+    "tag": "+5 if behind",
     "icon": "+"
    },
    "maya": {
@@ -14312,7 +14313,7 @@
     "text": "Clears burn from your side, and your other cards +3.",
     "fx": "mend",
     "x": 3,
-    "tag": "Clears burn, +3",
+    "tag": "Mend, +3",
     "icon": "\u271a"
    },
    "edith": {
@@ -14320,7 +14321,7 @@
     "text": "Your other cards this turn +2.",
     "fx": "lift",
     "x": 2,
-    "tag": "Others +2",
+    "tag": "Allies +2",
     "icon": "\u2191"
    },
    "jacko": {
@@ -14328,7 +14329,7 @@
     "text": "Clears burn from your side, and your other cards +2.",
     "fx": "mend",
     "x": 2,
-    "tag": "Clears burn, +2",
+    "tag": "Mend, +2",
     "icon": "\u271a"
    },
    "rex": {
@@ -14348,14 +14349,14 @@
     "text": "Your other cards this turn +3.",
     "fx": "lift",
     "x": 3,
-    "tag": "Others +3",
+    "tag": "Allies +3",
     "icon": "\u2191"
    },
    "beep": {
     "name": "Recalibrate",
     "text": "Counts its best number, whatever the call.",
     "fx": "twist",
-    "tag": "Counts its best",
+    "tag": "Best stat",
     "icon": "\u2731"
    },
    "vincenzo": {
@@ -14363,7 +14364,7 @@
     "text": "Their dearest card costs 2 more next turn.",
     "fx": "tax",
     "x": 2,
-    "tag": "Costs them +2",
+    "tag": "Tax +2",
     "icon": "\u00d7"
    },
    "lola": {
@@ -14371,7 +14372,7 @@
     "text": "Their best card this turn -6.",
     "fx": "sap",
     "x": 6,
-    "tag": "Their best -6",
+    "tag": "Sap 6",
     "icon": "\u2702"
    },
    "sable": {
@@ -14379,14 +14380,14 @@
     "text": "One card in their hand cannot be played next turn.",
     "fx": "lock",
     "n": 1,
-    "tag": "Locks a card",
+    "tag": "Lock 1",
     "icon": "\u26bf"
    },
    "mona": {
     "name": "Blend In",
     "text": "Counts its best number, whatever the call.",
     "fx": "twist",
-    "tag": "Counts its best",
+    "tag": "Best stat",
     "icon": "\u2731"
    },
    "sterling": {
@@ -14396,7 +14397,7 @@
     "n": 2,
     "stat": "speed",
     "x": 3,
-    "tag": "Peek, +3 on Spe",
+    "tag": "Peek, +3",
     "icon": "\u25c9"
    },
    "selene": {
@@ -14404,7 +14405,7 @@
     "text": "Two cards in their hand cannot be played next turn.",
     "fx": "lock",
     "n": 2,
-    "tag": "Locks 2 cards",
+    "tag": "Lock 2",
     "icon": "\u26bf"
    },
    "albrecht": {
@@ -14413,14 +14414,14 @@
     "fx": "burn",
     "x": 3,
     "n": 2,
-    "tag": "Burn 3 x2",
+    "tag": "Burn 3",
     "icon": "\u2668"
    },
    "morwenna": {
     "name": "Moth to Flame",
     "text": "Counts its best number, whatever the call.",
     "fx": "twist",
-    "tag": "Counts its best",
+    "tag": "Best stat",
     "icon": "\u2731"
    },
    "raspawtin": {
@@ -14429,7 +14430,7 @@
     "on": "behind",
     "fx": "boost",
     "x": 10,
-    "tag": "+10 when behind",
+    "tag": "+10 if behind",
     "icon": "+"
    },
    "vesper": {
@@ -14437,7 +14438,7 @@
     "text": "Their best card this turn -5.",
     "fx": "sap",
     "x": 5,
-    "tag": "Their best -5",
+    "tag": "Sap 5",
     "icon": "\u2702"
    },
    "hootsworth": {
@@ -14446,7 +14447,7 @@
     "fx": "peek",
     "n": 2,
     "x": 3,
-    "tag": "Peek, others +3",
+    "tag": "Peek, +3",
     "icon": "\u25c9"
    },
    "quack": {
@@ -14454,7 +14455,7 @@
     "text": "Their dearest card costs 1 more next turn.",
     "fx": "tax",
     "x": 1,
-    "tag": "Costs them +1",
+    "tag": "Tax +1",
     "icon": "\u00d7"
    },
    "joost": {
@@ -14480,7 +14481,7 @@
      "stat": "luck",
      "x": 5
     },
-    "tag": "Back on top, +5 Luc",
+    "tag": "Comes back",
     "icon": "\u21ba"
    },
    "eagleton": {
@@ -14494,7 +14495,7 @@
     "name": "Not From Here",
     "text": "Counts its best number, whatever the call.",
     "fx": "twist",
-    "tag": "Counts its best",
+    "tag": "Best stat",
     "icon": "\u2731"
    },
    "slapton": {
@@ -14514,7 +14515,7 @@
     "text": "Your other cards this turn +4.",
     "fx": "lift",
     "x": 4,
-    "tag": "Others +4",
+    "tag": "Allies +4",
     "icon": "\u2191"
    },
    "bella": {
@@ -14722,7 +14723,7 @@
     "level": 3,
     "train": 6,
     "ai": 0,
-    "gold": 60,
+    "gold": 150,
     "xp": 10
    },
    {
@@ -14731,7 +14732,7 @@
     "level": 5,
     "train": 16,
     "ai": 1,
-    "gold": 150,
+    "gold": 450,
     "xp": 25
    },
    {
@@ -14740,7 +14741,7 @@
     "level": 7,
     "train": 26,
     "ai": 2,
-    "gold": 400,
+    "gold": 1200,
     "xp": 60
    }
   ],

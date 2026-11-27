@@ -143,26 +143,27 @@ SHORT = {"albrecht": "Albrecht", "blackbear": "Blackbear", "emu": "Emu", "troffe
 
 # the two or three words that go on the card face. Built from the effect, so a new Move gets one for free.
 def tag_for(hid, m, stats):
+    """One short line, 12 characters at most, whole words only: it has to fit a small card without wrapping."""
     fx, x, n = m["fx"], m.get("x"), m.get("n")
-    st = (m.get("stat") or "")[:3].title()
-    if fx == "boost":   return (f"+{x} on {st}" if m.get("stat") else (f"+{x} when {m['on']}" if m.get("on") in ("ahead", "behind") else f"+{x} always"))
-    if fx == "ramp":    return f"+{x} each time"
+    st = (m.get("stat") or "").title()
+    if fx == "boost":   return f"+{x} {st}" if m.get("stat") else (f"+{x} if {m['on']}" if m.get("on") in ("ahead", "behind") else f"+{x}")
+    if fx == "ramp":    return f"+{x} per play"
     if fx == "rally":   return f"{GROUP_WORD[m['group']]} +{x}"
-    if fx == "lift":    return f"Others +{x}"
-    if fx == "mend":    return f"Clears burn, +{x}"
-    if fx == "guard":   return "Blocks sap"
-    if fx == "sap":     return f"Their best -{x}"
-    if fx == "burn":    return f"Burn {x} x{n}"
-    if fx == "lock":    return (f"Locks {n} cards" if n and n > 1 else "Locks a card")
+    if fx == "lift":    return f"Allies +{x}"
+    if fx == "mend":    return f"Mend, +{x}"
+    if fx == "guard":   return "Shield"
+    if fx == "sap":     return f"Sap {x}"
+    if fx == "burn":    return f"Burn {x}"
+    if fx == "lock":    return f"Lock {n or 1}"
     if fx == "spark":   return f"+{x} energy"
-    if fx == "tax":     return f"Costs them +{x}"
-    if fx == "twist":   return "Counts its best"
-    if fx == "peek":    return (f"Peek, +{x} on {st}" if m.get("stat") else f"Peek, others +{x}")
+    if fx == "tax":     return f"Tax +{x}"
+    if fx == "twist":   return "Best stat"
+    if fx == "peek":    return f"Peek, +{x}"
     if fx == "gamble":  return "Lucky x1.5"
-    if fx == "top":     return ("Back on top, +%d %s" % (m["plus"]["x"], m["plus"]["stat"][:3].title())) if m.get("plus") else "Back on top"
+    if fx == "top":     return "Comes back"
     return ""
 
-GROUP_WORD = {("age", "ancient"): "Ancient", ("age", "oldworld"): "Old World", ("age", "steam"): "Sail", ("age", "wartime"): "Wartime",
+GROUP_WORD = {("age", "ancient"): "Ancient", ("age", "oldworld"): "Olden", ("age", "steam"): "Sail", ("age", "wartime"): "Wartime",
               ("age", "neon"): "Neon", ("age", "today"): "Today", ("kin", "dogs"): "Dogs", ("kin", "cats"): "Cats", ("kin", "birds"): "Birds",
               ("kin", "small"): "Small", ("kin", "weasels"): "Weasels", ("kin", "hoofed"): "Hoofed", ("kin", "water"): "Water", ("kin", "odd"): "Odd"}
 
@@ -204,9 +205,9 @@ RIVALS = [
 ]
 # difficulty: how the rival's own cards are levelled and trained, and what the first win pays
 LEVELS = [
- dict(id="easy",    name="Easy",    level=3, train=6,  ai=0, gold=60,  xp=10),
- dict(id="normal",  name="Normal",  level=5, train=16, ai=1, gold=150, xp=25),
- dict(id="careful", name="Careful", level=7, train=26, ai=2, gold=400, xp=60),
+ dict(id="easy",    name="Easy",    level=3, train=6,  ai=0, gold=150,  xp=10),
+ dict(id="normal",  name="Normal",  level=5, train=16, ai=1, gold=450,  xp=25),
+ dict(id="careful", name="Careful", level=7, train=26, ai=2, gold=1200, xp=60),
 ]
 # a tier-2 rival pays double on a first win, a tier-3 one triple
 TIER_PAY = [1, 1, 2, 3]
@@ -242,7 +243,7 @@ DUEL = dict(
         dict(id="gold", name="Gold", level=7, train=40, rating=1300),
         dict(id="open", name="Open", level=10, train=60, rating=1500),
     ],
-    practice=dict(bracket="silver", paid_per_day=3, gold=40, min_deck=8),   # Practice opens at 8 heroes (Dean, 27 Nov); ranked keeps `deck`
+    practice=dict(bracket="silver", paid_per_day=5, repeat_share=0.2, gold=40, min_deck=8),   # a repeat win pays a fifth of that rival's first-win prize, five times a day;   # Practice opens at 8 heroes (Dean, 27 Nov); ranked keeps `deck`
     marks=dict(max=5, regen_minutes=30),
     swap=2,                  # cards you may put back before the first turn
     swap_floor=9.0,          # the house puts back a card worth less than this per energy (typical is 9 to 11)

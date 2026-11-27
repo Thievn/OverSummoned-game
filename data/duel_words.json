@@ -66,8 +66,8 @@
   "The house wins this one.",
   "Lost. Smudge has already shuffled for the next."
  ],
- "paid": "+{n} gold. Practice pays for the first {max} wins a day.",
- "unpaid": "Practice pays for the first {max} wins a day. That was for the joy of it.",
+ "paid": "+{n} gold. The first {max} repeat wins a day pay.",
+ "unpaid": "No more paid wins today. That one was for the joy of it.",
  "cant_energy": "Not enough energy for {you}.",
  "cant_three": "Three cards a turn at most.",
  "cant_lock": "{you} is locked this turn.",

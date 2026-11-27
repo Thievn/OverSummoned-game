@@ -67,7 +67,7 @@
         <span class="drname">${r.name}</span><span class="drplace">${place.name || ''}</span>
         <span class="drtxt">${r.text}</span>
         <span class="drpips">${D().levels.map((L, i) => `<i class="${beat.includes(i) ? 'on' : ''}" title="${L.name}"></i>`).join('')}</span>
-        <span class="drgo">${done ? 'Beaten \u00b7 play again' : `First win: ${OSnum(payFor(r, D().levels[lvl]))} gold`}</span>`;
+        <span class="drgo">${done ? `Beaten \u00b7 ${OSnum(repeatFor(r, D().levels[lvl]))} gold a win` : `First win: ${OSnum(payFor(r, D().levels[lvl]))} gold`}</span>`;
       c.onclick = () => { if (d.deck.length < need) return X.toast(`Pick ${need - d.deck.length} more card${need - d.deck.length > 1 ? 's' : ''} first.`); open(false, r.id); };
       grid.appendChild(c);
     });
@@ -138,6 +138,7 @@
   }
   const rivalOf = id => D().rivals.find(r => r.id === id) || D().rivals[0];
   const payFor = (r, L) => Math.round(L.gold * ((D().tier_pay || [])[r.tier] || 1));
+  const repeatFor = (r, L) => Math.max(D().practice.gold, Math.round(payFor(r, L) * (D().practice.repeat_share || 0.2) / 10) * 10);
   const xpFor = (r, L) => Math.round(L.xp * ((D().tier_pay || [])[r.tier] || 1));
 
   // ------------------------------------------------------------------ cards
@@ -440,7 +441,7 @@
     let pay = 0, lines = [];
     if (won) {
       if (firstWin) { const g = payFor(rival, L); beat.push(lvl); pay += g; lines.push(`First win against ${rival.name} on ${L.name}: <b>${OSnum(g)} gold</b>.`); }
-      else if (d.paid < P.paid_per_day) { d.paid++; pay += P.gold; lines.push(fill(W.paid, { n: P.gold, max: P.paid_per_day })); }
+      else if (d.paid < P.paid_per_day) { const g = repeatFor(rival, L); d.paid++; pay += g; lines.push(fill(W.paid, { n: OSnum(g), max: P.paid_per_day })); }
       else lines.push(fill(W.unpaid, { max: P.paid_per_day }));
       d.xp = (d.xp || 0) + xpFor(rival, L);
     }

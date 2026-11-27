@@ -324,3 +324,7 @@ Why O9b first: it costs nothing in art and fixes "I had to stop and read every c
 **Art queue lesson worth keeping:** ten art jobs fired at once mostly stall, because they all commit to the same branch and collide. Three at a time, with a pause between, worked. If a job sits at `running` for more than a few minutes it is dead: set it back to `queued` and POST it again.
 
 **Still to do here:** the trail is drawn flat (no wet-ink texture, drips or flood on a round win), card backs and table felts are named in the duelist road but not built, and the duel words are still stand-ins for F7.
+
+### 27 Nov, after Dean's second look (Fable)
+- Card tags rewritten to one line of 12 characters or fewer, whole words only ("+5 Attack", "Sap 6", "Allies +2", "Comes back", "Shield"), no wrapping; deck-builder cards are wider. The full sentence is still on tap.
+- Duel gold roughly tripled, because it looked small next to raids: first wins are 150 / 450 / 1,200 by difficulty, times 1, 2 or 3 by rival tier (so 150 up to 3,600). A repeat win pays a fifth of that rival's first-win prize, five times a day.
