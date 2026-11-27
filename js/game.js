@@ -9,7 +9,7 @@
   // the rift's own treasure (the neon decades): turns up in rift crates and comes home with the later arrivals
   const RIFT = R.rift && R.places.find(p => p.id === 'archive' && p.loot.length);
   const fresh = () => ({ v: 2, ink: R.summon.base_ink + R.summon.per_unique, gold: 0, xp: { Summoning: 0, Fishing: 0, Lockpicking: 0, Digging: 0 }, bag: {}, roster: { kevin: 1 }, equip: {}, gearLv: {}, jobs: [], mastery: {}, trained: {},
-    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, crew: [null, null, null], exped: [], parts: 0, make: null, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
+    energy: R.energy.max, energyT: now(), tickets: R.raids.tickets, ticketT: now(), tonics: {}, crateT: 0, autoCrate: false, autoSummon: false, gear: {}, crew: [null, null, null], exped: [], parts: 0, make: null, cabinet: {}, rest: 0, restDay: '', rebirth: {}, contracts: null, sold: 0, day: '', bagBuys: 0, mode: (me.profile && me.profile.voice) || 'salty', actions: 0, summons: 0, raids: {}, guide: 0, last: now() });
   let S = Object.assign(fresh(), (await Cloud.load()) || {}); S.mode = MODES.includes(S.mode) ? S.mode : 'salty';
   S.v = 3;      // v3: nothing is added to the bag or the roster except by the server; the save check holds this game to that
   // older ledgers had heroes holding jobs. Now Smudge works one place and heroes stand crew: keep the first place, move the workers into the crew.
@@ -73,7 +73,22 @@
   function pickW(p, ws) { const tot = ws.reduce((a, b) => a + b, 0); let r = Math.random() * tot; for (let i = 0; i < ws.length; i++) { r -= ws[i]; if (r <= 0) return p.loot[i][0]; } return p.loot[0][0]; }
   function rollLootOld(p, extra) { const ws = weights(p, extra), tot = ws.reduce((a, b) => a + b, 0); let r = Math.random() * tot; for (let i = 0; i < ws.length; i++) { r -= ws[i]; if (r <= 0) return p.loot[i][0]; } return p.loot[0][0]; }
   const dropChance = (p, id, extra) => { const ws = weights(p, extra || 0), c = ws[p.loot.findIndex(r => r[0] === id)] / ws.reduce((a, b) => a + b, 0) * 100; return (c >= 1 ? c.toFixed(1) : c.toFixed(2)) + '% of finds'; };
-  const give = (id, n) => S.bag[id] = (S.bag[id] || 0) + (n || 1);
+  // ---- how full the bag is. A stack is one slot however deep it is, and gear lives in the armory, not here.
+  const BAG = R.bag || { slots: 90, per_buy: 10, max_buys: 12, cost_base: 400, cost_step: 1.4 };
+  const bagSlot = id => { const it = OS.items[id]; return !!it && it.kind !== 'gear'; };
+  const bagUsed = () => Object.keys(S.bag).filter(id => S.bag[id] > 0 && bagSlot(id)).length;
+  const bagMax = () => BAG.slots + BAG.per_buy * (S.bagBuys || 0);
+  const bagCost = () => Math.round(BAG.cost_base * Math.pow(BAG.cost_step, S.bagBuys || 0) / 10) * 10;
+  // Anything already in the bag can always grow. When there is no room left, junk Smudge has not seen before
+  // is left where it lies and he says so; treasure, crates, tonics and shards always come home.
+  function give(id, n) {
+    const it = OS.items[id];
+    if (!S.bag[id] && it && it.junk && bagUsed() >= bagMax()) { bagFull(it); return false; }
+    S.bag[id] = (S.bag[id] || 0) + (n || 1); return true;
+  }
+  let fullSaid = 0;
+  function bagFull(it) { if (now() - fullSaid < 20000) return; fullSaid = now();
+    toast(`The bag is full, so Smudge left the ${(it.name || 'junk').toLowerCase()} where it was. Sell something, or buy more room in the bag.`); }
   // ---- the cabinet: one of each treasure on display. Every piece makes all ink worth a little more, for good;
   //      finish a place's set and everybody works faster there.
   const CAB = R.cabinet || { ink_per: 0.005, set_speed: 0.1 };
@@ -688,6 +703,20 @@
     pick.forEach(it => { const row = el('div', 'armrow r-' + it.rarity), sl = OS.slot(it.id, { count: S.bag[it.id] }); row.appendChild(sl);
       row.appendChild(el('div', '', `<b style="color:var(--rc)">${it.name}</b><span class="mut">${OS.cap(it.rarity)} · ${it.owner ? OS.heroes[it.owner].name + ' only' : OS.cap(it.slot)}${it.set ? ' · ' + R.gear_sets[it.set].name + ' set' : ''}</span><span class="mut">${wearer[it.id] ? 'Worn by ' + OS.heroes[wearer[it.id]].name + (S.bag[it.id] > 0 ? ' · ' + S.bag[it.id] + ' spare' : '') : 'In the armory' + (S.bag[it.id] > 1 ? ' · ' + S.bag[it.id] : '')}</span>`)); ag.appendChild(row); });
     $('b-cap').textContent = `${OS.num(Object.keys(S.bag).reduce((t, id) => { const it = OS.items[id]; return t + (it && it.kind === 'loot' && id !== 'x_shard' ? Math.max(0, S.bag[id] - (it.junk ? 0 : 1)) * it.sell : 0); }, 0))} gold of junk and spares`;
+    // ---- how full it is, and the one button that fixes it
+    const used = bagUsed(), max = bagMax(), pc = Math.min(100, used / max * 100), room = $('b-room');
+    const state = used >= max ? 'full' : pc > 85 ? 'tight' : '';
+    room.className = 'bagroom ' + state;
+    room.innerHTML = `<div class="bagbar"><i style="width:${pc}%"></i></div>
+      <span class="bagn"><b>${used} / ${max}</b> different things${state === 'full' ? ' · no room left' : state === 'tight' ? ' · nearly full' : ''}</span>`;
+    const buys = S.bagBuys || 0;
+    if (buys < BAG.max_buys) {
+      const c = bagCost(), bb = btn('small' + (S.gold < c ? ' ghost' : ''), `Buy ${BAG.per_buy} more · ${OS.num(c)} gold`, () => {
+        const cost = bagCost(); if (S.gold < cost) return toast(`That takes ${OS.num(cost)} gold.`);
+        S.gold -= cost; S.bagBuys = (S.bagBuys || 0) + 1; bump('gold_spent', cost); SND('coin'); save(true); render();
+        toast(`Smudge stitched another ${BAG.per_buy} pockets on. ${BAG.max_buys - S.bagBuys} more he can manage.`); });
+      bb.disabled = S.gold < c; room.appendChild(bb);
+    } else room.appendChild(el('span', 'mut', 'Smudge cannot sew another pocket on this bag.'));
     let cab = $('cabinet'); if (!cab) { cab = el('div', 'panel'); cab.id = 'cabinet'; cab.style.marginTop = '1rem'; g.parentNode.parentNode.appendChild(cab); }
     const shown = Object.keys(S.cabinet).length, ready = cabReady().length;
     cab.innerHTML = `<div class="spread"><h3 style="margin:0">The cabinet</h3><span class="mut">${shown} of ${treasures.length} on display · ink worth +${Math.round((inkBonus() - 1) * 1000) / 10}%</span></div>

@@ -1,5 +1,18 @@
 [
  {
+  "v": "0.5.4",
+  "build": "1127h",
+  "date": "2026-11-27",
+  "title": "Room in the bag",
+  "added": [
+   "The bag now shows how full it is: 90 different things to start with",
+   "Buy more room with gold, ten pockets at a time"
+  ],
+  "fixed": [
+   "A full bag means Smudge leaves new junk where it lies. Treasure, crates and tonics always come home, and a stack you already have can always grow"
+  ]
+ },
+ {
   "v": "0.5.3",
   "build": "1127g",
   "date": "2026-11-27",

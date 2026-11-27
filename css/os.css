@@ -949,3 +949,12 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .panel.col{border-color:#2a4a6e}.panel.wrk{border-color:#2c5a3e}.panel.gld{border-color:#6a5420}.panel.fgt{border-color:#6a3a28}
 @media(max-width:700px){.acthead{gap:.8rem;padding:.8rem}.face.xl{width:76px;height:76px;border-width:3px}.acwho h2{font-size:1.5rem}
   .actiles{grid-template-columns:repeat(2,1fr);min-width:0;width:100%}.actile b{font-size:1.25rem}}
+/* the bag's room: how many different things fit, and the button that buys more */
+.bagroom{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;background:#0b1020;border:2px solid var(--line);border-radius:14px;padding:.55rem .75rem;margin-bottom:.9rem}
+.bagbar{flex:1;min-width:140px;height:9px;border-radius:99px;background:#060a16;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden}
+.bagbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#2c7a49,#6fe394);transition:width .3s ease}
+.bagroom.tight .bagbar i{background:linear-gradient(90deg,#b9861a,#ffcd6b)}
+.bagroom.full .bagbar i{background:linear-gradient(90deg,#8a2f22,#ff8c7a)}
+.bagn{font-size:.85rem;color:var(--mut);white-space:nowrap}.bagn b{color:#fff}
+.bagroom.tight{border-color:#6a5420}.bagroom.full{border-color:#7a2c2c}
+.bagroom.full .bagn b{color:#ff8c7a}

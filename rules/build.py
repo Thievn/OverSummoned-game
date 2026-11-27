@@ -55,6 +55,10 @@ C = dict(
                             {"id": "long", "name": "Grand Tour", "minutes": 240, "rolls": 18, "gold": 320}],
                 "power_needed": {"1": 60, "2": 140, "3": 260}, "min_chance": 0.10, "max_chance": 0.95, "luck": 0.5,
                 "slots": [{"total_level": 0}, {"total_level": 50}, {"total_level": 150}]},
+    # ---- the bag: it holds a set number of different things; forty of the same thing is still one slot.
+    # Room is bought with gold on a rising price, up to max_buys. Past the cap, junk Smudge has never seen
+    # before is left where it lies: a stack already in the bag can always grow, and treasure always comes home.
+    bag={"slots": 90, "per_buy": 10, "max_buys": 12, "cost_base": 400, "cost_step": 1.4},
     # ---- gold
     gold={"daily_sell_cap_base": 2000, "daily_sell_cap_per_level": 20,
           # O6 gold sinks. ink_pack was in the rules from the start but never in the game; wired now, with a daily

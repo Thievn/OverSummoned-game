@@ -241,6 +241,13 @@
    }
   ]
  },
+ "bag": {
+  "slots": 90,
+  "per_buy": 10,
+  "max_buys": 12,
+  "cost_base": 400,
+  "cost_step": 1.4
+ },
  "gold": {
   "daily_sell_cap_base": 2000,
   "daily_sell_cap_per_level": 20,
