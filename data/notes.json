@@ -1,5 +1,25 @@
 [
  {
+  "v": "0.5.2",
+  "build": "1127f",
+  "date": "2026-11-27",
+  "title": "Raids pay properly",
+  "added": [
+   "Every card marks what its hero is best and worst at",
+   "Resting heroes carry a countdown and the price to wake them",
+   "Beating a boss for the first time pays five times the gold",
+   "Deeper raids give more loot rolls, a crate, and shards"
+  ],
+  "fixed": [
+   "Waking a resting hero is now priced off the raid, not a flat rate",
+   "Boss gold raised across the board",
+   "Start over has moved out of your account; ask and it will be done for you"
+  ],
+  "known": [
+   "Alerts only reach you while the game is open"
+  ]
+ },
+ {
   "v": "0.5.1",
   "build": "1127e",
   "date": "2026-11-27",

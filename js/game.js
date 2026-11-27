@@ -402,7 +402,8 @@
   // `hi` marks a stat green or red when something about the job cares about it.
   function heroPick(title, sub, ok, onPick, extra, hi) {
     const d = el('div', '', `<h3 style="font-size:1.5rem">${title}</h3><p class="mut">${sub}</p>`), hs = el('div', 'heroes pick');
-    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]), stats: heroStats(id), hi }), why = ok(id); if (why) { c.classList.add('busy'); c.title = why; } c.onclick = () => { if (!why) onPick(id); else toast(why); }; hs.appendChild(c); });
+    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]), stats: heroStats(id), hi }), why = ok(id);
+      if (why) { c.classList.add('busy'); c.title = why; const lb = el('span', 'restlbl', why); if (resting(id)) { lb.dataset.rest = id; restTick(lb); } else if (away(id)) { lb.dataset.away = id; restTick(lb); } c.appendChild(lb); } c.onclick = () => { if (!why) onPick(id); else toast(why); }; hs.appendChild(c); });
     d.appendChild(hs); if (extra) d.appendChild(extra); modal.open(d);
   }
   function crewSheet(i) {
@@ -774,6 +775,19 @@
   let EXP = null; const expReady = fetch('/data/expeditions.json' + OS.VER).then(r => r.json()).then(j => EXP = j).catch(() => EXP = { beats: {}, tone: {}, voice: {} });
   const RD = R.raids; let RAIDS = null; const raidsReady = fetch('/data/raids.json' + OS.VER).then(r => r.json()).then(j => RAIDS = j).catch(() => RAIDS = { room_pool: [], bosses: {}, reactions: { default: {} } });
   const STATW = { attack: 'Attack', defense: 'Defense', health: 'Health', speed: 'Speed', luck: 'Luck' };
+  // What it costs to wake one hero early: a share of what the boss pays, so patching up is never worse value
+  // than the fight itself. Rounded up to ten so the number reads cleanly.
+  const patchOne = (b, id) => { const left = resting(id); if (!left) return 0;
+    const share = (b && b.gold ? b.gold : 400) * (RD.patch_share || .2) * Math.min(1, left / 60000 / RD.recover_minutes);
+    return Math.max(10, Math.ceil(share / 10) * 10); };
+  // every label with data-rest or data-away counts itself down, wherever it is on screen
+  function restTick(lb) {
+    const id = lb.dataset.rest, aw = lb.dataset.away;
+    if (aw) { const e = S.exped.find(x => x.hero === aw); lb.textContent = e ? 'Back in ' + fmt(Math.max(0, (e.end - now()) / 1000)) : 'Back now'; return; }
+    const left = resting(id); if (!left) { lb.textContent = 'Ready'; return; }
+    const b = lb.dataset.boss ? RD.bosses.find(x => x.id === lb.dataset.boss) : null;
+    lb.innerHTML = `Back in ${fmt(left / 1000)}${b ? ` <i>${OS.num(patchOne(b, id))}g to wake</i>` : ''}`;
+  }
   const resting = id => Math.max(0, ((S.recover || {})[id] || 0) - now());
   const fillIn = (t, o) => String(t || '').replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m);
   const pick1 = a => a && a.length ? a[Math.floor(Math.random() * a.length)] : '';
@@ -815,15 +829,17 @@
       ${B.resist ? `<p class="rnote bad"><i>↓</i><span><b>Shrugs off ${STATW[B.resist]}.</b> Your team's ${STATW[B.resist].toLowerCase()} counts for ${down}% less here.</span></p>` : ''}
       <p class="rnote"><i>⌛</i><span>${RD.rooms} rooms on the way in, then up to ${RD.rounds} rounds with ${b.name}. Losing sends everyone who went to bed for ${RD.recover_minutes} minutes.</span></p>
       <div class="spoils"><div class="tag">If you win</div><ul>
-        <li><b>${OS.num(b.gold)} gold</b>, straight into your pocket</li>
-        <li><b>${RD.loot_rolls} rolls</b> on everything ${p.name} hides</li>
+        <li><b>${OS.num(Math.round(b.gold * (beat ? 1 : (RD.first_kill_mult || 1))))} gold</b>${beat ? ', straight into your pocket' : ', five times the usual for a first kill'}</li>
+        <li><b>${(RD.rolls_by_tier || {})[p.tier] || RD.loot_rolls} rolls</b> on everything ${p.name} hides</li>
+        ${+p.tier >= (RD.crate_from_tier || 9) ? '<li>A <b>crate</b>, unopened</li>' : ''}
+        ${+p.tier >= (RD.shards_from_tier || 9) ? `<li><b>${RD.shards} shards</b> toward calling someone by name</li>` : ''}
         <li>Smudge writes the win in the ledger${beat ? ' again' : ' for the first time'}</li></ul></div>`;
     Rt.innerHTML = `<h4 style="margin-top:0">Pick your three</h4><p class="pickhint">Everyone you send adds their stats to one pile. Green numbers hit this boss harder; red ones barely tickle it.</p>`;
     const cards = {};
     Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => {
       const rest = resting(id), c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]), stats: heroStats(id), hi });
       cards[id] = c;
-      if (rest) { c.classList.add('resting'); c.appendChild(el('span', 'restlbl', 'Back in ' + fmt(rest / 1000))); }
+      if (rest) { c.classList.add('resting'); const lb = el('span', 'restlbl'); lb.dataset.rest = id; lb.dataset.boss = b.id; c.appendChild(lb); restTick(lb); }
       c.onclick = () => {
         if (resting(id)) return toast(`${short(id)} is still sleeping off the last one.`);
         const k = team.indexOf(id);
@@ -839,9 +855,9 @@
         c.classList.toggle('sel', k >= 0); if (old) old.remove();
         if (k >= 0) c.appendChild(el('span', 'pickn', String(k + 1))); });
     }
-    const tired = Object.keys(S.roster).filter(id => resting(id)), patchCost = () => tired.reduce((a, id) => a + Math.ceil(resting(id) / 60000) * R.gold.patch_per_minute, 0);
+    const tired = Object.keys(S.roster).filter(id => resting(id)), patchCost = () => tired.reduce((a, id) => a + patchOne(b, id), 0);
     if (tired.length) { const c0 = patchCost();
-      const patch = btn('small ghost', `Get ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length} back on their feet · ${OS.num(c0)} gold`, () => {
+      const patch = btn('small ghost', `Wake ${tired.length === 1 ? short(tired[0]) : tired.length === 2 ? 'both of them' : 'all ' + tired.length} · ${OS.num(c0)} gold`, () => {
         const c = patchCost(); if (S.gold < c) return toast(`That takes ${OS.num(c)} gold.`); S.gold -= c; tired.forEach(id => S.recover[id] = 0); bump('gold_spent', c); SND('coin'); save(true); render(); toast('Patched up, fed, and only slightly grumbling.'); raidSheet(b); });
       patch.disabled = S.gold < c0; patch.style.margin = '0 0 .7rem'; Rt.appendChild(patch); }
     Rt.append(heroes, el('h4', '', `Potions (${RD.potion_slots} slots)`), potRow);
@@ -927,8 +943,11 @@
     function finish(win) {
       live = false; $('r-pots').innerHTML = ''; const got = [];
       if (win) { line(B.lines.win ? say(B.lines.win) : `${b.name} goes down.`, 'good'); voice('win'); SND('win');
-        roll([{ place: p.id, n: RD.loot_rolls, luck: fullLuck(p, RD.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); showGot(); save(true); });
-        bump('raids_won'); bump('gold', b.gold); S.gold += b.gold; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5);
+        const first = !S.raids[b.id], rolls = (RD.rolls_by_tier || {})[p.tier] || RD.loot_rolls, pay = Math.round(b.gold * (first ? (RD.first_kill_mult || 1) : 1));
+        roll([{ place: p.id, n: rolls, luck: fullLuck(p, RD.loot_luck + t.luck / 100) }, { place: p.id, n: 1, luck: 0, gear: true }]).then(r => { flat(r.add).forEach(x => { if (OS.items[x]) got.push(x); }); showGot(); save(true); });
+        if (+p.tier >= (RD.crate_from_tier || 9)) { give('x_crate'); got.push('x_crate'); }
+        if (+p.tier >= (RD.shards_from_tier || 9)) { for (let i = 0; i < (RD.shards || 0); i++) give('x_shard'); got.push('x_shard'); }
+        bump('raids_won'); bump('gold', pay); S.gold += pay; S.raids[b.id] = (S.raids[b.id] || 0) + 1; gainXP(p.skill, R.tier[p.tier].xp * 5);
         team.forEach(id => journal(id, `Beat ${b.name} at ${p.name}.`, 'raid'));
       } else { line(B.lines.lose ? say(B.lines.lose) : 'The team limps home.', 'bad'); voice('lose'); SND('deny'); const cons = Math.round(b.gold * .1); S.gold += cons;
         S.recover = S.recover || {}; team.forEach(id => S.recover[id] = now() + RD.recover_minutes * 60000); }
@@ -939,7 +958,7 @@
         `Level their cards. Another copy of the same hero makes every number bigger.`,
         `Bring someone else. The pile of stats is what fights, not the names.`];
       const end = el('div', 'reveal', `<h3 style="font-size:1.5rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3>` +
-        (win ? `<p class="mut">${b.gold} gold and whatever it was guarding.</p>`
+        (win ? `<p class="mut">${OS.num(Math.round(b.gold * (S.raids[b.id] === 1 ? (RD.first_kill_mult || 1) : 1)))} gold${S.raids[b.id] === 1 ? ', five times over for the first kill' : ''}, and whatever it was guarding.</p>`
              : `<p class="mut">${Math.round(b.gold * .1)} gold for the trouble, and ${teamName(team)} ${team.length > 1 ? 'are' : 'is'} asleep for ${RD.recover_minutes} minutes.</p>
                 <div class="spoils" style="text-align:left"><div class="tag">Smudge's advice</div><ul>${tips.sort(() => Math.random() - .5).slice(0, 3).map(t => `<li>${t}</li>`).join('')}</ul></div>`));
       const g = el('div', 'row'); g.style.justifyContent = 'center'; const showGot = () => { g.innerHTML = ''; got.forEach(x => g.appendChild(OS.slot(x))); }; end.append(g, btn('', 'Good', modal.close)); choices.innerHTML = ''; choices.appendChild(end); render();
@@ -1084,7 +1103,7 @@
   }
   $('ac-stats').addEventListener('click', e => { const b = e.target.closest('[data-rb]'); if (b) rebirth(b.dataset.rb); });
   $('ac-out').onclick = async () => { await save(true); Cloud.signOut(); };
-  $('ac-reset').onclick = async () => { if (confirm('Wipe this ledger and start again? This cannot be undone.')) { S = fresh(); await Cloud.save(S, summary()); location.reload(); } };
+  // No "start over" in here on purpose: a wipe goes through the owner, who can do it from the Players tab.
 
   const renderers = { home: renderHome, jobs: renderJobs, summon: renderSummon, heroes: renderHeroes, bag: renderBag, workshop: renderWorkshop, training: renderTraining, raids: renderRaids, board: renderBoard, shop: renderShop, account: renderAccount };
   function render() { renderTop(); renderers[current](); }
@@ -1098,7 +1117,7 @@
     chatter(dt);
     if (jobsMoved) { jobsMoved = false; if (current === 'jobs' && !$('modal').classList.contains('on')) renderJobs(); }
     rollWait -= dt; if (rollWait <= 0 && PEND.length) { rollWait = 0.7; pumpRolls(); }
-    uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
+    uiT -= dt; if (uiT <= 0) { uiT = .1; renderTop(); document.querySelectorAll('.restlbl[data-rest],.restlbl[data-away]').forEach(restTick); S.jobs.forEach((j, i) => { if (!j) return; const tt = jobTime(j); document.querySelectorAll(`[data-job="${i}"]`).forEach(b => b.style.width = pct(j.prog, tt)); const nx = document.querySelector(`[data-next="${i}"]`); if (nx) nx.textContent = 'next in ' + Math.max(0, tt - j.prog).toFixed(1) + 's'; });
       if (S.make && $('mk-bar')) { $('mk-bar').style.width = pct(S.make.t, S.make.need); $('mk-left').textContent = fmt(Math.max(0, S.make.need - S.make.t)); }
       if (current === 'jobs') S.exped.forEach((e, i) => { const left = (e.end - now()) / 1000, b = document.querySelector(`[data-ex="${i}"]`), tx = document.querySelector(`[data-exleft="${i}"]`); if (b) b.style.width = pct(e.dur - Math.max(0, left), e.dur); if (tx) { if (left > 0) tx.textContent = fmt(left); else if (!$('modal').classList.contains('on')) renderJobs(); } });
       if (current === 'summon') renderSummon(); slow -= .1; if (slow <= 0) { slow = 1; if (['training', 'raids', 'home'].includes(current) && !$('modal').classList.contains('on')) renderers[current](); if (got.length && current === 'bag') renderBag(); } }

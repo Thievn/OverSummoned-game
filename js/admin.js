@@ -47,7 +47,21 @@
     GeoMap.mount($('g-map'), g); hbars($('g-list'), g.countries.slice(0, 8).map(c => ({ k: GeoMap.name(c.country), n: c.visitors }))); }
   function renderPlayers() { const q = $('p-search').value.toLowerCase(), rows = D.players.filter(p => !q || (p.username + ' ' + p.email).toLowerCase().includes(q)), ago = d => { if (!d) return 'never'; const s = (Date.now() - new Date(d)) / 1000; return s < 3600 ? Math.round(s / 60) + 'm ago' : s < 86400 ? Math.round(s / 3600) + 'h ago' : Math.round(s / 86400) + 'd ago'; };
     const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    $('p-table').innerHTML = '<tr><th>Player</th><th>Email</th><th>Joined</th><th>Last seen</th><th>Total level</th><th>Arrivals</th><th>Summons</th><th>Gold</th><th>Ink</th><th>Steam</th><th></th></tr>' + rows.map(p => `<tr data-uid="${esc(p.id)}"><td><b>${esc(p.username)}</b></td><td>${esc(p.email)}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${ago(p.updated_at)}</td><td>${p.total_level || 0}</td><td>${p.heroes || 0}</td><td>${p.summons || 0}</td><td>${num(p.gold || 0)}</td><td>${num(p.ink || 0)}</td><td>${p.steam ? 'Yes' : 'No'}</td><td class="rst">${p.id ? '<button class="linkbtn" data-reset>Reset</button>' : ''}</td></tr>`).join('');
+    $('p-table').innerHTML = '<tr><th>Player</th><th>Email</th><th>Joined</th><th>Last seen</th><th>Total level</th><th>Arrivals</th><th>Summons</th><th>Gold</th><th>Ink</th><th>Steam</th><th></th></tr>' + rows.map(p => `<tr data-uid="${esc(p.id)}"><td><b>${esc(p.username)}</b></td><td>${esc(p.email)}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${ago(p.updated_at)}</td><td>${p.total_level || 0}</td><td>${p.heroes || 0}</td><td>${p.summons || 0}</td><td>${num(p.gold || 0)}</td><td>${num(p.ink || 0)}</td><td>${p.steam ? 'Yes' : 'No'}</td><td class="rst">${p.id ? '<button class="linkbtn" data-reset>Reset</button> <button class="linkbtn warn" data-del>Delete</button>' : ''}</td></tr>`).join('');
+    // delete a player for good: their ledger, their name and their sign-in. Typed confirmation, no undo.
+    $('p-table').querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
+      const tr = b.closest('tr'), p = rows.find(x => x.id === tr.dataset.uid);
+      const name = p.username || p.email;
+      if (Cloud.dev) { toast('Delete (local test only).'); return; }
+      const typed = prompt(`Delete ${name} for good? Their ledger, their name and their sign-in all go, and nothing can bring them back.\n\nType their name to confirm:`);
+      if (typed == null) return;
+      if (typed.trim() !== name) return toast('That did not match. Nothing deleted.');
+      const { data, error } = await Cloud.sb.rpc('os2_admin_delete', { p_user: p.id });
+      if (error) return toast(/function/i.test(error.message) ? 'The delete function is not in the database yet.' : 'That did not delete: ' + error.message);
+      if (!data || !data.ok) return toast((data && data.why) || 'That did not delete.');
+      toast(`${name} is gone. The name is free again.`);
+      await load(); renderPlayers();
+    });
     // reset a player's ledger: two clicks, the second one spelled out, so it never happens by accident
     $('p-table').querySelectorAll('[data-reset]').forEach(b => b.onclick = () => {
       const tr = b.closest('tr'), p = rows.find(x => x.id === tr.dataset.uid), cell = tr.querySelector('.rst');

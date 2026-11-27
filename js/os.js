@@ -3,7 +3,7 @@ window.OS = (function () {
   const A = '/assets/v2/';
   const OS = { R: null, rig: null, voice: null, items: {}, heroes: {} };
 
-  OS.VER = '?v=1127e';   // bump when art or data changes, so browsers drop their cached copies
+  OS.VER = '?v=1127f';   // bump when art or data changes, so browsers drop their cached copies
   OS.load = async function () {
     const [R, rig, voice] = await Promise.all(['rules', 'rig', 'voice'].map(n => fetch('/data/' + n + '.json' + OS.VER).then(r => r.json())));
     OS.R = R; OS.rig = rig; OS.voice = voice; OS.items = R.items;
@@ -169,11 +169,25 @@ window.OS = (function () {
      opt: owned, mini, level, stats (totals), base (stats before gear), load { g: {slot: id}, own: [id x3],
      has(id), avail: {key: true}, lines: [html], copies: [have, need], charmOpen, power }, live (animate the
      back), onSlot(key), noflip. */
+  // the middle value of every stat across all 50, worked out once: the yardstick a card's own numbers are read against
+  let MID = null;
+  OS.spread = function (stats) {
+    const R = OS.R; if (!R) return null;
+    if (!MID) { MID = {}; R.stats.forEach(k => { const v = R.heroes.map(h => h.stats[k]).sort((a, b) => a - b); MID[k] = v[Math.floor(v.length / 2)] || 1; }); }
+    let best = null, worst = null, bv = -Infinity, wv = Infinity;
+    R.stats.forEach(k => { const q = (stats[k] || 0) / MID[k]; if (q > bv) { bv = q; best = k; } if (q < wv) { wv = q; worst = k; } });
+    if (!best || bv / Math.max(wv, .001) < 1.25) return null;          // too even to be worth marking
+    const out = {}; out[best] = 'good'; out[worst] = 'bad'; return out;
+  };
+
   OS.card = function (h, opt) {
     opt = opt || {}; const owned = opt.owned !== false, R = OS.R, L = opt.load || {}, g = L.g || {}, own = L.own || [null, null, null];
     const frame = owned ? (opt.frame !== undefined ? opt.frame : (OS.frameOf ? OS.frameOf(h.id) : null)) : null;
     const c = OS.el('div', 'card r-' + h.rarity + (owned ? '' : ' locked') + (opt.mini ? ' mini' : '') + (opt.mini && opt.stats ? ' showstats' : '') + (frame ? ' framed fr-' + frame : ''));
     const stats = opt.stats || h.stats, base = opt.base || stats, power = L.power != null ? L.power : stats.attack + stats.defense + stats.health;
+    // What is this one actually good at? Each stat is measured against the middle of that stat across everyone,
+    // so the best of the five goes green and the weakest red, whatever their level or gear. A flat hero gets neither.
+    const hi = opt.hi || (owned ? OS.spread(stats) : null);
     const col = id => id && OS.items[id] ? R.rarity_color[OS.items[id].rarity] : '';
     const GS = R.slots.general, keys = GS.concat(['own0', 'own1', 'own2']), at = k => k.indexOf('own') === 0 ? own[+k[3]] : g[k];
     const dots = keys.map((k, i) => (i === 5 ? '<u></u>' : '') + `<i class="${k === 'charm' ? 'o' : ''}" style="${at(k) ? 'background:' + col(at(k)) : ''}"></i>`).join('');
@@ -183,7 +197,7 @@ window.OS = (function () {
       <div class="win"><div class="bgi" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></div>
         <div class="art"><img src="${OS.img('heroes', h.id)}" alt="${owned ? h.name + ', ' + h.species + ' ' + h.title : 'A hero not yet summoned'}"></div></div>
       <div class="tline"><span>${owned ? h.species + ' · ' + h.title : 'Not yet summoned'}</span><b class="gem" title="${OS.cap(h.rarity)}"></b></div>
-      <div class="nums">${R.stats.map(k => `<div class="${opt.hi && opt.hi[k] || ''}"><b>${owned ? stats[k] : '?'}</b><span>${OS.statWord[k]}</span></div>`).join('')}</div>
+      <div class="nums">${R.stats.map(k => `<div class="${hi && hi[k] || ''}"><b>${owned ? stats[k] : '?'}</b><span>${OS.statWord[k]}</span></div>`).join('')}</div>
       <div class="foot"><span>Power <b>${owned ? power : '?'}</b></span><span class="dots">${dots}</span></div></div>`;
     let back = '';
     if (!opt.mini) {

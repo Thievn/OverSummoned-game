@@ -61,7 +61,7 @@ C = dict(
           # cap so gold cannot undo O1's summon pacing (30 packs = 7,500 ink a day, under one summon past 12 heroes).
           "ink_pack": {"gold": 100, "ink": 250, "daily": 30},
           # Patch up heroes resting after a lost raid: gold per minute of rest left, per hero, rounded up.
-          "patch_per_minute": 12},
+          "patch_per_minute": 12},   # kept for old saves; the raid sheet now prices a patch-up off the boss (patch_share)
     # O6 card frames: bought with gold, one hero at a time, for show only. Owning a frame unlocks the frames below it.
     # A frame needs that hero's card at a level first, so the best frames say how long you have kept someone.
     # Titles and name colours, worn next to your name wherever other players see it. Cosmetic only.
@@ -126,19 +126,21 @@ C.update(
              {"id": "x_potion_shield", "name": "Ironskin Draught", "effect": "shield", "amount": 0.5, "rounds": 3, "cost": {"rarity": "uncommon", "n": 3}, "text": "The next three hits the team takes do half damage."},
              {"id": "x_potion_fury", "name": "Fury Draught", "effect": "fury", "amount": 0.6, "rounds": 3, "cost": {"rarity": "rare", "n": 2}, "text": "The team's next three blows land 60% harder."}],
     gear_up={"max": 5, "per_level": 0.15, "gold": [60, 150, 350, 800, 2000], "parts": [1, 2, 4, 7, 12]},
-    raids={"tickets": 3, "regen_minutes": 120, "hp_mult": 8, "rounds": 20, "loot_rolls": 3, "loot_luck": 2.0,
+    raids={"tickets": 3, "regen_minutes": 120, "hp_mult": 8, "rounds": 20, "loot_rolls": 3, "rolls_by_tier": {"1": 3, "2": 4, "3": 6}, "crate_from_tier": 2, "shards_from_tier": 3, "shards": 2,
+        # a lost raid costs a share of what the boss pays, so recovering is never worse value than the fight
+        "patch_share": 0.2, "first_kill_mult": 5, "loot_luck": 2.0,
            # played raids (O3): three rooms then the boss; a room choice rolls a team stat against the room's difficulty
            "rooms": 3, "potion_slots": 2, "recover_minutes": 30, "room_diff": {"1": 45, "2": 140, "3": 340}, "room_hurt": 0.12, "room_bonus": 0.08,
            "weak_mult": 1.5, "resist_mult": 0.6, "line_ms": 1300,
            "bosses": [
-             {"id": "tiber", "name": "The Tiber Thing", "place": "dock", "hp": 300, "attack": 35, "defense": 10, "gold": 120, "text": "Nobody has seen all of it. The part with the teeth is enough."},
-             {"id": "tony", "name": "Big Tony's Boys", "place": "speakeasy", "hp": 340, "attack": 38, "defense": 12, "gold": 140, "text": "Four gentlemen who would like a word about the safe."},
-             {"id": "vanguard", "name": "The Emu Vanguard", "place": "outback", "hp": 380, "attack": 36, "defense": 14, "gold": 160, "text": "They beat an army once. They would like to do it again."},
-             {"id": "gary", "name": "Gary the Great White", "place": "bondi", "hp": 1200, "attack": 80, "defense": 40, "gold": 400, "text": "He is between the flags. That is the problem."},
-             {"id": "nephew", "name": "The Doge's Nephew", "place": "vault", "hp": 1350, "attack": 85, "defense": 45, "gold": 450, "text": "Bad at guarding. Surprisingly good at fencing."},
-             {"id": "well", "name": "The Thing Under the Well", "place": "blackforest", "hp": 1500, "attack": 90, "defense": 50, "gold": 500, "text": "It was buried for a reason. Smudge had a shovel."},
-             {"id": "antlers", "name": "The Antlered Deep", "place": "fjord", "hp": 4000, "attack": 160, "defense": 100, "gold": 1400, "text": "Something under the ice has antlers. It also has opinions."},
-             {"id": "brenda", "name": "Brenda, Back From Leave", "place": "closet", "hp": 4600, "attack": 175, "defense": 115, "gold": 1700, "text": "She has seen the state of the supply closet."},
+             {"id": "tiber", "name": "The Tiber Thing", "place": "dock", "hp": 300, "attack": 35, "defense": 10, "gold": 150, "text": "Nobody has seen all of it. The part with the teeth is enough."},
+             {"id": "tony", "name": "Big Tony's Boys", "place": "speakeasy", "hp": 340, "attack": 38, "defense": 12, "gold": 175, "text": "Four gentlemen who would like a word about the safe."},
+             {"id": "vanguard", "name": "The Emu Vanguard", "place": "outback", "hp": 380, "attack": 36, "defense": 14, "gold": 200, "text": "They beat an army once. They would like to do it again."},
+             {"id": "gary", "name": "Gary the Great White", "place": "bondi", "hp": 1200, "attack": 80, "defense": 40, "gold": 650, "text": "He is between the flags. That is the problem."},
+             {"id": "nephew", "name": "The Doge's Nephew", "place": "vault", "hp": 1350, "attack": 85, "defense": 45, "gold": 725, "text": "Bad at guarding. Surprisingly good at fencing."},
+             {"id": "well", "name": "The Thing Under the Well", "place": "blackforest", "hp": 1500, "attack": 90, "defense": 50, "gold": 800, "text": "It was buried for a reason. Smudge had a shovel."},
+             {"id": "antlers", "name": "The Antlered Deep", "place": "fjord", "hp": 4000, "attack": 160, "defense": 100, "gold": 2400, "text": "Something under the ice has antlers. It also has opinions."},
+             {"id": "brenda", "name": "Brenda, Back From Leave", "place": "closet", "hp": 4600, "attack": 175, "defense": 115, "gold": 2800, "text": "She has seen the state of the supply closet."},
            ]},
 )
 
