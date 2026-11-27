@@ -233,3 +233,58 @@ Not done in O8 (on purpose): no version bump (nothing reads `duel` yet; O9 bumps
 - `duel.open` is False: only the owner sees Duels. Set True in rules/duel.py to open it to the beta.
 - Words are stand-ins in `data/duel_words.json` and the Move names in rules/duel.py (F7). Short names for titled heroes in `duel.short`.
 - Not done: no tutorial beyond the notes, no Grok lines (O11), no Peek reveal shown on the table (the house cannot use it either), no keyboard play.
+
+## Duels, second pass (Fable, 27 Nov, after Dean played O9)
+
+Dean's verdict: a good start and "kind of exciting", but hard to read, the trail stutters in, Smudge is dull, the backdrops are low quality, the music grated within 30 seconds, and he had to stop and read every card. He also wants it to pick up what makes Gwent and Destiny: Rising's card game hard to put down. Steps below are O9b to O9f. Do them in order; each one ships by itself. O10 (ranked) waits until Dean has played O9d.
+
+### What was actually wrong (checked)
+- Backdrops are the 480 x 640 pictures made for the little window on a card, stretched over a whole screen. That is why they look soft. They were never meant for this.
+- The trail is revealed with a top-to-bottom wipe, so each bend shows its ends before its middle. It reads as lag.
+- Smudge on the table is one still picture (the boot image) that tilts. Nothing else.
+- Table text is as small as 0.62rem (about 10px). The Move text only shows after a tap.
+- One music track per duel, a 60 second loop, so a 4 minute duel hears it four times. The five new battle tracks are still not in the game (blocked download), so every arena played the same raid theme.
+
+### O9b. Readable and learnable (no new art)
+- **Nothing under 13px on the table.** Call chips, the commentary line, card names, the info panel: all up. The current call becomes the biggest thing in the middle of the table, in the stat's own colour (one colour per stat, used everywhere: chip, card number, info row).
+- **Cards say what they do without a tap.** Each of the eleven effects gets an icon and a two or three word tag on the card face under the art ("+1 energy", "Sap 6", "Dogs +3", "Best stat"). The full sentence still opens on tap, now in a panel that stays put until you tap elsewhere and uses 15px text.
+- **The number is the hero.** The yellow score for this turn's call is twice the size. Under the hand, one line: "Playing these: 43 points for 6 energy".
+- **The first duel is a lesson.** A scripted first match against a fixed easy deck with a fixed hand: Smudge points at one thing at a time and waits for you to do it (this is your energy; this turn calls Speed, so this card is worth 24; drag it up; press Ready; watch the flip; that is a round). Five steps, skippable, replayable from the Duels screen. No walls of text: one sentence per step, 16px, in a speech bubble from Smudge.
+- **A coach for the next three duels:** a soft glow on the best-value playable card, turn off-able.
+- **Fix the trail:** draw it by animating the stroke along its own length from the middle outwards (stroke-dashoffset), both colours at once, 0.6 seconds. No wipe.
+
+### O9c. A table worth looking at (new art through the Grok queue; show Dean the first of each before making the rest)
+- **Twelve arena backdrops, drawn for this:** 1536 x 2048 portrait plus a 2048 x 1152 landscape cut of each. Brief for every one: the scene is busy at the top and bottom edges and calm, darker and slightly blurred through the middle band where cards and the trail sit. Nine places plus three extras (Beyond, the arcade, the rocket). Slow life in each: two or three looping layers (drifting fog, lantern flicker, waves, neon buzz) done in CSS over the picture, off for reduced motion. The old card pictures stay on the cards.
+- **Smudge the referee: six new drawings** in his existing style, same size and feet position so they swap cleanly (the Bongo Cat approach Dean chose after 3D was dropped): walking with the scoreboard on a pole, pointing at your side, pointing at theirs, both arms up for a round won, face in paw for a round lost, slamming the stamp for the end of the duel. Swapped by what just happened, with a hop between. Idle uses his existing blink and breathing. FIRST draw one, show Dean, and only then the other five.
+- **The trail as ink, alive:** a wet-ink texture with a slow shimmer; drips where it bends; your half glows brighter as your lead grows; when the lead changes hands the join flashes and splashes; on a round win the whole trail floods the winner's colour, then drains.
+- **Points you can feel:** each card's number flies along the trail into Smudge's board as a blob of ink; the board flips like a station sign; big hits (30+) shake the table slightly; a Move firing gets its own short flourish by effect family (sap bites a chunk out of the card, burn smoulders on their bar for its two turns, lock drops a padlock on the card in their hand, spark crackles on your energy pill).
+- **Card backs and table felts** exist as a system from day one (one default each), because they are the first things to sell later.
+
+### O9d. Three things from Gwent and Destiny: Rising (rules; every one goes through the sim before a screen)
+What those games do, briefly. Gwent is a best of three where your hand barely refills, so every card spent now is a card you do not have later, and the whole game is deciding when to stop and let a round go. Destiny: Rising's Shadowshaper Duels gives rising points each round (1, then 2, up to 6), front and back rows, and a ladder of named opponents at three difficulties with first-win rewards and a duelist level track.
+We already have the Gwent heart by another road: energy carries over, so over-spending to win round one loses round two. The house's careful player already throws rounds on purpose. What is missing is the player seeing and feeling that choice. So:
+1. **Swap two (Gwent's mulligan).** Before the first turn, put back up to two cards from your opening five and draw again. Cheap to build, removes the "dead hand" loss, and makes every duel start with a decision.
+2. **Stand down (Gwent's pass).** A second button beside Ready: sit out the rest of this round. You play nothing more this round, both players see it at once, and you start the next round with +3 energy. Giving up a round becomes a move you make on purpose, and the other player has to decide whether to keep spending to be safe. This is the mechanic that makes Gwent Gwent.
+3. **A captain (Gwent's leader).** One hero in your deck wears the captain's mark. Once per duel, press Captain's Call before you pick: this turn is judged on your captain's best stat, for both sides. One big, loud, once-only moment per duel, and a reason to care which hero leads.
+4. **The rival ladder (Destiny: Rising's named duelists).** Replace "the house deck" with eight named rivals: the raid bosses, who already have names and attitudes (The Tiber Thing, Big Tony's Boys, The Emu Vanguard, Gary the Great White, The Doge's Nephew and the rest). Each has a themed deck, a home arena, a captain, three difficulties, and a first-win prize at each (gold, a crate, a title, a card back). Twenty-four first wins to chase with nobody else online. This is the solo content that makes a new player stay.
+5. **A duelist road.** Wins give duelist XP; levels 1 to 20 pay out cosmetics (card backs, felts, a title, a Smudge pose as an emote). Never shards or stats.
+Considered and left out for now: front and back rows (no room on a phone with three slots a side), rising points per round (our rising energy already does it), spies and decoys (wait for ranked).
+Sim marks to add: Stand down is used in 10% to 35% of rounds by the careful house player; Swap two changes the win rate of the worse opening hand by at least 3 points; no captain wins over 58%.
+
+### O9e. Music that does not grate
+- One arena, one mood, and never the same loop twice in a row. Six moods (ancient, noir, north, gothic, sun-and-surf, neon), **two tracks each**, each **two minutes** long rather than one, written to loop cleanly. Twelve tracks, about 21,600 ElevenLabs credits of the 40,000 a month.
+- A duel starts on one track of its arena's mood and crossfades to the other at the start of round three, so the back half of a close duel sounds different from the front.
+- A short sting for round won, round lost, Captain's Call and the final stamp, so the music is not the only thing marking time.
+- Music volume on the table starts at 60% of the menu level, with its own slider on the table.
+- BLOCKED on the same thing as before: generated tracks cannot be fetched from here. Dean downloads them to his Downloads folder and shares that folder once; then every batch can be pulled straight from his PC.
+
+### O9f. Phone polish
+- Test on a real small phone (360 x 640) and a tall one (412 x 915): nothing overlaps, thumbs reach Ready and the hand without shifting grip, the info panel never covers the slots.
+- Haptic tap (navigator.vibrate) on place, flip and round end where the phone supports it.
+- Landscape and desktop: hand wider, commentary to the side, backdrop uses the landscape cut.
+
+### Words (Fable, F7, alongside O9b to O9d)
+Fifty Move names and one-line texts; the two or three word tags; the tutorial's five sentences; the eight rivals' taunts for win, loss and Captain's Call; the name for Duels itself; Stand down, Swap two and Captain's Call in Smudge's voice.
+
+### Order and why
+O9b first: it costs nothing in art and fixes "I had to stop and read every card", which is the thing most likely to make a new player quit. O9d second: the rules decide what the art has to show (a captain's mark, a Stand down state), so drawing before them means drawing twice. Then O9c and O9e together, since both wait on generated assets, then O9f.
