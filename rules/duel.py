@@ -141,6 +141,46 @@ SHORT = {"albrecht": "Albrecht", "blackbear": "Blackbear", "emu": "Emu", "troffe
          "max": "Max", "ajolote": "Ajolote", "hootsworth": "Hootsworth", "sterling": "Sterling", "quack": "Quackenstein",
          "beep": "B33-P", "tut": "Tut", "eagleton": "Eagleton", "zorp": "Zorp", "madjack": "Mad Jack", "pam": "Pam", "florida": "Florida Man"}
 
+# the two or three words that go on the card face. Built from the effect, so a new Move gets one for free.
+def tag_for(hid, m, stats):
+    fx, x, n = m["fx"], m.get("x"), m.get("n")
+    st = (m.get("stat") or "")[:3].title()
+    if fx == "boost":   return (f"+{x} on {st}" if m.get("stat") else (f"+{x} when {m['on']}" if m.get("on") in ("ahead", "behind") else f"+{x} always"))
+    if fx == "ramp":    return f"+{x} each time"
+    if fx == "rally":   return f"{GROUP_WORD[m['group']]} +{x}"
+    if fx == "lift":    return f"Others +{x}"
+    if fx == "mend":    return f"Clears burn, +{x}"
+    if fx == "guard":   return "Blocks sap"
+    if fx == "sap":     return f"Their best -{x}"
+    if fx == "burn":    return f"Burn {x} x{n}"
+    if fx == "lock":    return (f"Locks {n} cards" if n and n > 1 else "Locks a card")
+    if fx == "spark":   return f"+{x} energy"
+    if fx == "tax":     return f"Costs them +{x}"
+    if fx == "twist":   return "Counts its best"
+    if fx == "peek":    return (f"Peek, +{x} on {st}" if m.get("stat") else f"Peek, others +{x}")
+    if fx == "gamble":  return "Lucky x1.5"
+    if fx == "top":     return ("Back on top, +%d %s" % (m["plus"]["x"], m["plus"]["stat"][:3].title())) if m.get("plus") else "Back on top"
+    return ""
+
+GROUP_WORD = {("age", "ancient"): "Ancient", ("age", "oldworld"): "Old World", ("age", "steam"): "Sail", ("age", "wartime"): "Wartime",
+              ("age", "neon"): "Neon", ("age", "today"): "Today", ("kin", "dogs"): "Dogs", ("kin", "cats"): "Cats", ("kin", "birds"): "Birds",
+              ("kin", "small"): "Small", ("kin", "weasels"): "Weasels", ("kin", "hoofed"): "Hoofed", ("kin", "water"): "Water", ("kin", "odd"): "Odd"}
+
+
+def fill_tags():
+    for hid, m in MOVES.items():
+        m["tag"] = tag_for(hid, m, None)
+        m["icon"] = ICON[m["fx"]]
+
+
+# one letter-shape per effect, drawn as a glyph in the browser (no art needed)
+ICON = {"boost": "+", "ramp": "\u25b2", "rally": "\u2638", "lift": "\u2191", "mend": "\u271a", "guard": "\u26e8", "sap": "\u2702",
+        "burn": "\u2668", "lock": "\u26bf", "spark": "\u26a1", "tax": "\u00d7", "twist": "\u2731", "peek": "\u25c9", "gamble": "\u2684", "top": "\u21ba"}
+
+# one colour per called stat, used on the chip, the card number and the info row
+STAT_COLOR = {"attack": "#ff7a5e", "defense": "#6aa9ff", "health": "#5ddc8a", "speed": "#ffd35c", "luck": "#c58bff"}
+
+
 DUEL = dict(
     open=False,              # False: only the owner sees Duels (testing). True: everyone.
     deck=12,                 # different heroes in a deck; duels open at this many owned
@@ -174,7 +214,8 @@ DUEL = dict(
     stakes=dict(options=[0, 100, 500, 2000], pays=1.8, daily_cap=10000, by_bracket={"copper": 100, "silver": 500, "gold": 2000, "open": 2000}),
     rating=dict(start=1000, k_attack=24, k_defend=8),
     turn_seconds=30,
-    ages=AGES, kins=KINS, arenas=ARENAS, moves=MOVES, short=SHORT,
+    ages=AGES, kins=KINS, arenas=ARENAS, moves=MOVES, short=SHORT, stat_color=STAT_COLOR,
+    coach_duels=3,           # the best-value card glows for your first three duels
 )
 
 

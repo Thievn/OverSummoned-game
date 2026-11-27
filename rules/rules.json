@@ -14107,63 +14107,83 @@
     "plus": {
      "stat": "health",
      "x": 5
-    }
+    },
+    "tag": "Back on top, +5 Hea",
+    "icon": "\u21ba"
    },
    "gaius": {
     "name": "Hold the Line",
     "text": "Sap and burn do nothing to your side this turn.",
-    "fx": "guard"
+    "fx": "guard",
+    "tag": "Blocks sap",
+    "icon": "\u26e8"
    },
    "napoleon": {
     "name": "Grand Plan",
     "text": "+8 when you are behind in the round.",
     "on": "behind",
     "fx": "boost",
-    "x": 8
+    "x": 8,
+    "tag": "+8 when behind",
+    "icon": "+"
    },
    "gorm": {
     "name": "Stampede",
     "text": "+3 each time he has been played before.",
     "fx": "ramp",
-    "x": 3
+    "x": 3,
+    "tag": "+3 each time",
+    "icon": "\u25b2"
    },
    "ajolote": {
     "name": "Grows Back",
     "text": "Clears burn from your side, and your other cards +2.",
     "fx": "mend",
-    "x": 2
+    "x": 2,
+    "tag": "Clears burn, +2",
+    "icon": "\u271a"
    },
    "doug": {
     "name": "Unbothered",
     "text": "Sap and burn do nothing to your side this turn.",
-    "fx": "guard"
+    "fx": "guard",
+    "tag": "Blocks sap",
+    "icon": "\u26e8"
    },
    "bjorn": {
     "name": "Cold Water",
     "text": "+6 on a Health call.",
     "fx": "boost",
     "stat": "health",
-    "x": 6
+    "x": 6,
+    "tag": "+6 on Hea",
+    "icon": "+"
    },
    "tut": {
     "name": "Curse of the Tomb",
     "text": "Their side -4 for two turns.",
     "fx": "burn",
     "x": 4,
-    "n": 2
+    "n": 2,
+    "tag": "Burn 4 x2",
+    "icon": "\u2668"
    },
    "brokk": {
     "name": "Dig In",
     "text": "+5 on an Attack call.",
     "fx": "boost",
     "stat": "attack",
-    "x": 5
+    "x": 5,
+    "tag": "+5 on Att",
+    "icon": "+"
    },
    "blackbear": {
     "name": "Broadside",
     "text": "Their best card this turn -8.",
     "fx": "sap",
-    "x": 8
+    "x": 8,
+    "tag": "Their best -8",
+    "icon": "\u2702"
    },
    "astrid": {
     "name": "Shield Wall",
@@ -14173,40 +14193,52 @@
      "age",
      "oldworld"
     ],
-    "x": 4
+    "x": 4,
+    "tag": "Old World +4",
+    "icon": "\u2638"
    },
    "florida": {
     "name": "Death Roll",
     "text": "+10 when you are ahead in the round.",
     "on": "ahead",
     "fx": "boost",
-    "x": 10
+    "x": 10,
+    "tag": "+10 when ahead",
+    "icon": "+"
    },
    "madjack": {
     "name": "Over the Top",
     "text": "+12 on an Attack call.",
     "fx": "boost",
     "stat": "attack",
-    "x": 12
+    "x": 12,
+    "tag": "+12 on Att",
+    "icon": "+"
    },
    "roxy": {
     "name": "Clear the Room",
     "text": "Their best card this turn -6.",
     "fx": "sap",
-    "x": 6
+    "x": 6,
+    "tag": "Their best -6",
+    "icon": "\u2702"
    },
    "max": {
     "name": "Charge",
     "text": "+4 each time he has been played before.",
     "fx": "ramp",
-    "x": 4
+    "x": 4,
+    "tag": "+4 each time",
+    "icon": "\u25b2"
    },
    "dusty": {
     "name": "Spines Out",
     "text": "Their side -3 for two turns.",
     "fx": "burn",
     "x": 3,
-    "n": 2
+    "n": 2,
+    "tag": "Burn 3 x2",
+    "icon": "\u2668"
    },
    "gladius": {
     "name": "Crowd Pleaser",
@@ -14216,64 +14248,84 @@
      "age",
      "ancient"
     ],
-    "x": 4
+    "x": 4,
+    "tag": "Ancient +4",
+    "icon": "\u2638"
    },
    "marco": {
     "name": "Out for Delivery",
     "text": "+1 energy next turn.",
     "fx": "spark",
-    "x": 1
+    "x": 1,
+    "tag": "+1 energy",
+    "icon": "\u26a1"
    },
    "kenji": {
     "name": "First Cut",
     "text": "+4 on a Speed call.",
     "fx": "boost",
     "stat": "speed",
-    "x": 4
+    "x": 4,
+    "tag": "+4 on Spe",
+    "icon": "+"
    },
    "emu": {
     "name": "Undefeated",
     "text": "+2 energy next turn.",
     "fx": "spark",
-    "x": 2
+    "x": 2,
+    "tag": "+2 energy",
+    "icon": "\u26a1"
    },
    "troffea": {
     "name": "Dancing Fever",
     "text": "Your other cards this turn +2.",
     "fx": "lift",
-    "x": 2
+    "x": 2,
+    "tag": "Others +2",
+    "icon": "\u2191"
    },
    "jazzmin": {
     "name": "Encore",
     "text": "+1 energy when drawn.",
     "on": "drawn",
     "fx": "spark",
-    "x": 1
+    "x": 1,
+    "tag": "+1 energy",
+    "icon": "\u26a1"
    },
    "flap": {
     "name": "Cliffhanger",
     "text": "+5 when you are behind in the round.",
     "on": "behind",
     "fx": "boost",
-    "x": 5
+    "x": 5,
+    "tag": "+5 when behind",
+    "icon": "+"
    },
    "maya": {
     "name": "Triage",
     "text": "Clears burn from your side, and your other cards +3.",
     "fx": "mend",
-    "x": 3
+    "x": 3,
+    "tag": "Clears burn, +3",
+    "icon": "\u271a"
    },
    "edith": {
     "name": "Busy Paws",
     "text": "Your other cards this turn +2.",
     "fx": "lift",
-    "x": 2
+    "x": 2,
+    "tag": "Others +2",
+    "icon": "\u2191"
    },
    "jacko": {
     "name": "Lifeguard",
     "text": "Clears burn from your side, and your other cards +2.",
     "fx": "mend",
-    "x": 2
+    "x": 2,
+    "tag": "Clears burn, +2",
+    "icon": "\u271a"
    },
    "rex": {
     "name": "Best in Show",
@@ -14283,41 +14335,55 @@
      "kin",
      "dogs"
     ],
-    "x": 3
+    "x": 3,
+    "tag": "Dogs +3",
+    "icon": "\u2638"
    },
    "dolly": {
     "name": "Herd Instinct",
     "text": "Your other cards this turn +3.",
     "fx": "lift",
-    "x": 3
+    "x": 3,
+    "tag": "Others +3",
+    "icon": "\u2191"
    },
    "beep": {
     "name": "Recalibrate",
     "text": "Counts its best number, whatever the call.",
-    "fx": "twist"
+    "fx": "twist",
+    "tag": "Counts its best",
+    "icon": "\u2731"
    },
    "vincenzo": {
     "name": "Protection Money",
     "text": "Their dearest card costs 2 more next turn.",
     "fx": "tax",
-    "x": 2
+    "x": 2,
+    "tag": "Costs them +2",
+    "icon": "\u00d7"
    },
    "lola": {
     "name": "Pickpocket",
     "text": "Their best card this turn -6.",
     "fx": "sap",
-    "x": 6
+    "x": 6,
+    "tag": "Their best -6",
+    "icon": "\u2702"
    },
    "sable": {
     "name": "Light Fingers",
     "text": "One card in their hand cannot be played next turn.",
     "fx": "lock",
-    "n": 1
+    "n": 1,
+    "tag": "Locks a card",
+    "icon": "\u26bf"
    },
    "mona": {
     "name": "Blend In",
     "text": "Counts its best number, whatever the call.",
-    "fx": "twist"
+    "fx": "twist",
+    "tag": "Counts its best",
+    "icon": "\u2731"
    },
    "sterling": {
     "name": "Inside Job",
@@ -14325,61 +14391,81 @@
     "fx": "peek",
     "n": 2,
     "stat": "speed",
-    "x": 3
+    "x": 3,
+    "tag": "Peek, +3 on Spe",
+    "icon": "\u25c9"
    },
    "selene": {
     "name": "Cat Burglar",
     "text": "Two cards in their hand cannot be played next turn.",
     "fx": "lock",
-    "n": 2
+    "n": 2,
+    "tag": "Locks 2 cards",
+    "icon": "\u26bf"
    },
    "albrecht": {
     "name": "Plague Doctor",
     "text": "Their side -3 for two turns.",
     "fx": "burn",
     "x": 3,
-    "n": 2
+    "n": 2,
+    "tag": "Burn 3 x2",
+    "icon": "\u2668"
    },
    "morwenna": {
     "name": "Moth to Flame",
     "text": "Counts its best number, whatever the call.",
-    "fx": "twist"
+    "fx": "twist",
+    "tag": "Counts its best",
+    "icon": "\u2731"
    },
    "raspawtin": {
     "name": "Hard to Kill",
     "text": "+10 when you are behind in the round.",
     "on": "behind",
     "fx": "boost",
-    "x": 10
+    "x": 10,
+    "tag": "+10 when behind",
+    "icon": "+"
    },
    "vesper": {
     "name": "Night Shift",
     "text": "Their best card this turn -5.",
     "fx": "sap",
-    "x": 5
+    "x": 5,
+    "tag": "Their best -5",
+    "icon": "\u2702"
    },
    "hootsworth": {
     "name": "Deduction",
     "text": "See two cards in their hand. Your other cards +3.",
     "fx": "peek",
     "n": 2,
-    "x": 3
+    "x": 3,
+    "tag": "Peek, others +3",
+    "icon": "\u25c9"
    },
    "quack": {
     "name": "Hex",
     "text": "Their dearest card costs 1 more next turn.",
     "fx": "tax",
-    "x": 1
+    "x": 1,
+    "tag": "Costs them +1",
+    "icon": "\u00d7"
    },
    "joost": {
     "name": "Tulip Fever",
     "text": "A chance to count 1.5 times. Luck sets the chance.",
-    "fx": "gamble"
+    "fx": "gamble",
+    "tag": "Lucky x1.5",
+    "icon": "\u2684"
    },
    "chad": {
     "name": "To the Moon",
     "text": "A chance to count 1.5 times. Luck sets the chance.",
-    "fx": "gamble"
+    "fx": "gamble",
+    "tag": "Lucky x1.5",
+    "icon": "\u2684"
    },
    "pam": {
     "name": "Extra Life",
@@ -14389,17 +14475,23 @@
     "plus": {
      "stat": "luck",
      "x": 5
-    }
+    },
+    "tag": "Back on top, +5 Luc",
+    "icon": "\u21ba"
    },
    "eagleton": {
     "name": "Recount",
     "text": "A chance to count 1.5 times. Luck sets the chance.",
-    "fx": "gamble"
+    "fx": "gamble",
+    "tag": "Lucky x1.5",
+    "icon": "\u2684"
    },
    "zorp": {
     "name": "Not From Here",
     "text": "Counts its best number, whatever the call.",
-    "fx": "twist"
+    "fx": "twist",
+    "tag": "Counts its best",
+    "icon": "\u2731"
    },
    "slapton": {
     "name": "Star Billing",
@@ -14409,13 +14501,17 @@
      "age",
      "wartime"
     ],
-    "x": 8
+    "x": 8,
+    "tag": "Wartime +8",
+    "icon": "\u2638"
    },
    "cleocatra": {
     "name": "Queen of the Nile",
     "text": "Your other cards this turn +4.",
     "fx": "lift",
-    "x": 4
+    "x": 4,
+    "tag": "Others +4",
+    "icon": "\u2191"
    },
    "bella": {
     "name": "Flock Together",
@@ -14425,7 +14521,9 @@
      "kin",
      "birds"
     ],
-    "x": 6
+    "x": 6,
+    "tag": "Birds +6",
+    "icon": "\u2638"
    },
    "stella": {
     "name": "Tomorrow's News",
@@ -14435,7 +14533,9 @@
      "age",
      "neon"
     ],
-    "x": 4
+    "x": 4,
+    "tag": "Neon +4",
+    "icon": "\u2638"
    }
   },
   "short": {
@@ -14457,6 +14557,14 @@
    "madjack": "Mad Jack",
    "pam": "Pam",
    "florida": "Florida Man"
-  }
+  },
+  "stat_color": {
+   "attack": "#ff7a5e",
+   "defense": "#6aa9ff",
+   "health": "#5ddc8a",
+   "speed": "#ffd35c",
+   "luck": "#c58bff"
+  },
+  "coach_duels": 3
  }
 }

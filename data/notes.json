@@ -1,5 +1,15 @@
 [
  {
+  "v": "0.5.6",
+  "build": "1127j",
+  "date": "2026-11-27",
+  "title": "A tune for every fight",
+  "added": [
+   "Every boss now fights to its own music. Five new battle themes: ancient, gangster, northern, gothic and whatever Gary the Great White counts as"
+  ],
+  "fixed": []
+ },
+ {
   "v": "0.5.5",
   "build": "1127i",
   "date": "2026-11-27",

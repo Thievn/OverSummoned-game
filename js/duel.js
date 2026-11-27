@@ -21,7 +21,7 @@
   }
   const R = () => X.R, D = () => X.R.duel, S = () => X.S();
   const hero = id => X.OS.heroes[id];
-  const rec = () => { const s = S(); s.duel = s.duel || { deck: [], rec: [[0, 0], [0, 0], [0, 0]], day: '', paid: 0 }; if (!s.duel.rec) s.duel.rec = [[0, 0], [0, 0], [0, 0]]; return s.duel; };
+  const rec = () => { const s = S(); s.duel = s.duel || { deck: [], rec: [[0, 0], [0, 0], [0, 0]], day: '', paid: 0 }; const d = s.duel; if (!d.rec) d.rec = [[0, 0], [0, 0], [0, 0]]; if (d.lesson == null) d.lesson = 1; if (d.coach == null) d.coach = D().coach_duels || 3; return d; };
   const owned = () => Object.keys(S().roster).filter(id => hero(id));
   const minDeck = () => D().practice.min_deck || D().deck;
 
@@ -90,13 +90,16 @@
 
   // ------------------------------------------------------------------ cards
   function miniCard(id, opt) {
-    const h = hero(id), o = opt || {}, c = X.el('div', 'dc r-' + h.rarity);
+    const h = hero(id), o = opt || {}, c = X.el('div', 'dc r-' + h.rarity), m = D().moves[id];
     c.style.setProperty('--rc', X.R.rarity_color[h.rarity]);
     c.dataset.id = id;
     c.innerHTML = `<i class="dcbg" style="background-image:url(/assets/v2/bg/${h.bg}.webp)"></i><img class="dcart" src="${X.OS.img('heroes', id)}" alt="" draggable="false">
-      <b class="dccost">${D().cost[h.rarity]}</b>${o.val != null ? `<b class="dcval">${o.val}</b>` : ''}<span class="dcname">${nm(id)}</span>${D().moves[id] ? '<i class="dcmv">✦</i>' : ''}`;
+      <b class="dccost">${D().cost[h.rarity]}</b>${o.val != null ? `<b class="dcval">${o.val}</b>` : ''}
+      ${m ? `<span class="dctag"><i>${m.icon}</i>${m.tag}</span>` : ''}<span class="dcname">${nm(id)}</span>`;
+    if (o.val != null) c.querySelector('.dcval').style.setProperty('--sc', statColor());
     return c;
   }
+  const statColor = k => (D().stat_color || {})[k || (st ? E.call(st) : 'attack')] || '#ffd35c';
   const downCard = () => { const c = X.el('div', 'dc down'); c.innerHTML = '<i class="dcback"></i>'; return c; };
 
   // ------------------------------------------------------------------ the table
@@ -112,6 +115,7 @@
     if (!again) history.pushState({ v: 'duels', duel: 1 }, '', '#duels');
     if (X.OS.Sound) X.OS.Sound.music(TUNE[st.arena] || 'battle');
     drawTrail(true); drawAll(); say(pick(W.start));
+    if (lessonOn()) setTimeout(lessonStart, 1200);
     setTimeout(() => say(fill(pick(W.round_start), { n: st.round, calls: st.calls.map(k => W.calls[k]).join(', ') })), 2600);
   }
   function close(silent) {
@@ -127,8 +131,10 @@
     $('dt-arena').textContent = 'Arena: ' + (X.R.places.find(p => p.id === st.arena) || {}).name;
   }
   function drawCalls() {
-    $('dt-calls').innerHTML = st.calls.map((k, i) => `<span class="${i === st.turn ? 'now' : i < st.turn ? 'done' : ''}">${W.calls[k]}</span>`).join('');
-    $('dt-call').textContent = W.calls[E.call(st)] || '';
+    const k = E.call(st);
+    $('dt-calls').innerHTML = st.calls.map((kk, i) => `<span class="${i === st.turn ? 'now' : i < st.turn ? 'done' : ''}" style="--sc:${statColor(kk)}">${W.calls[kk]}</span>`).join('');
+    const b = $('dt-call'); b.textContent = W.calls[k] || ''; b.style.setProperty('--sc', statColor(k));
+    $('duel').style.setProperty('--call', statColor(k));
   }
   function drawBars() {
     const [a, b] = st.sides.map(p => p.pts);
@@ -141,6 +147,10 @@
     $('dt-them-en').innerHTML = `<b>${st.sides[1].energy}</b><small>+${D().energy.per_turn}</small>`;
     $('dt-pips').innerHTML = Array.from({ length: mx }, (_, i) => `<i class="${i < left ? 'on' : i < p.energy ? 'used' : ''}"></i>`).join('');
     $('dt-ready').textContent = mine.length ? 'Ready' : 'Pass';
+    const sum = mine.reduce((t, id) => t + E.cardValue(R(), st, 0, id), 0);
+    $('dt-sum').innerHTML = mine.length
+      ? `Playing <b>${mine.length}</b>: <b style="color:${statColor()}">${sum}</b> on ${W.calls[E.call(st)]} for <b>${spent}</b> energy`
+      : `<span class="mut">Tap a card to play it. This turn counts <b style="color:${statColor()}">${W.calls[E.call(st)]}</b>.</span>`;
   }
   function drawSlots() {
     ['dt-slots-you', 'dt-slots-them'].forEach((sid, side) => {
@@ -148,6 +158,16 @@
       for (let i = 0; i < D().per_turn; i++) { const s = X.el('div', 'dslot'); box.appendChild(s);
         if (side === 0 && mine[i]) { const c = miniCard(mine[i], { val: E.cardValue(R(), st, 0, mine[i]) }); c.onclick = () => unplace(mine[i]); c.onmouseenter = () => showInfo(mine[i]); s.appendChild(c); } }
     });
+  }
+  // the coach: for a new player's first few duels, the best-value card it can afford gets a soft glow
+  function coachId() {
+    const d = rec(); if (!d.coach || busy) return null;
+    const p = st.sides[0], spent = mine.reduce((t, id) => t + E.costOf(R(), st, 0, id), 0);
+    let best = null, bv = 0;
+    p.hand.forEach(id => { if (mine.includes(id) || p.locked.includes(id)) return;
+      const c = E.costOf(R(), st, 0, id); if (c > p.energy - spent) return;
+      const v = E.cardValue(R(), st, 0, id) / c; if (v > bv) { bv = v; best = id; } });
+    return best;
   }
   function drawHand() {
     const p = st.sides[0], box = $('dt-hand'); box.innerHTML = '';
@@ -160,6 +180,7 @@
       if (cost !== D().cost[hero(id).rarity]) c.querySelector('.dccost').classList.add('taxed');
       bindDrag(c, id); box.appendChild(c);
     });
+    const co = coachId(); if (co) { const n = box.querySelector(`.dc[data-id="${co}"]`); if (n) n.classList.add('coach'); }
     $('dt-deck').textContent = p.deck.length;
   }
 
@@ -181,16 +202,16 @@
     if (st.sides[0].locked.includes(id)) { X.SND('deny'); return say(fill(W.cant_lock, { you: name })); }
     if (mine.length >= D().per_turn) { X.SND('deny'); return say(W.cant_three); }
     if (!E.legal(R(), st, 0, mine.concat(id))) { X.SND('deny'); return say(fill(W.cant_energy, { you: name })); }
-    mine.push(id); X.SND('flip'); drawSlots(); drawHand(); drawEnergy();
+    mine.push(id); X.SND('flip'); drawSlots(); drawHand(); drawEnergy(); lessonDid('placed');
   }
   function unplace(id) { if (busy) return; mine = mine.filter(x => x !== id); X.SND('back'); drawSlots(); drawHand(); drawEnergy(); }
 
   function showInfo(id) {
-    const h = hero(id), c = st.cards['0:' + id] || E.makeCard(R(), id, X.own(id), D().practice.bracket), m = D().moves[id], k = E.call(st);
-    $('dt-info').innerHTML = `<b>${h.name}</b> <span class="mut">${X.OS.cap(h.rarity)} · costs ${c.cost}</span>
-      <div class="dist">${STATK.map(s => `<span class="${s === k ? 'now' : ''}">${SHORT[s]} <b>${c.st[s]}</b></span>`).join('')}</div>
-      ${m ? `<div class="dimv"><b>${m.name}.</b> ${m.text}</div>` : ''}`;
-    $('dt-info').classList.add('on'); clearTimeout(info); info = setTimeout(() => $('dt-info').classList.remove('on'), 6000);
+    const h = hero(id), c = st.cards['0:' + id] || st.cards['1:' + id] || E.makeCard(R(), id, X.own(id), D().practice.bracket), m = D().moves[id], k = E.call(st);
+    $('dt-info').innerHTML = `<button class="dix" aria-label="Close">×</button><b>${h.name}</b> <span class="mut">${X.OS.cap(h.rarity)} · costs ${c.cost}</span>
+      <div class="dist">${STATK.map(s2 => `<span class="${s2 === k ? 'now' : ''}" ${s2 === k ? `style="--sc:${statColor(k)}"` : ''}>${SHORT[s2]} <b>${c.st[s2]}</b></span>`).join('')}</div>
+      ${m ? `<div class="dimv"><i>${m.icon}</i> <b>${m.name}.</b> ${m.text}</div>` : ''}`;
+    $('dt-info').classList.add('on'); clearTimeout(info);
   }
   function say(t) { const n = $('dt-say'); n.classList.remove('in'); void n.offsetWidth; n.textContent = t; n.classList.add('in'); }
 
@@ -210,7 +231,12 @@
     svg.setAttribute('viewBox', `0 0 ${tw} ${th}`); svg.setAttribute('preserveAspectRatio', 'none');
     svg.innerHTML = `<path class="ink edge" d="${d}"/><path class="ink them" d="${d}"/><path class="ink you" d="${d}"/>`;
     path = svg.querySelector('.ink.you'); plen = path.getTotalLength();
-    if (fresh) { svg.classList.remove('draw'); void svg.getBoundingClientRect(); svg.classList.add('draw'); }
+    if (fresh) {                                       // ink runs out from where Smudge stands, both ways at once
+      const half = plen / 2;
+      svg.querySelectorAll('.ink').forEach(n => { n.style.transition = 'none'; n.style.strokeDasharray = `0 ${half} 0 ${plen}`; });
+      requestAnimationFrame(() => { svg.querySelectorAll('.ink').forEach(n => { n.style.transition = 'stroke-dasharray .6s ease-out'; n.style.strokeDasharray = `${half} 0 ${half} 0`; });
+        setTimeout(() => { svg.querySelectorAll('.ink').forEach(n => { n.style.transition = ''; n.style.strokeDasharray = ''; }); setMarker(markerF, st ? st.sides[0].pts - st.sides[1].pts : 0); }, 640); });
+    }
     setMarker(fresh ? 0.5 : markerF, st ? st.sides[0].pts - st.sides[1].pts : 0);
   }
   function moveMarker(gap, total) { const scale = Math.max(30, total * 0.6); const f = 0.5 - Math.max(-0.46, Math.min(0.46, gap / scale * 0.5)); setMarker(f, gap); }
@@ -225,7 +251,7 @@
 
   // ------------------------------------------------------------------ a turn
   async function ready() {
-    if (busy || !st || st.over) return; busy = true; $('dt-ready').disabled = true; $('dt-info').classList.remove('on');
+    if (busy || !st || st.over) return; busy = true; $('dt-ready').disabled = true; $('dt-info').classList.remove('on'); lessonDid('ready');
     const theirs = E.choose(R(), st, 1, lvl), picks = [mine.slice(), theirs];
     if (!picks[0].length) say(pick(W.pass));
     X.SND('confirm');
@@ -287,7 +313,7 @@
   function finish(won) {
     const d = rec(), today = new Date().toISOString().slice(0, 10), P = D().practice;
     if (d.day !== today) { d.day = today; d.paid = 0; }
-    d.rec[lvl] = d.rec[lvl] || [0, 0]; d.rec[lvl][won ? 0 : 1]++;
+    d.rec[lvl] = d.rec[lvl] || [0, 0]; d.rec[lvl][won ? 0 : 1]++; if (d.coach > 0) d.coach--;
     let pay = 0; if (won && d.paid < P.paid_per_day) { d.paid++; pay = P.gold; X.award(pay); }
     X.bump(won ? 'duels_won' : 'duels_lost'); X.save(true);
     X.SND(won ? 'win' : 'deny');
@@ -300,10 +326,44 @@
     $('dt-leave').onclick = () => { box.hidden = true; close(); };
   }
 
+  // ------------------------------------------------------------------ the first duel is a lesson
+  // Five steps, in order. Steps 1, 2 and 5 are read-and-tap; steps 3 and 4 wait for the player to do the thing.
+  // Skippable at any point, and replayable from the Duels screen. Wording is a stand-in until F7.
+  const STEPS = [
+    { sel: '#dt-you-en', text: 'This is your energy. Seven more arrive every turn, and whatever you do not spend carries over to the next one.' },
+    { sel: '#dt-call', text: 'Every turn calls one number. Only that number on a card counts, so a fast card is worthless on a Health turn.' },
+    { sel: '#dt-hand', text: 'Tap a card to play it. The yellow corner is what it scores this turn; the blue circle is what it costs.', until: 'placed', top: true },
+    { sel: '#dt-ready', text: 'Now press Ready. Both sides turn over at the same moment.', until: 'ready', top: true },
+    { sel: '#dt-smudge', text: 'Smudge keeps the score and drifts toward whoever is behind. Three turns make a round, and three rounds win the duel.', last: true },
+  ];
+  let step = -1;
+  function lessonOn() { return rec().lesson !== 0; }
+  function lessonStart() { if (!lessonOn()) return; step = -1; lessonNext(); }
+  function lessonNext() {
+    step++;
+    if (step >= STEPS.length) return lessonEnd();
+    const sp = STEPS[step], box = $('dt-lesson'), t = document.querySelector(sp.sel);
+    document.querySelectorAll('.dpoint').forEach(n => n.classList.remove('dpoint'));
+    if (t) t.classList.add('dpoint');
+    box.hidden = false; box.classList.toggle('attop', !!sp.top);
+    box.innerHTML = `<div class="dlbox"><img src="/assets/v2/smudge/boot.webp${X.OS.VER}" alt="">
+      <div><p>${sp.text}</p><div class="row">${sp.until ? '' : `<button class="btn small" id="dl-next">${sp.last ? 'Let me play' : 'Next'}</button>`}<button class="btn small ghost" id="dl-skip">Skip</button></div></div></div>`;
+    if (!sp.until) $('dl-next').onclick = () => lessonNext();
+    $('dl-skip').onclick = () => lessonEnd();
+    if (sp.until) box.classList.add('waiting'); else box.classList.remove('waiting');
+  }
+  // the player did something: if the current step was waiting for it, move on
+  function lessonDid(what) {
+    if (step < 0 || step >= STEPS.length) return;
+    if (STEPS[step].until === what) lessonNext();
+  }
+  function lessonEnd() { rec().lesson = 0; step = -1; $('dt-lesson').hidden = true; document.querySelectorAll('.dpoint').forEach(n => n.classList.remove('dpoint')); X.save(); }
+
   function wire() {
     $('dt-ready').onclick = ready;
     $('dt-quit').onclick = () => { if (busy) return; if (st && !st.over && (st.round > 1 || st.turn > 0) && !confirm('Leave this duel? Practice keeps no score of it.')) return; close(); };
-    $('dt-info').onclick = () => $('dt-info').classList.remove('on');
+    $('dt-info').onclick = e => { if (e.target.closest('.dix') || e.target === $('dt-info')) $('dt-info').classList.remove('on'); };
+    $('duel').addEventListener('pointerdown', e => { if (!e.target.closest('.dinfo,.dc')) $('dt-info').classList.remove('on'); }, true);
     addEventListener('resize', () => { if (tableOpen && path) drawTrail(false); });
   }
 

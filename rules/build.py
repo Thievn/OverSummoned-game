@@ -258,6 +258,7 @@ for t in C["potions"]:   # kind "tonic" on purpose: the server already budgets b
 items["x_shard"] = dict(id="x_shard", name="Card Shard", kind="loot", rarity="uncommon", icon="x_shard", flavor="A corner of somebody who has already arrived.", place="archive", sell=C["card"]["shard_gold"])
 
 _duel.fill_scale(C["card"]["hero_total"])
+_duel.fill_tags()
 _duel.check([h["id"] for h in heroes], {h["id"]: h["arch"] for h in heroes})
 out = dict(C, heroes=heroes, places=places, items=items, duel=_duel.DUEL)
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
