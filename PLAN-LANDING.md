@@ -13,8 +13,9 @@
 
 **1. Hero.** Left: the words and the sign-up form. Right: the live Smudge scene that is there now (keep it, it is the best thing on the page).
 - Label: FREE BROWSER GAME · CLOSED BETA
-- Headline: **Collect 50 heroes from the wrong centuries.**
-- Under it: A free idle card game. Summon heroes, send them to work while you are away, and battle bosses with your best team. Plays on your phone or computer.
+- Headline: **Collect heroes from all the wrong centuries.**
+- Under it: Smudge the otter keeps summoning the wrong people from history. Collect them as cards, send them to work while you are away, and battle bosses with your best team. Free, on your phone or computer.
+- NO HERO COUNT anywhere on the site (Dean, 25 Nov and again 27 Nov: the roster keeps growing, so a number goes stale and sounds like a limit). Say "heroes", "new heroes added regularly", never "50".
 - Form, right here, not a section later: email box + button **Get my invite**
 - Small line: Free. Your invite arrives by email in about a minute.
 - Smudge's speech bubble keeps his jokes. That is where his voice belongs.
@@ -26,7 +27,7 @@
 2. **Put them to work.** Send heroes fishing, digging and safecracking. They earn loot even when the game is closed.
 3. **Gear up and fight.** Equip what they find, train them, and take on bosses.
 
-**4. Meet a few heroes.** Keep the five flip cards. Heading: "50 heroes so far, and more on the way." Button: See all heroes.
+**4. Meet a few heroes.** Keep the five flip cards. Heading: "Meet a few of them. New heroes are added regularly." Button: See all heroes.
 
 **5. What you can do.** Four tiles, plain: Jobs, Raids, Workshop and Training, Desktop pet (optional: a small Smudge on your taskbar who reacts when you type. He counts key presses and never sees what you type.)
 
@@ -40,8 +41,9 @@
 - **L1.** Back up to the secondary repo. Rebuild index.html to the outline above using the existing styles and the wording given here word for word. Keep the nav, the Smudge scene, the form's existing sign-up call (js/wish.js) and the receipt.
 - **L2.** Capture the screenshots from the real game on a seeded test account; save as webp under `assets/v2/site/`; lazy-load everything below the hero.
 - **L3.** Content must be visible without the scroll script: sections start visible, the reveal animation is an extra, and it is off for reduced motion.
-- **L4.** Page title: "OverSummoned: a free idle card game with 50 heroes from history". Meta description in plain words. Share image that shows the game, not only the logo. Check the page at 360, 390 and 1366 wide and look at the screenshots before shipping.
+- **L4.** Page title: "OverSummoned: a free idle card game with heroes from all of history". Meta description in plain words. Share image that shows the game, not only the logo. Check the page at 360, 390 and 1366 wide and look at the screenshots before shipping.
 - **L5.** Send a `sign_up` event to the analytics already on the page when the form succeeds, and one for each "Get my invite" click, so the next change can be judged by numbers.
 
-## Not decided
-- Whether the hero headline should name Smudge. This plan keeps him in the picture and the bubble and keeps the headline about the game.
+## Decided (Dean, 27 Nov)
+- Smudge is not named in the headline; he is introduced in the sentence under it, and shown in the scene beside it.
+- No hero count.
