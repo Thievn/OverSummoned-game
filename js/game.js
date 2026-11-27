@@ -253,7 +253,7 @@
   // and the arrow in the top bar) move between screens instead of leaving the game. An open sheet is a step too.
   let current = 'home', closing = false, queued = null;
   const START = (location.hash || '').slice(1);
-  const VIEWS = ['home', 'jobs', 'summon', 'heroes', 'bag', 'workshop', 'training', 'raids', 'board', 'shop', 'account'], TABS = VIEWS.slice(0, 5);
+  const VIEWS = ['home', 'jobs', 'summon', 'heroes', 'bag', 'workshop', 'training', 'raids', 'duels', 'board', 'shop', 'account'], TABS = VIEWS.slice(0, 5);
   function show(v, how) {
     if (closing) { queued = [v, how]; return; }      // a sheet is still stepping back out of history: go there once it has
     if (!VIEWS.includes(v)) v = 'home'; how = how || {};
@@ -272,10 +272,11 @@
   const BOSSTUNE = { tiber: 'b_ancient', tony: 'b_noir', vanguard: 'b_romp', gary: 'b_romp', nephew: 'b_noir', well: 'b_gothic', antlers: 'b_north', brenda: 'b_romp' };
   let inRaid = null;
   function tune() { if (!OS.Sound) return; const j = S.jobs[0];
-    OS.Sound.music(inRaid ? (BOSSTUNE[inRaid] || 'battle') : current === 'raids' ? 'battle' : current === 'jobs' && j && PLACETUNE[j.place] ? PLACETUNE[j.place] : 'home'); }
+    OS.Sound.music(inRaid ? (BOSSTUNE[inRaid] || 'battle') : current === 'raids' || current === 'duels' ? 'battle' : current === 'jobs' && j && PLACETUNE[j.place] ? PLACETUNE[j.place] : 'home'); }
   history.replaceState({ v: 'home' }, '', location.pathname + location.search + '#home');
   addEventListener('popstate', e => {
     if (closing) { closing = false; const q = queued; queued = null; if (q) show(q[0], q[1]); return; }
+    if (window.DuelUI && DuelUI.isOpen()) { DuelUI.close(); return; }                           // Back leaves the duel table first
     if ($('modal').classList.contains('on')) { $('modal').classList.remove('on'); return; }      // Back closes an open sheet first
     show((e.state && e.state.v) || (location.hash || '#home').slice(1), { silent: true });
   });
@@ -1196,7 +1197,14 @@
   $('ac-out').onclick = async () => { await save(true); Cloud.signOut(); };
   // No "start over" in here on purpose: a wipe goes through the owner, who can do it from the Players tab.
 
-  const renderers = { home: renderHome, jobs: renderJobs, summon: renderSummon, heroes: renderHeroes, bag: renderBag, workshop: renderWorkshop, training: renderTraining, raids: renderRaids, board: renderBoard, shop: renderShop, account: renderAccount };
+  const renderers = { home: renderHome, jobs: renderJobs, summon: renderSummon, heroes: renderHeroes, bag: renderBag, workshop: renderWorkshop, training: renderTraining, raids: renderRaids, duels: () => window.DuelUI && DuelUI.lobby(), board: renderBoard, shop: renderShop, account: renderAccount };
+  // Duels (O9): the table is its own file; it borrows these
+  const duelsOn = !!(R.duel && (R.duel.open || me.admin));
+  document.querySelectorAll('[data-go="duels"],#gnav [data-v="duels"]').forEach(b => b.hidden = !duelsOn);
+  if (!duelsOn) VIEWS.splice(VIEWS.indexOf('duels'), 1);
+  if (window.DuelUI) DuelUI.init({ R, OS, el, S: () => S, save, toast, SND, tune, render, bump,
+    own: id => ({ level: cardLevel(S.roster[id] || 1), trained: S.trained[id] || {}, kit: kitCount(id) }),
+    award: g => { S.gold += g; bump('gold', g); } });
   function render() { renderTop(); renderers[current](); }
 
   // ------------------------------------------------------------------ the clock

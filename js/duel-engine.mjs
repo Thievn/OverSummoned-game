@@ -61,6 +61,9 @@ function startRound(R, s) {
 }
 
 export const call = s => s.calls[s.turn];
+// what a card in side i's hand would score on stat k right now, before any Move (for the table to show)
+export const cardValue = (R, s, i, id, k) => Math.round(baseOf(R, s, i, s.cards[i + ':' + id], k || call(s)));
+export const bestStat = c => best(c);
 export const costOf = (R, s, i, id) => { const p = s.sides[i], c = s.cards[i + ':' + id]; return c.cost + (p.tax && id === dearest(s, i) ? p.tax : 0); };
 function dearest(s, i) { const p = s.sides[i]; return p.hand.reduce((b, id) => !b || s.cards[i + ':' + id].cost > s.cards[i + ':' + b].cost ? id : b, null); }
 

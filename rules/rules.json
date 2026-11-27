@@ -13854,6 +13854,7 @@
   }
  },
  "duel": {
+  "open": false,
   "deck": 12,
   "decks_saved": 3,
   "hand": 5,
@@ -13930,7 +13931,8 @@
   "practice": {
    "bracket": "silver",
    "paid_per_day": 3,
-   "gold": 40
+   "gold": 40,
+   "min_deck": 8
   },
   "marks": {
    "max": 5,
@@ -14435,6 +14437,26 @@
     ],
     "x": 4
    }
+  },
+  "short": {
+   "albrecht": "Albrecht",
+   "blackbear": "Blackbear",
+   "emu": "Emu",
+   "troffea": "Troffea",
+   "stella": "Stella",
+   "flap": "Flap",
+   "max": "Max",
+   "ajolote": "Ajolote",
+   "hootsworth": "Hootsworth",
+   "sterling": "Sterling",
+   "quack": "Quackenstein",
+   "beep": "B33-P",
+   "tut": "Tut",
+   "eagleton": "Eagleton",
+   "zorp": "Zorp",
+   "madjack": "Mad Jack",
+   "pam": "Pam",
+   "florida": "Florida Man"
   }
  }
 }

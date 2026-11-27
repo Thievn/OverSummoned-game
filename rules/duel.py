@@ -136,7 +136,13 @@ MOVES = {
     "stella":    dict(name="Tomorrow's News", text="Your other Neon cards +4.", fx="rally", group=("age", "neon"), x=4),
 }
 
+# the name on a duel card where the first word is a title, not a name
+SHORT = {"albrecht": "Albrecht", "blackbear": "Blackbear", "emu": "Emu", "troffea": "Troffea", "stella": "Stella", "flap": "Flap",
+         "max": "Max", "ajolote": "Ajolote", "hootsworth": "Hootsworth", "sterling": "Sterling", "quack": "Quackenstein",
+         "beep": "B33-P", "tut": "Tut", "eagleton": "Eagleton", "zorp": "Zorp", "madjack": "Mad Jack", "pam": "Pam", "florida": "Florida Man"}
+
 DUEL = dict(
+    open=False,              # False: only the owner sees Duels (testing). True: everyone.
     deck=12,                 # different heroes in a deck; duels open at this many owned
     decks_saved=3,
     hand=5,
@@ -162,13 +168,13 @@ DUEL = dict(
         dict(id="gold", name="Gold", level=7, train=40, rating=1300),
         dict(id="open", name="Open", level=10, train=60, rating=1500),
     ],
-    practice=dict(bracket="silver", paid_per_day=3, gold=40),
+    practice=dict(bracket="silver", paid_per_day=3, gold=40, min_deck=8),   # Practice opens at 8 heroes (Dean, 27 Nov); ranked keeps `deck`
     marks=dict(max=5, regen_minutes=30),
     rest_minutes=10,
     stakes=dict(options=[0, 100, 500, 2000], pays=1.8, daily_cap=10000, by_bracket={"copper": 100, "silver": 500, "gold": 2000, "open": 2000}),
     rating=dict(start=1000, k_attack=24, k_defend=8),
     turn_seconds=30,
-    ages=AGES, kins=KINS, arenas=ARENAS, moves=MOVES,
+    ages=AGES, kins=KINS, arenas=ARENAS, moves=MOVES, short=SHORT,
 )
 
 

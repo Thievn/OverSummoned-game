@@ -450,3 +450,6 @@ Full plan in `PLAN-CITY-DUELS.md`. Steps O8 to O16 and F7 to F9. Nothing built. 
 
 ### 27 Nov: O8 done (Opus)
 Groups, Moves, duel numbers, the engine and the sim. Detail and results at the bottom of `PLAN-CITY-DUELS.md`. Next is O9 (practice table), after Dean looks at the group table and sim.
+
+### 27 Nov: O9 done (Opus)
+The practice table, owner only (`duel.open` in rules/duel.py). Detail at the bottom of `PLAN-CITY-DUELS.md`. Waiting on Dean to play it before O10.

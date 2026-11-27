@@ -223,3 +223,13 @@ Results at 10,000 duels: 4.07 rounds a duel, 1.7 cards a side a turn; each stat 
 Beta accounts today: three saves, holding 1, 2 and 16 heroes. Only one could open Duels at 12. Dean to decide before O9 ships: keep 12, or open Practice earlier with a smaller deck.
 
 Not done in O8 (on purpose): no version bump (nothing reads `duel` yet; O9 bumps), no screens, no server.
+
+## O9 done (27 Nov, Opus): the practice table
+
+- Duels screen (`#v-duels`, js/duel.js lobby): pick who to play (easy, normal, careful, with your record against each), build a deck of 8 to 12 from what you own (tap to add or take out, "Pick for me" builds a mixed-cost deck), how-to-play notes. Practice opens at 8 owned (`duel.practice.min_deck`); ranked keeps 12.
+- The table (`#duel` overlay, js/duel.js, css/duel.css): built around Dean's screenshot. Their slots top, yours bottom, Smudge on an ink trail between (violet from their side, gold from yours, split where he stands; the sign shows the gap), the call and the round's three calls top left, energy pill plus twenty pips, points bars, hand of five, deck count, Ready (says Pass with nothing placed). Tap a card to read it and place it, tap a placed card to take it back, or drag it up. Unaffordable and locked cards say so. Reveal: their cards drop face down, everyone flips fastest first, Moves stamp their names on the card, numbers turn green or red, totals count up into the bars and Smudge walks. Round banner, rounds pips, result sheet with Play again.
+- Backdrop: one of the 24 heroes' own era backdrops, at random. Music: the arena's battle theme (falls back to the raid theme until the ElevenLabs tracks are in).
+- Practice pays 40 gold for the first 3 wins a day (client-side, same trust as raid gold). Record in `S.duel`.
+- `duel.open` is False: only the owner sees Duels. Set True in rules/duel.py to open it to the beta.
+- Words are stand-ins in `data/duel_words.json` and the Move names in rules/duel.py (F7). Short names for titled heroes in `duel.short`.
+- Not done: no tutorial beyond the notes, no Grok lines (O11), no Peek reveal shown on the table (the house cannot use it either), no keyboard play.
