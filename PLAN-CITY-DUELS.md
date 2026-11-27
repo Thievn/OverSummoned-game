@@ -49,7 +49,7 @@ Not taken: a single Power number (we already have five stats, so we use them), 1
 - **Deck:** 12 different heroes. Duels open when a player owns 12. Up to three saved decks.
 - **Hand:** 5, refilled to 5 after every turn. Played cards return to the bottom in play order.
 - **Turn:** both players pick up to 3 cards, limited by energy, and press Ready (30 second timer in live play). Then both sides flip.
-- **Energy:** start with 6, gain 5 a turn, unspent carries over, never more than 15. Cost by rarity: common 2, uncommon 3, rare 4, epic 5, legendary 6, absurd 7, unhinged 8.
+- **Energy:** start with 7, gain 7 a turn, unspent carries over, never more than 20 (changed in O8: at 5 a turn almost nobody could play two cards). Cost by rarity: common 2, uncommon 3, rare 4, epic 5, legendary 6, absurd 7, unhinged 8.
 - **The call (this is ours):** every turn calls one stat. On a Speed call, a card is worth its speed. A round shows its three calls up front (say Speed, then Attack, then Health), so you plan the round: hold the sloth for the Health turn, spend the greyhound now.
 - **Round:** whoever has more points after three turns takes the round. Level after three: one more turn on a random call. First to three rounds wins. Three to five rounds, about four minutes.
 - **Arena:** each duel is in one of the nine places. The arena sets which stats get called more often and gives one group +20% there (the dock favours Ancient; the speakeasy favours rogues). The arena rotates weekly for ranked.
@@ -108,7 +108,7 @@ What we change so it is ours, not theirs:
 - **Backdrop:** each hero already has an era backdrop (`bg`). Each duel picks one at random from the 24 heroes in the two decks, darkened so cards read. No picture is generated per duel: it would cost money, take seconds and could come out wrong. New backdrops are drawn once through the Grok queue and reused.
 - **Playing a card:** drag it up or tap it then tap a slot; it lifts, tilts and drops in with a thud. Tap a played card to take it back until you press Ready. Cards you cannot afford are dimmed with the missing energy shown.
 - **The flip:** cards turn fastest first, the called stat lifts off each card and flies down the trail into Smudge's sign, green if a Move raised it, red if it was sapped. Move names stamp across the card. Both point bars count up digit by digit.
-- **Energy:** the number, "+5" beside it, and fifteen pips that fill and drain.
+- **Energy:** the number, "+5" beside it, and twenty pips that fill and drain.
 - A narrow line of text under the trail: Smudge calling it, heroes answering in their own voices.
 - Phone first, one screen, no scrolling. On desktop the same table centred with the hand wider and the text line to the side.
 - Sound: each backdrop's place theme, else the battle pool.
@@ -202,3 +202,24 @@ All of these are numbers in `rules/build.py`. Expect them to move after Dean pla
 ## 7. Start here (Opus)
 
 Read PLAN.md, then this file. Back up to the secondary GitHub repo first. Do O8 and stop: show Dean the group table and the sim results before any screen. Then O9, Practice only, and stop again for Dean to play it. Do not start ranked, the city or the market until he has said the table is fun.
+
+## O8 done (27 Nov, Opus): what was built and what changed from the plan above
+
+Built, no screens:
+- `rules/duel.py`: ages, kins, the nine arenas, fifty Moves (STAND-IN names and lines for F7), every duel number. build.py adds `arch`, `age`, `kin` to every hero and `duel` to rules.json, and fails the build if a hero lacks a group or Move or a group drops under four. Rebuilt rules.json is otherwise byte-for-byte the same data.
+- `js/duel-engine.mjs`: the whole rule book, pure and seeded (newDuel, legal, play, choose, runDuel, makeCard). **Changed from the plan:** the engine is JavaScript, not Python, so the sim, the practice table (O9) and the ranked edge function (O10, Deno imports .mjs) all run the one file. `play()` returns events (flip, move, score, round, end) for O9 to animate.
+- `rules/sim_duel.mjs` (was planned as sim_duel.py): `node rules/sim_duel.mjs [n]`. All 15 marks pass at 10,000 duels. Writes `rules/sim_duel_heroes.json` (every hero's win rate).
+- House players: easy (plays at random a third of the time), normal (points now against energy spent), careful (also holds a card for a call still to come this round, and gives up a lost round to bank energy). Careful beats normal 67%, normal beats easy 71%.
+
+Numbers the sim forced (all in rules/duel.py):
+- `energy` 7 / +7 / max 20 (plan said 6 / +5 / 15).
+- `rarity_scale`: in a duel only, a hero's own stats are scaled by rarity so every card gives about the same points per energy (common 1.0 up to unhinged ~1.5), minus a small `premium` for dear cards because the three-a-turn limit already favours them. Without it a deck of commons won 96%; with only that, the dearest twelve won 65%.
+- Training in a duel: a trained point counts `train_weight` x half the card's cost, and past 15 on a stat (`train_soft`) only half. One hero maxed in everything now LOSES to the same 300 points spread over the deck (tall wins 40%). This is the one-card problem solved inside duels.
+- Gamble chance capped at 35%. Marco and Emu's energy Moves cut (+2 to +1, +3 to +2). Kevin and Pam got a small boost on their own stat. Bella and Slapton's group Moves raised (still weakest: they are built for decks players will build around them, which random-deck sims undervalue).
+- The rarity mark is now "no more than 55%" (the plan's wording). Decks of one price lose a little because they waste energy; that is deck-building, not rarity.
+
+Results at 10,000 duels: 4.07 rounds a duel, 1.7 cards a side a turn; each stat called 18.5% to 21.1%; every hero between 43.9% (Slapton) and 57.7% (President Eagleton); commons-and-uncommons decks 50 to 55%, rare-only 49 to 53%, the dearest twelve 53%.
+
+Beta accounts today: three saves, holding 1, 2 and 16 heroes. Only one could open Duels at 12. Dean to decide before O9 ships: keep 12, or open Practice earlier with a smaller deck.
+
+Not done in O8 (on purpose): no version bump (nothing reads `duel` yet; O9 bumps), no screens, no server.

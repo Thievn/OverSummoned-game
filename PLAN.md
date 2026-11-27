@@ -447,3 +447,6 @@ Header art is `assets/mail/header.png`. Sending is Resend from hello@oversummone
 
 ### 26 Nov, late: the big plan for heroes, Duels and the city (Fable)
 Full plan in `PLAN-CITY-DUELS.md`. Steps O8 to O16 and F7 to F9. Nothing built. Dean has six decisions to make at the bottom of that file before O8 starts.
+
+### 27 Nov: O8 done (Opus)
+Groups, Moves, duel numbers, the engine and the sim. Detail and results at the bottom of `PLAN-CITY-DUELS.md`. Next is O9 (practice table), after Dean looks at the group table and sim.

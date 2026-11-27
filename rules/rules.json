@@ -1737,7 +1737,10 @@
     "kevin_armor",
     "kevin_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "tank",
+   "age": "today",
+   "kin": "odd"
   },
   {
    "id": "marco",
@@ -1767,7 +1770,10 @@
     "marco_armor",
     "marco_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "fast",
+   "age": "today",
+   "kin": "dogs"
   },
   {
    "id": "maya",
@@ -1797,7 +1803,10 @@
     "maya_armor",
     "maya_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "support",
+   "age": "today",
+   "kin": "dogs"
   },
   {
    "id": "brokk",
@@ -1827,7 +1836,10 @@
     "brokk_armor",
     "brokk_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "bruiser",
+   "age": "ancient",
+   "kin": "weasels"
   },
   {
    "id": "gaius",
@@ -1857,7 +1869,10 @@
     "gaius_armor",
     "gaius_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "tank",
+   "age": "ancient",
+   "kin": "dogs"
   },
   {
    "id": "edith",
@@ -1887,7 +1902,10 @@
     "edith_armor",
     "edith_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "support",
+   "age": "steam",
+   "kin": "small"
   },
   {
    "id": "albrecht",
@@ -1917,7 +1935,10 @@
     "albrecht_armor",
     "albrecht_trinket"
    ],
-   "place": "blackforest"
+   "place": "blackforest",
+   "arch": "mystic",
+   "age": "oldworld",
+   "kin": "birds"
   },
   {
    "id": "vincenzo",
@@ -1947,7 +1968,10 @@
     "vincenzo_armor",
     "vincenzo_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "rogue",
+   "age": "wartime",
+   "kin": "weasels"
   },
   {
    "id": "slapton",
@@ -1977,7 +2001,10 @@
     "slapton_armor",
     "slapton_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "star",
+   "age": "wartime",
+   "kin": "birds"
   },
   {
    "id": "napoleon",
@@ -2007,7 +2034,10 @@
     "napoleon_armor",
     "napoleon_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "tank",
+   "age": "steam",
+   "kin": "dogs"
   },
   {
    "id": "cleocatra",
@@ -2037,7 +2067,10 @@
     "cleocatra_armor",
     "cleocatra_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "star",
+   "age": "ancient",
+   "kin": "cats"
   },
   {
    "id": "blackbear",
@@ -2067,7 +2100,10 @@
     "blackbear_armor",
     "blackbear_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "bruiser",
+   "age": "steam",
+   "kin": "odd"
   },
   {
    "id": "astrid",
@@ -2097,7 +2133,10 @@
     "astrid_armor",
     "astrid_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "bruiser",
+   "age": "oldworld",
+   "kin": "dogs"
   },
   {
    "id": "kenji",
@@ -2127,7 +2166,10 @@
     "kenji_armor",
     "kenji_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "fast",
+   "age": "oldworld",
+   "kin": "dogs"
   },
   {
    "id": "emu",
@@ -2157,7 +2199,10 @@
     "emu_armor",
     "emu_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "fast",
+   "age": "wartime",
+   "kin": "birds"
   },
   {
    "id": "troffea",
@@ -2187,7 +2232,10 @@
     "troffea_armor",
     "troffea_trinket"
    ],
-   "place": "blackforest"
+   "place": "blackforest",
+   "arch": "fast",
+   "age": "oldworld",
+   "kin": "small"
   },
   {
    "id": "joost",
@@ -2217,7 +2265,10 @@
     "joost_armor",
     "joost_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "lucky",
+   "age": "oldworld",
+   "kin": "small"
   },
   {
    "id": "chad",
@@ -2247,7 +2298,10 @@
     "chad_armor",
     "chad_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "lucky",
+   "age": "today",
+   "kin": "small"
   },
   {
    "id": "bella",
@@ -2277,7 +2331,10 @@
     "bella_armor",
     "bella_trinket"
    ],
-   "place": "bondi"
+   "place": "bondi",
+   "arch": "star",
+   "age": "today",
+   "kin": "birds"
   },
   {
    "id": "florida",
@@ -2307,7 +2364,10 @@
     "florida_armor",
     "florida_trinket"
    ],
-   "place": "bondi"
+   "place": "bondi",
+   "arch": "bruiser",
+   "age": "today",
+   "kin": "water"
   },
   {
    "id": "lola",
@@ -2337,7 +2397,10 @@
     "lola_armor",
     "lola_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "rogue",
+   "age": "steam",
+   "kin": "dogs"
   },
   {
    "id": "morwenna",
@@ -2367,7 +2430,10 @@
     "morwenna_armor",
     "morwenna_trinket"
    ],
-   "place": "blackforest"
+   "place": "blackforest",
+   "arch": "mystic",
+   "age": "oldworld",
+   "kin": "odd"
   },
   {
    "id": "sable",
@@ -2397,7 +2463,10 @@
     "sable_armor",
     "sable_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "rogue",
+   "age": "oldworld",
+   "kin": "small"
   },
   {
    "id": "jacko",
@@ -2427,7 +2496,10 @@
     "jacko_armor",
     "jacko_trinket"
    ],
-   "place": "bondi"
+   "place": "bondi",
+   "arch": "support",
+   "age": "today",
+   "kin": "odd"
   },
   {
    "id": "raspawtin",
@@ -2457,7 +2529,10 @@
     "raspawtin_armor",
     "raspawtin_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "mystic",
+   "age": "wartime",
+   "kin": "dogs"
   },
   {
    "id": "madjack",
@@ -2487,7 +2562,10 @@
     "madjack_armor",
     "madjack_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "bruiser",
+   "age": "wartime",
+   "kin": "hoofed"
   },
   {
    "id": "vesper",
@@ -2517,7 +2595,10 @@
     "vesper_weapon",
     "vesper_armor"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "mystic",
+   "age": "neon",
+   "kin": "small"
   },
   {
    "id": "roxy",
@@ -2547,7 +2628,10 @@
     "roxy_armor",
     "roxy_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "bruiser",
+   "age": "neon",
+   "kin": "weasels"
   },
   {
    "id": "jazzmin",
@@ -2577,7 +2661,10 @@
     "jazzmin_weapon",
     "jazzmin_trinket"
    ],
-   "place": "bondi"
+   "place": "bondi",
+   "arch": "fast",
+   "age": "neon",
+   "kin": "dogs"
   },
   {
    "id": "stella",
@@ -2607,7 +2694,10 @@
     "stella_armor",
     "stella_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "star",
+   "age": "neon",
+   "kin": "cats"
   },
   {
    "id": "pam",
@@ -2637,7 +2727,10 @@
     "pam_armor",
     "pam_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "lucky",
+   "age": "neon",
+   "kin": "small"
   },
   {
    "id": "gorm",
@@ -2667,7 +2760,10 @@
     "gorm_armor",
     "gorm_trinket"
    ],
-   "place": "blackforest"
+   "place": "blackforest",
+   "arch": "tank",
+   "age": "neon",
+   "kin": "hoofed"
   },
   {
    "id": "flap",
@@ -2697,7 +2793,10 @@
     "flap_armor",
     "flap_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "fast",
+   "age": "wartime",
+   "kin": "birds"
   },
   {
    "id": "max",
@@ -2727,7 +2826,10 @@
     "max_armor",
     "max_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "bruiser",
+   "age": "neon",
+   "kin": "hoofed"
   },
   {
    "id": "rex",
@@ -2757,7 +2859,10 @@
     "rex_armor",
     "rex_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "support",
+   "age": "neon",
+   "kin": "dogs"
   },
   {
    "id": "ajolote",
@@ -2787,7 +2892,10 @@
     "ajolote_weapon",
     "ajolote_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "tank",
+   "age": "neon",
+   "kin": "water"
   },
   {
    "id": "doug",
@@ -2817,7 +2925,10 @@
     "doug_armor",
     "doug_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "tank",
+   "age": "today",
+   "kin": "water"
   },
   {
    "id": "bjorn",
@@ -2847,7 +2958,10 @@
     "bjorn_armor",
     "bjorn_trinket"
    ],
-   "place": "fjord"
+   "place": "fjord",
+   "arch": "tank",
+   "age": "oldworld",
+   "kin": "water"
   },
   {
    "id": "mona",
@@ -2877,7 +2991,10 @@
     "mona_armor",
     "mona_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "rogue",
+   "age": "oldworld",
+   "kin": "odd"
   },
   {
    "id": "dusty",
@@ -2907,7 +3024,10 @@
     "dusty_armor",
     "dusty_trinket"
    ],
-   "place": "outback"
+   "place": "outback",
+   "arch": "bruiser",
+   "age": "wartime",
+   "kin": "small"
   },
   {
    "id": "hootsworth",
@@ -2937,7 +3057,10 @@
     "hootsworth_armor",
     "hootsworth_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "mystic",
+   "age": "steam",
+   "kin": "birds"
   },
   {
    "id": "sterling",
@@ -2967,7 +3090,10 @@
     "sterling_armor",
     "sterling_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "rogue",
+   "age": "wartime",
+   "kin": "weasels"
   },
   {
    "id": "dolly",
@@ -2997,7 +3123,10 @@
     "dolly_armor",
     "dolly_trinket"
    ],
-   "place": "bondi"
+   "place": "bondi",
+   "arch": "support",
+   "age": "wartime",
+   "kin": "hoofed"
   },
   {
    "id": "gladius",
@@ -3027,7 +3156,10 @@
     "gladius_armor",
     "gladius_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "bruiser",
+   "age": "ancient",
+   "kin": "cats"
   },
   {
    "id": "quack",
@@ -3057,7 +3189,10 @@
     "quack_armor",
     "quack_trinket"
    ],
-   "place": "blackforest"
+   "place": "blackforest",
+   "arch": "mystic",
+   "age": "steam",
+   "kin": "birds"
   },
   {
    "id": "selene",
@@ -3087,7 +3222,10 @@
     "selene_armor",
     "selene_trinket"
    ],
-   "place": "vault"
+   "place": "vault",
+   "arch": "rogue",
+   "age": "oldworld",
+   "kin": "cats"
   },
   {
    "id": "beep",
@@ -3117,7 +3255,10 @@
     "beep_armor",
     "beep_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "support",
+   "age": "today",
+   "kin": "odd"
   },
   {
    "id": "tut",
@@ -3147,7 +3288,10 @@
     "tut_armor",
     "tut_trinket"
    ],
-   "place": "dock"
+   "place": "dock",
+   "arch": "tank",
+   "age": "ancient",
+   "kin": "hoofed"
   },
   {
    "id": "eagleton",
@@ -3177,7 +3321,10 @@
     "eagleton_armor",
     "eagleton_trinket"
    ],
-   "place": "speakeasy"
+   "place": "speakeasy",
+   "arch": "lucky",
+   "age": "today",
+   "kin": "birds"
   },
   {
    "id": "zorp",
@@ -3207,7 +3354,10 @@
     "zorp_armor",
     "zorp_trinket"
    ],
-   "place": "closet"
+   "place": "closet",
+   "arch": "lucky",
+   "age": "today",
+   "kin": "odd"
   }
  ],
  "places": [
@@ -13701,6 +13851,590 @@
    "flavor": "A corner of somebody who has already arrived.",
    "place": "archive",
    "sell": 25
+  }
+ },
+ "duel": {
+  "deck": 12,
+  "decks_saved": 3,
+  "hand": 5,
+  "per_turn": 3,
+  "turns_per_round": 3,
+  "rounds_to_win": 3,
+  "energy": {
+   "start": 7,
+   "per_turn": 7,
+   "max": 20
+  },
+  "cost": {
+   "common": 2,
+   "uncommon": 3,
+   "rare": 4,
+   "epic": 5,
+   "legendary": 6,
+   "absurd": 7,
+   "unhinged": 8
+  },
+  "arena_bonus": 0.2,
+  "rarity_scale": {
+   "common": 1.0,
+   "uncommon": 1.189,
+   "rare": 1.27,
+   "epic": 1.287,
+   "legendary": 1.268,
+   "absurd": 1.228,
+   "unhinged": 1.155
+  },
+  "premium": -0.0175,
+  "train_weight": 0.5,
+  "train_soft": 15,
+  "train_after": 0.5,
+  "kit": {
+   "two": 0.1,
+   "three": 0.25
+  },
+  "gamble": {
+   "div": 250,
+   "mult": 1.5,
+   "cap": 0.35
+  },
+  "brackets": [
+   {
+    "id": "copper",
+    "name": "Copper",
+    "level": 3,
+    "train": 10,
+    "rating": 0
+   },
+   {
+    "id": "silver",
+    "name": "Silver",
+    "level": 5,
+    "train": 25,
+    "rating": 1100
+   },
+   {
+    "id": "gold",
+    "name": "Gold",
+    "level": 7,
+    "train": 40,
+    "rating": 1300
+   },
+   {
+    "id": "open",
+    "name": "Open",
+    "level": 10,
+    "train": 60,
+    "rating": 1500
+   }
+  ],
+  "practice": {
+   "bracket": "silver",
+   "paid_per_day": 3,
+   "gold": 40
+  },
+  "marks": {
+   "max": 5,
+   "regen_minutes": 30
+  },
+  "rest_minutes": 10,
+  "stakes": {
+   "options": [
+    0,
+    100,
+    500,
+    2000
+   ],
+   "pays": 1.8,
+   "daily_cap": 10000,
+   "by_bracket": {
+    "copper": 100,
+    "silver": 500,
+    "gold": 2000,
+    "open": 2000
+   }
+  },
+  "rating": {
+   "start": 1000,
+   "k_attack": 24,
+   "k_defend": 8
+  },
+  "turn_seconds": 30,
+  "ages": {
+   "ancient": "Ancient",
+   "oldworld": "Old World",
+   "steam": "Sail and Steam",
+   "wartime": "Wartime",
+   "neon": "Neon",
+   "today": "Today and Beyond"
+  },
+  "kins": {
+   "dogs": "Dogs and Wolves",
+   "cats": "Cats",
+   "birds": "Birds",
+   "small": "Small Things",
+   "weasels": "Weasel Kin",
+   "hoofed": "Hoofed",
+   "water": "Water Folk",
+   "odd": "Odd Ones"
+  },
+  "arenas": {
+   "dock": {
+    "w": [
+     3,
+     2,
+     2,
+     2,
+     1
+    ],
+    "bonus": [
+     "age",
+     "ancient"
+    ]
+   },
+   "fjord": {
+    "w": [
+     2,
+     2,
+     3,
+     1,
+     2
+    ],
+    "bonus": [
+     "age",
+     "oldworld"
+    ]
+   },
+   "vault": {
+    "w": [
+     1,
+     3,
+     2,
+     1,
+     3
+    ],
+    "bonus": [
+     "kin",
+     "small"
+    ]
+   },
+   "speakeasy": {
+    "w": [
+     2,
+     1,
+     2,
+     2,
+     3
+    ],
+    "bonus": [
+     "arch",
+     "rogue"
+    ]
+   },
+   "closet": {
+    "w": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "bonus": [
+     "age",
+     "today"
+    ]
+   },
+   "outback": {
+    "w": [
+     2,
+     1,
+     2,
+     3,
+     2
+    ],
+    "bonus": [
+     "kin",
+     "hoofed"
+    ]
+   },
+   "bondi": {
+    "w": [
+     2,
+     1,
+     2,
+     3,
+     2
+    ],
+    "bonus": [
+     "kin",
+     "water"
+    ]
+   },
+   "blackforest": {
+    "w": [
+     2,
+     2,
+     1,
+     2,
+     3
+    ],
+    "bonus": [
+     "arch",
+     "mystic"
+    ]
+   },
+   "archive": {
+    "w": [
+     2,
+     3,
+     2,
+     2,
+     1
+    ],
+    "bonus": [
+     "age",
+     "neon"
+    ]
+   }
+  },
+  "moves": {
+   "kevin": {
+    "name": "Circling Back",
+    "text": "Comes back to the top of the deck, not the bottom. +5 on a Health call.",
+    "on": "exit",
+    "fx": "top",
+    "plus": {
+     "stat": "health",
+     "x": 5
+    }
+   },
+   "gaius": {
+    "name": "Hold the Line",
+    "text": "Sap and burn do nothing to your side this turn.",
+    "fx": "guard"
+   },
+   "napoleon": {
+    "name": "Grand Plan",
+    "text": "+8 when you are behind in the round.",
+    "on": "behind",
+    "fx": "boost",
+    "x": 8
+   },
+   "gorm": {
+    "name": "Stampede",
+    "text": "+3 each time he has been played before.",
+    "fx": "ramp",
+    "x": 3
+   },
+   "ajolote": {
+    "name": "Grows Back",
+    "text": "Clears burn from your side, and your other cards +2.",
+    "fx": "mend",
+    "x": 2
+   },
+   "doug": {
+    "name": "Unbothered",
+    "text": "Sap and burn do nothing to your side this turn.",
+    "fx": "guard"
+   },
+   "bjorn": {
+    "name": "Cold Water",
+    "text": "+6 on a Health call.",
+    "fx": "boost",
+    "stat": "health",
+    "x": 6
+   },
+   "tut": {
+    "name": "Curse of the Tomb",
+    "text": "Their side -4 for two turns.",
+    "fx": "burn",
+    "x": 4,
+    "n": 2
+   },
+   "brokk": {
+    "name": "Dig In",
+    "text": "+5 on an Attack call.",
+    "fx": "boost",
+    "stat": "attack",
+    "x": 5
+   },
+   "blackbear": {
+    "name": "Broadside",
+    "text": "Their best card this turn -8.",
+    "fx": "sap",
+    "x": 8
+   },
+   "astrid": {
+    "name": "Shield Wall",
+    "text": "Your other Old World cards +4.",
+    "fx": "rally",
+    "group": [
+     "age",
+     "oldworld"
+    ],
+    "x": 4
+   },
+   "florida": {
+    "name": "Death Roll",
+    "text": "+10 when you are ahead in the round.",
+    "on": "ahead",
+    "fx": "boost",
+    "x": 10
+   },
+   "madjack": {
+    "name": "Over the Top",
+    "text": "+12 on an Attack call.",
+    "fx": "boost",
+    "stat": "attack",
+    "x": 12
+   },
+   "roxy": {
+    "name": "Clear the Room",
+    "text": "Their best card this turn -6.",
+    "fx": "sap",
+    "x": 6
+   },
+   "max": {
+    "name": "Charge",
+    "text": "+4 each time he has been played before.",
+    "fx": "ramp",
+    "x": 4
+   },
+   "dusty": {
+    "name": "Spines Out",
+    "text": "Their side -3 for two turns.",
+    "fx": "burn",
+    "x": 3,
+    "n": 2
+   },
+   "gladius": {
+    "name": "Crowd Pleaser",
+    "text": "Your other Ancient cards +4.",
+    "fx": "rally",
+    "group": [
+     "age",
+     "ancient"
+    ],
+    "x": 4
+   },
+   "marco": {
+    "name": "Out for Delivery",
+    "text": "+1 energy next turn.",
+    "fx": "spark",
+    "x": 1
+   },
+   "kenji": {
+    "name": "First Cut",
+    "text": "+4 on a Speed call.",
+    "fx": "boost",
+    "stat": "speed",
+    "x": 4
+   },
+   "emu": {
+    "name": "Undefeated",
+    "text": "+2 energy next turn.",
+    "fx": "spark",
+    "x": 2
+   },
+   "troffea": {
+    "name": "Dancing Fever",
+    "text": "Your other cards this turn +2.",
+    "fx": "lift",
+    "x": 2
+   },
+   "jazzmin": {
+    "name": "Encore",
+    "text": "+1 energy when drawn.",
+    "on": "drawn",
+    "fx": "spark",
+    "x": 1
+   },
+   "flap": {
+    "name": "Cliffhanger",
+    "text": "+5 when you are behind in the round.",
+    "on": "behind",
+    "fx": "boost",
+    "x": 5
+   },
+   "maya": {
+    "name": "Triage",
+    "text": "Clears burn from your side, and your other cards +3.",
+    "fx": "mend",
+    "x": 3
+   },
+   "edith": {
+    "name": "Busy Paws",
+    "text": "Your other cards this turn +2.",
+    "fx": "lift",
+    "x": 2
+   },
+   "jacko": {
+    "name": "Lifeguard",
+    "text": "Clears burn from your side, and your other cards +2.",
+    "fx": "mend",
+    "x": 2
+   },
+   "rex": {
+    "name": "Best in Show",
+    "text": "Your other Dogs and Wolves +3.",
+    "fx": "rally",
+    "group": [
+     "kin",
+     "dogs"
+    ],
+    "x": 3
+   },
+   "dolly": {
+    "name": "Herd Instinct",
+    "text": "Your other cards this turn +3.",
+    "fx": "lift",
+    "x": 3
+   },
+   "beep": {
+    "name": "Recalibrate",
+    "text": "Counts its best number, whatever the call.",
+    "fx": "twist"
+   },
+   "vincenzo": {
+    "name": "Protection Money",
+    "text": "Their dearest card costs 2 more next turn.",
+    "fx": "tax",
+    "x": 2
+   },
+   "lola": {
+    "name": "Pickpocket",
+    "text": "Their best card this turn -6.",
+    "fx": "sap",
+    "x": 6
+   },
+   "sable": {
+    "name": "Light Fingers",
+    "text": "One card in their hand cannot be played next turn.",
+    "fx": "lock",
+    "n": 1
+   },
+   "mona": {
+    "name": "Blend In",
+    "text": "Counts its best number, whatever the call.",
+    "fx": "twist"
+   },
+   "sterling": {
+    "name": "Inside Job",
+    "text": "See two cards in their hand. +3 on a Speed call.",
+    "fx": "peek",
+    "n": 2,
+    "stat": "speed",
+    "x": 3
+   },
+   "selene": {
+    "name": "Cat Burglar",
+    "text": "Two cards in their hand cannot be played next turn.",
+    "fx": "lock",
+    "n": 2
+   },
+   "albrecht": {
+    "name": "Plague Doctor",
+    "text": "Their side -3 for two turns.",
+    "fx": "burn",
+    "x": 3,
+    "n": 2
+   },
+   "morwenna": {
+    "name": "Moth to Flame",
+    "text": "Counts its best number, whatever the call.",
+    "fx": "twist"
+   },
+   "raspawtin": {
+    "name": "Hard to Kill",
+    "text": "+10 when you are behind in the round.",
+    "on": "behind",
+    "fx": "boost",
+    "x": 10
+   },
+   "vesper": {
+    "name": "Night Shift",
+    "text": "Their best card this turn -5.",
+    "fx": "sap",
+    "x": 5
+   },
+   "hootsworth": {
+    "name": "Deduction",
+    "text": "See two cards in their hand. Your other cards +3.",
+    "fx": "peek",
+    "n": 2,
+    "x": 3
+   },
+   "quack": {
+    "name": "Hex",
+    "text": "Their dearest card costs 1 more next turn.",
+    "fx": "tax",
+    "x": 1
+   },
+   "joost": {
+    "name": "Tulip Fever",
+    "text": "A chance to count 1.5 times. Luck sets the chance.",
+    "fx": "gamble"
+   },
+   "chad": {
+    "name": "To the Moon",
+    "text": "A chance to count 1.5 times. Luck sets the chance.",
+    "fx": "gamble"
+   },
+   "pam": {
+    "name": "Extra Life",
+    "text": "Comes back to the top of the deck, not the bottom. +5 on a Luck call.",
+    "on": "exit",
+    "fx": "top",
+    "plus": {
+     "stat": "luck",
+     "x": 5
+    }
+   },
+   "eagleton": {
+    "name": "Recount",
+    "text": "A chance to count 1.5 times. Luck sets the chance.",
+    "fx": "gamble"
+   },
+   "zorp": {
+    "name": "Not From Here",
+    "text": "Counts its best number, whatever the call.",
+    "fx": "twist"
+   },
+   "slapton": {
+    "name": "Star Billing",
+    "text": "Your other Wartime cards +8.",
+    "fx": "rally",
+    "group": [
+     "age",
+     "wartime"
+    ],
+    "x": 8
+   },
+   "cleocatra": {
+    "name": "Queen of the Nile",
+    "text": "Your other cards this turn +4.",
+    "fx": "lift",
+    "x": 4
+   },
+   "bella": {
+    "name": "Flock Together",
+    "text": "Your other Birds +6.",
+    "fx": "rally",
+    "group": [
+     "kin",
+     "birds"
+    ],
+    "x": 6
+   },
+   "stella": {
+    "name": "Tomorrow's News",
+    "text": "Your other Neon cards +4.",
+    "fx": "rally",
+    "group": [
+     "age",
+     "neon"
+    ],
+    "x": 4
+   }
   }
  }
 }

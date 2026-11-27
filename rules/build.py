@@ -91,6 +91,7 @@ BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome
 import wave2 as _w2
 import wave3 as _w3
 from facts import FACTS
+import duel as _duel
 BG.update(_w2.BG); BG.update(_w3.BG)
 C.update(
     jobs={"slots": [0, 0, 20, 50, 100, 150], "speed_div": 100, "luck_div": 100, "mastery_xp": 10, "mastery_speed": 0.006, "mastery_cap": 50, "wander_minutes": 15,
@@ -192,7 +193,7 @@ for h in HEROES:
         gear_ids.append(iid)
     heroes.append(dict(id=h["id"], name=h["name"], title=h["title"], era=h["era"], species=h["species"], rarity=h["rarity"],
                        bio=h["bio"], fact=h.get("fact") or FACTS.get(h["id"], ""), rift=1 if (h["id"] in _w2.BG or h["id"] in _w3.BG) else 0, lines=h["lines"], bg=BG[h["id"]], stats=hero_stats(h["id"], h["rarity"], ARCH[h["arch"]]),
-                       gear=gear_ids, place=h["place"]))
+                       gear=gear_ids, place=h["place"], arch=h["arch"], age=_duel.AGE[h["id"]], kin=_duel.KIN[h["id"]]))
 
 # ---- era gear: five pieces per hero's time and place, wearable by anyone (see gear2.py)
 import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -256,7 +257,9 @@ for t in C["potions"]:   # kind "tonic" on purpose: the server already budgets b
     items[t["id"]] = dict(id=t["id"], name=t["name"], kind="tonic", potion=True, rarity="uncommon", icon=t["id"], flavor=t["text"], place="archive", sell=0)
 items["x_shard"] = dict(id="x_shard", name="Card Shard", kind="loot", rarity="uncommon", icon="x_shard", flavor="A corner of somebody who has already arrived.", place="archive", sell=C["card"]["shard_gold"])
 
-out = dict(C, heroes=heroes, places=places, items=items)
+_duel.fill_scale(C["card"]["hero_total"])
+_duel.check([h["id"] for h in heroes], {h["id"]: h["arch"] for h in heroes})
+out = dict(C, heroes=heroes, places=places, items=items, duel=_duel.DUEL)
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 json.dump(out, open(os.path.join(root, "rules", "rules.json"), "w"), indent=1)
 print(len(heroes), "heroes", len(places), "places", len(items), "items")
