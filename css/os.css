@@ -170,9 +170,10 @@ footer a{color:var(--mut)}
 .prose{max-width:46em;margin:0 auto;padding:3rem 0}.prose h1{font-size:2.4rem;margin-bottom:1rem}.prose h2{font-size:1.4rem;margin:1.6em 0 .4em}
 
 /* reveal on scroll */
-.rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
-.rv.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.card{transition:none}}
+/* sections are visible by default; the slide-in only runs when JS has flagged the page */
+.js-rv .rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.js-rv .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js-rv .rv,.rv{opacity:1;transform:none;transition:none}.card{transition:none}}
 
 /* =====================================================================  GAME  */
 body.game{padding-bottom:84px;background:radial-gradient(90% 60% at 50% 0,#121b3c,var(--ink) 70%) fixed}
@@ -958,3 +959,15 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .bagn{font-size:.85rem;color:var(--mut);white-space:nowrap}.bagn b{color:#fff}
 .bagroom.tight{border-color:#6a5420}.bagroom.full{border-color:#7a2c2c}
 .bagroom.full .bagn b{color:#ff8c7a}
+
+/* landing, Nov 27: form in the hero, phone screenshots */
+.hero h1{font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.hero .wish{margin-top:1.5rem;max-width:30rem}
+#join{padding-top:1rem}
+.cta-end .wish{max-width:30rem;margin:1.1rem auto 0;text-align:left}
+.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,3vw,2.2rem);max-width:60rem;margin:0 auto}
+.phone{margin:0;text-align:center}
+.phone img{display:block;width:100%;height:auto;aspect-ratio:540/1169;border-radius:28px;border:8px solid #050814;box-shadow:0 0 0 2px var(--line),0 18px 40px rgba(0,0,0,.45);background:#0b1020}
+.phone figcaption{margin-top:.8rem;font:400 1.15rem/1.2 "Lilita One";color:#fff}
+@media(max-width:760px){.shots{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:68%;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 0 .6rem;-webkit-overflow-scrolling:touch}.phone{scroll-snap-align:center}}
+.top .btn.small{white-space:nowrap}

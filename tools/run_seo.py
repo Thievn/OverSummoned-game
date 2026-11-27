@@ -5,32 +5,22 @@ sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from seo_pages import *
 
-DESC=("OverSummoned is a free desktop pet and idle game. Smudge, a hooded otter apprentice, sits above your "
- "taskbar and works whenever you type: stamping a cursed ledger to summon heroes out of history, fishing, "
- "picking locks and digging in nine places from a Roman dock to an office supply closet. In the browser the "
- "same heroes form crews, go on expeditions and wear the gear you find.")
+DESC=("OverSummoned is a free idle card game in your browser. Smudge the otter keeps summoning the wrong people "
+ "from history. Collect them as hero cards, send them to fish, dig and pick locks while you are away, give them "
+ "the gear they find, and fight bosses in raids with your best team. Works on phone and computer. There is also "
+ "an optional desktop pet for Windows.")
 
 FAQ=[
-("What is OverSummoned?",
- "OverSummoned is a free desktop pet and idle game. Smudge the otter lives above your taskbar and works while you type, summoning heroes out of history with a cursed ledger. The same heroes can be put to work in your browser."),
-("Can I play it now?",
- "Not openly yet. OverSummoned is in closed beta. Join the beta on the home page and you will get an email when a place opens for you."),
-("How does the desktop pet work?",
- "Smudge reacts to your typing. Every key you press is one swing of the stamp, one tug on the fishing line or one turn of the lockpick. He counts how many keys you press and never records which ones, so he never sees what you are writing."),
-("Is OverSummoned free?",
- "Yes. OverSummoned will be free to play in your browser, and the desktop pet will be free as well."),
-("Do I need to download anything?",
- "No. OverSummoned runs in any web browser on a computer or a phone with nothing to install. The desktop pet is an optional free download, and it is coming to Steam."),
-("Is it an idle game?",
- "Yes. Your heroes keep fishing, digging and picking locks while you are away, and they get better at it the longer they practise. Everything they did still counts when you come back."),
-("How many heroes are there?",
- "Dozens so far, and Smudge keeps misfiring, so nobody is keeping an exact count. Each arrival is a collectible card with its own story, stats and three lost items."),
-("Where does Smudge work?",
- "Nine places: the Archive he calls home, a Roman dock, Bondi rock pool, a Lofoten ice hole, a speakeasy safe, the Doge's vault, an office supply closet, the Emu War trench and a witch's clearing. Each has its own trade and its own lost things."),
-("Can I change how Smudge talks?",
- "Yes. Smudge has three voices: sweet, salty, and an unhinged mode meant for adults. You can change it whenever he gets to be too much."),
-("Is OverSummoned on Steam?",
- "The desktop pet is coming to Steam. The browser game is in closed beta: sign up at oversummoned.com and Smudge sends your invite."),
+("Is it free?",
+ "Yes. No ads. Nothing you can buy makes you stronger."),
+("What do I need?",
+ "A browser. Works on phone and computer."),
+("Is the beta open?",
+ "It is invite-only, and everyone who signs up gets an invite right away."),
+("Does the desktop pet read my typing?",
+ "No. It only counts key presses."),
+("Is my progress saved?",
+ "Yes, to your account, across devices."),
 ]
 
 ORG={"@type":"Organization","@id":SITE+"/#org","name":"OverSummoned","url":SITE+"/",
@@ -41,11 +31,11 @@ WEBSITE={"@type":"WebSite","@id":SITE+"/#website","name":"OverSummoned","url":SI
  "inLanguage":"en","description":DESC,"publisher":{"@id":SITE+"/#org"}}
 
 GAME={"@type":"VideoGame","@id":SITE+"/#game","name":"OverSummoned","url":SITE+"/","description":DESC,
- "image":OG,"genre":["Idle game","Desktop pet","Hero collector","Virtual pet","Role-playing game"],
- "gamePlatform":["Web browser","Windows","PC"],"applicationCategory":"GameApplication",
+ "image":OG,"genre":["Idle game","Card game","Hero collector","Role-playing game","Desktop pet"],
+ "gamePlatform":["Web browser","Mobile web","Windows","PC"],"applicationCategory":"GameApplication",
  "operatingSystem":"Windows, any modern web browser","playMode":["SinglePlayer","MultiPlayer"],
  "isAccessibleForFree":True,"inLanguage":"en",
- "keywords":"desktop pet, idle game, typing game, browser game, free idle RPG, hero collector, taskbar pet, virtual pet, incremental game",
+ "keywords":"idle game, card game, browser game, free idle RPG, hero collector, collectible cards, boss raids, desktop pet",
  "gameLocation":{"@type":"Place","name":"Aldermere"},
  "numberOfPlayers":{"@type":"QuantitativeValue","minValue":1},
  "publisher":{"@id":SITE+"/#org"},"author":{"@id":SITE+"/#org"},
@@ -92,7 +82,7 @@ import re, html as _h
 items="\n".join('    <details class="faq-q"%s><summary><h3>%s</h3></summary><p>%s</p></details>'
                 % (' open' if i==0 else '', _h.escape(q,quote=False), _h.escape(a,quote=False)) for i,(q,a) in enumerate(FAQ))
 s=io.open('index.html',encoding='utf-8').read()
-s=re.sub(r'(<div class="faq rv">\n).*?(\n  </div>\n</div></section>)', lambda m: m.group(1)+items+m.group(2), s, count=1, flags=re.S)
+s=re.sub(r'(<div class="faq rv">\n)(?:(?!</section>).)*?(\n  </div>\n</div></section>)', lambda m: m.group(1)+items+m.group(2), s, count=1, flags=re.S)
 io.open('index.html','w',encoding='utf-8').write(s)
 # and the same questions in llms.txt
 t=io.open('llms.txt',encoding='utf-8').read()

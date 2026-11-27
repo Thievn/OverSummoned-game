@@ -17,18 +17,21 @@
     try { if (window.OSSound) { OSSound.unlock(); OSSound.play('stamp'); } } catch (e) {}
   }
   document.querySelectorAll('form.wish').forEach(f => {
-    const msg = f.querySelector('.wish-msg'), btn = f.querySelector('button');
+    const msg = f.querySelector('.wish-msg'), btn = f.querySelector('button'), where = f.dataset.where || location.pathname;
+    const track = (name, extra) => { try { if (window.gtag) gtag('event', name, Object.assign({ method: 'beta_form', where }, extra || {})); } catch (e) {} };
+    btn.addEventListener('click', () => track('invite_click'));
     f.addEventListener('submit', async e => {
       e.preventDefault();
       const email = (f.elements.email.value || '').trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { msg.textContent = 'That does not look like an email address.'; msg.className = 'wish-msg bad'; return; }
-      btn.disabled = true; msg.textContent = 'Smudge is checking his list…'; msg.className = 'wish-msg';
+      btn.disabled = true; msg.textContent = 'Sending your invite…'; msg.className = 'wish-msg';
       try {
         const r = await fetch(URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, company: f.elements.company.value }) });
         const j = await r.json().catch(() => ({}));
         if (j.ok) {
           done(f, email, !!j.dupe, j.mailed !== false);
-          if (window.gtag) gtag('event', 'beta_signup');
+          track('sign_up', { dupe: !!j.dupe });
+          try { if (window.gtag) gtag('event', 'beta_signup'); } catch (e) {}
           return;
         } else { msg.textContent = j.msg || 'That did not go through. Try again in a minute.'; msg.className = 'wish-msg bad'; }
       } catch (err) { msg.textContent = 'That did not go through. Try again in a minute.'; msg.className = 'wish-msg bad'; }

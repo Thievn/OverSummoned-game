@@ -1,10 +1,11 @@
-// Landing page: the live desk demo, sample cards, items, places, voices.
+// Landing page: the live desk demo and the five sample cards.
 (async function () {
-  const OS = await window.OS.load(), R = OS.R, $ = id => document.getElementById(id);
-
-  // reveal on scroll
+  // reveal on scroll (an extra: sections are visible without this script)
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
   document.querySelectorAll('.rv').forEach(n => io.observe(n));
+  // in case the observer never fires (screenshot tools, odd browsers), show everything anyway
+  setTimeout(() => document.querySelectorAll('.rv:not(.in)').forEach(n => n.classList.add('in')), 4000);
+  const OS = await window.OS.load(), R = OS.R, $ = id => document.getElementById(id);
 
   // ---------------------------------------------------------------- the desk
   const desk = $('desk-demo'), bubble = $('bubble'), prog = $('prog'), glow = $('glow');
@@ -52,38 +53,5 @@
   const show = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin'];
   show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id], { live: true })));
   setTimeout(() => { const c = $('cards').children[2]; if (c) { c.classList.add('flip'); setTimeout(() => c.classList.remove('flip'), 2600); } }, 1800);
-  const tot = Object.values(R.summon.weights).reduce((a, b) => a + b, 0);
-  $('rarbar').innerHTML = R.rarities.map(r => `<span class="r-${r}"><b>${OS.cap(r)}</b>${(R.summon.weights[r] / tot * 100).toFixed(R.summon.weights[r] < 1 ? 2 : 1)}%</span>`).join('');
-  R.heroes.filter(h => !show.includes(h.id)).sort((a, b) => R.rarities.indexOf(a.rarity) - R.rarities.indexOf(b.rarity)).forEach(h => { const i = new Image(); i.src = OS.img('heroes', h.id); i.alt = 'A hero not yet summoned'; i.className = 'r-' + h.rarity; i.title = OS.cap(h.rarity); $('shadows').appendChild(i); });
-
-  // ---------------------------------------------------------------- items
-  ['napoleon_trinket', 'chad_trinket', 'emu_weapon', 'morwenna_trinket', 'closet_8', 'lola_weapon', 'kenji_weapon', 'blackforest_5'].forEach(id => {
-    const it = OS.items[id], box = OS.el('div', 'tip tipcard');
-    box.style.borderColor = R.rarity_color[it.rarity];
-    box.innerHTML = `<div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.3rem"><div class="slot has r-${it.rarity}"><img src="${OS.img('loot', it.icon)}" alt=""></div></div>` + OS.tipHTML(id);
-    $('items').appendChild(box);
-  });
-
-  // ---------------------------------------------------------------- places
-  R.places.forEach(p => {
-    const d = OS.el('a', 'place rv'); d.href = '/places/' + p.id;
-    d.innerHTML = `<img src="${OS.img('scenes', p.id)}" alt="${p.name}"><div class="era">${p.era} · ${p.skill}</div><h3>${p.name}</h3><p>${p.blurb}</p>`;
-    $('placelist').appendChild(d); io.observe(d);
-  });
-
-  // ---------------------------------------------------------------- voices
-  let mode = 'salty', qi = 0, adult = false, qt;
-  const pool = m => [].concat(OS.voice[m].idle, OS.voice[m].summon, OS.voice[m].unlock, OS.voice[m].busy);
-  function quote() {
-    const p = pool(mode); qi = (qi + 1) % p.length;
-    $('quote').innerHTML = '“' + p[qi] + '”<small>Smudge, ' + (mode === 'unhinged' ? 'unhinged' : mode) + '</small>';
-    clearTimeout(qt); qt = setTimeout(quote, 4200);
-  }
-  $('voicepick').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.v === 'unhinged' && !adult) { if (!confirm('Unhinged Smudge swears. A lot. Adults only. Show it?')) return; adult = true; }
-    mode = b.dataset.v; [...$('voicepick').children].forEach(x => x.classList.toggle('on', x === b)); qi = -1; quote();
-  });
-  quote();
   setTimeout(() => { if (window.Cloud) Cloud.track(); else if (window.supabase) { const s = document.createElement('script'); s.src = '/js/cloud.js'; s.onload = () => Cloud.track(); document.body.appendChild(s); } }, 1500);
 })();

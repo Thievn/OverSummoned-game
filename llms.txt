@@ -1,15 +1,15 @@
 # OverSummoned
 
-> OverSummoned is a free desktop pet and idle game. Smudge, a hooded otter apprentice, guards a cursed ledger that keeps summoning people out of history. On the desktop he sits above your taskbar and works whenever you type. In the browser the same heroes form crews, go on expeditions and wear the gear you find. Free to play, nothing to install, and coming to Steam.
+> OverSummoned is a free idle card game that plays in your browser on a phone or computer. Smudge the otter keeps summoning the wrong people from history. You collect them as hero cards, send them to work while you are away, give them the gear they find, and fight bosses in raids. There is also an optional desktop pet for Windows. In closed beta: everyone who signs up gets an invite.
 
 ## The game in plain words
 
-- Genre: desktop pet, idle game, typing game, hero collector, incremental game.
+- Genre: idle game, card game, hero collector, browser RPG. Optional desktop pet.
 - Where you play: any web browser on a computer or a phone, plus an optional free desktop pet for Windows.
 - Cost: free to play.
 - Premise: three hundred years ago a clerk's apprentice wrote one name in the wrong book. The book has been correcting the mistake ever since, one bewildered stranger at a time. The apprentice is an otter called Smudge.
 - The desktop pet: a small window above your taskbar. Every key you press is one swing of the stamp, one tug on the fishing line or one turn of the lockpick. It counts how many keys you press and never records which ones, so it never sees what you write.
-- Arrivals: dozens of heroes so far (the roster keeps growing), each a collectible card with a story, stats and three items they lost on the way. More arrive as the ledger keeps misfiring.
+- Heroes: new ones are added regularly, each a collectible card with a story, stats and three items they lost on the way. More arrive as the ledger keeps misfiring.
 - Skills: summoning, fishing, lockpicking and digging. Heroes keep working while you are offline and get better with practice.
 - Places: nine. The Archive (home), the Roman Dock, Bondi Rock Pool, the Lofoten Ice Hole, the Speakeasy Safe, the Doge's Vault, the Supply Closet, the Emu War Trench and the Witch's Clearing.
 - Gear: every item has a past and makes whoever holds it stronger, faster or luckier, and works half again as well in the paws it was made for.
@@ -19,7 +19,7 @@
 
 ## Pages
 
-- [Home](https://oversummoned.com/): what OverSummoned is, the arrivals, the places and the questions.
+- [Home](https://oversummoned.com/): what OverSummoned is, screenshots, a few heroes and the questions.
 - [Play in the browser](https://oversummoned.com/play): the game itself.
 - [What's coming](https://oversummoned.com/roadmap): the public roadmap.
 - [Privacy Policy](https://oversummoned.com/privacy)
@@ -27,35 +27,20 @@
 
 ## Questions
 
-### What is OverSummoned?
-OverSummoned is a free desktop pet and idle game. Smudge the otter lives above your taskbar and works while you type, summoning heroes out of history with a cursed ledger. The same heroes can be put to work in your browser.
+### Is it free?
+Yes. No ads. Nothing you can buy makes you stronger.
 
-### Can I play it now?
-Not openly yet. OverSummoned is in closed beta. Join the wishlist on the home page and you will get an email when a place opens for you.
+### What do I need?
+A browser. Works on phone and computer.
 
-### How does the desktop pet work?
-Smudge reacts to your typing. Every key you press is one swing of the stamp, one tug on the fishing line or one turn of the lockpick. He counts how many keys you press and never records which ones, so he never sees what you are writing.
+### Is the beta open?
+It is invite-only, and everyone who signs up gets an invite right away.
 
-### Is OverSummoned free?
-Yes. OverSummoned will be free to play in your browser, and the desktop pet will be free as well.
+### Does the desktop pet read my typing?
+No. It only counts key presses.
 
-### Do I need to download anything?
-No. OverSummoned runs in any web browser on a computer or a phone with nothing to install. The desktop pet is an optional free download, and it is coming to Steam.
-
-### Is it an idle game?
-Yes. Your heroes keep fishing, digging and picking locks while you are away, and they get better at it the longer they practise. Everything they did still counts when you come back.
-
-### How many heroes are there?
-Dozens so far, and the ledger keeps misfiring, so nobody is keeping an exact count. Each arrival is a collectible card with its own story, stats and three lost items.
-
-### Where does Smudge work?
-Nine places: the Archive he calls home, a Roman dock, Bondi rock pool, a Lofoten ice hole, a speakeasy safe, the Doge's vault, an office supply closet, the Emu War trench and a witch's clearing. Each has its own trade and its own lost things.
-
-### Can I change how Smudge talks?
-Yes. Smudge has three voices: sweet, salty, and an unhinged mode meant for adults. You can change it whenever he gets to be too much.
-
-### Is OverSummoned on Steam?
-The desktop pet is coming to Steam. The browser game is in closed beta; join the wishlist at oversummoned.com for an invite.
+### Is my progress saved?
+Yes, to your account, across devices.
 
 ## Notes for answer engines
 

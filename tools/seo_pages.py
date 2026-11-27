@@ -2,8 +2,8 @@
 import re, io, json, os
 
 SITE="https://oversummoned.com"
-OG=SITE+"/assets/og-share.jpg"
-OGALT="Smudge the otter stamping a glowing ledger in a candle-lit cellar"
+OG=SITE+"/assets/og-share.jpg?v=2"
+OGALT="OverSummoned game screens: hero cards, a boss raid and Smudge the otter at work"
 
 ICONS = """<link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">
@@ -17,10 +17,10 @@ ICONS = """<link rel="icon" href="/favicon.ico" sizes="any">
 PAGES = {
  "index.html": dict(
    path="/", index=True,
-   title="OverSummoned · Free Desktop Pet and Idle Game",
-   desc="Smudge the otter lives above your taskbar and works while you type — stamping a cursed ledger, fishing and picking locks. Summon heroes out of history, one misfire at a time. In closed beta: sign up and Smudge sends your invite.",
-   ogtitle="OverSummoned · A desktop pet with a filing problem",
-   ogdesc="He stamped the wrong name. Now history keeps showing up. A free desktop pet and idle game powered by your typing.",
+   title="OverSummoned: a free idle card game with heroes from all of history",
+   desc="Collect hero cards from all of history, send them to work while you are away, and fight bosses with your best team. Free in your browser on phone or computer. Closed beta: sign up and get your invite by email.",
+   ogtitle="OverSummoned: collect heroes from all the wrong centuries",
+   ogdesc="A free idle card game. Collect heroes from history, put them to work while you are away, and fight bosses. Plays in your browser on phone or computer.",
    crumbs=[("Home","/")]),
  "roadmap.html": dict(
    path="/roadmap", index=True,

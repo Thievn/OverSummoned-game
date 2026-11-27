@@ -1,5 +1,15 @@
 [
  {
+  "v": "0.5.12",
+  "build": "1127p",
+  "date": "2026-11-27",
+  "title": "A clearer front page",
+  "added": [
+   "The front page now says plainly what the game is, shows real screenshots, and has the sign-up box at the top."
+  ],
+  "fixed": []
+ },
+ {
   "v": "0.5.11",
   "build": "1127o",
   "date": "2026-11-27",
