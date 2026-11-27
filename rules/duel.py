@@ -62,7 +62,7 @@ ARENAS = {
     "closet":      dict(w=(2, 2, 2, 2, 2), bonus=("age", "today")),
     "outback":     dict(w=(2, 1, 2, 3, 2), bonus=("kin", "hoofed")),
     "bondi":       dict(w=(2, 1, 2, 3, 2), bonus=("kin", "water")),
-    "blackforest": dict(w=(2, 2, 1, 2, 3), bonus=("arch", "mystic")),
+    "blackforest": dict(w=(2, 2, 2, 2, 2), bonus=("arch", "mystic")),   # luck was the most-called stat overall; evened up
     "archive":     dict(w=(2, 3, 2, 2, 1), bonus=("age", "neon")),
 }
 
@@ -181,6 +181,40 @@ ICON = {"boost": "+", "ramp": "\u25b2", "rally": "\u2638", "lift": "\u2191", "me
 STAT_COLOR = {"attack": "#ff7a5e", "defense": "#6aa9ff", "health": "#5ddc8a", "speed": "#ffd35c", "luck": "#c58bff"}
 
 
+# The rival ladder: the eight raid bosses, each with a deck built from the groups they would call on,
+# a home arena, and a captain. Three difficulties each, a first-win prize at every one.
+# `pool` names the groups the deck is drawn from, in order of preference; `fill` tops it up from everyone.
+RIVALS = [
+ dict(id="tiber",    name="The Tiber Thing",      arena="dock",        pool=[("age", "ancient"), ("kin", "water")],   captain="gladius",  tier=1,
+      text="It has been in that river since the aqueducts went up. It has a deck. Nobody asked how."),
+ dict(id="tony",     name="Big Tony's Boys",      arena="speakeasy",   pool=[("age", "wartime"), ("arch", "rogue")],  captain="vincenzo", tier=1,
+      text="Four gentlemen, one table, and a very fixed idea about who wins."),
+ dict(id="brenda",   name="Brenda, Back From Leave", arena="closet",   pool=[("age", "today"), ("arch", "support")],  captain="maya",     tier=1,
+      text="She has seen the state of the supply closet. Now she would like a word, in cards."),
+ dict(id="vanguard", name="The Emu Vanguard",     arena="outback",     pool=[("kin", "birds"), ("arch", "fast")],     captain="emu",      tier=2,
+      text="They beat an army once. They have been looking for a rematch ever since."),
+ dict(id="gary",     name="Gary the Great White",  arena="bondi",      pool=[("kin", "water"), ("arch", "bruiser")],  captain="florida",  tier=2,
+      text="He is between the flags, holding cards in a way sharks should not be able to."),
+ dict(id="nephew",   name="The Doge's Nephew",    arena="vault",       pool=[("age", "oldworld"), ("arch", "rogue")], captain="selene",   tier=2,
+      text="Bad at guarding. Surprisingly good at cards, which is worse."),
+ dict(id="well",     name="The Thing Under the Well", arena="blackforest", pool=[("arch", "mystic"), ("age", "oldworld")], captain="morwenna", tier=3,
+      text="It was buried for a reason. It has had a long time to think about its deck."),
+ dict(id="antlers",  name="The Antlered Deep",    arena="fjord",       pool=[("age", "oldworld"), ("kin", "hoofed")], captain="astrid",   tier=3,
+      text="Something under the ice has antlers, opinions, and a hand it will not show you."),
+]
+# difficulty: how the rival's own cards are levelled and trained, and what the first win pays
+LEVELS = [
+ dict(id="easy",    name="Easy",    level=3, train=6,  ai=0, gold=60,  xp=10),
+ dict(id="normal",  name="Normal",  level=5, train=16, ai=1, gold=150, xp=25),
+ dict(id="careful", name="Careful", level=7, train=26, ai=2, gold=400, xp=60),
+]
+# a tier-2 rival pays double on a first win, a tier-3 one triple
+TIER_PAY = [1, 1, 2, 3]
+# the duelist road: twenty levels, cosmetics only, never a stat
+ROAD_XP = 120          # xp for level 2, then x1.18 a level
+ROAD = {3: "back:ink", 5: "title:Card Sharp", 8: "felt:oak", 11: "back:brass", 14: "title:The House Always Blinks",
+        17: "felt:velvet", 20: "back:ledger"}
+
 DUEL = dict(
     open=False,              # False: only the owner sees Duels (testing). True: everyone.
     deck=12,                 # different heroes in a deck; duels open at this many owned
@@ -195,13 +229,13 @@ DUEL = dict(
     # Every card should give about the same points for each point of energy. Dear cards get a little less, because
     # three cards a turn is the limit, so the dear ones already pack more into a turn (sim, 27 Nov). So a hero's own stats are scaled by rarity in duels only. Filled in below.
     rarity_scale={},
-    premium=-0.0175,         # per point of cost above 2 (negative: the slot limit already favours dear cards)
+    premium=-0.0195,         # per point of cost above 2 (negative: the slot limit already favours dear cards)
     # A trained point counts `train_weight` times half the card's cost, so training doubles any card at about the
     # same cap whatever its rarity, and never makes a cheap card worth more per energy than a dear one.
     train_weight=0.5,
     train_soft=15, train_after=0.5,   # in a duel, trained points past 15 on a stat count half (sim: one maxed hero must not carry a deck)
     kit=dict(two=0.1, three=0.25),
-    gamble=dict(div=250, mult=1.5, cap=0.35),
+    gamble=dict(div=250, mult=1.5, cap=0.30),
     brackets=[               # card level counts up to `level`; training up to `train` per stat (before train_weight)
         dict(id="copper", name="Copper", level=3, train=10, rating=0),
         dict(id="silver", name="Silver", level=5, train=25, rating=1100),
@@ -210,11 +244,17 @@ DUEL = dict(
     ],
     practice=dict(bracket="silver", paid_per_day=3, gold=40, min_deck=8),   # Practice opens at 8 heroes (Dean, 27 Nov); ranked keeps `deck`
     marks=dict(max=5, regen_minutes=30),
+    swap=2,                  # cards you may put back before the first turn
+    swap_floor=9.0,          # the house puts back a card worth less than this per energy (typical is 9 to 11)
+    captain_per_cost=5,      # Captain's Call adds this x the captain's cost, once a duel (flat x2 made cheap
+                             # lopsided heroes the only sensible captain; by cost, every hero is a fair pick)
+    stand_down_energy=3,     # energy you start the next round with for sitting this one out
     rest_minutes=10,
     stakes=dict(options=[0, 100, 500, 2000], pays=1.8, daily_cap=10000, by_bracket={"copper": 100, "silver": 500, "gold": 2000, "open": 2000}),
     rating=dict(start=1000, k_attack=24, k_defend=8),
     turn_seconds=30,
     ages=AGES, kins=KINS, arenas=ARENAS, moves=MOVES, short=SHORT, stat_color=STAT_COLOR,
+    rivals=RIVALS, levels=LEVELS, tier_pay=TIER_PAY, road=dict(xp=ROAD_XP, step=1.18, max=20, prizes=ROAD),
     coach_duels=3,           # the best-value card glows for your first three duels
 )
 

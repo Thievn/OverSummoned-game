@@ -13878,14 +13878,14 @@
   "arena_bonus": 0.2,
   "rarity_scale": {
    "common": 1.0,
-   "uncommon": 1.189,
-   "rare": 1.27,
-   "epic": 1.287,
-   "legendary": 1.268,
-   "absurd": 1.228,
-   "unhinged": 1.155
+   "uncommon": 1.186,
+   "rare": 1.264,
+   "epic": 1.279,
+   "legendary": 1.257,
+   "absurd": 1.215,
+   "unhinged": 1.139
   },
-  "premium": -0.0175,
+  "premium": -0.0195,
   "train_weight": 0.5,
   "train_soft": 15,
   "train_after": 0.5,
@@ -13896,7 +13896,7 @@
   "gamble": {
    "div": 250,
    "mult": 1.5,
-   "cap": 0.35
+   "cap": 0.3
   },
   "brackets": [
    {
@@ -13938,6 +13938,10 @@
    "max": 5,
    "regen_minutes": 30
   },
+  "swap": 2,
+  "swap_floor": 9.0,
+  "captain_per_cost": 5,
+  "stand_down_energy": 3,
   "rest_minutes": 10,
   "stakes": {
    "options": [
@@ -14075,9 +14079,9 @@
     "w": [
      2,
      2,
-     1,
      2,
-     3
+     2,
+     2
     ],
     "bonus": [
      "arch",
@@ -14564,6 +14568,201 @@
    "health": "#5ddc8a",
    "speed": "#ffd35c",
    "luck": "#c58bff"
+  },
+  "rivals": [
+   {
+    "id": "tiber",
+    "name": "The Tiber Thing",
+    "arena": "dock",
+    "pool": [
+     [
+      "age",
+      "ancient"
+     ],
+     [
+      "kin",
+      "water"
+     ]
+    ],
+    "captain": "gladius",
+    "tier": 1,
+    "text": "It has been in that river since the aqueducts went up. It has a deck. Nobody asked how."
+   },
+   {
+    "id": "tony",
+    "name": "Big Tony's Boys",
+    "arena": "speakeasy",
+    "pool": [
+     [
+      "age",
+      "wartime"
+     ],
+     [
+      "arch",
+      "rogue"
+     ]
+    ],
+    "captain": "vincenzo",
+    "tier": 1,
+    "text": "Four gentlemen, one table, and a very fixed idea about who wins."
+   },
+   {
+    "id": "brenda",
+    "name": "Brenda, Back From Leave",
+    "arena": "closet",
+    "pool": [
+     [
+      "age",
+      "today"
+     ],
+     [
+      "arch",
+      "support"
+     ]
+    ],
+    "captain": "maya",
+    "tier": 1,
+    "text": "She has seen the state of the supply closet. Now she would like a word, in cards."
+   },
+   {
+    "id": "vanguard",
+    "name": "The Emu Vanguard",
+    "arena": "outback",
+    "pool": [
+     [
+      "kin",
+      "birds"
+     ],
+     [
+      "arch",
+      "fast"
+     ]
+    ],
+    "captain": "emu",
+    "tier": 2,
+    "text": "They beat an army once. They have been looking for a rematch ever since."
+   },
+   {
+    "id": "gary",
+    "name": "Gary the Great White",
+    "arena": "bondi",
+    "pool": [
+     [
+      "kin",
+      "water"
+     ],
+     [
+      "arch",
+      "bruiser"
+     ]
+    ],
+    "captain": "florida",
+    "tier": 2,
+    "text": "He is between the flags, holding cards in a way sharks should not be able to."
+   },
+   {
+    "id": "nephew",
+    "name": "The Doge's Nephew",
+    "arena": "vault",
+    "pool": [
+     [
+      "age",
+      "oldworld"
+     ],
+     [
+      "arch",
+      "rogue"
+     ]
+    ],
+    "captain": "selene",
+    "tier": 2,
+    "text": "Bad at guarding. Surprisingly good at cards, which is worse."
+   },
+   {
+    "id": "well",
+    "name": "The Thing Under the Well",
+    "arena": "blackforest",
+    "pool": [
+     [
+      "arch",
+      "mystic"
+     ],
+     [
+      "age",
+      "oldworld"
+     ]
+    ],
+    "captain": "morwenna",
+    "tier": 3,
+    "text": "It was buried for a reason. It has had a long time to think about its deck."
+   },
+   {
+    "id": "antlers",
+    "name": "The Antlered Deep",
+    "arena": "fjord",
+    "pool": [
+     [
+      "age",
+      "oldworld"
+     ],
+     [
+      "kin",
+      "hoofed"
+     ]
+    ],
+    "captain": "astrid",
+    "tier": 3,
+    "text": "Something under the ice has antlers, opinions, and a hand it will not show you."
+   }
+  ],
+  "levels": [
+   {
+    "id": "easy",
+    "name": "Easy",
+    "level": 3,
+    "train": 6,
+    "ai": 0,
+    "gold": 60,
+    "xp": 10
+   },
+   {
+    "id": "normal",
+    "name": "Normal",
+    "level": 5,
+    "train": 16,
+    "ai": 1,
+    "gold": 150,
+    "xp": 25
+   },
+   {
+    "id": "careful",
+    "name": "Careful",
+    "level": 7,
+    "train": 26,
+    "ai": 2,
+    "gold": 400,
+    "xp": 60
+   }
+  ],
+  "tier_pay": [
+   1,
+   1,
+   2,
+   3
+  ],
+  "road": {
+   "xp": 120,
+   "step": 1.18,
+   "max": 20,
+   "prizes": {
+    "3": "back:ink",
+    "5": "title:Card Sharp",
+    "8": "felt:oak",
+    "11": "back:brass",
+    "14": "title:The House Always Blinks",
+    "17": "felt:velvet",
+    "20": "back:ledger"
+   }
   },
   "coach_duels": 3
  }

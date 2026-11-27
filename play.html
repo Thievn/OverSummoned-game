@@ -23,11 +23,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1127j">
-<link rel="stylesheet" href="/css/duel.css?v=1127j">
+<link rel="stylesheet" href="/css/os.css?v=1127k">
+<link rel="stylesheet" href="/css/duel.css?v=1127k">
 </head>
 <body class="game">
-<div class="boot" id="boot"><div class="boothi"><img src="/assets/v2/smudge/boot.webp?v=1127j" alt=""><img class="wink" src="/assets/v2/smudge/boot_wink.webp?v=1127j" alt=""></div><p>Opening the ledger…</p></div>
+<div class="boot" id="boot"><div class="boothi"><img src="/assets/v2/smudge/boot.webp?v=1127k" alt=""><img class="wink" src="/assets/v2/smudge/boot_wink.webp?v=1127k" alt=""></div><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
   <button class="backbtn" id="go-back" type="button" aria-label="Back" hidden>&#8249;</button>
   <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
@@ -139,7 +139,7 @@
   </section>
 
   <section class="view" id="v-duels"><button class="back" data-go="home">← Home</button><div class="spread"><h2>Duels</h2><span class="mut">Practice</span></div>
-    <p class="mut" style="margin-bottom:1rem">Your arrivals against the house deck, card for card. Practice for now: ranked play against other people's decks comes next.</p>
+    <p class="mut" style="margin-bottom:1rem">Eight rivals, three difficulties each, and a first-win prize for every one of the twenty-four. Playing other people comes next.</p>
     <div id="du-body"></div>
   </section>
 
@@ -211,23 +211,27 @@
     <div class="dpips" id="dt-pips"></div>
     <div class="dhand" id="dt-hand"></div>
     <p class="dsum" id="dt-sum"></p>
-    <div class="dfoot"><span class="ddeck"><i></i><b id="dt-deck">0</b></span><div class="dinfo" id="dt-info"></div><button class="btn dready" id="dt-ready">Ready</button></div>
+    <div class="dfoot"><span class="ddeck"><i></i><b id="dt-deck">0</b></span><div class="dinfo" id="dt-info"></div>
+      <button class="btn small ghost dcap" id="dt-captain" hidden>Captain's Call</button>
+      <button class="btn small ghost ddown" id="dt-down" hidden>Stand down</button>
+      <button class="btn dready" id="dt-ready">Ready</button></div>
   </div>
   <div class="dend" id="dt-end" hidden></div>
   <div class="dlesson" id="dt-lesson" hidden></div>
+  <div class="dswap" id="dt-swap" hidden></div>
 </div>
 <div class="modal" id="modal"><div class="sheet"><div class="xwrap"><button class="x" id="modal-x" aria-label="Close">X</button></div><div id="modal-body"></div></div></div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/cloud.js"></script>
-<script src="/js/os.js?v=1127j"></script>
-<script src="/js/sound.js?v=1127j"></script>
-<script src="/js/stage.js?v=1127j"></script>
-<script src="/js/scenefx.js?v=1127j"></script>
+<script src="/js/os.js?v=1127k"></script>
+<script src="/js/sound.js?v=1127k"></script>
+<script src="/js/stage.js?v=1127k"></script>
+<script src="/js/scenefx.js?v=1127k"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1127j"></script>
-<script src="/js/duel.js?v=1127j"></script>
-<script src="/js/game.js?v=1127j"></script>
+<script src="/js/dbcanvas.js?v=1127k"></script>
+<script src="/js/duel.js?v=1127k"></script>
+<script src="/js/game.js?v=1127k"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>
 </html>

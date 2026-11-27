@@ -84,7 +84,12 @@ body.induel{overflow:hidden}
 .dfoot{position:relative;display:flex;align-items:center;gap:8px}
 .ddeck{flex:none;display:flex;align-items:center;gap:5px;font:400 1.1rem "Lilita One";color:#c9d2ee}
 .ddeck i{width:20px;height:27px;border-radius:4px;background:repeating-linear-gradient(45deg,#5b30c8 0 5px,#7a4be0 5px 10px);border:2px solid #0b1020;box-shadow:2px 2px 0 #3a2a8a}
-.dready{margin-left:auto;min-width:118px;justify-content:center;font-size:1.2rem}
+.dfoot{flex-wrap:wrap}
+.dcap,.ddown{font-size:.82rem;padding:.35em .7em;border-color:rgba(255,255,255,.3)}
+.dcap{color:#ffd35c;border-color:#8a6a1a}
+.dcap.armed{background:#f2b935;color:#2a1a00;border-color:#fff}
+.ddown{color:#9aa6c4}
+.dready{margin-left:auto;min-width:104px;justify-content:center;font-size:1.15rem}
 .dready:disabled{opacity:.55}
 .dinfo{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) translateY(8px);width:min(420px,calc(100vw - 28px));z-index:36;background:rgba(14,21,48,.97);border:2px solid #3a4b7d;border-radius:14px;padding:.6em .8em;font:600 .94rem/1.4 Nunito;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .18s,transform .18s;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .dinfo.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
@@ -167,3 +172,36 @@ body.induel{overflow:hidden}
 .dlbox .row{gap:.5rem;flex-wrap:wrap}
 .dpoint{position:relative;z-index:31;animation:dpt 1.4s ease-in-out infinite;border-radius:12px}
 @keyframes dpt{0%,100%{box-shadow:0 0 0 0 rgba(242,185,53,.9)}50%{box-shadow:0 0 0 7px rgba(242,185,53,0)}}
+
+/* swap two, before the first turn */
+.dswap{position:absolute;inset:0;z-index:34;display:grid;place-items:center;background:rgba(6,9,22,.8);padding:12px}
+.dswap[hidden]{display:none}
+.dswin{width:min(500px,100%);background:#141d3b;border:3px solid #2b3a66;border-radius:18px;padding:1rem;text-align:center;animation:dpop .35s ease}
+.dswin h3{font-size:1.3rem}
+.dswin p{margin:.25rem 0 .7rem;font-size:.9rem}
+.dsrow{display:flex;gap:7px;justify-content:center;margin-bottom:.9rem;flex-wrap:wrap}
+.dsrow .dc{height:min(22dvh,150px);width:auto;cursor:pointer;transition:transform .15s,opacity .15s}
+.dsrow .dc.picked{opacity:.45;transform:translateY(8px) rotate(-4deg);box-shadow:0 0 0 2.5px #ff8c7a,0 0 0 5px #0b1020}
+.dsrow .dc.picked::after{content:"Back in the deck";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:4;font:800 .64rem Nunito;background:#0b1020;color:#ff8c7a;border-radius:999px;padding:.2em .5em;white-space:nowrap}
+
+/* the captain's moment */
+.dc.capfire{box-shadow:0 0 0 3px #ffd35c,0 0 0 6px #0b1020,0 0 30px #ffd35c}
+.dc .stampmv.cap{background:#ffd35c;font-size:clamp(.7rem,2.8vw,1rem)}
+
+/* the Duels screen: road, ladder, rivals */
+.duroad .bar{height:11px}
+.durivals{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:.7rem}
+.durival{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;text-align:left;padding:.7em .8em .8em;border-radius:14px;border:2px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer;min-height:132px}
+.durival:hover{border-color:var(--gold)}
+.durival .drbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.3;filter:saturate(.8) brightness(.55)}
+.durival>span{position:relative;z-index:1}
+.drname{font:400 1.12rem/1.15 "Lilita One"}
+.drplace{font:800 .7rem Nunito;color:var(--teal);text-transform:uppercase;letter-spacing:.06em}
+.drtxt{font:600 .82rem/1.35 Nunito;color:#cfd8f0;margin:.2rem 0 .4rem}
+.drpips{display:flex;gap:5px;margin-top:auto}
+.drpips i{width:11px;height:11px;border-radius:50%;border:2px solid var(--line);background:#0b1020}
+.drpips i.on{background:var(--gold);border-color:#ffe08a}
+.drgo{font:800 .78rem Nunito;color:var(--gold);margin-top:.35rem}
+.durival.done .drgo{color:var(--mut)}
+.dugrid .dc.cap{box-shadow:0 0 0 2.5px #ffd35c,0 0 0 5px #0b1020,0 0 16px rgba(255,211,92,.6)}
+.capmark{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-8deg);z-index:4;font:400 .72rem "Lilita One";background:#ffd35c;color:#2a1a00;border:2px solid #0b1020;border-radius:5px;padding:.1em .35em}

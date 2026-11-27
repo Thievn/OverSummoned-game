@@ -2,301 +2,301 @@
  {
   "id": "eagleton",
   "rarity": "absurd",
-  "win": 0.575,
+  "win": 0.57,
   "move": "gamble"
- },
- {
-  "id": "morwenna",
-  "rarity": "rare",
-  "win": 0.556,
-  "move": "twist"
- },
- {
-  "id": "mona",
-  "rarity": "uncommon",
-  "win": 0.555,
-  "move": "twist"
  },
  {
   "id": "jazzmin",
   "rarity": "uncommon",
-  "win": 0.543,
+  "win": 0.562,
   "move": "spark"
  },
  {
-  "id": "joost",
-  "rarity": "uncommon",
-  "win": 0.542,
-  "move": "gamble"
- },
- {
-  "id": "emu",
-  "rarity": "absurd",
-  "win": 0.538,
+  "id": "marco",
+  "rarity": "common",
+  "win": 0.553,
   "move": "spark"
  },
  {
   "id": "tut",
   "rarity": "legendary",
-  "win": 0.532,
+  "win": 0.547,
   "move": "burn"
  },
  {
-  "id": "jacko",
-  "rarity": "uncommon",
-  "win": 0.53,
-  "move": "mend"
- },
- {
-  "id": "kenji",
-  "rarity": "rare",
-  "win": 0.528,
-  "move": "boost"
- },
- {
-  "id": "vesper",
-  "rarity": "epic",
-  "win": 0.526,
-  "move": "sap"
- },
- {
-  "id": "marco",
-  "rarity": "common",
-  "win": 0.522,
+  "id": "emu",
+  "rarity": "absurd",
+  "win": 0.545,
   "move": "spark"
  },
  {
-  "id": "selene",
-  "rarity": "epic",
-  "win": 0.52,
-  "move": "lock"
- },
- {
-  "id": "blackbear",
-  "rarity": "epic",
-  "win": 0.519,
-  "move": "sap"
- },
- {
-  "id": "beep",
-  "rarity": "epic",
-  "win": 0.516,
+  "id": "morwenna",
+  "rarity": "rare",
+  "win": 0.545,
   "move": "twist"
  },
  {
-  "id": "zorp",
-  "rarity": "unhinged",
-  "win": 0.513,
+  "id": "mona",
+  "rarity": "uncommon",
+  "win": 0.54,
   "move": "twist"
  },
  {
-  "id": "bjorn",
-  "rarity": "common",
-  "win": 0.512,
-  "move": "boost"
- },
- {
-  "id": "albrecht",
-  "rarity": "rare",
-  "win": 0.51,
-  "move": "burn"
- },
- {
-  "id": "max",
-  "rarity": "epic",
-  "win": 0.509,
-  "move": "ramp"
- },
- {
-  "id": "sable",
-  "rarity": "rare",
-  "win": 0.509,
-  "move": "lock"
- },
- {
-  "id": "sterling",
-  "rarity": "rare",
-  "win": 0.507,
-  "move": "peek"
- },
- {
-  "id": "napoleon",
-  "rarity": "epic",
-  "win": 0.506,
-  "move": "boost"
- },
- {
-  "id": "astrid",
-  "rarity": "rare",
-  "win": 0.505,
-  "move": "rally"
- },
- {
-  "id": "gladius",
-  "rarity": "rare",
-  "win": 0.504,
-  "move": "rally"
- },
- {
-  "id": "chad",
-  "rarity": "common",
-  "win": 0.504,
+  "id": "joost",
+  "rarity": "uncommon",
+  "win": 0.53,
   "move": "gamble"
  },
  {
   "id": "ajolote",
   "rarity": "legendary",
-  "win": 0.502,
+  "win": 0.525,
   "move": "mend"
+ },
+ {
+  "id": "chad",
+  "rarity": "common",
+  "win": 0.518,
+  "move": "gamble"
+ },
+ {
+  "id": "sterling",
+  "rarity": "rare",
+  "win": 0.517,
+  "move": "peek"
+ },
+ {
+  "id": "blackbear",
+  "rarity": "epic",
+  "win": 0.512,
+  "move": "sap"
+ },
+ {
+  "id": "bjorn",
+  "rarity": "common",
+  "win": 0.51,
+  "move": "boost"
  },
  {
   "id": "roxy",
   "rarity": "rare",
-  "win": 0.497,
+  "win": 0.508,
   "move": "sap"
  },
  {
-  "id": "madjack",
+  "id": "sable",
+  "rarity": "rare",
+  "win": 0.505,
+  "move": "lock"
+ },
+ {
+  "id": "zorp",
   "rarity": "unhinged",
-  "win": 0.497,
-  "move": "boost"
- },
- {
-  "id": "gaius",
-  "rarity": "rare",
-  "win": 0.496,
-  "move": "guard"
- },
- {
-  "id": "quack",
-  "rarity": "epic",
-  "win": 0.494,
-  "move": "tax"
- },
- {
-  "id": "flap",
-  "rarity": "rare",
-  "win": 0.493,
-  "move": "boost"
- },
- {
-  "id": "dolly",
-  "rarity": "rare",
-  "win": 0.492,
-  "move": "lift"
- },
- {
-  "id": "pam",
-  "rarity": "common",
-  "win": 0.491,
-  "move": "top"
- },
- {
-  "id": "maya",
-  "rarity": "uncommon",
-  "win": 0.488,
-  "move": "mend"
+  "win": 0.505,
+  "move": "twist"
  },
  {
   "id": "dusty",
   "rarity": "uncommon",
-  "win": 0.488,
+  "win": 0.504,
   "move": "burn"
  },
  {
-  "id": "lola",
+  "id": "napoleon",
   "rarity": "epic",
-  "win": 0.487,
-  "move": "sap"
+  "win": 0.504,
+  "move": "boost"
  },
  {
-  "id": "troffea",
+  "id": "maya",
   "rarity": "uncommon",
-  "win": 0.483,
-  "move": "lift"
+  "win": 0.503,
+  "move": "mend"
  },
  {
-  "id": "vincenzo",
+  "id": "jacko",
+  "rarity": "uncommon",
+  "win": 0.502,
+  "move": "mend"
+ },
+ {
+  "id": "beep",
   "rarity": "epic",
-  "win": 0.482,
-  "move": "tax"
+  "win": 0.502,
+  "move": "twist"
  },
  {
   "id": "hootsworth",
   "rarity": "rare",
-  "win": 0.481,
+  "win": 0.499,
   "move": "peek"
  },
  {
-  "id": "kevin",
+  "id": "dolly",
+  "rarity": "rare",
+  "win": 0.497,
+  "move": "lift"
+ },
+ {
+  "id": "gaius",
+  "rarity": "rare",
+  "win": 0.497,
+  "move": "guard"
+ },
+ {
+  "id": "kenji",
+  "rarity": "rare",
+  "win": 0.496,
+  "move": "boost"
+ },
+ {
+  "id": "lola",
+  "rarity": "epic",
+  "win": 0.495,
+  "move": "sap"
+ },
+ {
+  "id": "albrecht",
+  "rarity": "rare",
+  "win": 0.495,
+  "move": "burn"
+ },
+ {
+  "id": "selene",
+  "rarity": "epic",
+  "win": 0.492,
+  "move": "lock"
+ },
+ {
+  "id": "vincenzo",
+  "rarity": "epic",
+  "win": 0.492,
+  "move": "tax"
+ },
+ {
+  "id": "rex",
+  "rarity": "uncommon",
+  "win": 0.49,
+  "move": "rally"
+ },
+ {
+  "id": "vesper",
+  "rarity": "epic",
+  "win": 0.49,
+  "move": "sap"
+ },
+ {
+  "id": "flap",
+  "rarity": "rare",
+  "win": 0.489,
+  "move": "boost"
+ },
+ {
+  "id": "madjack",
+  "rarity": "unhinged",
+  "win": 0.489,
+  "move": "boost"
+ },
+ {
+  "id": "astrid",
+  "rarity": "rare",
+  "win": 0.487,
+  "move": "rally"
+ },
+ {
+  "id": "pam",
   "rarity": "common",
-  "win": 0.479,
+  "win": 0.487,
   "move": "top"
+ },
+ {
+  "id": "edith",
+  "rarity": "rare",
+  "win": 0.485,
+  "move": "lift"
+ },
+ {
+  "id": "florida",
+  "rarity": "absurd",
+  "win": 0.485,
+  "move": "boost"
+ },
+ {
+  "id": "gorm",
+  "rarity": "absurd",
+  "win": 0.483,
+  "move": "ramp"
  },
  {
   "id": "doug",
   "rarity": "common",
-  "win": 0.478,
+  "win": 0.482,
   "move": "guard"
  },
  {
   "id": "brokk",
   "rarity": "uncommon",
-  "win": 0.473,
+  "win": 0.482,
   "move": "boost"
  },
  {
-  "id": "rex",
+  "id": "kevin",
+  "rarity": "common",
+  "win": 0.482,
+  "move": "top"
+ },
+ {
+  "id": "troffea",
   "rarity": "uncommon",
-  "win": 0.473,
-  "move": "rally"
- },
- {
-  "id": "stella",
-  "rarity": "legendary",
-  "win": 0.469,
-  "move": "rally"
- },
- {
-  "id": "edith",
-  "rarity": "rare",
-  "win": 0.468,
+  "win": 0.479,
   "move": "lift"
  },
  {
-  "id": "bella",
-  "rarity": "rare",
-  "win": 0.465,
-  "move": "rally"
+  "id": "max",
+  "rarity": "epic",
+  "win": 0.479,
+  "move": "ramp"
  },
  {
-  "id": "gorm",
-  "rarity": "absurd",
-  "win": 0.458,
-  "move": "ramp"
+  "id": "gladius",
+  "rarity": "rare",
+  "win": 0.477,
+  "move": "rally"
  },
  {
   "id": "raspawtin",
   "rarity": "unhinged",
-  "win": 0.456,
+  "win": 0.475,
   "move": "boost"
  },
  {
-  "id": "florida",
-  "rarity": "absurd",
-  "win": 0.455,
-  "move": "boost"
+  "id": "quack",
+  "rarity": "epic",
+  "win": 0.47,
+  "move": "tax"
+ },
+ {
+  "id": "stella",
+  "rarity": "legendary",
+  "win": 0.464,
+  "move": "rally"
+ },
+ {
+  "id": "bella",
+  "rarity": "rare",
+  "win": 0.461,
+  "move": "rally"
  },
  {
   "id": "cleocatra",
   "rarity": "legendary",
-  "win": 0.446,
+  "win": 0.454,
   "move": "lift"
  },
  {
   "id": "slapton",
   "rarity": "legendary",
-  "win": 0.425,
+  "win": 0.437,
   "move": "rally"
  }
 ]

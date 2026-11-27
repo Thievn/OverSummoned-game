@@ -291,3 +291,20 @@ Fifty Move names and one-line texts; the two or three word tags; the tutorial's 
 0. The five waiting battle tracks, today (see O9e, first job). Ten minutes of work and every arena stops sharing one tune.
 1. O9b. 2. O9d. 3. O9c and O9e together. 4. O9f.
 Why O9b first: it costs nothing in art and fixes "I had to stop and read every card", which is the thing most likely to make a new player quit. O9d second: the rules decide what the art has to show (a captain's mark, a Stand down state), so drawing before them means drawing twice. Then O9c and O9e together, since both wait on generated assets, then O9f.
+
+## O9b and O9d done (27 Nov, Opus)
+
+**Music, first job: done.** The five battle tracks were pulled in through the existing `os_art_job` + `asset-fetch` route (jobs 293 to 297), levelled with ffmpeg and committed. Every boss and every duel arena now has its own theme. Lengths as generated: ancient, noir and gothic 60s, north 120s, romp only 30s (regenerate romp longer in O9e).
+
+**O9b done.** Nothing on the table is under 13px. One colour per called stat, used on the big call, the chips, the card's number and the info row. Every card shows its Move as an icon and two or three words under the art, so no tap is needed. A line under the hand reads "Playing 2: 43 on Attack for 6 energy". The info panel floats in the middle of the table and stays until dismissed. The ink trail now runs out from Smudge both ways at once instead of wiping top to bottom. A five-step lesson runs on the first duel, pointing at one thing at a time and waiting for the player to do it; it is skippable and replayable from the Duels screen ("Show me again"). For a new player's first three duels the best-value affordable card glows.
+
+**O9d done.** All of it is in the engine, all of it is in the sim, and the sim is 18 of 18 at 10,000 duels.
+- **Swap two** before the first turn: a window of your opening five, put back up to two, they go under the deck. Worth about +4 points of win rate (sim).
+- **Stand down**: sit out the rest of the round, start the next one with +3 energy. The careful house player uses it in 26% of its rounds.
+- **Captain's Call**: once a duel, your captain scores `captain_per_cost` (5) x their cost more that turn. **Changed from the plan**: the plan said the turn would be judged on the captain's best stat for both sides. The sim showed that made one cheap lopsided hero the only sensible captain (33% to 67% win rates by captain). Scaling a flat bonus by the captain's cost makes every hero a fair pick: the captaincy is now worth 0.2% on average, with no hero outside the noise band.
+- **The rival ladder**: the eight raid bosses, each with a deck drawn from the groups they belong to, a home arena, their own captain and three difficulties. 24 first wins, paying 60 to 1,200 gold (a tier-2 rival pays double, a tier-3 one triple).
+- **The duelist road**: 20 levels on duel XP, prizes are card backs, table felts and titles. The prizes are named in `rules/duel.py` but not yet redeemable: O9c builds the card-back and felt system, and F7 writes the titles.
+- Sim marks added: stand down used in 10% to 35% of rounds; swap two worth at least +1 point; captaincy even across heroes (a noise-aware test, since the first version of this mark measured hero strength rather than the captaincy).
+- Also tuned by the sim: energy stays 7/+7/20, `premium` to -0.0195, gamble cap to 0.30, and the Black Forest arena's weights evened out because Luck was the most-called stat overall.
+
+**Still owner-only.** `duel.open` is still False in rules/duel.py.

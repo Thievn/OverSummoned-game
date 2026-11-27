@@ -87,7 +87,68 @@ for (const [name, mk] of Object.entries(skew)) {
   mark('practice "easy" is beatable (normal beats easy over 60%)', e / n > 0.6, 'normal wins ' + pct(e / n));
 }
 
-// ---- 5. which Move kinds pull their weight (read, not a mark)
+// ---- 5. the new mechanics: stand down, swap two, the captain
+{
+  let downs = 0, rounds = 0, caps = 0, duels = 0, swapped = 0; const n = Math.max(1500, N / 3);
+  for (let i = 0; i < n; i++) {
+    const s = duel(deckOf(sample(ids, DECK), 'silver'), deckOf(sample(ids, DECK), 'silver'), [2, 2]);
+    downs += s.stats.down; rounds += s.stats.rounds * 2; caps += s.stats.captain; swapped += s.stats.swapped[0] + s.stats.swapped[1]; duels++;
+  }
+  const rate = downs / rounds;
+  mark('a careful player stands down in 10% to 35% of its rounds', rate >= 0.10 && rate <= 0.35, pct(rate) + ` (${(caps / duels / 2).toFixed(2)} captain calls a side a duel, ${(swapped / duels / 2).toFixed(2)} cards swapped a side)`);
+}
+
+// ---- 6. swap two actually rescues a bad hand
+{
+  let wWith = 0, wWithout = 0; const n = Math.max(1500, N / 3);
+  for (const useSwap of [true, false]) {
+    for (let i = 0; i < n; i++) {
+      const side = i % 2, a = deckOf(sample(ids, DECK), 'silver'), b = deckOf(sample(ids, DECK), 'silver');
+      const s = E.newDuel(R, side ? [b, a] : [a, b], { seed: Math.floor(rnd() * 4294967295) });
+      if (useSwap) { const sw = E.wantsSwap(R, s, side, 2); if (sw.length) E.swapTwo(R, s, side, sw); }
+      s.swap = false; s.stats = { down: 0, rounds: 0, swapped: [0, 0], captain: 0 };
+      let guard = 0;
+      while (!s.over && guard++ < 300) {
+        [0, 1].forEach(j => { if (E.wantsDown(R, s, j, 1)) E.standDown(R, s, j); });
+        E.play(R, s, [E.choose(R, s, 0, 1), E.choose(R, s, 1, 1)]);
+      }
+      if (s.winner === side) { if (useSwap) wWith++; else wWithout++; }
+    }
+  }
+  const lift = (wWith - wWithout) / n;
+  mark('swapping two helps, and never hurts (at least +1 point)', lift >= 0.01, `with ${pct(wWith / n)} vs without ${pct(wWithout / n)} (+${pct(lift)})`);
+}
+
+// ---- 7. being captain should not decide the duel.
+// The earlier version of this mark compared heroes against each other, which only measured how strong the hero
+// was, not what the captaincy did. This measures the right thing: the same hero, in the same decks, captain or not.
+{
+  const asCap = {}, asNot = {}; const n = Math.max(2500, N);
+  for (let i = 0; i < n; i++) {
+    const la = sample(ids, DECK), lb = sample(ids, DECK), side = i % 2;
+    const cap = la[Math.floor(rnd() * la.length)], other = la.find(x => x !== cap);
+    const seed = Math.floor(rnd() * 4294967295);
+    for (const [who, book] of [[cap, asCap], [other, asNot]]) {
+      const a = deckOf(la, 'silver'), b = deckOf(lb, 'silver');
+      const caps = side ? [lb[0], who] : [who, lb[0]];
+      const s2 = E.runDuel(R, side ? [b, a] : [a, b], { seed, levels: [2, 2], captains: caps });
+      const w = book[cap] || (book[cap] = [0, 0]); w[0]++; if (s2.winner === side) w[1]++;
+    }
+  }
+  const capW = Object.values(asCap).reduce((a, v) => [a[0] + v[0], a[1] + v[1]], [0, 0]);
+  const notW = Object.values(asNot).reduce((a, v) => [a[0] + v[0], a[1] + v[1]], [0, 0]);
+  const lift = capW[1] / capW[0] - notW[1] / notW[0];
+  const per = Object.keys(asCap).filter(k => asCap[k][0] >= 25 && asNot[k][0] >= 25)
+    .map(k => ({ id: k, d: asCap[k][1] / asCap[k][0] - asNot[k][1] / asNot[k][0] })).sort((a, b) => b.d - a.d);
+  // Per-hero numbers here are noisy (about 90 duels an arm), so the mark is the average effect plus a
+  // noise-aware check: no hero may sit more than 2.5 standard errors from no effect at all.
+  const se = id => Math.sqrt(0.25 / asCap[id][0] + 0.25 / asNot[id][0]);
+  const odd = per.filter(x => Math.abs(x.d) > 2.5 * se(x.id));
+  mark('captaincy is close to even across heroes', Math.abs(lift) < 0.03 && odd.length === 0,
+    `average ${pct(lift)}; spread ${per.length ? pct(per[0].d) + ' to ' + pct(per[per.length - 1].d) : '-'}; ${odd.length} hero(es) beyond noise${odd.length ? ': ' + odd.map(x => x.id).join(', ') : ''}`);
+}
+
+// ---- 8. which Move kinds pull their weight (read, not a mark)
 {
   const f = JSON.parse(fs.readFileSync(path.join(here, 'sim_duel_heroes.json')));
   const by = {}; f.forEach(x => { (by[x.move] = by[x.move] || []).push(x.win); });

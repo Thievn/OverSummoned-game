@@ -1,23 +1,93 @@
 {
  "_note": "ALL STAND-IN (F7). Smudge is the only voice here. {you} and {them} are hero first names, {n} a number, {call} the stat.",
- "calls": {"attack": "Attack", "defense": "Defense", "health": "Health", "speed": "Speed", "luck": "Luck"},
- "house": ["The house deck", "Smudge's spare deck", "The house"],
- "level": ["Easy", "Normal", "Careful"],
- "level_text": ["Plays whatever is to hand.", "Plays the numbers.", "Holds cards back for the right call and lets a lost round go."],
- "start": ["Cards on the table. Speed goes first, then whatever is called.", "Three turns a round, three rounds to win. Smudge has the ink ready.", "Pick up to three. Press Ready. Try not to look smug."],
- "round_start": ["New round. The calls are {calls}.", "Round {n}: {calls}. Plan for the last one now."],
- "your_turn": ["The call is {call}.", "{call} this turn.", "This one counts {call}."],
- "you_round": ["That round is yours.", "Smudge stamps it in your colour.", "Round to you."],
- "them_round": ["The house takes that one.", "That round goes the other way.", "Round to the house."],
- "big": ["{you} put up {n} on their own.", "{n} from {you}. Smudge wrote it down twice."],
- "sapped": ["{you} got knocked down a peg.", "Something took a bite out of {you}."],
- "pass": ["Nothing played. The energy waits.", "Saving up. Smudge respects it."],
- "win": ["You won the duel.", "Duel won. Smudge closes the book on it."],
- "lose": ["The house wins this one.", "Lost. Smudge has already shuffled for the next."],
+ "calls": {
+  "attack": "Attack",
+  "defense": "Defense",
+  "health": "Health",
+  "speed": "Speed",
+  "luck": "Luck"
+ },
+ "house": [
+  "The house deck",
+  "Smudge's spare deck",
+  "The house"
+ ],
+ "level": [
+  "Easy",
+  "Normal",
+  "Careful"
+ ],
+ "level_text": [
+  "Plays whatever is to hand.",
+  "Plays the numbers.",
+  "Holds cards back for the right call and lets a lost round go."
+ ],
+ "start": [
+  "Cards on the table. Speed goes first, then whatever is called.",
+  "Three turns a round, three rounds to win. Smudge has the ink ready.",
+  "Pick up to three. Press Ready. Try not to look smug."
+ ],
+ "round_start": [
+  "New round. The calls are {calls}.",
+  "Round {n}: {calls}. Plan for the last one now."
+ ],
+ "your_turn": [
+  "The call is {call}.",
+  "{call} this turn.",
+  "This one counts {call}."
+ ],
+ "you_round": [
+  "That round is yours.",
+  "Smudge stamps it in your colour.",
+  "Round to you."
+ ],
+ "them_round": [
+  "The house takes that one.",
+  "That round goes the other way.",
+  "Round to the house."
+ ],
+ "big": [
+  "{you} put up {n} on their own.",
+  "{n} from {you}. Smudge wrote it down twice."
+ ],
+ "sapped": [
+  "{you} got knocked down a peg.",
+  "Something took a bite out of {you}."
+ ],
+ "pass": [
+  "Nothing played. The energy waits.",
+  "Saving up. Smudge respects it."
+ ],
+ "win": [
+  "You won the duel.",
+  "Duel won. Smudge closes the book on it."
+ ],
+ "lose": [
+  "The house wins this one.",
+  "Lost. Smudge has already shuffled for the next."
+ ],
  "paid": "+{n} gold. Practice pays for the first {max} wins a day.",
  "unpaid": "Practice pays for the first {max} wins a day. That was for the joy of it.",
  "cant_energy": "Not enough energy for {you}.",
  "cant_three": "Three cards a turn at most.",
  "cant_lock": "{you} is locked this turn.",
- "fx": {"boost": "Boost", "ramp": "Ramp", "rally": "Rally", "lift": "Lift", "mend": "Mend", "guard": "Guard", "sap": "Sap", "burn": "Burn", "lock": "Lock", "spark": "Spark", "tax": "Tax", "twist": "Twist", "peek": "Peek", "gamble": "Lucky", "top": "Back on top"}
+ "fx": {
+  "boost": "Boost",
+  "ramp": "Ramp",
+  "rally": "Rally",
+  "lift": "Lift",
+  "mend": "Mend",
+  "guard": "Guard",
+  "sap": "Sap",
+  "burn": "Burn",
+  "lock": "Lock",
+  "spark": "Spark",
+  "tax": "Tax",
+  "twist": "Twist",
+  "peek": "Peek",
+  "gamble": "Lucky",
+  "top": "Back on top"
+ },
+ "swap_title": "Put back up to {n}",
+ "stand_down": "You stood down. The round is theirs, the energy is yours."
 }

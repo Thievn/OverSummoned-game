@@ -33,8 +33,9 @@ export function newDuel(R, decks, opts) {
   const arenas = Object.keys(D.arenas);
   const arena = opts && opts.arena && D.arenas[opts.arena] ? opts.arena : arenas[Math.floor(rand(st) * arenas.length)];
   const s = {
-    v: 1, rng: st.rng, arena, round: 1, turn: 0, calls: [], called: [], over: false, winner: -1, log: [],
-    cards: {}, sides: decks.map(deck => ({ deck: [], hand: [], energy: D.energy.start, pts: 0, rounds: 0, plays: {}, burn: [], locked: [], lockNext: 0, taxNext: 0, tax: 0, sparkNext: 0, peek: 0 })),
+    v: 2, rng: st.rng, arena, round: 1, turn: 0, calls: [], called: [], over: false, winner: -1, log: [], swap: true,
+    cards: {}, sides: decks.map((deck, i) => ({ deck: [], hand: [], energy: D.energy.start, pts: 0, rounds: 0, plays: {}, burn: [], locked: [], lockNext: 0, taxNext: 0, tax: 0, sparkNext: 0, peek: 0,
+      down: false, captain: (opts && opts.captains && opts.captains[i]) || deck[0].id, calledCaptain: false, callNow: false })),
   };
   decks.forEach((deck, i) => { deck.forEach(c => { s.cards[i + ':' + c.id] = c; }); s.sides[i].deck = shuffle(s, deck.map(c => c.id)); });
   s.sides.forEach((p, i) => draw(R, s, i));
@@ -51,13 +52,38 @@ function draw(R, s, i) {
   }
 }
 
+// Swap two: before the first turn, put back up to two of the opening five and draw their replacements.
+// The cards put back go under the deck, so they come round again later.
+export function swapTwo(R, s, i, ids) {
+  if (!s.swap || s.round !== 1 || s.turn !== 0) return false;
+  const p = s.sides[i]; ids = (ids || []).filter(id => p.hand.includes(id)).slice(0, R.duel.swap || 2);
+  ids.forEach(id => { p.hand.splice(p.hand.indexOf(id), 1); p.deck.push(id); });
+  draw(R, s, i);
+  if (i === 0) s.swap = false;        // the browser's side closes the window for both
+  return true;
+}
+
+// Stand down: play nothing more this round. The other side can keep spending, or follow you out.
+export function standDown(R, s, i) {
+  if (s.over || s.sides[i].down) return false;
+  s.sides[i].down = true; return true;
+}
+
+// Captain's Call: once a duel, your captain's score this turn is doubled. You must play them this turn
+// for it to mean anything. Bounded by the captain's own worth, so no hero is the obvious captain.
+export function captainCall(R, s, i) {
+  const p = s.sides[i]; if (p.calledCaptain || s.over || p.callNow) return false;
+  p.calledCaptain = true; p.callNow = true; return p.captain;
+}
+
 function startRound(R, s) {
   const w = R.duel.arenas[s.arena].w, calls = [];
   for (let t = 0; t < R.duel.turns_per_round; t++) {
     let k; do { k = pickW(s, w); } while (calls.length === 2 && calls[0] === k && calls[1] === k);
     calls.push(k);
   }
-  s.calls = calls.map(k => STATS[k]); s.turn = 0; s.sides.forEach(p => { p.pts = 0; p.burn = []; });
+  s.calls = calls.map(k => STATS[k]); s.turn = 0;
+  s.sides.forEach(p => { p.pts = 0; p.burn = []; if (p.down) p.energy = Math.min(R.duel.energy.max, p.energy + (R.duel.stand_down_energy || 0)); p.down = false; });
 }
 
 export const call = s => s.calls[s.turn];
@@ -70,7 +96,7 @@ function dearest(s, i) { const p = s.sides[i]; return p.hand.reduce((b, id) => !
 // can side i play these cards (hero ids from its hand) this turn?
 export function legal(R, s, i, ids) {
   const p = s.sides[i];
-  if (s.over || !Array.isArray(ids) || ids.length > R.duel.per_turn || new Set(ids).size !== ids.length) return false;
+  if (s.over || p.down || !Array.isArray(ids) || ids.length > R.duel.per_turn || new Set(ids).size !== ids.length) return false;
   if (ids.some(id => !p.hand.includes(id) || p.locked.includes(id))) return false;
   return ids.reduce((t, id) => t + costOf(R, s, i, id), 0) <= p.energy;
 }
@@ -128,6 +154,9 @@ export function play(R, s, picks) {
     if (m.plus && m.plus.stat === k) { x.add += m.plus.x; did = true; }
     if (did) ev.push({ t: 'move', side: i, id: x.id, fx: m.fx });
   }
+  // the captain's doubling lands last, on top of every Move
+  board.forEach((b, i) => { if (!s.sides[i].callNow) return; const x = b.find(y => y.id === s.sides[i].captain);
+    if (x) { x.add += (R.duel.captain_per_cost || 6) * x.c.cost; ev.push({ t: 'captain', side: i, id: x.id }); } });
   // add it up
   const tot = [0, 1].map(i => {
     let t = board[i].reduce((a, x) => a + Math.max(0, Math.round((x.val + x.add) * x.mult)), 0);
@@ -144,7 +173,8 @@ export function play(R, s, picks) {
   });
   s.log.push(picks); s.called.push(k);
   // end of the turn, then maybe the end of the round
-  s.turn++;
+  s.turn++; s.sides.forEach(p => { p.callNow = false; });
+  if (s.sides.every(p => p.down) && s.turn < s.calls.length) s.turn = s.calls.length;   // nobody is playing: call it
   if (s.turn >= s.calls.length) {
     const [a, b] = s.sides.map(p => p.pts);
     if (a === b) {
@@ -172,6 +202,7 @@ export function play(R, s, picks) {
 // Scores every set of up to three playable cards: points this turn, minus what the energy would have been worth later.
 export function choose(R, s, i, level) {
   const D = R.duel, p = s.sides[i], k = call(s), o = 1 - i;
+  if (p.down) return [];
   const hand = p.hand.filter(id => !p.locked.includes(id));
   if (level === 0 && rand(s) < 0.35) { const pick = []; let e = p.energy; shuffle(s, hand.slice()).forEach(id => { const c = costOf(R, s, i, id); if (pick.length < D.per_turn && c <= e) { pick.push(id); e -= c; } }); return pick; }
   const cards = hand.map(id => s.cards[i + ':' + id]);
@@ -192,6 +223,40 @@ export function choose(R, s, i, level) {
     if (gap < 0 && -gap > bestPts * 1.6) return [];      // this round is won: same
   }
   return bestSet;
+}
+
+// Whether the house stands down this turn, before it picks cards. A round it cannot win is worth leaving,
+// because next round starts with more energy and a full hand.
+export function wantsDown(R, s, i, level) {
+  const p = s.sides[i], o = 1 - i, D = R.duel;
+  if (level < 1 || p.down || s.over) return false;
+  if (s.sides[i].rounds === D.rounds_to_win - 1 && s.sides[o].rounds === D.rounds_to_win - 1) return false;  // the last round: never walk away
+  const gap = s.sides[o].pts - p.pts, left = s.calls.length - s.turn;
+  const reach = choose(R, s, i, level).reduce((t, id) => t + cardValue(R, s, i, id), 0) * left;
+  if (gap <= 0) return false;
+  if (reach < gap * 0.55) return true;                        // cannot catch up: take the energy
+  if (level >= 2 && gap > 0 && reach < gap * 0.9 && p.energy < D.energy.per_turn * 1.5) return true;
+  return false;
+}
+
+// Whether the house calls its captain this turn: when its captain's best stat is much better than the called one
+// and it is about to play the captain anyway.
+export function wantsCaptain(R, s, i, level) {
+  const p = s.sides[i];
+  if (level < 1 || p.calledCaptain || p.callNow || s.over || p.down) return false;
+  if (!choose(R, s, i, level).includes(p.captain)) return false;        // only worth it if the captain is going down
+  const c = s.cards[i + ':' + p.captain], k = call(s);
+  const avg = avgVal(R, s, i, c);
+  return baseOf(R, s, i, c, k) >= avg * (level >= 2 ? 1.1 : 0.9);       // and on a turn that suits them
+}
+
+// Which two cards the house puts back: the ones worth least across the stats this arena calls.
+export function wantsSwap(R, s, i, level) {
+  if (level < 1) return [];
+  const p = s.sides[i];
+  return p.hand.map(id => ({ id, v: avgVal(R, s, i, s.cards[i + ':' + id]) / s.cards[i + ':' + id].cost }))
+    .sort((a, b) => a.v - b.v).slice(0, R.duel.swap || 2)
+    .filter(x => x.v < (R.duel.swap_floor || 4)).map(x => x.id);
 }
 function subsets(set) { const out = []; for (let m = 1; m < (1 << set.length); m++) out.push(set.filter((_, j) => m & (1 << j))); return out; }
 function avgVal(R, s, i, c) { const w = R.duel.arenas[s.arena].w, tot = w.reduce((a, b) => a + b, 0); return STATS.reduce((a, k, j) => a + baseOf(R, s, i, c, k) * w[j] / tot, 0); }
@@ -223,7 +288,16 @@ function estimate(R, s, i, ids, k) {
 // ---- play a whole duel between two house players (the sim, and a quick check in the console).
 export function runDuel(R, decks, opts) {
   const s = newDuel(R, decks, opts), lv = (opts && opts.levels) || [1, 1];
-  let guard = 0;
-  while (!s.over && guard++ < 200) play(R, s, [choose(R, s, 0, lv[0]), choose(R, s, 1, lv[1])]);
+  s.stats = { down: 0, rounds: 0, swapped: [0, 0], captain: 0 };
+  [0, 1].forEach(i => { const sw = wantsSwap(R, s, i, lv[i]); if (sw.length) { s.stats.swapped[i] = sw.length; swapTwo(R, s, i, sw); } });
+  s.swap = false;
+  let guard = 0, round = s.round;
+  while (!s.over && guard++ < 300) {
+    [0, 1].forEach(i => { if (wantsDown(R, s, i, lv[i])) { standDown(R, s, i); s.stats.down++; } });
+    [0, 1].forEach(i => { if (wantsCaptain(R, s, i, lv[i])) { captainCall(R, s, i); s.stats.captain++; } });
+    if (s.sides.every(p => p.down)) { play(R, s, [[], []]); } else play(R, s, [choose(R, s, 0, lv[0]), choose(R, s, 1, lv[1])]);
+    if (s.round !== round) { round = s.round; s.stats.rounds++; }
+  }
+  s.stats.rounds += 1;
   return s;
 }
