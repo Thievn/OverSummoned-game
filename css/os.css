@@ -635,6 +635,7 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 .wish-done{position:relative;background:var(--parch);color:var(--sepia);border-radius:14px;padding:1.1rem 1.2rem 1rem;border:2px solid var(--gold);box-shadow:var(--shadow);animation:wishin .35s ease-out}
 .wish-done strong{display:block;font-size:1.25rem;color:#17224a;margin:0 6.5rem .3rem 0}
 .wish-done p{margin:0 0 .35rem;font-weight:700;line-height:1.45}.wish-done .wish-sub{font-weight:600;font-size:.9rem;opacity:.8;margin:0}
+.wish-done .btn{display:inline-block;margin:.35rem 0 .55rem}
 .wish-stamp{position:absolute;top:.7rem;right:.8rem;font:900 .85rem Nunito;letter-spacing:.14em;text-transform:uppercase;color:#b3261e;border:3px solid #b3261e;border-radius:8px;padding:.2em .55em;transform:rotate(8deg);opacity:.85;animation:wishstamp .45s .15s cubic-bezier(.2,1.6,.4,1) both}
 @keyframes wishin{from{opacity:0;transform:translateY(8px)}}
 @keyframes wishstamp{from{opacity:0;transform:rotate(-14deg) scale(2.4)}}
@@ -803,3 +804,7 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .frpick .fopt .fp{font:800 .72rem/1.2 Nunito;color:var(--mut);text-align:center;min-height:2.4em}
 .frpick .fopt .fp b{color:var(--gold)}
 .frpick .fopt.lockd .card{filter:grayscale(.85) brightness(.6)}
+/* first-login welcome (27 Nov) */
+.welcome p{margin:0 0 .7rem;line-height:1.55;color:#dfe6f8}.welcome .note{background:rgba(242,185,53,.1);border:1px solid rgba(242,185,53,.45);border-radius:12px;padding:.7rem .9rem;color:#f6e2ad;font-size:.95rem}
+.fbbtn.pulse{animation:fbpulse 1s ease-in-out 4;box-shadow:0 0 0 0 rgba(63,224,197,.7)}
+@keyframes fbpulse{0%{box-shadow:0 0 0 0 rgba(63,224,197,.75);transform:scale(1)}50%{box-shadow:0 0 0 12px rgba(63,224,197,0);transform:scale(1.08)}100%{box-shadow:0 0 0 0 rgba(63,224,197,0);transform:scale(1)}}

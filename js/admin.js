@@ -5,7 +5,7 @@
   const A = '#14a08b', B = '#c2800c';
   function fake() { const days = []; for (let i = 29; i >= 0; i--) { const d = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10), v = Math.round(20 + Math.random() * 40 + (29 - i) * 2); days.push({ d, visitors: v, views: Math.round(v * (2 + Math.random())), signups: Math.round(Math.random() * 5), summons: Math.round(Math.random() * 30), active: Math.round(v / 4) }); }
     return { totals: { accounts: 41, players: 37, views_today: 212, visitors_today: 88, views_7d: 1310, visitors_7d: 402, active_24h: 19, summons: 512, gold: 88210, ink: 402100 }, days, paths: [{ k: '/', n: 800 }, { k: '/play', n: 380 }, { k: '/login', n: 130 }], refs: [{ k: 'direct', n: 600 }, { k: 'google.com', n: 300 }, { k: 't.co', n: 120 }], events: [{ k: 'summon', n: 140 }, { k: 'raid', n: 60 }, { k: 'crate', n: 44 }], owned: { kevin: 37, lola: 6, raspawtin: 1, astrid: 9 },
-      players: [{ username: 'DevOtter', email: 'dev@local', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), total_level: 20, heroes: 4, gold: 1200, ink: 3000, summons: 5, steam: false }] }; }
+      players: [{ id: 'dev', username: 'DevOtter', email: 'dev@local', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), total_level: 20, heroes: 4, gold: 1200, ink: 3000, summons: 5, steam: false }] }; }
   let D;
   let G = null;
   async function load() { if (Cloud.dev) { D = fake(); return; } const { data, error } = await Cloud.sb.rpc('os2_admin_stats'); try { const g = await Cloud.sb.rpc('os2_admin_geo', { p_days: 30 }); G = g.error ? null : g.data; } catch (e) { G = null; } if (error) { toast('The office is locked: ' + error.message); D = D || fake(); return; } D = data; }
@@ -46,7 +46,21 @@
     $('g-sum').textContent = g.located ? `${num(g.located)} visitor${g.located === 1 ? '' : 's'} from ${g.countries.length} countr${g.countries.length === 1 ? 'y' : 'ies'}` : 'Waiting for the first located visit';
     GeoMap.mount($('g-map'), g); hbars($('g-list'), g.countries.slice(0, 8).map(c => ({ k: GeoMap.name(c.country), n: c.visitors }))); }
   function renderPlayers() { const q = $('p-search').value.toLowerCase(), rows = D.players.filter(p => !q || (p.username + ' ' + p.email).toLowerCase().includes(q)), ago = d => { if (!d) return 'never'; const s = (Date.now() - new Date(d)) / 1000; return s < 3600 ? Math.round(s / 60) + 'm ago' : s < 86400 ? Math.round(s / 3600) + 'h ago' : Math.round(s / 86400) + 'd ago'; };
-    $('p-table').innerHTML = '<tr><th>Player</th><th>Email</th><th>Joined</th><th>Last seen</th><th>Total level</th><th>Arrivals</th><th>Summons</th><th>Gold</th><th>Ink</th><th>Steam</th></tr>' + rows.map(p => `<tr><td><b>${p.username}</b></td><td>${p.email}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${ago(p.updated_at)}</td><td>${p.total_level || 0}</td><td>${p.heroes || 0}</td><td>${p.summons || 0}</td><td>${num(p.gold || 0)}</td><td>${num(p.ink || 0)}</td><td>${p.steam ? 'Yes' : 'No'}</td></tr>`).join(''); }
+    const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    $('p-table').innerHTML = '<tr><th>Player</th><th>Email</th><th>Joined</th><th>Last seen</th><th>Total level</th><th>Arrivals</th><th>Summons</th><th>Gold</th><th>Ink</th><th>Steam</th><th></th></tr>' + rows.map(p => `<tr data-uid="${esc(p.id)}"><td><b>${esc(p.username)}</b></td><td>${esc(p.email)}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${ago(p.updated_at)}</td><td>${p.total_level || 0}</td><td>${p.heroes || 0}</td><td>${p.summons || 0}</td><td>${num(p.gold || 0)}</td><td>${num(p.ink || 0)}</td><td>${p.steam ? 'Yes' : 'No'}</td><td class="rst">${p.id ? '<button class="linkbtn" data-reset>Reset</button>' : ''}</td></tr>`).join('');
+    // reset a player's ledger: two clicks, the second one spelled out, so it never happens by accident
+    $('p-table').querySelectorAll('[data-reset]').forEach(b => b.onclick = () => {
+      const tr = b.closest('tr'), p = rows.find(x => x.id === tr.dataset.uid), cell = tr.querySelector('.rst');
+      cell.innerHTML = `<span class="mut" style="white-space:nowrap">Wipe ${esc(p.username || p.email)}'s ledger?</span> <button class="btn small" data-yes style="background:#c0392b;color:#fff">Yes, reset</button> <button class="linkbtn" data-no>Cancel</button>`;
+      cell.querySelector('[data-no]').onclick = () => renderPlayers();
+      cell.querySelector('[data-yes]').onclick = async () => {
+        if (Cloud.dev) { toast('Reset (local test only).'); return renderPlayers(); }
+        const { data, error } = await Cloud.sb.rpc('os2_admin_reset', { p_user: p.id });
+        if (error) { toast('That did not reset: ' + error.message); return; }
+        toast(data && data.had_save ? `${p.username || p.email} starts over. Their account, name and Founding Clerk seal stay.` : `${p.username || p.email} had no ledger yet. Nothing to reset.`);
+        await load(); renderPlayers();
+      };
+    }); }
   function renderHeroes() { const g = $('a-hgrid'); if (g.children.length) return; $('hc').textContent = `${R.heroes.length} characters`; const players = Math.max(1, D.totals.players);
     R.heroes.slice().sort((a, b) => R.rarities.indexOf(b.rarity) - R.rarities.indexOf(a.rarity)).forEach(h => { const w = el('div', 'acard'); w.appendChild(OS.card(h)); const n = D.owned[h.id] || 0; w.appendChild(el('div', 'mut', `Owned by <b style="color:#fff">${n}</b> of ${players} players (${Math.round(n / players * 100)}%) · gear at ${R.places.find(p => p.id === h.place).name}`)); g.appendChild(w); }); }
   function renderItems() { const kind = $('i-kind').value, place = $('i-place').value, list = Object.values(OS.items).filter(i => (!kind || i.kind === kind) && (!place || i.place === place)).sort((a, b) => R.rarities.indexOf(b.rarity) - R.rarities.indexOf(a.rarity) || a.name.localeCompare(b.name));

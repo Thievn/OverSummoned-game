@@ -1,4 +1,4 @@
-// Every email OverSummoned sends. One look, three letters: wishlist welcome, beta invite, note to the owner.
+// Every email OverSummoned sends. One look, four letters: instant access, wishlist welcome (retired), beta invite, note to the owner.
 // This file is copied as-is into each function that sends mail (waitlist, beta). Change both together.
 export const MAIL_FROM = Deno.env.get('BETA_MAIL_FROM') || 'Smudge at OverSummoned <hello@oversummoned.com>';
 export const NOTIFY_TO = Deno.env.get('BETA_NOTIFY_TO') || 'hello@oversummoned.com';
@@ -49,6 +49,23 @@ export function wishlistMail(): Letter {
   };
 }
 
+// Instant beta access (27 Nov 2026): the landing-page sign-up lets the address straight in, and this is the key.
+export function accessMail(to: string): Letter {
+  return {
+    subject: "You're in. Smudge already unlocked the door.",
+    text: "You're in.\n\nNo queue, no waiting list, no velvet rope. Smudge stamped your name into the ledger and the door swung open. He is as surprised as you are.\n\nMake your account here with this email address (" + to + "): https://oversummoned.com/login\nThat address is the one on the list, so use it and the door opens. Any other one and it stays shut.\n\nThen summon your first hero. Fair warning: the ledger has opinions about who turns up.\n\nThis is an early beta. Things will break, the occasional hero will arrive in the wrong century, and you will be one of the first people to find out how. The \"Ideas or feedback?\" button at the top of the game goes straight to the person who makes it.\n\nFounding Clerk: everyone who joins during the beta keeps the title for good.\n\nSmudge\nhttps://oversummoned.com",
+    html: frame({
+      pre: 'No queue. Your way in is the big gold button.', title: "You're in.",
+      lines: [
+        'No queue, no waiting list, no velvet rope. Smudge stamped your name into the ledger and the door swung open. He is as surprised as you are.',
+        'Make your account with this email address (<b>' + esc(to) + '</b>). It is the one on the list, so it opens the door. Then summon your first hero. Fair warning: the ledger has opinions about who turns up.'],
+      button: ['Open the ledger', SITE + '/login'],
+      note: ['Early beta, early bugs', 'Things will break, and you will be one of the first to find out how. The <b>Ideas or feedback?</b> button at the top of the game goes straight to the person who makes it. Everyone who joins now keeps the Founding Clerk title for good.'],
+      small: "Wasn't you? Ignore this. Nothing happens unless someone makes an account with this address.",
+    }),
+  };
+}
+
 export function inviteMail(to: string): Letter {
   return {
     subject: 'Your seat in OverSummoned is open',
@@ -67,9 +84,9 @@ export function inviteMail(to: string): Letter {
 
 export function ownerMail(email: string): Letter {
   return {
-    subject: 'Wishlist: ' + email,
-    text: email + ' joined the OverSummoned wishlist.\n\nInvite them from https://oversummoned.com/admin (Beta tab).',
-    html: frame({ pre: 'A new name in the ledger.', title: 'New wishlist signup', lines: ['<b>' + esc(email) + '</b> joined the wishlist.'], button: ['Open the Beta tab', SITE + '/admin'] }),
+    subject: 'New beta player: ' + email,
+    text: email + ' signed up for instant beta access and was let straight in.\n\nSee them in https://oversummoned.com/admin (Beta tab).',
+    html: frame({ pre: 'A new name in the ledger.', title: 'New beta player', lines: ['<b>' + esc(email) + '</b> signed up for instant beta access and was let straight in. They have their key by email.'], button: ['Open the Beta tab', SITE + '/admin'] }),
   };
 }
 

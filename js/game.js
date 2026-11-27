@@ -274,7 +274,7 @@
   $('go-account').onclick = () => show('account');
   // beta: a note straight to the owner
   $('go-feedback').onclick = () => { const d = el('div', '');
-    d.innerHTML = `<div class="tag">Closed beta</div><h3 style="font-size:1.5rem;margin:.2rem 0 .4rem">Got an idea, or found something broken?</h3><p class="mut">It goes straight to the person who makes the game. Be as blunt as you like.</p>
+    d.innerHTML = `<div class="tag">Early beta</div><h3 style="font-size:1.5rem;margin:.2rem 0 .4rem">Got an idea, or found something broken?</h3><p class="mut">It goes straight to the person who makes the game. Be as blunt as you like.</p>
       <div class="seg" style="grid-template-columns:repeat(3,1fr);margin-top:.8rem"><button class="on" data-k="idea">An idea</button><button data-k="bug">Something broke</button><button data-k="other">Something else</button></div>
       <textarea id="fb-body" rows="6" maxlength="2000" placeholder="What happened, or what would you add?" style="width:100%;font:inherit;color:#fff;background:#0b1020;border:2px solid var(--line);border-radius:12px;padding:.7em .8em"></textarea><p class="ferr" id="fb-err" role="alert"></p>`;
     let kind = 'idea'; d.querySelectorAll('.seg button').forEach(b => b.onclick = () => { kind = b.dataset.k; d.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === b)); });
@@ -1033,5 +1033,23 @@
   addEventListener('visibilitychange', () => { if (document.hidden) save(true); else sync().then(() => { const gone = (now() - S.last) / 1000; if (gone > 5) advance(Math.min(gone, R.crew.offline_hours * 3600), true); lastT = performance.now(); render(); }); });
   addEventListener('pagehide', () => save(true));
   Cloud.track(); $('boot').remove(); show('home', { silent: true }); if (START && START !== 'home' && VIEWS.includes(START)) show(START); requestAnimationFrame(frame);
+  // ---- the first time a ledger is opened (a new player, or one the owner has reset): a welcome, once
+  function welcome() {
+    if (S.welcomed) return;
+    if ($('modal').classList.contains('on')) return setTimeout(welcome, 1500);   // let an "while you were away" sheet go first
+    const name = me.profile && me.profile.username ? ', ' + me.profile.username : '';
+    const d = el('div', 'welcome');
+    d.innerHTML = `<div class="tag">Early beta</div><h3 style="font-size:1.6rem;margin:.25rem 0 .6rem">Welcome to the ledger${name}!</h3>
+      <p>Thank you for trying OverSummoned. Truly. You are one of the very first people through the door, and Smudge has been practising his welcome all week. He dropped the ledger twice and summoned a goose.</p>
+      <p><b>Fair warning: this is a beta.</b> Things will break. Heroes may arrive in the wrong century, buttons may sulk, and numbers may do things numbers should not do. That is not you. That is us, and we would love to hear about it.</p>
+      <p>See the <b>Ideas or feedback?</b> button at the top? It goes straight to the one person who makes this game. Bugs, ideas, complaints, compliments, a picture of your cat described in words: all of it is welcome.</p>
+      ${OS.founder ? '<div class="note"><b>You are a Founding Clerk.</b> Everyone who joins during the beta keeps the title, and the FC seal on their cards, for good.</div>' : ''}`;
+    const row = el('div', 'row'); row.style.cssText = 'justify-content:center;flex-wrap:wrap;margin-top:1rem';
+    const close = () => modal.close();
+    row.appendChild(btn('', "Let's summon something", () => { close(); show('summon'); }));
+    row.appendChild(btn('ghost', 'Show me that button', () => { close(); const f = $('go-feedback'); f.classList.add('pulse'); setTimeout(() => f.classList.remove('pulse'), 4200); }));
+    d.appendChild(row); S.welcomed = Date.now(); save(true); modal.open(d);   // seen once it opens, however it is closed
+  }
+  setTimeout(welcome, 900);
   window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render, frameSheet, inkTrade, raidSheet };   // for testing
 })();

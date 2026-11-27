@@ -1,5 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
-import { MAIL_FROM, NOTIFY_TO, sendMail, wishlistMail, inviteMail } from './mail.ts';
+import { MAIL_FROM, NOTIFY_TO, sendMail, accessMail, inviteMail } from './mail.ts';
 
 const ALLOWED = new Set([
   'https://oversummoned.com',
@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
     const { data: me } = await asUser.auth.getUser(auth.slice(7));
     const to = me?.user?.email;
     if (!to) return J({ ok: false, msg: 'No email on this account.' }, 400);
-    const sent = await Promise.all([sendMail(to, wishlistMail()), sendMail(to, inviteMail(to))]);
+    const sent = await Promise.all([sendMail(to, accessMail(to)), sendMail(to, inviteMail(to))]);
     return J({ ok: sent.every(Boolean), to, msg: sent.every(Boolean) ? '' : 'The email did not send. Check the Resend key and that the sending domain is verified.' });
   }
 

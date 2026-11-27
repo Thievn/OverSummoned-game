@@ -14,7 +14,7 @@ FAQ=[
 ("What is OverSummoned?",
  "OverSummoned is a free desktop pet and idle game. Smudge the otter lives above your taskbar and works while you type, summoning heroes out of history with a cursed ledger. The same heroes can be put to work in your browser."),
 ("Can I play it now?",
- "Not openly yet. OverSummoned is in closed beta. Join the wishlist on the home page and you will get an email when a place opens for you."),
+ "Not openly yet. OverSummoned is in closed beta. Get beta access on the home page and you will get an email when a place opens for you."),
 ("How does the desktop pet work?",
  "Smudge reacts to your typing. Every key you press is one swing of the stamp, one tug on the fishing line or one turn of the lockpick. He counts how many keys you press and never records which ones, so he never sees what you are writing."),
 ("Is OverSummoned free?",
@@ -30,7 +30,7 @@ FAQ=[
 ("Can I change how Smudge talks?",
  "Yes. Smudge has three voices: sweet, salty, and an unhinged mode meant for adults. You can change it whenever he gets to be too much."),
 ("Is OverSummoned on Steam?",
- "The desktop pet is coming to Steam. The browser game is in closed beta; join the wishlist at oversummoned.com for an invite."),
+ "The desktop pet is coming to Steam. The browser game is in early beta and open now: drop your email at oversummoned.com for instant access."),
 ]
 
 ORG={"@type":"Organization","@id":SITE+"/#org","name":"OverSummoned","url":SITE+"/",

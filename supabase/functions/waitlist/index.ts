@@ -1,5 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
-import { NOTIFY_TO, sendMail, wishlistMail, ownerMail } from './mail.ts';
+import { NOTIFY_TO, sendMail, accessMail, ownerMail } from './mail.ts';
 
 const ALLOWED = new Set([
   'https://oversummoned.com',
@@ -48,11 +48,14 @@ Deno.serve(async (req) => {
   if (error) return J({ ok: false, msg: "The Den coughed and didn't catch it. Try again in a minute." }, 500);
   if (data && data.code === 'slow_down') return J({ ok: false, msg: 'Easy there. Try again in a few minutes.' }, 429);
   if (data && data.code === 'bad_email') return J({ ok: false, msg: "That's not an email. That's a cry for help." }, 400);
-  if (data && data.dupe) return J({ ok: true, dupe: true });
+  // instant access (27 Nov 2026): every address that signs up is let straight in, the way an invite lets it in
+  const { error: inErr } = await sb.rpc('os2_beta_instant', { p_email: email });
+  if (inErr) return J({ ok: false, msg: "The Den coughed and didn't catch it. Try again in a minute." }, 500);
+  if (data && data.dupe) return J({ ok: true, dupe: true, open: true });
 
-  // first time on the list: a letter to them, and a note to the owner
-  const [welcome] = await Promise.allSettled([sendMail(email, wishlistMail()), sendMail(NOTIFY_TO, ownerMail(email))]);
+  // first time: the key to them, and a note to the owner
+  const [welcome] = await Promise.allSettled([sendMail(email, accessMail(email)), sendMail(NOTIFY_TO, ownerMail(email))]);
   const mailed = welcome.status === 'fulfilled' && welcome.value === true;
   if (mailed) await sb.from('den_waitlist').update({ mailed_at: new Date().toISOString() }).eq('email', email);
-  return J({ ok: true, mailed });
+  return J({ ok: true, mailed, open: true });
 });
