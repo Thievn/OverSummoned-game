@@ -444,3 +444,6 @@ Header art is `assets/mail/header.png`. Sending is Resend from hello@oversummone
 - `give(id, n)` now returns false and says so (once every 20s) when the bag is full AND the item is junk AND it would open a new stack. Everything else always comes home. The server still decides what drops; dropping junk client-side only means the player does not keep it, which the save check tolerates because it is less, not more.
 - Meter and the buy button are drawn in renderBag into `#b-room` (`.bagroom` in css/os.css): green, amber over 85%, red when full. Save field `S.bagBuys`.
 - LEFT FOR THE SHOP: once the paid side exists, room past max_buys is the obvious first convenience item. Do not sell anything that touches power.
+
+### 26 Nov, late: the big plan for heroes, Duels and the city (Fable)
+Full plan in `PLAN-CITY-DUELS.md`. Steps O8 to O16 and F7 to F9. Nothing built. Dean has six decisions to make at the bottom of that file before O8 starts.
