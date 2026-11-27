@@ -1,9 +1,61 @@
 [
- {"v": "0.5.0", "build": "1127d", "date": "2026-11-26", "title": "Alerts, pictures and a tidy-up",
-  "added": ["A bell up top for friend requests and gifts", "Pick your profile picture from any hero you have met", "Update notes, which you are reading", "Update emails, if you tick the box in your account"],
-  "fixed": ["Friend requests no longer turn up unannounced", "The account picture is bigger and no longer squashed", "Changes made on another device now show up when you come back", "Card frames, the ink shop and the raid patch-up have proper names"],
-  "known": ["Alerts only reach you while the game is open", "A few heroes still talk without moving their mouths"]},
- {"v": "0.4.0", "build": "1126", "date": "2026-11-26", "title": "Loot and gold",
-  "added": ["Card frames, bought with gold", "Buy ink with gold, a few pots a day", "Pay gold to get resting heroes back on their feet"],
-  "fixed": ["Era sets are three pieces everywhere", "Gear for the newest heroes now drops"]}
+ {
+  "v": "0.5.1",
+  "build": "1127e",
+  "date": "2026-11-27",
+  "title": "Raids, and your name in lights",
+  "added": [
+   "The raid sheet rebuilt: the boss, what it is weak to, and what you win, all in one place",
+   "Every card in a picker now shows its stats, with green for what this boss hates",
+   "Titles and name colours, earned and worn under your name wherever other players see it",
+   "Smudge gives advice when a raid goes badly"
+  ],
+  "fixed": [
+   "The pick you made is obvious now: a gold ring and a number",
+   "The close button no longer hides behind the artwork",
+   "Scrollbars match the rest of the game",
+   "Your three are called by name during a fight",
+   "The FC mark is off the cards; Founding Clerk is a title now"
+  ],
+  "known": [
+   "Alerts only reach you while the game is open"
+  ]
+ },
+ {
+  "v": "0.5.0",
+  "build": "1127d",
+  "date": "2026-11-26",
+  "title": "Alerts, pictures and a tidy-up",
+  "added": [
+   "A bell up top for friend requests and gifts",
+   "Pick your profile picture from any hero you have met",
+   "Update notes, which you are reading",
+   "Update emails, if you tick the box in your account"
+  ],
+  "fixed": [
+   "Friend requests no longer turn up unannounced",
+   "The account picture is bigger and no longer squashed",
+   "Changes made on another device now show up when you come back",
+   "Card frames, the ink shop and the raid patch-up have proper names"
+  ],
+  "known": [
+   "Alerts only reach you while the game is open",
+   "A few heroes still talk without moving their mouths"
+  ]
+ },
+ {
+  "v": "0.4.0",
+  "build": "1126",
+  "date": "2026-11-26",
+  "title": "Loot and gold",
+  "added": [
+   "Card frames, bought with gold",
+   "Buy ink with gold, a few pots a day",
+   "Pay gold to get resting heroes back on their feet"
+  ],
+  "fixed": [
+   "Era sets are three pieces everywhere",
+   "Gear for the newest heroes now drops"
+  ]
+ }
 ]

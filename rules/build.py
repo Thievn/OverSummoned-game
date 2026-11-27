@@ -64,6 +64,16 @@ C = dict(
           "patch_per_minute": 12},
     # O6 card frames: bought with gold, one hero at a time, for show only. Owning a frame unlocks the frames below it.
     # A frame needs that hero's card at a level first, so the best frames say how long you have kept someone.
+    # Titles and name colours, worn next to your name wherever other players see it. Cosmetic only.
+    # 'founder' is the closed-beta title and the server refuses it to anyone whose ledger was opened later.
+    # Each title carries a flair (the name's colour), and owning the title unlocks that colour on its own.
+    titles=[{"id": "founder", "name": "Founding Clerk", "how": "Opened a ledger during the closed beta", "flair": "gold"},
+            {"id": "collector", "name": "Cabinet Keeper", "how": "Put 20 treasures on display", "flair": "teal"},
+            {"id": "summoner", "name": "Ink-Stained", "how": "Summon 250 times", "flair": "violet"},
+            {"id": "slayer", "name": "Monster Botherer", "how": "Beat every boss at least once", "flair": "ember"},
+            {"id": "rich", "name": "Suspiciously Wealthy", "how": "Earn 1,000,000 gold in total", "flair": "rose"},
+            {"id": "digger", "name": "Elbow Deep", "how": "Bring in 50,000 hauls", "flair": "teal"},
+            {"id": "complete", "name": "The Whole Ledger", "how": "Meet every arrival", "flair": "foil"}],
     frames=[{"id": "bronze", "name": "Scuffed Bronze", "gold": 500, "level": 1},
             {"id": "silver", "name": "Sunday Silver", "gold": 2000, "level": 3},
             {"id": "gilt", "name": "Proper Gold", "gold": 6000, "level": 5},

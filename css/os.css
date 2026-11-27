@@ -221,7 +221,8 @@ body.game{padding-bottom:84px;background:radial-gradient(90% 60% at 50% 0,#121b3
 .modal{position:fixed;inset:0;z-index:100;background:rgba(4,6,14,.82);display:none;place-items:center;padding:1rem;overflow:auto}
 .modal.on{display:grid;animation:vin .25s}
 .sheet{background:var(--panel);border:2px solid var(--line);border-radius:20px;padding:1.2rem;width:min(760px,96vw);max-height:92vh;overflow:auto;position:relative}
-.sheet .x{position:absolute;right:.7rem;top:.6rem;background:var(--gold);border:2px solid #0b1020;border-radius:10px;font:400 1rem "Lilita One";width:34px;height:34px;cursor:pointer}
+.sheet .xwrap{position:sticky;top:0;height:0;z-index:30;text-align:right;pointer-events:none}
+.sheet .x{position:relative;pointer-events:auto;box-shadow:0 2px 12px rgba(5,8,20,.9);background:var(--gold);border:2px solid #0b1020;border-radius:10px;font:400 1rem "Lilita One";width:34px;height:34px;cursor:pointer}
 .herosheet{display:grid;grid-template-columns:250px 1fr;gap:1.2rem}
 @media(max-width:700px){.herosheet{grid-template-columns:1fr;justify-items:center}}
 .statline{display:grid;grid-template-columns:70px 1fr 40px;gap:.5rem;align-items:center;font-weight:800;font-size:.9rem;margin:.25rem 0}
@@ -340,7 +341,7 @@ small.ok{color:#3ecf6b}small.bad,.ferr{color:#ff7a70}.ferr{font-weight:800;font-
 .jscene .who{position:absolute;left:50%;bottom:8%;height:62%;transform:translateX(-50%);filter:drop-shadow(0 4px 6px rgba(0,0,0,.6));transform-origin:50% 100%}.who.hop{animation:hop .5s}@keyframes hop{30%{transform:translateX(-50%) translateY(-10px) rotate(-4deg)}60%{transform:translateX(-50%) rotate(3deg)}}
 .jpop{position:absolute;inset:0;pointer-events:none}.drop{position:absolute;left:62%;top:42%;display:flex;align-items:center;gap:.3rem;font:400 .95rem "Lilita One";text-shadow:0 0 4px #000,0 2px 0 #000;animation:dropup 1.9s forwards;white-space:nowrap}.drop img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 3px 4px #000)}
 @keyframes dropup{from{opacity:0;transform:translateY(20px) scale(.4)}15%{opacity:1;transform:translateY(0) scale(1.1)}70%{opacity:1}to{opacity:0;transform:translateY(-36px) scale(.8)}}
-.heroes.pick .card{cursor:pointer}.card.sel .face{outline:4px solid var(--teal);outline-offset:3px}.card.busy{opacity:.35;cursor:not-allowed}
+.heroes.pick .card{cursor:pointer}.card.busy{opacity:.35;cursor:not-allowed}
 .card.rising{animation:rise2 1.6s cubic-bezier(.2,1.2,.4,1) both}@keyframes rise2{from{transform:translateY(60%) scale(.6) rotateY(540deg);opacity:0}45%{opacity:1}to{transform:scale(1) rotateY(0deg)}}
 .card.rising{will-change:transform;backface-visibility:hidden}
 .slot.pulse{animation:pulse 1.2s infinite}@keyframes pulse{50%{box-shadow:0 0 16px var(--teal)}}
@@ -663,15 +664,6 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 @keyframes geoin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .xbtn{font:800 1rem/1 Nunito;color:var(--mut);background:transparent;border:2px solid var(--line);border-radius:8px;width:1.9rem;height:1.9rem;cursor:pointer;vertical-align:middle}
 .xbtn:hover{color:#fff;border-color:var(--ember);background:rgba(255,140,74,.15)}
-/* ---- the Founding Clerk mark: only for ledgers opened during the closed beta ---- */
-.card.founder .face::after{content:"";position:absolute;inset:6px;border-radius:13px;pointer-events:none;z-index:4;
-  box-shadow:inset 0 0 0 1px rgba(255,241,184,.85),inset 0 0 14px rgba(242,185,53,.35)}
-.card.mini.founder .face::after{inset:4px;border-radius:9px}
-.card.founder .front .seal{position:absolute;right:8px;top:23%;z-index:5;width:22px;height:22px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#ffe9a8,#f2b935 45%,#9c6a10);border:2px solid rgba(5,8,20,.8);
-  display:grid;place-items:center;font:400 .62rem "Lilita One";color:#4a3520;text-shadow:0 1px 0 rgba(255,255,255,.4)}
-.card.mini.founder .front .seal{width:16px;height:16px;font-size:.5rem;right:6px;top:24%}
-.founder-note{display:inline-flex;align-items:center;gap:.4rem;font:800 .72rem Nunito;letter-spacing:.08em;text-transform:uppercase;color:#f3b930}
 /* speech bubble (js/stage.js): white, inked, with a tail that points at whoever is talking */
 .osb{position:absolute;z-index:8;max-width:min(230px,46%);background:#fff;color:#1e2a47;border:2.5px solid #1e2a47;border-radius:14px;padding:.34em .7em;font:700 .8rem/1.25 Nunito,sans-serif;box-shadow:0 3px 0 rgba(8,12,26,.45);opacity:0;transform:translateY(6px) scale(.8);transform-origin:var(--tx,50%) 100%;transition:opacity .16s,transform .2s cubic-bezier(.3,1.6,.5,1);pointer-events:none;text-align:left}
 .osb.on{opacity:1;transform:none}
@@ -828,3 +820,96 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .notes b{display:block;margin:.6rem 0 .15rem;color:var(--teal);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}.notes ul{margin:0;padding-left:1.1rem;color:#dfe6f8;line-height:1.5}
 @media(max-width:600px){.avatar{width:40px;height:40px}.bell{width:34px;height:34px}.gbar .res{gap:.4rem}.gbar .res img{width:18px;height:18px}.gbar .res{font-size:.85rem}}
 @media(prefers-reduced-motion:reduce){.bell.ring svg{animation:none}}
+
+/* ---------------------------------------------------------------- scrollbars, in the ledger's colours */
+*{scrollbar-width:thin;scrollbar-color:#2f3d6e transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:rgba(8,12,26,.5);border-radius:99px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#39488026,#2f3d6e 20%,#243159);border:2px solid transparent;background-clip:padding-box;border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#f2b935,#c98f14);background-clip:padding-box}
+::-webkit-scrollbar-corner{background:transparent}
+.sheet::-webkit-scrollbar{width:12px}
+.sheet{scrollbar-color:#3a4a85 transparent}
+
+/* ---------------------------------------------------------------- picking a team: stats on the card, and a pick you cannot miss */
+.card.mini.showstats{width:154px}
+.card.mini.showstats .tcg .win{top:17.5%;bottom:30.5%}
+.card.mini.showstats .tcg .nums{display:grid;bottom:12.6%;height:14.2%;gap:1.4cqw}
+.card.mini.showstats .tcg .foot{display:flex;bottom:3.4%;height:8.4%}
+.card.mini.showstats .tcg .nums div.good{background:linear-gradient(180deg,#d7f7e0,#9fe2b8);box-shadow:inset 0 0 0 1.5px #0b1020,0 0 0 1.5px #2c7a49}
+.card.mini.showstats .tcg .nums div.bad{background:linear-gradient(180deg,#ffd9d2,#f0a89a);box-shadow:inset 0 0 0 1.5px #0b1020,0 0 0 1.5px #8a2f22}
+.card.mini.showstats .tcg .nums div.good span{color:#1d6038}.card.mini.showstats .tcg .nums div.bad span{color:#7a2c1e}
+.heroes.pick{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+.heroes.pick .card{cursor:pointer;transition:transform .14s ease;position:relative}
+.heroes.pick .card:hover{transform:translateY(-3px)}
+.card.sel{transform:translateY(-5px)!important}
+.card.sel .face{outline:3px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 7px rgba(242,185,53,.22),0 0 26px rgba(242,185,53,.45),0 12px 24px rgba(0,0,0,.6)!important}
+.pickn{position:absolute;left:-7px;top:-9px;z-index:8;min-width:26px;height:26px;border-radius:99px;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#ffe9a8,#f2b935 55%,#b9861a);color:#17224a;font:400 .95rem/1 "Lilita One",sans-serif;
+  border:2.5px solid #0b1020;box-shadow:0 3px 8px rgba(0,0,0,.5)}
+.heroes.pick.full .card:not(.sel):not(.resting){opacity:.52;filter:saturate(.65)}
+.heroes.pick.full .card:not(.sel):not(.resting):hover{opacity:.85;filter:none}
+
+/* ---------------------------------------------------------------- the raid sheet */
+.modal .sheet.wide{width:min(1060px,96vw)}
+.raidset.two{display:grid;grid-template-columns:minmax(260px,350px) 1fr;gap:1.1rem;align-items:start}
+.raidset.two .rleft{position:sticky;top:0}
+.raidset.two .rbar{grid-column:1/-1}
+.raidhead .beat{display:inline-block;margin-top:.35rem;font:800 .7rem Nunito;letter-spacing:.08em;text-transform:uppercase;color:#17224a;background:var(--gold);border-radius:99px;padding:.18em .6em}
+.raidhead .beat.new{background:#2a3560;color:#cfd8f5}
+.btiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin:.1rem 0 .7rem}
+.btile{background:linear-gradient(180deg,#141d3d,#0d1430);border:2px solid var(--line);border-radius:12px;padding:.5rem .2rem;text-align:center}
+.btile b{display:block;font:400 1.35rem/1 "Lilita One",sans-serif;color:#fff}
+.btile span{font:800 .62rem Nunito;letter-spacing:.09em;text-transform:uppercase;color:var(--mut)}
+.btile.life b{color:#ff8c7a}.btile.atk b{color:#ffcd6b}.btile.def b{color:#8fd3ff}
+.rnote{display:flex;gap:.5rem;align-items:flex-start;font-size:.86rem;line-height:1.45;margin:0 0 .5rem;color:#cfd8f5}
+.rnote i{flex:none;width:1.45rem;height:1.45rem;border-radius:50%;display:grid;place-items:center;font:800 .78rem Nunito;font-style:normal;background:#2a3560;color:#cfd8f5}
+.rnote.good i{background:rgba(111,227,148,.18);color:#6fe394;box-shadow:inset 0 0 0 1.5px #2c7a49}
+.rnote.bad i{background:rgba(255,140,122,.16);color:#ff8c7a;box-shadow:inset 0 0 0 1.5px #7a2c2c}
+.spoils{background:#0b1020;border:2px solid var(--line);border-radius:14px;padding:.6rem .75rem;margin:.2rem 0 .3rem}
+.spoils .tag{margin-bottom:.35rem}
+.spoils ul{margin:0;padding-left:1.05rem;color:#dfe6f8;font-size:.87rem;line-height:1.55}
+.spoils b{color:var(--gold)}
+.pickhint{margin:.1rem 0 .6rem;font-size:.86rem;color:var(--mut)}
+.rbar{position:sticky;bottom:-1.25rem;z-index:12;margin:.9rem -1.2rem -1.2rem;padding:.75rem 1.2rem calc(.9rem + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(16,25,54,.85),var(--panel) 45%);border-top:2px solid var(--line);
+  display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;backdrop-filter:blur(6px)}
+.rbar .raidodds{margin:0;flex:1;min-width:200px}
+.rbar .btn{flex:none}
+.odds{display:flex;align-items:baseline;gap:.45rem;margin:0 0 .2rem;font-weight:700}
+.odds b{font:400 1.7rem/1 "Lilita One",sans-serif;color:var(--gold)}
+.odds b.thin{color:#ff8c7a}.odds b.fair{color:#ffcd6b}.odds b.good{color:#6fe394}
+.oddbar{height:7px;border-radius:99px;background:#0b1020;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;margin:.15rem 0 .35rem}
+.oddbar i{display:block;height:100%;border-radius:99px;background:#ffcd6b;transition:width .25s ease}
+.oddbar i.thin{background:linear-gradient(90deg,#8a2f22,#ff8c7a)}.oddbar i.fair{background:linear-gradient(90deg,#b9861a,#ffcd6b)}.oddbar i.good{background:linear-gradient(90deg,#2c7a49,#6fe394)}
+.tstats{display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.82rem;color:var(--mut)}
+.tstats b{color:#fff}.tstats b.good{color:#6fe394}.tstats b.bad{color:#ff8c7a}
+@media(max-width:860px){.raidset.two{grid-template-columns:1fr}.raidset.two .rleft{position:static}
+  .rbar{margin:.8rem -1.2rem -1.2rem;flex-direction:column;align-items:stretch}.rbar .btn{width:100%}}
+@media(max-width:600px){.card.mini.showstats{width:132px}.heroes.pick{gap:.55rem}
+  .rbar{padding-top:.6rem}.odds b{font:400 1.4rem/1 "Lilita One",sans-serif}.odds span{font-size:.84rem}.tstats{font-size:.78rem;gap:.1rem .55rem}}
+
+/* ---------------------------------------------------------------- names other players see: a title and a colour */
+.pname{display:inline-flex;flex-direction:column;gap:1px;vertical-align:middle;min-width:0}
+.pname .who2,.pname>b{align-self:flex-start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pname.f .who2,.pname.f>b{text-decoration:none;padding:.08em .5em;border-radius:999px;border:2px solid var(--fc,#2a3560);background:color-mix(in srgb,var(--fc,#2a3560) 16%,transparent);color:var(--fc,#cfd8f5)}
+.pname .ttl{font:800 .66rem Nunito;letter-spacing:.07em;text-transform:uppercase;color:var(--fc,#9aa6c4);opacity:.95;padding-left:.15em}
+.f-gold{--fc:#f2b935}.f-teal{--fc:#3fe0c5}.f-violet{--fc:#c08cff}.f-ember{--fc:#ff9a5a}.f-rose{--fc:#ff8fb6}
+.pname.f-foil .who2,.pname.f-foil>b{border-color:#fff;color:#fff;background:linear-gradient(100deg,rgba(242,185,53,.3),rgba(63,224,197,.3) 35%,rgba(192,140,255,.3) 65%,rgba(242,185,53,.3));background-size:220% 100%;animation:foilrun 6s linear infinite}
+.pname.f-foil .ttl{background:linear-gradient(100deg,#f2b935,#3fe0c5 35%,#c08cff 65%,#f2b935);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:foilrun 6s linear infinite}
+@keyframes foilrun{to{background-position:220% 0}}
+@media(prefers-reduced-motion:reduce){.pname.f-foil .who2,.pname.f-foil .ttl{animation:none}}
+.brow .pname,.frow .pname{min-width:0}
+.lookgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:.3rem 0 .2rem}
+.lookpick{text-align:left;background:#0b1020;border:2px solid var(--line);border-radius:12px;padding:.5rem .6rem;color:#dfe6f8;cursor:pointer;font:600 .82rem Nunito}
+.lookpick b{display:block;font:800 .9rem Nunito;color:var(--fc,#fff)}
+.lookpick.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,185,53,.2)}
+.lookpick.lockd{cursor:not-allowed;background:#0a0e1d;border-color:#1b2440}
+.lookpick.lockd b{color:#7f89ab}.lookpick.lockd{color:#6b7398}
+.lookpick .lk{font-style:normal;font-size:.72rem;margin-right:.3rem;opacity:.75}
+.lookprev{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;background:#0b1020;border:2px dashed var(--line);border-radius:14px;padding:.7rem .85rem;margin:0 0 .9rem}
+.lookprev .tag{margin:0}
+.flairrow{display:flex;flex-wrap:wrap;gap:.45rem;margin:.3rem 0}
+.flairdot{width:34px;height:34px;border-radius:50%;border:3px solid var(--fc,#2a3560);background:color-mix(in srgb,var(--fc,#2a3560) 30%,#0b1020);cursor:pointer}
+.flairdot.on{box-shadow:0 0 0 3px rgba(242,185,53,.35)}.flairdot.lockd{opacity:.35;cursor:not-allowed}
+.flairdot.f-foil{border-color:#fff;background:linear-gradient(100deg,#f2b935,#3fe0c5 50%,#c08cff)}

@@ -9,7 +9,7 @@ window.Cloud = (function () {
   C.sb = sb;
   C.session = async () => DEV ? { user: { id: 'dev', email: 'dev@local' } } : (await sb.auth.getSession()).data.session;
   C.whoami = async function () {
-    if (DEV) return C.me = { allowed: true, admin: true, email: 'dev@local', profile: { username: 'DevOtter', voice: 'salty', avatar: null, email_updates: false }, providers: ['email'] };
+    if (DEV) return C.me = { allowed: true, admin: true, email: 'dev@local', profile: { username: 'DevOtter', voice: 'salty', avatar: null, email_updates: false, founder: true, title: null, flair: null }, providers: ['email'] };
     const { data, error } = await sb.rpc('os2_me'); if (error) throw error; return C.me = data;
   };
   // Sends anyone without a usable account to the login page. Resolves with the account otherwise.
@@ -36,9 +36,9 @@ window.Cloud = (function () {
     const { data, error } = await sb.rpc('os2_save_put', { p_data: S, p_rev: C.rev }); if (error || !data) return null; if (data.rev != null) C.rev = +data.rev; return data;
   };
   C.log = (kind, ref, qty) => { if (!DEV && C.user) sb.from('os2_event').insert({ uid: C.user.id, kind, ref: ref || null, qty: qty || 1 }).then(() => { }); };
-  C.board = async () => DEV ? [{ username: 'DevOtter', total_level: 12, heroes: 3, summons: 4 }] : ((await sb.rpc('os2_board')).data || []);
+  C.board = async () => DEV ? [{ username: 'Pemberton', title: 'founder', flair: 'gold', total_level: 212, heroes: 9, summons: 90 }, { username: 'DevOtter', title: 'summoner', flair: 'violet', total_level: 12, heroes: 3, summons: 4 }, { username: 'InkyMavis', title: 'complete', flair: 'foil', total_level: 77, heroes: 4, summons: 30 }] : ((await sb.rpc('os2_board')).data || []);
   // ---- the city: friends, mail, guilds, market, boards per skill. In local testing a small pretend city stands in for the server.
-  const fake = { friends: [{ username: 'Pemberton', status: 'ok', mine: true, total_level: 212, heroes: 9 }, { username: 'InkyMavis', status: 'pending', mine: false, total_level: 77, heroes: 4 }],
+  const fake = { friends: [{ username: 'Pemberton', status: 'ok', mine: true, total_level: 212, heroes: 9, title: 'founder', flair: 'gold' }, { username: 'InkyMavis', status: 'pending', mine: false, total_level: 77, heroes: 4, title: 'complete', flair: 'foil' }],
     mail: [{ id: 1, from: 'Pemberton', kind: 'gift', payload: { item: 'x_shard', qty: 2 } }, { id: 2, from: 'InkyMavis', kind: 'sale', payload: { item: 'd_dock_1', qty: 1, gold: 95 } }], guild: null,
     guilds: [{ name: 'The Damp Hoods', members: 7, hauls: 5120 }, { name: 'Ledger Lads', members: 3, hauls: 880 }], open: [{ id: 11, seller: 'Pemberton', item: 'x_shard', qty: 1, price: 120 }, { id: 12, seller: 'InkyMavis', item: 'x_crate', qty: 1, price: 300 }], mine: [], n: 20 };
   const rpc = async (fn, args, dev) => { if (DEV) return dev ? dev() : null; const { data, error } = await sb.rpc(fn, args || {}); if (error) throw error; if (data && typeof data === 'object' && data.rev != null) C.rev = +data.rev; return data; };

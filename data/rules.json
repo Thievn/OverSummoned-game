@@ -251,6 +251,50 @@
   },
   "patch_per_minute": 12
  },
+ "titles": [
+  {
+   "id": "founder",
+   "name": "Founding Clerk",
+   "how": "Opened a ledger during the closed beta",
+   "flair": "gold"
+  },
+  {
+   "id": "collector",
+   "name": "Cabinet Keeper",
+   "how": "Put 20 treasures on display",
+   "flair": "teal"
+  },
+  {
+   "id": "summoner",
+   "name": "Ink-Stained",
+   "how": "Summon 250 times",
+   "flair": "violet"
+  },
+  {
+   "id": "slayer",
+   "name": "Monster Botherer",
+   "how": "Beat every boss at least once",
+   "flair": "ember"
+  },
+  {
+   "id": "rich",
+   "name": "Suspiciously Wealthy",
+   "how": "Earn 1,000,000 gold in total",
+   "flair": "rose"
+  },
+  {
+   "id": "digger",
+   "name": "Elbow Deep",
+   "how": "Bring in 50,000 hauls",
+   "flair": "teal"
+  },
+  {
+   "id": "complete",
+   "name": "The Whole Ledger",
+   "how": "Meet every arrival",
+   "flair": "foil"
+  }
+ ],
  "frames": [
   {
    "id": "bronze",

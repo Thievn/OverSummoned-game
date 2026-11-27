@@ -172,7 +172,8 @@
   function toast(msg) { if (toasts.length < 6) toasts.push(msg); if (OS.Sound) OS.Sound.play('toast'); if (!toasting) nextToast(); }
   function nextToast() { const m = toasts.shift(); if (!m) { toasting = false; return; } toasting = true; const t = $('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => { t.classList.remove('on'); setTimeout(nextToast, 260); }, 2200); }
   // a sheet is a step in history too, so Back closes it
-  const modal = { open(node) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); if (!$('modal').classList.contains('on')) { $('modal').classList.add('on'); history.pushState({ v: (history.state && history.state.v) || 'home', sheet: 1 }, ''); } },
+  const sheetEl = () => document.querySelector('#modal .sheet');
+  const modal = { open(node, cls) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); sheetEl().className = 'sheet' + (cls ? ' ' + cls : ''); sheetEl().scrollTop = 0; if (!$('modal').classList.contains('on')) { $('modal').classList.add('on'); history.pushState({ v: (history.state && history.state.v) || 'home', sheet: 1 }, ''); } },
     close() { if (!$('modal').classList.contains('on')) return; $('modal').classList.remove('on'); if (history.state && history.state.sheet) { closing = true; history.back(); } } };
   $('modal-x').onclick = modal.close; $('modal').addEventListener('click', e => { if (e.target === $('modal')) modal.close(); });
   const line = ev => { const l = OS.voice[S.mode][ev] || OS.voice[S.mode].idle; return l[Math.floor(Math.random() * l.length)]; };
@@ -397,15 +398,17 @@
       ps.querySelectorAll('.prow').forEach(r => r.classList.toggle('here', r.dataset.id === j.place)); go.disabled = !j.place; }
     upd(); modal.open(d);
   }
-  function heroPick(title, sub, ok, onPick, extra) {
+  // Picking anyone, anywhere: the cards carry their real numbers, so the choice can be made from the card itself.
+  // `hi` marks a stat green or red when something about the job cares about it.
+  function heroPick(title, sub, ok, onPick, extra, hi) {
     const d = el('div', '', `<h3 style="font-size:1.5rem">${title}</h3><p class="mut">${sub}</p>`), hs = el('div', 'heroes pick');
-    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) }), why = ok(id); if (why) { c.classList.add('busy'); c.title = why; } c.onclick = () => { if (!why) onPick(id); else toast(why); }; hs.appendChild(c); });
+    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]), stats: heroStats(id), hi }), why = ok(id); if (why) { c.classList.add('busy'); c.title = why; } c.onclick = () => { if (!why) onPick(id); else toast(why); }; hs.appendChild(c); });
     d.appendChild(hs); if (extra) d.appendChild(extra); modal.open(d);
   }
   function crewSheet(i) {
     const cur = S.crew[i], row = el('div', 'row'); row.style.marginTop = '1rem'; if (cur) row.appendChild(btn('small ghost', 'Stand them down', () => { S.crew[i] = null; save(true); modal.close(); render(); }));
     heroPick('Who stands here?', 'Speed makes Smudge faster. Luck brings up better things. Their gear bonuses count, and they get better at each trade the longer they stand at it.',
-      id => away(id) ? 'Away on an expedition.' : S.crew.some((x, k) => x === id && k !== i) ? 'Already in the crew.' : '', id => { S.crew[i] = id; save(true); modal.close(); render(); }, row);
+      id => away(id) ? 'Away on an expedition.' : S.crew.some((x, k) => x === id && k !== i) ? 'Already in the crew.' : '', id => { S.crew[i] = id; save(true); modal.close(); render(); }, row, { speed: 'good', luck: 'good' });
   }
   // everything this one has done: expeditions and raids, newest first
   function journalSheet(id) {
@@ -423,7 +426,7 @@
     let hours = R.exped.hours[1]; const row = el('div', 'row'); row.style.cssText = 'margin-top:1rem;flex-wrap:wrap;gap:.5rem';
     R.exped.hours.forEach(h => { const b = btn('small' + (h === hours ? '' : ' ghost'), h + (h === 1 ? ' hour' : ' hours'), () => { hours = h; row.querySelectorAll('button').forEach(x => x.classList.toggle('ghost', x !== b)); }); row.appendChild(b); });
     heroPick('Send somebody through the rift', 'Each of them has a place the ledger keeps pulling them back to. They go there alone and return with treasure, junk and gear from it, and a story. Longer trips bring more. Luck helps.',
-      id => S.crew.includes(id) ? 'In the crew. Stand them down first.' : away(id) ? 'Already away.' : '', id => { const dur = hours * 3600; S.exped.push({ hero: id, end: now() + dur * 1000, dur }); save(true); modal.close(); render(); toast(`${OS.heroes[id].name} has gone to ${places[OS.heroes[id].place].name}.`); }, row);
+      id => S.crew.includes(id) ? 'In the crew. Stand them down first.' : away(id) ? 'Already away.' : '', id => { const dur = hours * 3600; S.exped.push({ hero: id, end: now() + dur * 1000, dur }); save(true); modal.close(); render(); toast(`${OS.heroes[id].name} has gone to ${places[OS.heroes[id].place].name}.`); }, row, { luck: 'good', speed: 'good' });
   }
   async function haul(e, frac) {
     const h = OS.heroes[e.hero], p = places[h.place], hrs = e.dur / 3600 * frac, st = heroStats(e.hero), luck = st.luck / R.jobs.luck_div + fx(e.hero, 'luck');
@@ -794,39 +797,78 @@
   function attackNeeded(b, t, hp) { for (let m = 1.1; m <= 6; m += .1) { const tt = Object.assign({}, t, { attack: Math.round(t.attack * m) }); if (odds(b, tt, hp, b.hp, 80) >= .5) return tt.attack; } return null; }
   const potionsHave = () => R.potions.filter(p => (S.bag[p.id] || 0) > 0);
 
+  // The raid sheet: the boss on the left, your three on the right, and the odds pinned to the bottom so they are
+  // always in sight. Each card shows the stats that decide the fight, with the boss's weak and strong stats marked.
   async function raidSheet(b) {
     await raidsReady; const B = bossOf(b), p = places[b.place], team = [], pots = [];
-    const d = el('div', 'raidset'), heroes = el('div', 'heroes pick'), info = el('div', 'raidodds', ''), potRow = el('div', 'potrow', '');
-    d.innerHTML = `<div class="raidhead" style="background-image:url(${OS.img('scenes', p.id)})"><div><div class="tag">${p.name} · ${p.era}</div><h3>${b.name}</h3></div></div>
+    const beat = S.raids[b.id] || 0, hi = {}; if (B.weak) hi[B.weak] = 'good'; if (B.resist) hi[B.resist] = 'bad';
+    const d = el('div', 'raidset two'), L = el('div', 'rleft'), Rt = el('div', 'rright'), bar = el('div', 'rbar');
+    const heroes = el('div', 'heroes pick'), info = el('div', 'raidodds', ''), potRow = el('div', 'potrow', '');
+    const tile = (k, lab, v) => `<div class="btile ${k}"><b>${v}</b><span>${lab}</span></div>`;
+    const up = Math.round((RD.weak_mult - 1) * 100), down = Math.round((1 - RD.resist_mult) * 100);
+    L.innerHTML = `<div class="raidhead" style="background-image:url(${OS.img('scenes', p.id)})"><div>
+        <div class="tag">${p.name} · ${p.era}</div><h3>${b.name}</h3>
+        <span class="beat${beat ? '' : ' new'}">${beat ? 'Beaten ' + beat + ' time' + (beat > 1 ? 's' : '') : 'Never beaten'}</span></div></div>
       <p class="raidintro">${B.intro || b.text}</p>
-      <div class="row raidtags">${B.weak ? `<span class="rtag good">Weak to ${STATW[B.weak]}</span>` : ''}${B.resist ? `<span class="rtag bad">Shrugs off ${STATW[B.resist]}</span>` : ''}<span class="rtag">Health ${OS.num(b.hp)} · Attack ${b.attack} · Defense ${b.defense}</span></div>
-      <h4>Pick three</h4>`;
-    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => { const rest = resting(id), c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]) });
-      if (rest) { c.classList.add('resting'); c.appendChild(el('span', 'restlbl', 'Resting ' + fmt(rest / 1000))); }
-      c.onclick = () => { if (resting(id)) return toast(`${OS.heroes[id].name} is still recovering from the last raid.`); const k = team.indexOf(id); if (k >= 0) team.splice(k, 1); else if (team.length < 3) team.push(id); c.classList.toggle('sel', team.includes(id)); upd(); }; heroes.appendChild(c); });
+      <div class="btiles">${tile('life', 'Health', OS.num(b.hp))}${tile('atk', 'Attack', b.attack)}${tile('def', 'Defense', b.defense)}</div>
+      ${B.weak ? `<p class="rnote good"><i>↑</i><span><b>Weak to ${STATW[B.weak]}.</b> Your team's ${STATW[B.weak].toLowerCase()} counts for ${up}% more here.</span></p>` : ''}
+      ${B.resist ? `<p class="rnote bad"><i>↓</i><span><b>Shrugs off ${STATW[B.resist]}.</b> Your team's ${STATW[B.resist].toLowerCase()} counts for ${down}% less here.</span></p>` : ''}
+      <p class="rnote"><i>⌛</i><span>${RD.rooms} rooms on the way in, then up to ${RD.rounds} rounds with ${b.name}. Losing sends everyone who went to bed for ${RD.recover_minutes} minutes.</span></p>
+      <div class="spoils"><div class="tag">If you win</div><ul>
+        <li><b>${OS.num(b.gold)} gold</b>, straight into your pocket</li>
+        <li><b>${RD.loot_rolls} rolls</b> on everything ${p.name} hides</li>
+        <li>Smudge writes the win in the ledger${beat ? ' again' : ' for the first time'}</li></ul></div>`;
+    Rt.innerHTML = `<h4 style="margin-top:0">Pick your three</h4><p class="pickhint">Everyone you send adds their stats to one pile. Green numbers hit this boss harder; red ones barely tickle it.</p>`;
+    const cards = {};
+    Object.keys(S.roster).sort((a, c) => power(c) - power(a)).forEach(id => {
+      const rest = resting(id), c = OS.card(OS.heroes[id], { mini: true, level: cardLevel(S.roster[id]), stats: heroStats(id), hi });
+      cards[id] = c;
+      if (rest) { c.classList.add('resting'); c.appendChild(el('span', 'restlbl', 'Back in ' + fmt(rest / 1000))); }
+      c.onclick = () => {
+        if (resting(id)) return toast(`${short(id)} is still sleeping off the last one.`);
+        const k = team.indexOf(id);
+        if (k >= 0) team.splice(k, 1);
+        else if (team.length < 3) team.push(id); else return toast('Three is the most Smudge can keep track of. Tap one to drop them.');
+        SND('click'); marks(); upd();
+      };
+      heroes.appendChild(c);
+    });
+    function marks() {
+      heroes.classList.toggle('full', team.length >= 3);
+      Object.keys(cards).forEach(id => { const c = cards[id], k = team.indexOf(id), old = c.querySelector('.pickn');
+        c.classList.toggle('sel', k >= 0); if (old) old.remove();
+        if (k >= 0) c.appendChild(el('span', 'pickn', String(k + 1))); });
+    }
     const tired = Object.keys(S.roster).filter(id => resting(id)), patchCost = () => tired.reduce((a, id) => a + Math.ceil(resting(id) / 60000) * R.gold.patch_per_minute, 0);
-    let patch = null;
-    if (tired.length) { const c0 = patchCost(); patch = btn('small ghost', `Get ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length} back on their feet · ${OS.num(c0)} gold`, () => {
+    if (tired.length) { const c0 = patchCost();
+      const patch = btn('small ghost', `Get ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length} back on their feet · ${OS.num(c0)} gold`, () => {
         const c = patchCost(); if (S.gold < c) return toast(`That takes ${OS.num(c)} gold.`); S.gold -= c; tired.forEach(id => S.recover[id] = 0); bump('gold_spent', c); SND('coin'); save(true); render(); toast('Patched up, fed, and only slightly grumbling.'); raidSheet(b); });
-      patch.disabled = S.gold < c0; patch.style.marginBottom = '.6rem'; }
-    const go = btn('', `Go in (1 ticket)`, () => { if (S.tickets < 1) return toast('No raid tickets left. One comes back every ' + RD.regen_minutes / 60 + ' hours.'); runRaid(b, B, team.slice(), pots.slice()); });
-    if (patch) d.appendChild(patch);
-    d.append(heroes, el('h4', '', `Potions (${RD.potion_slots} slots)`), potRow, info, go);
+      patch.disabled = S.gold < c0; patch.style.margin = '0 0 .7rem'; Rt.appendChild(patch); }
+    Rt.append(heroes, el('h4', '', `Potions (${RD.potion_slots} slots)`), potRow);
+    const go = btn('', 'Go in · 1 ticket', () => { if (S.tickets < 1) return toast('No tickets left. One comes back every ' + RD.regen_minutes / 60 + ' hours.'); runRaid(b, B, team.slice(), pots.slice()); });
+    bar.append(info, go);
+    d.append(L, Rt, bar);
     function drawPots() {
-      const have = potionsHave(); potRow.innerHTML = have.length ? '' : `<p class="mut">No potions. Brew them in the Workshop: ${R.potions.map(x => x.name).join(', ')}.</p>`;
+      const have = potionsHave(); potRow.innerHTML = have.length ? '' : `<p class="mut">No potions packed. Brew them in the Workshop: ${R.potions.map(x => x.name).join(', ')}.</p>`;
       have.forEach(x => { const used = pots.filter(q => q === x.id).length, left = S.bag[x.id] - used, bt = el('button', 'potbtn' + (used ? ' on' : ''), `<img src="${OS.img('loot', x.id)}" alt=""><span><b>${x.name}</b>${x.text}</span><i>${used ? used + ' packed · ' : ''}${left} left</i>`); bt.type = 'button';
         bt.onclick = () => { if (left > 0 && pots.length < RD.potion_slots) pots.push(x.id); else { const k = pots.indexOf(x.id); if (k >= 0) pots.splice(k, 1); } drawPots(); }; potRow.appendChild(bt); });
     }
     function upd() {
       go.disabled = team.length < 1 || S.tickets < 1;
-      if (!team.length) { info.innerHTML = '<p class="mut">Nobody picked yet. Three is best: everyone adds their stats.</p>'; return; }
-      const t = effStats(team, B), hp = teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1), o = odds(b, t, hp, b.hp), need = o < .5 ? attackNeeded(b, t, hp) : null;
-      info.innerHTML = `<p>Against the boss, fresh: <b>${Math.round(o * 100)}%</b> to win.${need ? ` It needs about <b>${need}</b> attack; you have ${t.attack}.` : ''} The rooms on the way can make that better or worse.</p>
-        <p class="mut">Team: ${R.stats.map(k => `${STATW[k]} <b${k === B.weak ? ' class="good"' : k === B.resist ? ' class="bad"' : ''}>${t[k] == null ? '' : k === 'health' ? Math.round(hp) : t[k]}</b>`).join(' · ')}</p>`;
+      if (!team.length) { info.innerHTML = `<p class="mut" style="margin:0">Nobody picked yet. Smudge is holding the door.</p>`; return; }
+      const t = effStats(team, B), hp = teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1);
+      const o = odds(b, t, hp, b.hp), pc = Math.round(o * 100), need = o < .5 ? attackNeeded(b, t, hp) : null;
+      const cls = pc < 35 ? 'thin' : pc < 65 ? 'fair' : 'good';
+      const says = pc < 20 ? 'Smudge would not send them.' : pc < 40 ? 'Smudge is pulling a face.' : pc < 65 ? 'Could go either way.' : pc < 85 ? 'Smudge likes these three.' : 'Smudge is already writing the win down.';
+      info.innerHTML = `<p class="odds"><b class="${cls}">${pc}%</b> <span>to win, before the rooms on the way. ${says}</span></p>
+        <div class="oddbar"><i class="${cls}" style="width:${pc}%"></i></div>
+        <p class="tstats">${R.stats.map(k => `<span>${STATW[k]} <b${k === B.weak ? ' class="good"' : k === B.resist ? ' class="bad"' : ''}>${t[k] == null ? '' : k === 'health' ? Math.round(hp) : t[k]}</b></span>`).join('')}${need ? `<span>Wants about <b>${need}</b> attack</span>` : ''}</p>`;
     }
-    drawPots(); upd(); modal.open(d);
+    drawPots(); marks(); upd(); modal.open(d, 'wide');
   }
 
+  // the three you sent, named like people rather than a headcount: "Astrid", "Astrid & Kevin", "Astrid & co."
+  const teamName = t => t.length < 2 ? (t.length ? short(t[0]) : 'Nobody') : t.length === 2 ? short(t[0]) + ' & ' + short(t[1]) : short(t[0]) + ' & co.';
   function runRaid(b, B, team, pots) {
     S.tickets--; if (S.tickets === RD.tickets - 1) S.ticketT = now(); save(true);
     const p = places[b.place], t = effStats(team, B), maxhp = Math.round(teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1));
@@ -834,7 +876,7 @@
     const pool = (B.rooms && B.rooms.length >= RD.rooms ? B.rooms : (B.rooms || []).concat(RAIDS.room_pool || [])).slice(), rooms = []; while (rooms.length < RD.rooms && pool.length) rooms.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
     const say = (t2) => fillIn(t2, { boss: b.name, place: p.name });
     const d = el('div', 'raidrun'); d.innerHTML = `<div class="raidhead small" style="background-image:url(${OS.img('scenes', p.id)})"><div><div class="tag">${p.name}</div><h3>${b.name}</h3></div></div>
-      <div class="hpbars"><div><span>Your three <em id="r-hpn"></em></span><div class="bar"><i id="r-hp" style="width:100%;background:linear-gradient(90deg,#1f9a49,#6fe394)"></i></div></div><div><span>${b.name} <em id="r-bhpn"></em></span><div class="bar"><i id="r-bhp" style="width:100%;background:linear-gradient(90deg,#b3261e,#ff7a70)"></i></div></div></div>
+      <div class="hpbars"><div><span>${teamName(team)} <em id="r-hpn"></em></span><div class="bar"><i id="r-hp" style="width:100%;background:linear-gradient(90deg,#1f9a49,#6fe394)"></i></div></div><div><span>${b.name} <em id="r-bhpn"></em></span><div class="bar"><i id="r-bhp" style="width:100%;background:linear-gradient(90deg,#b3261e,#ff7a70)"></i></div></div></div>
       <div class="rteam">${team.map(id => `<img src="${OS.img('heroes', id)}" alt="${OS.heroes[id].name}" title="${OS.heroes[id].name}">`).join('')}</div>
       <div class="rstory" id="r-story" aria-live="polite"></div><div class="rchoices" id="r-choices"></div><div class="rpots" id="r-pots"></div>`;
     modal.open(d); let live = true; const story = $('r-story'), choices = $('r-choices');
@@ -891,7 +933,15 @@
       } else { line(B.lines.lose ? say(B.lines.lose) : 'The team limps home.', 'bad'); voice('lose'); SND('deny'); const cons = Math.round(b.gold * .1); S.gold += cons;
         S.recover = S.recover || {}; team.forEach(id => S.recover[id] = now() + RD.recover_minutes * 60000); }
       Cloud.log('raid', b.id, win ? 1 : 0); save(true);
-      const end = el('div', 'reveal', `<h3 style="font-size:1.5rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3><p class="mut">${win ? `${b.gold} gold and whatever it was guarding.` : `${Math.round(b.gold * .1)} gold for the trouble. The three of them rest for ${RD.recover_minutes} minutes. Train them, dress them, pack potions, or bring friends who hit harder.`}</p>`);
+      const tips = [`Put gear on them: open an arrival and tap the glowing slots on the back of the card.`,
+        `Train the stat this one is weak to. ${B.weak ? STATW[B.weak] + ' counts for ' + Math.round((RD.weak_mult - 1) * 100) + '% more against ' + b.name + '.' : 'Training lifts every fight.'}`,
+        `Pack both potion slots. A Healing Draught alone has turned a loss around.`,
+        `Level their cards. Another copy of the same hero makes every number bigger.`,
+        `Bring someone else. The pile of stats is what fights, not the names.`];
+      const end = el('div', 'reveal', `<h3 style="font-size:1.5rem;color:${win ? 'var(--gold2)' : '#ff7a70'}">${win ? 'Down it goes' : 'They limped home'}</h3>` +
+        (win ? `<p class="mut">${b.gold} gold and whatever it was guarding.</p>`
+             : `<p class="mut">${Math.round(b.gold * .1)} gold for the trouble, and ${teamName(team)} ${team.length > 1 ? 'are' : 'is'} asleep for ${RD.recover_minutes} minutes.</p>
+                <div class="spoils" style="text-align:left"><div class="tag">Smudge's advice</div><ul>${tips.sort(() => Math.random() - .5).slice(0, 3).map(t => `<li>${t}</li>`).join('')}</ul></div>`));
       const g = el('div', 'row'); g.style.justifyContent = 'center'; const showGot = () => { g.innerHTML = ''; got.forEach(x => g.appendChild(OS.slot(x))); }; end.append(g, btn('', 'Good', modal.close)); choices.innerHTML = ''; choices.appendChild(end); render();
     }
     // closing the sheet mid-raid is a retreat: the ticket is spent, nobody is hurt, nothing is won
@@ -915,20 +965,37 @@
     ({ ranks: cityRanks, friends: cityFriends, guild: cityGuild, market: cityMarket, mail: cityMail })[cityTab](box); }
   const cityAgain = force => { $('city-body').dataset.t = 0; if (force) socAt = 0; renderBoard(); };
   const nameBtn = n => `<b class="who2" data-peek="${esc(n)}">${esc(n)}</b>`;
+  // a name as other players see it: the title they are wearing, in the colour they picked
+  const PTITLES = R.titles || [], TITLE = {}; PTITLES.forEach(t => TITLE[t.id] = t);
+  const FLAIRS = ['gold', 'teal', 'violet', 'ember', 'rose', 'foil'];
+  const titleOwned = id => ({
+    founder: () => !!(me.profile && me.profile.founder),
+    collector: () => Object.keys(S.cabinet || {}).length >= 20,
+    summoner: () => (S.summons || 0) >= 250,
+    slayer: () => Object.keys(S.raids || {}).length >= RD.bosses.length,
+    rich: () => ((S.life || {}).gold || 0) >= 1e6,
+    digger: () => (S.actions || 0) >= 50000,
+    complete: () => Object.keys(S.roster || {}).length >= Object.keys(OS.heroes).length,
+  }[id] || (() => false))();
+  const flairOwned = f => PTITLES.some(t => t.flair === f && titleOwned(t.id));
+  function nameTag(n, title, flair) {
+    const t = TITLE[title], f = FLAIRS.includes(flair) ? ' f f-' + flair : '';
+    return `<span class="pname${f}">${nameBtn(n)}${t ? `<em class="ttl">${t.name}</em>` : ''}</span>`;
+  }
   function wirePeek(box) { box.querySelectorAll('[data-peek]').forEach(b => b.onclick = () => peek(b.dataset.peek)); }
   async function cityRanks(box) { box.innerHTML = '<div class="panel"><div class="chips" id="rk-sk"></div><div id="rk-list"><p class="mut">Counting.</p></div></div>';
     [''].concat(R.skills).forEach(k => { const b = el('button', 'chip' + (citySkill === k ? ' on' : ''), k || 'Total level'); b.onclick = () => { citySkill = k; cityAgain(); }; $('rk-sk').appendChild(b); });
     let rows = []; try { rows = citySkill ? await Cloud.boardSkill(citySkill) : await Cloud.board(); } catch (e) { }
-    $('rk-list').innerHTML = rows.length ? rows.map((r, i) => `<div class="brow ${r.username === me.profile.username ? 'me' : ''}"><i>${i + 1}</i>${nameBtn(r.username)}` + (citySkill ? `<span>Level ${lvlOf(r.xp)}${r.rebirth ? ' ' + '★'.repeat(r.rebirth) : ''}</span><span>${OS.num(r.xp)} xp</span>` : `<span>Total level ${r.total_level}</span><span>${r.heroes} arrivals</span><span>${r.summons} summons</span>`) + '</div>').join('') : '<p class="mut">Nobody yet. Be the first name in the book.</p>'; wirePeek(box); }
+    $('rk-list').innerHTML = rows.length ? rows.map((r, i) => `<div class="brow ${r.username === me.profile.username ? 'me' : ''}"><i>${i + 1}</i>${nameTag(r.username, r.title, r.flair)}` + (citySkill ? `<span>Level ${lvlOf(r.xp)}${r.rebirth ? ' ' + '★'.repeat(r.rebirth) : ''}</span><span>${OS.num(r.xp)} xp</span>` : `<span>Total level ${r.total_level}</span><span>${r.heroes} arrivals</span><span>${r.summons} summons</span>`) + '</div>').join('') : '<p class="mut">Nobody yet. Be the first name in the book.</p>'; wirePeek(box); }
   function cityFriends(box) { box.innerHTML = `<div class="panel"><div class="addrow"><input type="text" id="fr-name" maxlength="24" placeholder="A name from the rankings"><button class="btn small" id="fr-add">Add friend</button></div><div id="fr-list"></div></div>`;
     $('fr-add').onclick = async () => { const n = $('fr-name').value.trim(); if (!n) return; try { toast(await Cloud.friendAdd(n)); } catch (e) { toast('Smudge cannot reach the city right now.'); } cityAgain(true); };
     const L = $('fr-list'); if (!soc.friends.length) { L.innerHTML = '<p class="mut" style="margin:.8rem 0 0">No friends yet. Tap any name in the rankings to look at their ledger and add them. Friends can send each other things.</p>'; return; }
-    soc.friends.forEach(f => { const row = el('div', 'frow', `<div><i class="face sm" style="${faceStyle(f.avatar)}"></i>${nameBtn(f.username)}<span class="mut">${f.status === 'ok' ? 'Total level ' + f.total_level + ' · ' + f.heroes + ' arrivals' : f.mine ? 'Asked. Waiting on them.' : 'Wants to be friends.'}</span></div>`), acts = el('div', 'facts');
+    soc.friends.forEach(f => { const row = el('div', 'frow', `<div><i class="face sm" style="${faceStyle(f.avatar)}"></i>${nameTag(f.username, f.title, f.flair)}<span class="mut">${f.status === 'ok' ? 'Total level ' + f.total_level + ' · ' + f.heroes + ' arrivals' : f.mine ? 'Asked. Waiting on them.' : 'Wants to be friends.'}</span></div>`), acts = el('div', 'facts');
       if (f.status === 'ok') acts.appendChild(btn('small', 'Send a gift', () => giftSheet(f.username))); else if (!f.mine) acts.appendChild(btn('small', 'Accept', async () => { await Cloud.friendAdd(f.username); cityAgain(true); }));
       acts.appendChild(btn('small ghost', f.status === 'ok' ? 'Remove' : f.mine ? 'Cancel' : 'No', async () => { await Cloud.friendDrop(f.username); cityAgain(true); })); row.appendChild(acts); L.appendChild(row); }); wirePeek(box); }
   async function peek(n) { let p; try { p = await Cloud.peek(n); } catch (e) { } if (!p) { toast('That ledger is shut.'); return; }
     const d = el('div', 'peek'), top = Object.keys(p.xp).sort((a, c) => p.xp[c] - p.xp[a]).slice(0, 4), own = Object.keys(p.roster);
-    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem;display:flex;align-items:center;gap:.6rem"><i class="face md" style="${faceStyle(p.avatar)}"></i>${esc(p.username)}</h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} arrivals met · ${p.cabinet} treasures on display</p>
+    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem;display:flex;align-items:center;gap:.6rem"><i class="face md" style="${faceStyle(p.avatar)}"></i><span class="pname${FLAIRS.includes(p.flair) ? ' f f-' + p.flair : ''}"><b>${esc(p.username)}</b>${TITLE[p.title] ? `<em class="ttl">${TITLE[p.title].name}</em>` : ''}</span></h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} arrivals met · ${p.cabinet} treasures on display</p>
       <div class="pkstats">${top.map(k => `<div class="stat"><b>${lvlOf(p.xp[k])}${p.rebirth[k] ? '<small> ' + '★'.repeat(p.rebirth[k]) + '</small>' : ''}</b><span>${k}</span></div>`).join('')}</div><div class="tag" style="margin-top:.8rem">${(p.crew || []).some(x => x) ? 'Their crew' : 'Their best cards'}</div><div class="pkcards"></div>`;
     const show = ((p.crew || []).filter(x => x && OS.heroes[x]).length ? p.crew.filter(x => x && OS.heroes[x]) : own.filter(x => OS.heroes[x]).sort((a, c) => p.roster[c] - p.roster[a]).slice(0, 3));
     show.forEach(id => d.querySelector('.pkcards').appendChild(OS.card(OS.heroes[id], { mini: true, level: p.roster[id] || 1, noflip: true })));
@@ -952,7 +1019,7 @@
       <p class="mut" style="margin:.4rem 0 .6rem">${done ? 'Done. Everyone in the guild gets 3 crates and 5 shards.' : 'Reach it together and everyone who brought in 100 hauls gets 3 crates and 5 shards. Resets every Monday.'}</p><div id="gd-claim"></div>
       <div class="tag" style="margin-top:.6rem">Members</div><div id="gd-mem"></div></div><div class="panel" style="margin-top:.9rem"><div class="tag">Guild room</div><div class="chat" id="gd-chat"></div><div class="addrow"><input type="text" id="gd-say" maxlength="200" placeholder="Say something"><button class="btn small" id="gd-send">Send</button></div></div>`;
     if (done) { const b = btn('', got ? 'Collected' : 'Collect the reward', async () => { const r = await srv(() => Cloud.guildClaim()); if (r.r === 'ok') { S.guildWk = 'w' + g.week; bump('guild_goals'); toast('3 crates and 5 shards are in your bag.'); } else { toast(r.r); if (/Already/.test(r.r)) S.guildWk = 'w' + g.week; } render(); cityAgain(); }); b.disabled = got; $('gd-claim').appendChild(b); }
-    $('gd-mem').innerHTML = g.members.map(m => `<div class="brow g ${m.username === me.profile.username ? 'me' : ''}">${nameBtn(m.username)}<span>Level ${m.total_level}</span><span>${OS.num(m.hauls)} hauls</span></div>`).join('');
+    $('gd-mem').innerHTML = g.members.map(m => `<div class="brow g ${m.username === me.profile.username ? 'me' : ''}">${nameTag(m.username, m.title, m.flair)}<span>Level ${m.total_level}</span><span>${OS.num(m.hauls)} hauls</span></div>`).join('');
     const ch = $('gd-chat'); ch.innerHTML = g.chat.length ? g.chat.map(c => `<p><b>${esc(c.username)}</b> ${esc(c.body)}</p>`).join('') : '<p class="mut">Quiet in here.</p>'; ch.scrollTop = 1e6;
     const send = async () => { const t = $('gd-say').value.trim(); if (!t) return; $('gd-say').value = ''; try { say(await Cloud.guildSay(t)); } catch (e) { toast('Smudge cannot reach the city right now.'); } cityAgain(true); };
     $('gd-send').onclick = send; $('gd-say').onkeydown = e => { if (e.key === 'Enter') send(); };
@@ -988,6 +1055,7 @@
   function renderAccount() { renderPet();
     $('ac-me').innerHTML = `<i class="face lg" style="${faceStyle(me.profile.avatar)}"></i><div><b>${esc(me.profile.username)}</b><span class="mut">${me.profile.avatar && OS.heroes[me.profile.avatar] ? 'Wearing ' + OS.heroes[me.profile.avatar].name + '’s face' : 'Wearing Smudge’s face'}</span></div>`;
     $('ac-me').appendChild(btn('small ghost', 'Change picture', faceSheet));
+    $('ac-me').appendChild(btn('small ghost', 'Title and colour', lookSheet));
     $('ac-ver').textContent = NOTES[0] ? 'Beta ' + NOTES[0].v : '';
     const up = $('ac-up'); up.innerHTML = ''; const em = el('label', 'kv', '<span>Email me update notes</span>'), eb = el('input'); eb.type = 'checkbox'; eb.checked = !!me.profile.email_updates;
     eb.onchange = async () => { const on = eb.checked, ok = await Cloud.setProfile({ email_updates: on }); if (!ok) { eb.checked = !on; return toast('That did not save. Try again.'); } me.profile.email_updates = on; toast(on ? 'Done. Smudge writes when the game updates, and only then.' : 'No more update emails.'); };
@@ -1051,7 +1119,7 @@
       <p>Thank you for being here. I mean that. One person builds this whole game, I do the summoning, and you are one of the very first people to see any of it. That makes you important. Sorry, no pressure.</p>
       <p><b>Now the honest part: things will break.</b> This is a closed beta, and I summoned the wrong hero four times before breakfast. If something looks wrong, it probably is, and it is never your fault.</p>
       <p>When it happens, press <b>Ideas or feedback?</b> up top and tell us. Bugs, ideas, complaints, all of it. Every note is read and written down, so nothing gets lost and we can get back to you.</p>
-      ${OS.founder ? '<div class="note"><b>You are a Founding Clerk.</b> First players keep the title, and the FC seal on their cards, for good. I checked. Twice.</div>' : ''}`;
+      ${OS.founder ? '<div class="note"><b>You are a Founding Clerk.</b> First players keep the title for good, and nobody who turns up later can ever wear it. Put it under your name from your account page whenever you like.</div>' : ''}`;
     const row = el('div', 'row'); row.style.cssText = 'justify-content:center;flex-wrap:wrap;margin-top:1rem';
     const close = () => modal.close();
     row.appendChild(btn('', "Let's summon someone", () => { close(); show('summon'); }));
@@ -1074,6 +1142,34 @@
   }
   const setFace = () => { $('av-face').style.cssText = faceStyle(me.profile.avatar); };
   setFace();
+  // the title under your name and the colour it is written in. Both are earned; both are optional.
+  function lookSheet() {
+    const d = el('div', ''), cur = me.profile.title, curF = me.profile.flair;
+    d.innerHTML = `<h3 style="font-size:1.4rem">How other players see you</h3>
+      <p class="mut" style="margin:.2rem 0 .7rem;font-size:.9rem">Your name turns up in the rankings, in guilds and in other people's friend lists. This is what it looks like when it does.</p>
+      <div class="lookprev"><span class="tag">Preview</span><span class="pname${FLAIRS.includes(curF) ? ' f f-' + curF : ''}"><b>${esc(me.profile.username)}</b>${TITLE[cur] ? `<em class="ttl">${TITLE[cur].name}</em>` : ''}</span></div>
+      <div class="tag">Title</div>`;
+    const set = async (patch, say) => { const ok = await Cloud.setProfile(patch); if (!ok) return toast('That did not save. Try again.'); Object.assign(me.profile, patch); lookSheet(); if (current === 'account') renderAccount(); if (say) toast(say); };
+    const g = el('div', 'lookgrid');
+    const opt = (id, name, how, flair, has) => { const bt = el('button', 'lookpick' + (cur === id ? ' on' : '') + (has ? '' : ' lockd'), `<b>${has ? '' : '<i class="lk">🔒</i>'}${name}</b>${how}`); bt.type = 'button';
+      if (flair) bt.style.setProperty('--fc', ''); bt.classList.add(flair ? 'f-' + flair : 'f-none');
+      bt.onclick = () => has ? set({ title: id }, id ? `You are wearing "${name}" now.` : 'Title off. Just the name.') : toast('Not yours yet. ' + how); g.appendChild(bt); };
+    opt(null, 'No title', 'Your name on its own.', null, true);
+    PTITLES.forEach(t => opt(t.id, t.name, t.how, t.flair, titleOwned(t.id)));
+    d.appendChild(g);
+    d.appendChild(el('div', 'tag', 'Name colour'));
+    d.appendChild(el('p', 'mut', 'Every title you earn unlocks its colour. Wear any colour you have earned, with any title.')).style.cssText = 'font-size:.85rem;margin:.1rem 0 .2rem';
+    const fr = el('div', 'flairrow');
+    const dot = (f, has) => { const bt = el('button', 'flairdot' + (f ? ' f-' + f : '') + (curF === f ? ' on' : '') + (has ? '' : ' lockd')); bt.type = 'button';
+      bt.title = f ? OS.cap(f) : 'Plain'; bt.setAttribute('aria-label', bt.title);
+      if (!f) bt.style.setProperty('--fc', '#9aa6c4');
+      bt.onclick = () => has ? set({ flair: f }) : toast('Earn the title that comes with this colour first.'); fr.appendChild(bt); };
+    dot(null, true); FLAIRS.forEach(f => dot(f, flairOwned(f)));
+    d.appendChild(fr);
+    const row = el('div', 'row'); row.style.cssText = 'justify-content:center;margin-top:.9rem'; row.appendChild(btn('', 'Done', modal.close)); d.appendChild(row);
+    modal.open(d);
+  }
+
   function faceSheet() {
     const d = el('div', ''), own = Object.keys(S.roster).filter(id => OS.heroes[id]).sort((a, c) => rr(OS.heroes[c].rarity) - rr(OS.heroes[a].rarity) || OS.heroes[a].name.localeCompare(OS.heroes[c].name));
     d.innerHTML = `<h3 style="font-size:1.4rem">Pick your picture</h3><p class="mut" style="margin:.2rem 0 .8rem;font-size:.9rem">Smudge, or any hero you have met. Friends and guildmates see it next to your name.</p>`;
@@ -1104,7 +1200,7 @@
     const L = await checkAlerts(true, true), d = el('div', 'bellsheet'); d.innerHTML = `<h3 style="font-size:1.4rem;margin-bottom:.6rem">Alerts</h3>`;
     if (!L.length) d.appendChild(el('p', 'mut', 'Nothing new. Smudge rings this bell when a friend request or a gift turns up.'));
     L.forEach(a => { const row = el('div', 'frow'), acts = el('div', 'facts');
-      if (a.f) { row.innerHTML = `<div><i class="face sm" style="${faceStyle(a.f.avatar)}"></i><b>${esc(a.f.username)}</b><span class="mut">wants to be friends</span></div>`;
+      if (a.f) { row.innerHTML = `<div><i class="face sm" style="${faceStyle(a.f.avatar)}"></i>${nameTag(a.f.username, a.f.title, a.f.flair)}<span class="mut">wants to be friends</span></div>`;
         acts.appendChild(btn('small', 'Accept', async () => { try { toast(await Cloud.friendAdd(a.f.username)); } catch (e) { toast('That did not go through. Try again.'); } socAt = 0; bellSheet(); if (current === 'board') render(); }));
         acts.appendChild(btn('small ghost', 'No thanks', async () => { try { await Cloud.friendDrop(a.f.username); } catch (e) { } socAt = 0; bellSheet(); if (current === 'board') render(); })); }
       else { row.innerHTML = `<div><b>${esc(a.m.from || 'Someone')}</b><span class="mut">sent you something</span></div>`; acts.appendChild(btn('small', 'Open mailbox', () => { modal.close(); cityTab = 'mail'; show('board'); })); }
