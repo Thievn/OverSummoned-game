@@ -3,7 +3,8 @@
 Read by build.py: each hero gains `arch`, `age`, `kin` and `move`; rules.json gains `duel`.
 The engine is js/duel-engine.mjs; the balance check is rules/sim_duel.mjs. Plan: PLAN-CITY-DUELS.md, sections 2 and 3.
 
-Move names and lines were written by Fable (F7, 27 Nov). Fable changes `name` and `text` only.
+Move names by Fable (F7). The `text` says what the card does in plain English, the same sentence for the same effect
+(Dean, 27 Nov: instructions must be plain; jokes belong in names and in Smudge's commentary, never in rules text). Fable changes `name` and `text` only.
 Effect fields (`fx`, `on`, `x`, `stat`, `group`, `n`) are Opus's and are tuned by the sim.
 """
 
@@ -77,63 +78,63 @@ ARENAS = {
 # x is in points before card level and arena bonus; the engine scales nothing, so tune x here.
 MOVES = {
     # tanks: guard and hold
-    "kevin":     dict(name="Circling Back", text="He will get to it. Returns to the top of your deck instead of the bottom, and +5 on a Health call.", on="exit", fx="top", plus=dict(stat="health", x=5)),
-    "gaius":     dict(name="Hold the Line", text="Twenty years of standing where he was told. Sap and burn do nothing to your side this turn.", fx="guard"),
-    "napoleon":  dict(name="Top Shelf", text="Never more dangerous than when looked down on. +8 if you are behind in the round.", on="behind", fx="boost", x=8),
-    "gorm":      dict(name="Immediate Area", text="Rules a little more of it each time. +3 for every time he has been played this duel.", fx="ramp", x=3),
-    "ajolote":   dict(name="Grows Back", text="Nine hundred bouts, same face. Clears burn from your side, and your other cards +2.", fx="mend", x=2),
-    "doug":      dict(name="Denied", text="Not yours in particular. Sap and burn do nothing to your side this turn.", fx="guard"),
-    "bjorn":     dict(name="Declared Dead", text="Twice. He walked home both times. +6 on a Health call.", fx="boost", stat="health", x=6),
-    "tut":       dict(name="Wrong Continent", text="They made him a god anyway. Their side loses 4 a turn for two turns.", fx="burn", x=4, n=2),
+    "kevin":     dict(name="Circling Back", text="After you play this card it goes back on top of your deck, so you draw it again soon. +5 points on a Health turn.", on="exit", fx="top", plus=dict(stat="health", x=5)),
+    "gaius":     dict(name="Hold the Line", text="The other player's sap and burn do nothing to you this turn.", fx="guard"),
+    "napoleon":  dict(name="Top Shelf", text="+8 points if you are losing the round when you play it.", on="behind", fx="boost", x=8),
+    "gorm":      dict(name="Immediate Area", text="+3 points for each time you have already played this card in this duel.", fx="ramp", x=3),
+    "ajolote":   dict(name="Grows Back", text="Removes burn from your side. Your other cards this turn get +2 points.", fx="mend", x=2),
+    "doug":      dict(name="Denied", text="The other player's sap and burn do nothing to you this turn.", fx="guard"),
+    "bjorn":     dict(name="Declared Dead", text="+6 points on a Health turn.", fx="boost", stat="health", x=6),
+    "tut":       dict(name="Wrong Continent", text="The other player loses 4 points each turn for the next 2 turns.", fx="burn", x=4, n=2),
     # bruisers: big hits
-    "brokk":     dict(name="Stick, Mostly", text="It worked on the mammoth. +5 on an Attack call.", fx="boost", stat="attack", x=5),
-    "blackbear": dict(name="Lit Fuse", text="The beard is on fire again. Their best card this turn loses 8.", fx="sap", x=8),
-    "astrid":    dict(name="Bored of Winning", text="Brings the rest of the raid with her. Your other Old World cards +4.", fx="rally", group=("age", "oldworld"), x=4),
-    "florida":   dict(name="Hold My Drink", text="Worse when things are going well. +10 if you are ahead in the round.", on="ahead", fx="boost", x=10),
-    "madjack":   dict(name="Longbow, 1944", text="He brought the bagpipes too. +12 on an Attack call.", fx="boost", stat="attack", x=12),
-    "roxy":      dict(name="Soundcheck", text="Three chords, all of them loud. Their best card this turn loses 6.", fx="sap", x=6),
-    "max":       dict(name="Out of Retirement", text="For the tenth time. +4 for every time he has been played this duel.", fx="ramp", x=4),
-    "dusty":     dict(name="Eleven Years of Opinions", text="And one nugget. Their side loses 3 a turn for two turns.", fx="burn", x=3, n=2),
-    "gladius":   dict(name="No Shirt Required", text="The crowd does the rest. Your other Ancient cards +4.", fx="rally", group=("age", "ancient"), x=4),
+    "brokk":     dict(name="Stick, Mostly", text="+5 points on a Attack turn.", fx="boost", stat="attack", x=5),
+    "blackbear": dict(name="Lit Fuse", text="The other player's best card this turn loses 8 points.", fx="sap", x=8),
+    "astrid":    dict(name="Bored of Winning", text="Your other Old World cards this turn get +4 points.", fx="rally", group=("age", "oldworld"), x=4),
+    "florida":   dict(name="Hold My Drink", text="+10 points if you are winning the round when you play it.", on="ahead", fx="boost", x=10),
+    "madjack":   dict(name="Longbow, 1944", text="+12 points on a Attack turn.", fx="boost", stat="attack", x=12),
+    "roxy":      dict(name="Soundcheck", text="The other player's best card this turn loses 6 points.", fx="sap", x=6),
+    "max":       dict(name="Out of Retirement", text="+4 points for each time you have already played this card in this duel.", fx="ramp", x=4),
+    "dusty":     dict(name="Eleven Years of Opinions", text="The other player loses 3 points each turn for the next 2 turns.", fx="burn", x=3, n=2),
+    "gladius":   dict(name="No Shirt Required", text="Your other Ancient cards this turn get +4 points.", fx="rally", group=("age", "ancient"), x=4),
     # fast: energy and tempo
-    "marco":     dict(name="Out for Delivery", text="Drops something off on the way through. +1 energy next turn.", fx="spark", x=1),
-    "kenji":     dict(name="For the Biscuit", text="Honor, discipline, snacks. +4 on a Speed call.", fx="boost", stat="speed", x=4),
-    "emu":       dict(name="Never Lost a War", text="Ask the Australian army. +2 energy next turn.", fx="spark", x=2),
-    "troffea":   dict(name="Catching", text="Once she starts, everyone does. Your other cards this turn +2.", fx="lift", x=2),
-    "jazzmin":   dict(name="And Again!", text="Nine million people feel tired just watching. +1 energy the moment she is drawn.", on="drawn", fx="spark", x=1),
-    "flap":      dict(name="Thirty Years Late", text="He was always going to get off the ground. +5 if you are behind in the round.", on="behind", fx="boost", x=5),
+    "marco":     dict(name="Out for Delivery", text="You get 1 extra energy next turn.", fx="spark", x=1),
+    "kenji":     dict(name="For the Biscuit", text="+4 points on a Speed turn.", fx="boost", stat="speed", x=4),
+    "emu":       dict(name="Never Lost a War", text="You get 2 extra energy next turn.", fx="spark", x=2),
+    "troffea":   dict(name="Catching", text="Your other cards this turn get +2 points.", fx="lift", x=2),
+    "jazzmin":   dict(name="And Again!", text="You get 1 extra energy as soon as you draw this card.", on="drawn", fx="spark", x=1),
+    "flap":      dict(name="Thirty Years Late", text="+5 points if you are losing the round when you play it.", on="behind", fx="boost", x=5),
     # support: lift the others
-    "maya":      dict(name="Triage", text="Patches everyone up before they ask. Clears burn from your side, and your other cards +3.", fx="mend", x=3),
-    "edith":     dict(name="Before Breakfast", text="Three bridges, no help. Your other cards this turn +2.", fx="lift", x=2),
-    "jacko":     dict(name="Between the Flags", text="Sunscreen, then rescue. Clears burn from your side, and your other cards +2.", fx="mend", x=2),
-    "rex":       dict(name="Power Ballad", text="It is about his hair. Your other Dogs and Wolves +3.", fx="rally", group=("kin", "dogs"), x=3),
-    "dolly":     dict(name="Singing to You", text="Every one of them was certain. Your other cards this turn +3.", fx="lift", x=3),
-    "beep":      dict(name="Slightly On Fire", text="Still serving tea. Counts its best number, whatever is called.", fx="twist"),
+    "maya":      dict(name="Triage", text="Removes burn from your side. Your other cards this turn get +3 points.", fx="mend", x=3),
+    "edith":     dict(name="Before Breakfast", text="Your other cards this turn get +2 points.", fx="lift", x=2),
+    "jacko":     dict(name="Between the Flags", text="Removes burn from your side. Your other cards this turn get +2 points.", fx="mend", x=2),
+    "rex":       dict(name="Power Ballad", text="Your other Dog and Wolf cards this turn get +3 points.", fx="rally", group=("kin", "dogs"), x=3),
+    "dolly":     dict(name="Singing to You", text="Your other cards this turn get +3 points.", fx="lift", x=3),
+    "beep":      dict(name="Slightly On Fire", text="Always scores its highest stat, no matter which stat the turn is using.", fx="twist"),
     # rogues: take things away
-    "vincenzo":  dict(name="A Friendly Word", text="Nice card you have there. Their dearest card costs 2 more next turn.", fx="tax", x=2),
-    "lola":      dict(name="Encore, Monsieur", text="They went home lighter. Their best card this turn loses 6.", fx="sap", x=6),
-    "sable":     dict(name="Rinsed", text="It was in your hand a moment ago. One card in their hand cannot be played next turn.", fx="lock", n=1),
-    "mona":      dict(name="Whatever You See", text="No two people agree. Counts her best number, whatever is called.", fx="twist"),
-    "sterling":  dict(name="Whose Side", text="He is no longer sure either. +3 on a Speed call.", fx="peek", n=2, stat="speed", x=3),
-    "selene":    dict(name="Invited Back", text="Robbed, then asked to dinner. Two cards in their hand cannot be played next turn.", fx="lock", n=2),
+    "vincenzo":  dict(name="A Friendly Word", text="The other player's most expensive card costs 2 more energy next turn.", fx="tax", x=2),
+    "lola":      dict(name="Encore, Monsieur", text="The other player's best card this turn loses 6 points.", fx="sap", x=6),
+    "sable":     dict(name="Rinsed", text="The other player cannot play one of their cards next turn.", fx="lock", n=1),
+    "mona":      dict(name="Whatever You See", text="Always scores its highest stat, no matter which stat the turn is using.", fx="twist"),
+    "sterling":  dict(name="Whose Side", text="+3 points on a Speed turn.", fx="peek", n=2, stat="speed", x=3),
+    "selene":    dict(name="Invited Back", text="The other player cannot play 2 of their cards next turn.", fx="lock", n=2),
     # mystics: bend the rules
-    "albrecht":  dict(name="More Leeches", text="The cure is worse. Their side loses 3 a turn for two turns.", fx="burn", x=3, n=2),
-    "morwenna":  dict(name="Wrong Candle", text="Something went off; nobody is sure what. Counts her best number, whatever is called.", fx="twist"),
-    "raspawtin": dict(name="Seconds, Please", text="Poisoned, shot, drowned, annoyed. +10 if you are behind in the round.", on="behind", fx="boost", x=10),
-    "vesper":    dict(name="Not on the List", text="She knows the doorman. Their best card this turn loses 5.", fx="sap", x=5),
-    "hootsworth":dict(name="The Stare", text="Nobody lasts long under it. Your other cards this turn +3.", fx="peek", n=2, x=3),
-    "quack":     dict(name="More Lightning", text="It fixes everything. Their dearest card costs 1 more next turn.", fx="tax", x=1),
+    "albrecht":  dict(name="More Leeches", text="The other player loses 3 points each turn for the next 2 turns.", fx="burn", x=3, n=2),
+    "morwenna":  dict(name="Wrong Candle", text="Always scores its highest stat, no matter which stat the turn is using.", fx="twist"),
+    "raspawtin": dict(name="Seconds, Please", text="+10 points if you are losing the round when you play it.", on="behind", fx="boost", x=10),
+    "vesper":    dict(name="Not on the List", text="The other player's best card this turn loses 5 points.", fx="sap", x=5),
+    "hootsworth":dict(name="The Stare", text="Your other cards this turn get +3 points.", fx="peek", n=2, x=3),
+    "quack":     dict(name="More Lightning", text="The other player's most expensive card costs 1 more energy next turn.", fx="tax", x=1),
     # lucky: dice
-    "joost":     dict(name="One More Bulb", text="It can only go up. A chance to count one and a half times; his Luck sets the odds.", fx="gamble"),
-    "chad":      dict(name="Buying the Dip", text="Every cliff is a dip. A chance to count one and a half times; his Luck sets the odds.", fx="gamble"),
-    "pam":       dict(name="Extra Life", text="Her initials are still up there. Returns to the top of your deck instead of the bottom, and +5 on a Luck call.", on="exit", fx="top", plus=dict(stat="luck", x=5)),
-    "eagleton":  dict(name="Recount", text="He demands one every time. A chance to count one and a half times; his Luck sets the odds.", fx="gamble"),
-    "zorp":      dict(name="Definitely a Human", text="Nothing to see here. Counts his best number, whatever is called.", fx="twist"),
+    "joost":     dict(name="One More Bulb", text="Has a chance to score 1.5 times its points. The higher this card's Luck, the better the chance.", fx="gamble"),
+    "chad":      dict(name="Buying the Dip", text="Has a chance to score 1.5 times its points. The higher this card's Luck, the better the chance.", fx="gamble"),
+    "pam":       dict(name="Extra Life", text="After you play this card it goes back on top of your deck, so you draw it again soon. +5 points on a Luck turn.", on="exit", fx="top", plus=dict(stat="luck", x=5)),
+    "eagleton":  dict(name="Recount", text="Has a chance to score 1.5 times its points. The higher this card's Luck, the better the chance.", fx="gamble"),
+    "zorp":      dict(name="Definitely a Human", text="Always scores its highest stat, no matter which stat the turn is using.", fx="twist"),
     # stars: lift their crowd
-    "slapton":   dict(name="Top Billing", text="His name goes above the title. Your other Wartime cards +8.", fx="rally", group=("age", "wartime"), x=8),
-    "cleocatra": dict(name="Royal Audience", text="Everyone stands a little straighter. Your other cards this turn +4.", fx="lift", x=4),
-    "bella":     dict(name="Do It for the Feed", text="Four million followers, most of them birds. Your other Birds +6.", fx="rally", group=("kin", "birds"), x=6),
-    "stella":    dict(name="Next Week's Episode", text="Saved at the last second, as usual. Your other Neon cards +4.", fx="rally", group=("age", "neon"), x=4),
+    "slapton":   dict(name="Top Billing", text="Your other Wartime cards this turn get +8 points.", fx="rally", group=("age", "wartime"), x=8),
+    "cleocatra": dict(name="Royal Audience", text="Your other cards this turn get +4 points.", fx="lift", x=4),
+    "bella":     dict(name="Do It for the Feed", text="Your other Bird cards this turn get +6 points.", fx="rally", group=("kin", "birds"), x=6),
+    "stella":    dict(name="Next Week's Episode", text="Your other Neon cards this turn get +4 points.", fx="rally", group=("age", "neon"), x=4),
 }
 
 # the name on a duel card where the first word is a title, not a name

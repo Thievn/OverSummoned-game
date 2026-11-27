@@ -456,3 +456,6 @@ The practice table, owner only (`duel.open` in rules/duel.py). Detail at the bot
 
 ### 27 Nov: the duel second pass is done (Opus)
 Music, readability, the lesson, the Gwent and Destiny mechanics, nine painted arenas, six Smudge poses, phone polish. Detail at the bottom of `PLAN-CITY-DUELS.md`. Still owner-only (`duel.open` in rules/duel.py). Next: F7 for the words, then O10 ranked.
+
+### 27 Nov: WORDING RULE for every writer, Fable included (Dean)
+Anything that tells the player what to do, or what a thing does, is plain everyday English: tutorials, how-to-play, card effects, buttons, errors, tooltips. Short sentences, common words, numbers as digits. No clever phrasing, no dropped words ("what you do not spend keeps" was the offender), no old-fashioned words like "dear" for expensive. Smudge's personality goes only in commentary and flavour (round results, win and lose lines, names), never in instructions. If a line could be either, treat it as an instruction.

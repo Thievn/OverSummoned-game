@@ -53,7 +53,7 @@
       <p class="mut" style="font-size:.86rem;margin:.4rem 0 0">${nextPrize(lvlNow)}</p>`;
     box.appendChild(rp);
     // ---- the ladder
-    const lp = X.el('div', 'panel duladder'); lp.innerHTML = '<h3>Who wants a game</h3>';
+    const lp = X.el('div', 'panel duladder'); lp.innerHTML = '<h3>Choose a difficulty, then a rival</h3>';
     const row = X.el('div', 'dulv');
     D().levels.forEach((L, i) => { const b2 = X.el('button', 'dulvb' + (lvl === i ? ' on' : ''), `<b>${L.name}</b><span>${W.level_text[i]}</span>`);
       b2.onclick = () => { lvl = i; X.SND('tab'); lobby(); }; row.appendChild(b2); });
@@ -68,7 +68,7 @@
         <span class="drtxt">${r.text}</span>
         <span class="drpips">${D().levels.map((L, i) => `<i class="${beat.includes(i) ? 'on' : ''}" title="${L.name}"></i>`).join('')}</span>
         <span class="drgo">${done ? `Beaten \u00b7 ${OSnum(repeatFor(r, D().levels[lvl]))} gold a win` : `First win: ${OSnum(payFor(r, D().levels[lvl]))} gold`}</span>`;
-      c.onclick = () => { if (d.deck.length < need) return X.toast(`Pick ${need - d.deck.length} more card${need - d.deck.length > 1 ? 's' : ''} first.`); open(false, r.id); };
+      c.onclick = () => { if (d.deck.length < need) return X.toast(`Add ${need - d.deck.length} more card${need - d.deck.length > 1 ? 's' : ''} to your deck first.`); open(false, r.id); };
       grid.appendChild(c);
     });
     lp.appendChild(grid); box.appendChild(lp);
@@ -76,8 +76,8 @@
     const dp = X.el('div', 'panel dudeck');
     const cost = d.deck.reduce((t, id) => t + D().cost[hero(id).rarity], 0);
     dp.innerHTML = `<div class="spread"><h3>Your deck <span class="mut">${d.deck.length} / ${max}</span></h3><span class="row"><button class="btn small ghost" id="du-auto">Pick for me</button><button class="btn small ghost" id="du-clear">Clear</button></span></div>
-      <p class="mut" style="font-size:.9rem;margin:.2rem 0 .6rem">At least ${need}, up to ${max}. Mix cheap and dear: seven energy left with nothing to spend it on is seven wasted.${d.deck.length ? ' Average cost ' + (cost / d.deck.length).toFixed(1) + '.' : ''}
-      Tap a card in your deck again to make it <b>captain</b>: once a duel you can call on them, and they score far more that turn.</p>`;
+      <p class="mut" style="font-size:.9rem;margin:.2rem 0 .6rem">Pick ${need} to ${max} cards. Use a mix of cheap and expensive cards so you can always spend your energy.${d.deck.length ? ' Average cost: ' + (cost / d.deck.length).toFixed(1) + '.' : ''}
+      Tap a card to add it. Tap it again to make it your <b>captain</b>. Tap the captain to remove it.</p>`;
     const grid2 = X.el('div', 'dugrid');
     have.slice().sort((a2, b2) => (d.deck.includes(b2) - d.deck.includes(a2)) || (D().cost[hero(a2).rarity] - D().cost[hero(b2).rarity]) || hero(a2).name.localeCompare(hero(b2).name)).forEach(id => {
       const c = miniCard(id, null), inDeck = d.deck.includes(id);
@@ -85,7 +85,7 @@
       if (d.captain === id) c.insertAdjacentHTML('beforeend', '<em class="capmark">Captain</em>');
       c.onclick = () => {
         const i = d.deck.indexOf(id);
-        if (i < 0) { if (d.deck.length >= max) return X.toast(`A deck holds ${max}. Take one out first.`); d.deck.push(id); if (!d.captain) d.captain = id; }
+        if (i < 0) { if (d.deck.length >= max) return X.toast(`Your deck is full (${max} cards). Remove one first.`); d.deck.push(id); if (!d.captain) d.captain = id; }
         else if (d.captain !== id) d.captain = id;                       // already in: tap again to make captain
         else { d.deck.splice(i, 1); d.captain = d.deck[0] || null; }      // captain tapped again: out it goes
         X.SND('click'); X.save(); lobby();
@@ -97,16 +97,17 @@
     $('du-clear').onclick = () => { d.deck = []; d.captain = null; X.save(); lobby(); };
     // ---- how it works
     const how = X.el('div', 'panel duhow');
-    how.innerHTML = `<div class="spread"><h3>How a duel goes</h3><button class="btn small ghost" id="du-lesson">Show me again</button></div><ul>
-      <li>Both sides pick up to three cards a turn and reveal together.</li>
-      <li>Each turn calls one stat. A card scores that stat, so a slow tank is useless on a Speed call and a monster on a Health one.</li>
-      <li>Energy: ${D().energy.start} to start, ${D().energy.per_turn} more each turn, up to ${D().energy.max}. What you do not spend carries over.</li>
-      <li><b>Swap two:</b> before the first turn you may put two cards back and draw again.</li>
-      <li><b>Stand down:</b> sit out the rest of a round and start the next one with ${D().stand_down_energy} extra energy. Losing a round on purpose is often the right move.</li>
-      <li><b>Captain's Call:</b> once a duel, your captain scores far more on that turn.</li>
-      <li>Three turns make a round. Most points takes it. First to ${D().rounds_to_win} rounds wins.</li></ul>`;
+    how.innerHTML = `<div class="spread"><h3>How to play</h3><button class="btn small ghost" id="du-lesson">Replay tutorial</button></div><ul>
+      <li>Each turn, you and the other player each play up to 3 cards. Both show their cards at the same time.</li>
+      <li>Each turn uses one stat, like Speed or Health. Your cards score points from that stat only.</li>
+      <li>Cards cost energy. You start with ${D().energy.start} and get ${D().energy.per_turn} more every turn, up to ${D().energy.max}. Energy you do not use is saved.</li>
+      <li>A round is 3 turns. Whoever has more points wins the round. Win ${D().rounds_to_win} rounds to win the duel.</li>
+      <li><b>Swap:</b> before the first turn you can swap up to ${D().swap} cards from your hand for new ones.</li>
+      <li><b>Stand down:</b> skip the rest of a round to get ${D().stand_down_energy} extra energy next round. Use it when you cannot win the round.</li>
+      <li><b>Captain's Call:</b> once per duel, press it and play your captain that turn. The captain scores bonus points.</li>
+      <li>Every card has a special move. Tap a card to read it.</li></ul>`;
     box.appendChild(how);
-    $('du-lesson').onclick = () => { d.lesson = 1; X.save(); X.toast('Smudge will walk you through the next duel.'); };
+    $('du-lesson').onclick = () => { d.lesson = 1; X.save(); X.toast('The tutorial will show on your next duel.'); };
   }
   const OSnum = n => X.OS.num(n);
   const bgFor = arena => ({ dock: 'rome', fjord: 'norway', vault: 'venice', speakeasy: 'chicago', closet: 'office',
@@ -454,7 +455,7 @@
     const box = $('dt-end'); box.hidden = false;
     box.innerHTML = `<div class="dendin ${won ? 'won' : 'lost'}"><img src="/assets/v2/smudge/${won ? 'boot' : 'sleep'}.webp${X.OS.VER}" alt="">
       <h2>${fill(pick(won ? W.win : W.lose), { rival: rival.name })}</h2><p class="taunt">${((won ? W.rival_lose : W.rival_win) || {})[rival.id] || ''}</p><p class="score">${st.sides[0].rounds} rounds to ${st.sides[1].rounds} \u00b7 ${rival.name}</p>
-      <p class="mut">${won ? lines.join('<br>') : `Against ${rival.name} on ${L.name}: won ${d.rec[lvl][0]}, lost ${d.rec[lvl][1]}. ${left} first wins still out there.`}</p>
+      <p class="mut">${won ? lines.join('<br>') : `Against ${rival.name} on ${L.name}: won ${d.rec[lvl][0]}, lost ${d.rec[lvl][1]}. You have ${left} first-win prizes left to earn.`}</p>
       <div class="row"><button class="btn" id="dt-again">Play again</button><button class="btn ghost" id="dt-leave">Back to Duels</button></div></div>`;
     $('dt-again').onclick = () => { box.hidden = true; open(true); };
     $('dt-leave').onclick = () => { box.hidden = true; close(); };
@@ -502,7 +503,7 @@
       const got = E.captainCall(R(), st, 0); if (!got) return;
       X.SND('levelup'); banner(fill(W.captain_banner, { you: nm(got) }), 'you'); say(fill(W.captain_you, { you: nm(got) }));
       drawAll(); };
-    $('dt-quit').onclick = () => { if (busy) return; if (st && !st.over && (st.round > 1 || st.turn > 0) && !confirm('Leave this duel? Practice keeps no score of it.')) return; close(); };
+    $('dt-quit').onclick = () => { if (busy) return; if (st && !st.over && (st.round > 1 || st.turn > 0) && !confirm('Leave this duel? It will not count as a win or a loss.')) return; close(); };
     $('dt-info').onclick = e => { if (e.target.closest('.dix') || e.target === $('dt-info')) $('dt-info').classList.remove('on'); };
     $('duel').addEventListener('pointerdown', e => { if (!e.target.closest('.dinfo,.dc')) $('dt-info').classList.remove('on'); }, true);
     addEventListener('resize', () => { if (tableOpen && path) { drawTrail(false); setBackdrop(st.arena); } });

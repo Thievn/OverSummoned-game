@@ -1,5 +1,5 @@
 {
- "_note": "Fable, F7. Smudge narrates; rivals and heroes may speak for themselves. {you} is a hero's short name, {n} a number, {call} the stat, {calls} the round's three, {rival} the opponent.",
+ "_note": "Rule (Dean, 27 Nov): anything that tells the player what to do or what something does is PLAIN English. Jokes are only for commentary (round results, big hits, win/lose) and rival lines.",
  "calls": {
   "attack": "Attack",
   "defense": "Defense",
@@ -13,19 +13,17 @@
   "Careful"
  ],
  "level_text": [
-  "Plays whatever it draws and hopes.",
-  "Counts properly. No tricks.",
-  "Saves cards for the right turn and walks away from rounds it cannot win."
+  "Plays cards without much thought.",
+  "Plays the best cards it can each turn.",
+  "Saves cards for the right turn and gives up rounds it cannot win."
  ],
  "round_start": [
-  "Round {n}. Smudge will be asking for {calls}, in that order.",
-  "Round {n}: {calls}. Worth a think before the first card.",
-  "{calls}. That is round {n}. Smudge has sharpened the quill."
+  "Round {n}. The three turns will use {calls}.",
+  "Round {n}: {calls}."
  ],
  "your_turn": [
-  "{call} now.",
-  "This turn Smudge is counting {call}.",
-  "Next up: {call}."
+  "This turn uses {call}.",
+  "{call} this turn."
  ],
  "you_round": [
   "Yours. Smudge stamps it before anyone argues.",
@@ -48,8 +46,7 @@
   "{you} came out of that smaller than they went in."
  ],
  "pass": [
-  "Nothing played. The energy keeps.",
-  "A quiet turn. Smudge approves of patience, in others."
+  "You played nothing. Your energy is saved for next turn."
  ],
  "win": [
   "Yours. Smudge closes the ledger on it.",
@@ -61,30 +58,30 @@
   "That one goes to {rival}. Smudge has seen worse.",
   "{rival} takes it. The deck is already reshuffled."
  ],
- "paid": "+{n} gold. The first {max} repeat wins of the day pay.",
- "unpaid": "The purse is empty until tomorrow. That one was for the love of it.",
+ "paid": "+{n} gold. You get paid for {max} repeat wins a day.",
+ "unpaid": "No gold this time. You have used up today's paid wins.",
  "first": "First win against {rival} on {level}: {n} gold.",
- "cant_energy": "{you} costs more energy than you have left.",
- "cant_three": "Three cards a turn. Smudge only has so much table.",
- "cant_lock": "{you} is locked this turn. Someone on the other side did that.",
- "stand_you": "You sat this round out. {rival} can have it; the energy is yours.",
- "stand_them": "{rival} has folded the round. Spend to be safe, or save it.",
+ "cant_energy": "Not enough energy to play {you}.",
+ "cant_three": "You can play up to 3 cards a turn.",
+ "cant_lock": "{you} is locked and cannot be played this turn.",
+ "stand_you": "You sat out the rest of this round. You get 3 extra energy next round.",
+ "stand_them": "{rival} is sitting out the rest of this round.",
  "stand_banner": "{rival} sat out",
- "captain_you": "{you} steps forward. Play them this turn or the call is wasted.",
- "captain_them": "{rival} is calling on {you}. Expect a large number.",
- "captain_banner": "{you} leads",
- "sum_idle": "Tap a card to play it. Smudge is counting {call}.",
- "sum_down": "Sitting this round out. {n} extra energy next round.",
- "swap_title": "Put back up to {n}",
- "swap_text": "Anything you put back goes under your deck and comes round again.",
- "swap_keep": "Keep these",
- "swap_go": "Put back {n}",
+ "captain_you": "Captain's Call is on. Play {you} this turn to get the bonus points.",
+ "captain_them": "{rival} used Captain's Call on {you}.",
+ "captain_banner": "Captain: {you}",
+ "sum_idle": "Tap a card to play it. This turn uses {call}.",
+ "sum_down": "You are sitting out this round. +{n} energy next round.",
+ "swap_title": "Swap up to {n} cards",
+ "swap_text": "Tap any cards you do not want. You will draw new ones, and the old ones go back into your deck.",
+ "swap_keep": "Keep all",
+ "swap_go": "Swap {n}",
  "lesson": [
-  "This is your energy. Seven more arrives every turn, and what you do not spend keeps.",
-  "Each turn Smudge counts one thing. A fast card is worth nothing when he is counting Health.",
-  "Tap a card to play it. Top right is what it scores this turn. Top left is what it costs.",
-  "Now press Ready. Both sides turn their cards over together.",
-  "Smudge carries the difference on his board and stands nearer whoever is behind. Three turns a round, three rounds to win."
+  "This is your energy. Cards cost energy to play. You get 7 more every turn, and any energy you do not use is saved for later.",
+  "Each turn uses one stat. This turn it is the one shown here. Cards only score points from that stat.",
+  "Tap a card to play it. The number in the top right is the points it scores this turn. The blue number is its energy cost.",
+  "Now press Ready. Both players show their cards at the same time.",
+  "Smudge's sign shows how far ahead the leader is. A round is 3 turns. Win 3 rounds to win the duel."
  ],
  "rival_win": {
   "tiber": "Something in the river laughs. It goes on for a while.",
