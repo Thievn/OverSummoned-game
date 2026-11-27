@@ -2,14 +2,20 @@
  {
   "id": "eagleton",
   "rarity": "absurd",
-  "win": 0.57,
+  "win": 0.575,
   "move": "gamble"
  },
  {
   "id": "jazzmin",
   "rarity": "uncommon",
-  "win": 0.562,
+  "win": 0.556,
   "move": "spark"
+ },
+ {
+  "id": "tut",
+  "rarity": "legendary",
+  "win": 0.555,
+  "move": "burn"
  },
  {
   "id": "marco",
@@ -18,21 +24,15 @@
   "move": "spark"
  },
  {
-  "id": "tut",
-  "rarity": "legendary",
-  "win": 0.547,
-  "move": "burn"
- },
- {
   "id": "emu",
   "rarity": "absurd",
-  "win": 0.545,
+  "win": 0.542,
   "move": "spark"
  },
  {
   "id": "morwenna",
   "rarity": "rare",
-  "win": 0.545,
+  "win": 0.541,
   "move": "twist"
  },
  {
@@ -44,128 +44,128 @@
  {
   "id": "joost",
   "rarity": "uncommon",
-  "win": 0.53,
+  "win": 0.529,
   "move": "gamble"
  },
  {
   "id": "ajolote",
   "rarity": "legendary",
-  "win": 0.525,
+  "win": 0.529,
   "move": "mend"
- },
- {
-  "id": "chad",
-  "rarity": "common",
-  "win": 0.518,
-  "move": "gamble"
- },
- {
-  "id": "sterling",
-  "rarity": "rare",
-  "win": 0.517,
-  "move": "peek"
  },
  {
   "id": "blackbear",
   "rarity": "epic",
-  "win": 0.512,
+  "win": 0.521,
   "move": "sap"
  },
  {
-  "id": "bjorn",
-  "rarity": "common",
-  "win": 0.51,
-  "move": "boost"
+  "id": "gaius",
+  "rarity": "rare",
+  "win": 0.513,
+  "move": "guard"
  },
  {
   "id": "roxy",
   "rarity": "rare",
-  "win": 0.508,
+  "win": 0.51,
   "move": "sap"
- },
- {
-  "id": "sable",
-  "rarity": "rare",
-  "win": 0.505,
-  "move": "lock"
  },
  {
   "id": "zorp",
   "rarity": "unhinged",
-  "win": 0.505,
+  "win": 0.51,
   "move": "twist"
  },
  {
-  "id": "dusty",
-  "rarity": "uncommon",
-  "win": 0.504,
-  "move": "burn"
+  "id": "bjorn",
+  "rarity": "common",
+  "win": 0.508,
+  "move": "boost"
  },
  {
-  "id": "napoleon",
-  "rarity": "epic",
-  "win": 0.504,
-  "move": "boost"
+  "id": "sable",
+  "rarity": "rare",
+  "win": 0.507,
+  "move": "lock"
+ },
+ {
+  "id": "chad",
+  "rarity": "common",
+  "win": 0.505,
+  "move": "gamble"
  },
  {
   "id": "maya",
   "rarity": "uncommon",
-  "win": 0.503,
-  "move": "mend"
- },
- {
-  "id": "jacko",
-  "rarity": "uncommon",
-  "win": 0.502,
+  "win": 0.504,
   "move": "mend"
  },
  {
   "id": "beep",
   "rarity": "epic",
-  "win": 0.502,
+  "win": 0.503,
   "move": "twist"
  },
  {
-  "id": "hootsworth",
+  "id": "napoleon",
+  "rarity": "epic",
+  "win": 0.502,
+  "move": "boost"
+ },
+ {
+  "id": "selene",
+  "rarity": "epic",
+  "win": 0.502,
+  "move": "lock"
+ },
+ {
+  "id": "albrecht",
+  "rarity": "rare",
+  "win": 0.502,
+  "move": "burn"
+ },
+ {
+  "id": "sterling",
   "rarity": "rare",
   "win": 0.499,
   "move": "peek"
  },
  {
-  "id": "dolly",
+  "id": "hootsworth",
   "rarity": "rare",
   "win": 0.497,
+  "move": "peek"
+ },
+ {
+  "id": "dusty",
+  "rarity": "uncommon",
+  "win": 0.497,
+  "move": "burn"
+ },
+ {
+  "id": "troffea",
+  "rarity": "uncommon",
+  "win": 0.496,
   "move": "lift"
  },
  {
-  "id": "gaius",
-  "rarity": "rare",
-  "win": 0.497,
-  "move": "guard"
- },
- {
-  "id": "kenji",
-  "rarity": "rare",
-  "win": 0.496,
-  "move": "boost"
- },
- {
-  "id": "lola",
+  "id": "vesper",
   "rarity": "epic",
   "win": 0.495,
   "move": "sap"
  },
  {
-  "id": "albrecht",
-  "rarity": "rare",
-  "win": 0.495,
-  "move": "burn"
+  "id": "max",
+  "rarity": "epic",
+  "win": 0.493,
+  "move": "ramp"
  },
  {
-  "id": "selene",
-  "rarity": "epic",
+  "id": "edith",
+  "rarity": "rare",
   "win": 0.492,
-  "move": "lock"
+  "move": "lift"
  },
  {
   "id": "vincenzo",
@@ -174,51 +174,57 @@
   "move": "tax"
  },
  {
+  "id": "lola",
+  "rarity": "epic",
+  "win": 0.491,
+  "move": "sap"
+ },
+ {
+  "id": "kenji",
+  "rarity": "rare",
+  "win": 0.491,
+  "move": "boost"
+ },
+ {
   "id": "rex",
   "rarity": "uncommon",
   "win": 0.49,
   "move": "rally"
  },
  {
-  "id": "vesper",
-  "rarity": "epic",
-  "win": 0.49,
-  "move": "sap"
- },
- {
-  "id": "flap",
-  "rarity": "rare",
-  "win": 0.489,
-  "move": "boost"
- },
- {
   "id": "madjack",
   "rarity": "unhinged",
-  "win": 0.489,
+  "win": 0.49,
   "move": "boost"
  },
  {
-  "id": "astrid",
+  "id": "jacko",
+  "rarity": "uncommon",
+  "win": 0.488,
+  "move": "mend"
+ },
+ {
+  "id": "gladius",
   "rarity": "rare",
-  "win": 0.487,
+  "win": 0.488,
   "move": "rally"
  },
  {
   "id": "pam",
   "rarity": "common",
-  "win": 0.487,
+  "win": 0.486,
   "move": "top"
  },
  {
-  "id": "edith",
+  "id": "astrid",
   "rarity": "rare",
   "win": 0.485,
-  "move": "lift"
+  "move": "rally"
  },
  {
-  "id": "florida",
-  "rarity": "absurd",
-  "win": 0.485,
+  "id": "flap",
+  "rarity": "rare",
+  "win": 0.484,
   "move": "boost"
  },
  {
@@ -228,75 +234,69 @@
   "move": "ramp"
  },
  {
+  "id": "kevin",
+  "rarity": "common",
+  "win": 0.48,
+  "move": "top"
+ },
+ {
+  "id": "dolly",
+  "rarity": "rare",
+  "win": 0.48,
+  "move": "lift"
+ },
+ {
+  "id": "florida",
+  "rarity": "absurd",
+  "win": 0.48,
+  "move": "boost"
+ },
+ {
   "id": "doug",
   "rarity": "common",
-  "win": 0.482,
+  "win": 0.479,
   "move": "guard"
  },
  {
   "id": "brokk",
   "rarity": "uncommon",
-  "win": 0.482,
+  "win": 0.476,
   "move": "boost"
- },
- {
-  "id": "kevin",
-  "rarity": "common",
-  "win": 0.482,
-  "move": "top"
- },
- {
-  "id": "troffea",
-  "rarity": "uncommon",
-  "win": 0.479,
-  "move": "lift"
- },
- {
-  "id": "max",
-  "rarity": "epic",
-  "win": 0.479,
-  "move": "ramp"
- },
- {
-  "id": "gladius",
-  "rarity": "rare",
-  "win": 0.477,
-  "move": "rally"
- },
- {
-  "id": "raspawtin",
-  "rarity": "unhinged",
-  "win": 0.475,
-  "move": "boost"
- },
- {
-  "id": "quack",
-  "rarity": "epic",
-  "win": 0.47,
-  "move": "tax"
- },
- {
-  "id": "stella",
-  "rarity": "legendary",
-  "win": 0.464,
-  "move": "rally"
  },
  {
   "id": "bella",
   "rarity": "rare",
-  "win": 0.461,
+  "win": 0.475,
   "move": "rally"
+ },
+ {
+  "id": "quack",
+  "rarity": "epic",
+  "win": 0.474,
+  "move": "tax"
+ },
+ {
+  "id": "raspawtin",
+  "rarity": "unhinged",
+  "win": 0.467,
+  "move": "boost"
  },
  {
   "id": "cleocatra",
   "rarity": "legendary",
-  "win": 0.454,
+  "win": 0.466,
   "move": "lift"
+ },
+ {
+  "id": "stella",
+  "rarity": "legendary",
+  "win": 0.452,
+  "move": "rally"
  },
  {
   "id": "slapton",
   "rarity": "legendary",
-  "win": 0.437,
+  "win": 0.427,
   "move": "rally"
  }
 ]

@@ -308,3 +308,19 @@ Why O9b first: it costs nothing in art and fixes "I had to stop and read every c
 - Also tuned by the sim: energy stays 7/+7/20, `premium` to -0.0195, gamble cap to 0.30, and the Black Forest arena's weights evened out because Luck was the most-called stat overall.
 
 **Still owner-only.** `duel.open` is still False in rules/duel.py.
+
+## O9c, O9e and O9f done (27 Nov, Opus)
+
+**O9c, the look.**
+- **Nine arena backdrops**, one per arena, drawn by Grok through the art queue (jobs 298 to 307) to the brief Dean approved on the dock: busy at the top and bottom, calm and dark through the middle where the cards sit. Each is cut twice, `assets/v2/duel/arena_<id>.webp` (1080 wide, portrait) and `arena_<id>_w.webp` (1600x900, the middle band, for landscape and desktop). The table picks the cut by screen shape and falls back to the old card picture if a file is missing. 2.1 MB for all eighteen.
+- **Six Smudge referee poses** (walk with the scoreboard, point at you, point at them, cheer, face in paw, slam the stamp), drawn from the pose Dean picked so they match. Cut out of white by flood fill from the edges (so his eyes and teeth survive), then cropped to ONE bounding box shared by all six, which is what keeps them registered when they swap. 32 to 41 KB each. The pose changes with what just happened and hops when it does; everything returns to the walk after a moment.
+- In the walking pose he is holding a board, so the score is drawn onto the board itself; in the other poses it sits on a plaque above him.
+- The backdrops are shown brighter than the old ones (0.62 against 0.42) because they are already dark where it matters.
+
+**O9e, music.** Seven new two-minute instrumental loops (ancient, noir, north, gothic, romp, sun, neon), generated at 120s with `instrumental: true` and prompts that ask for no finale and no fade. 12,600 ElevenLabs credits; the account is at about 27,000 of 40,000 for the month. Each arena now has a pair: it opens on one and moves to the other at the start of round three. `MUSIC` in js/sound.js carries the `d_*` set; `TUNE` in js/duel.js pairs them to arenas.
+
+**O9f, phones.** Tested at 360x640, 390x844 and 1366x768. On a screen under 720px tall the rows tighten and the ink trail drops from four bends to two, so the middle never gets squeezed. A short buzz on placing a card, on a round ending and at the end of a duel, where the phone supports it and reduced motion is off. The game's own top bar and nav are hidden while the table is open.
+
+**Art queue lesson worth keeping:** ten art jobs fired at once mostly stall, because they all commit to the same branch and collide. Three at a time, with a pause between, worked. If a job sits at `running` for more than a few minutes it is dead: set it back to `queued` and POST it again.
+
+**Still to do here:** the trail is drawn flat (no wet-ink texture, drips or flood on a round win), card backs and table felts are named in the duelist road but not built, and the duel words are still stand-ins for F7.

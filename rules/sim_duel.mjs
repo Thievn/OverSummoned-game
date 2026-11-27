@@ -1,6 +1,7 @@
 // Duel balance check (O8). Runs the real engine (js/duel-engine.mjs) house AI against house AI.
 //   node rules/sim_duel.mjs            all tests, 10,000 duels each
-//   node rules/sim_duel.mjs 2000       quicker
+//   node rules/sim_duel.mjs 2000       quicker, but the per-hero marks need 10,000 to be meaningful
+//                                      (about 60 duels a hero at 2,000, where the noise band is wider than the mark)
 // Pass marks are PLAN-CITY-DUELS.md 3.3. Exits 1 if any mark fails.
 import fs from 'fs';
 import path from 'path';

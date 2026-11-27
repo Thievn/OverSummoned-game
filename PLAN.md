@@ -453,3 +453,6 @@ Groups, Moves, duel numbers, the engine and the sim. Detail and results at the b
 
 ### 27 Nov: O9 done (Opus)
 The practice table, owner only (`duel.open` in rules/duel.py). Detail at the bottom of `PLAN-CITY-DUELS.md`. Waiting on Dean to play it before O10.
+
+### 27 Nov: the duel second pass is done (Opus)
+Music, readability, the lesson, the Gwent and Destiny mechanics, nine painted arenas, six Smudge poses, phone polish. Detail at the bottom of `PLAN-CITY-DUELS.md`. Still owner-only (`duel.open` in rules/duel.py). Next: F7 for the words, then O10 ranked.

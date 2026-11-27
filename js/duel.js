@@ -9,11 +9,19 @@
   const fill = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o && o[k] != null ? o[k] : '');
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const first = n => (n || '').split(' ')[0];
+  const buzz = ms => { try { if (navigator.vibrate && !matchMedia('(prefers-reduced-motion: reduce)').matches) navigator.vibrate(ms); } catch (e) { } };
   const nm = id => (X.R.duel.short || {})[id] || first(hero(id).name);
   const STATK = ['attack', 'defense', 'health', 'speed', 'luck'];
   const SHORT = { attack: 'Atk', defense: 'Def', health: 'Hp', speed: 'Spd', luck: 'Lck' };
   // each arena fights to the battle theme nearest its era (missing files fall back to the raid theme)
-  const TUNE = { dock: 'b_ancient', speakeasy: 'b_noir', vault: 'b_noir', fjord: 'b_north', blackforest: 'b_gothic', outback: 'b_romp', bondi: 'b_romp' };
+  // two tracks per arena: the duel opens on the first and moves to the second at round three, so the back
+  // half of a long duel does not sound like the front. Missing files fall back to the raid theme in sound.js.
+  const TUNE = {
+    dock: ['b_ancient', 'd_ancient'], speakeasy: ['b_noir', 'd_noir'], vault: ['d_noir', 'b_noir'],
+    fjord: ['b_north', 'd_north'], blackforest: ['b_gothic', 'd_gothic'], outback: ['d_sun', 'b_romp'],
+    bondi: ['b_romp', 'd_sun'], closet: ['d_neon', 'b_romp'], archive: ['d_neon', 'b_gothic'],
+  };
+  const tuneFor = () => { const t = TUNE[st.arena] || ['battle']; return t[st.round >= 3 ? 1 : 0] || t[0]; };
 
   async function load() {
     if (!E) E = await import('/js/duel-engine.mjs' + X.OS.VER);
@@ -157,13 +165,23 @@
       captains: [d.captain || d.deck[0], rival.captain] });
     mine = []; busy = false; tableOpen = true;
     const t = $('duel'); t.hidden = false; document.body.classList.add('induel');
-    t.querySelector('.dtbg').style.backgroundImage = `url(/assets/v2/bg/${bgFor(st.arena)}.webp)`;
+    setBackdrop(st.arena);
     $('dt-them').textContent = rival.name + ' \u00b7 ' + D().levels[lvl].name;
     if (!again) history.pushState({ v: 'duels', duel: 1 }, '', '#duels');
-    if (X.OS.Sound) X.OS.Sound.music(TUNE[st.arena] || 'battle');
-    drawTrail(true); drawAll(); say(rival.text);
+    if (X.OS.Sound) X.OS.Sound.music(tuneFor());
+    pose('walk'); drawTrail(true); drawAll(); say(rival.text);
     if (lessonOn()) { st.swap = false; setTimeout(lessonStart, 1200); }
     else setTimeout(offerSwap, 900);
+  }
+
+  // the arena's own picture, in the cut that fits the screen; the old card picture if it is not there yet
+  function setBackdrop(arena) {
+    const n = $('duel').querySelector('.dtbg'), wide = innerWidth > innerHeight;
+    const want = `/assets/v2/duel/arena_${arena}${wide ? '_w' : ''}.webp${X.OS.VER}`;
+    const img = new Image();
+    img.onload = () => { n.style.backgroundImage = `url(${want})`; n.classList.add('painted'); };
+    img.onerror = () => { n.style.backgroundImage = `url(/assets/v2/bg/${bgFor(arena)}.webp)`; n.classList.remove('painted'); };
+    img.src = want;
   }
 
   // ---- swap two, before the first turn
@@ -279,7 +297,7 @@
     if (st.sides[0].locked.includes(id)) { X.SND('deny'); return say(fill(W.cant_lock, { you: name })); }
     if (mine.length >= D().per_turn) { X.SND('deny'); return say(W.cant_three); }
     if (!E.legal(R(), st, 0, mine.concat(id))) { X.SND('deny'); return say(fill(W.cant_energy, { you: name })); }
-    mine.push(id); X.SND('flip'); drawSlots(); drawHand(); drawEnergy(); lessonDid('placed');
+    mine.push(id); X.SND('flip'); buzz(8); drawSlots(); drawHand(); drawEnergy(); lessonDid('placed');
   }
   function unplace(id) { if (busy) return; mine = mine.filter(x => x !== id); X.SND('back'); drawSlots(); drawHand(); drawEnergy(); }
 
@@ -292,6 +310,20 @@
   }
   function say(t) { const n = $('dt-say'); n.classList.remove('in'); void n.offsetWidth; n.textContent = t; n.classList.add('in'); }
 
+  // ------------------------------------------------------------------ Smudge the referee
+  // Six drawings, same size and feet position, so swapping one for another reads as a pose change.
+  // Everything but `walk` goes back to `walk` after a moment.
+  const POSE = { walk: 'walk', you: 'point_you', them: 'point_them', cheer: 'cheer', sulk: 'sulk', stamp: 'stamp' };
+  let poseT = null;
+  function pose(name, hold) {
+    const img = $('dt-smudge').querySelector('img'), f = POSE[name] || POSE.walk;
+    const src = `/assets/v2/duel/smudge_${f}.webp${X.OS.VER}`;
+    const box = $('dt-smudge');
+    if (img.getAttribute('src') !== src) { img.src = src; box.classList.remove('hop'); void box.offsetWidth; box.classList.add('hop'); }
+    box.className = 'dsmudge p-' + name + (box.classList.contains('lean') ? ' lean' : '');
+    clearTimeout(poseT); if (hold) poseT = setTimeout(() => pose('walk'), hold);
+  }
+
   // ------------------------------------------------------------------ the ink trail and Smudge on it
   // The trail is drawn in the box's own pixels (not stretched), so the ink stays round and the split between
   // the two colours can be set in real lengths.
@@ -299,7 +331,8 @@
   function drawTrail(fresh) {
     const svg = $('dt-trail'), r = svg.getBoundingClientRect(); tw = Math.max(80, r.width); th = Math.max(80, r.height);
     const rad = Math.min(th / 10, tw * 0.09), x0 = rad + 6, x1 = tw - rad - 6, mid = tw / 2;
-    const rows = 4, top = th * 0.08, step = (th * 0.84) / rows;
+    const rows = th < 150 ? 2 : th < 220 ? 3 : 4;      // a short screen gets fewer bends, so the ink has room
+    const top = th * 0.08, step = (th * 0.84) / rows;
     let d = `M${mid} 0 V${top} H${x1}`;
     for (let i = 0; i < rows; i++) { const y = top + step * (i + 1), right = i % 2 === 0;
       d += ` C${(right ? x1 : x0) + (right ? 1 : -1) * step * 0.7} ${y - step} ${(right ? x1 : x0) + (right ? 1 : -1) * step * 0.7} ${y} ${right ? x1 : x0} ${y}`;
@@ -317,6 +350,7 @@
     setMarker(fresh ? 0.5 : markerF, st ? st.sides[0].pts - st.sides[1].pts : 0);
   }
   function moveMarker(gap, total) { const scale = Math.max(30, total * 0.6); const f = 0.5 - Math.max(-0.46, Math.min(0.46, gap / scale * 0.5)); setMarker(f, gap); }
+  // he points at whoever just scored, cheers a round won, despairs at one lost, slams the stamp at the end
   function setMarker(f, gap) {
     if (!path) return; markerF = f; const L = plen * f, p = path.getPointAtLength(L), m = $('dt-smudge');
     const svg = $('dt-trail'); m.style.left = (svg.offsetLeft + p.x * svg.clientWidth / tw) + 'px'; m.style.top = (svg.offsetTop + p.y * svg.clientHeight / th) + 'px';
@@ -365,6 +399,7 @@
     const sum = sc.board.map(b => b.reduce((t, x) => t + x.val, 0));
     sum.forEach((s, side) => { if (s > sc.add[side]) floatText(side, '-' + (s - sc.add[side]) + ' burn', 'down'); });
     await wait(500);
+    if (sc.add[0] !== sc.add[1]) pose(sc.add[0] > sc.add[1] ? 'you' : 'them', 1800);
     await countUp(sc.pts.map((p, i) => p - sc.add[i]), sc.pts);
     const bestMine = sc.board[0].reduce((b, x) => !b || x.val > b.val ? x : b, null);
     if (bestMine && bestMine.val >= 30) say(fill(pick(W.big), { you: nm(bestMine.id), n: bestMine.val }));
@@ -373,10 +408,10 @@
     await wait(650);
     const rd = ev.find(e => e.t === 'round'), end = ev.find(e => e.t === 'end');
     if (rd) {
-      X.SND('stamp'); $('dt-smudge').classList.add('stampit'); setTimeout(() => $('dt-smudge').classList.remove('stampit'), 700);
+      X.SND('stamp'); buzz(rd.winner === 0 ? [20, 60, 30] : 40); pose(rd.winner === 0 ? 'cheer' : 'sulk', 2200);
       say(pick(rd.winner === 0 ? W.you_round : W.them_round));
       banner(rd.winner === 0 ? 'Round to you' : 'Round to the house', rd.winner === 0 ? 'you' : 'them');
-      drawTop(); await wait(1500);
+      drawTop(); if (X.OS.Sound) X.OS.Sound.music(tuneFor()); await wait(1500);
     }
     if (end) return finish(end.winner === 0);
     // clear the table and deal
@@ -413,7 +448,7 @@
     const now2 = roadLevel(d.xp || 0);
     if (now2 > was) { lines.push(`<b>Duelist ${now2}.</b> ${nextPrize(now2)}`); }
     X.bump(won ? 'duels_won' : 'duels_lost'); X.save(true);
-    X.SND(won ? 'win' : 'deny');
+    X.SND(won ? 'win' : 'deny'); buzz(won ? [30, 50, 30, 50, 60] : 90); pose('stamp');
     const left = D().levels.length * D().rivals.length - Object.values(d.beat).reduce((t, a) => t + a.length, 0);
     const box = $('dt-end'); box.hidden = false;
     box.innerHTML = `<div class="dendin ${won ? 'won' : 'lost'}"><img src="/assets/v2/smudge/${won ? 'boot' : 'sleep'}.webp${X.OS.VER}" alt="">
@@ -469,7 +504,7 @@
     $('dt-quit').onclick = () => { if (busy) return; if (st && !st.over && (st.round > 1 || st.turn > 0) && !confirm('Leave this duel? Practice keeps no score of it.')) return; close(); };
     $('dt-info').onclick = e => { if (e.target.closest('.dix') || e.target === $('dt-info')) $('dt-info').classList.remove('on'); };
     $('duel').addEventListener('pointerdown', e => { if (!e.target.closest('.dinfo,.dc')) $('dt-info').classList.remove('on'); }, true);
-    addEventListener('resize', () => { if (tableOpen && path) drawTrail(false); });
+    addEventListener('resize', () => { if (tableOpen && path) { drawTrail(false); setBackdrop(st.arena); } });
   }
 
   window.DuelUI = {
