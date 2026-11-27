@@ -918,3 +918,34 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .flairdot.on{box-shadow:0 0 0 3px rgba(242,185,53,.35)}.flairdot.lockd{opacity:.35;cursor:not-allowed}
 .flairdot.f-foil{border-color:#fff;background:linear-gradient(100deg,#f2b935,#3fe0c5 50%,#c08cff)}
 .linkbtn.warn{color:#ff8c7a}.linkbtn.warn:hover{color:#ff5a46}
+/* ---------------------------------------------------------------- the account page: a header, three tabs, colour */
+.acthead{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;justify-content:space-between;
+  background:linear-gradient(135deg,#1a2550,#121a3a 55%,#0d1430);border:2px solid var(--line);border-radius:18px;padding:1rem 1.2rem;margin:.2rem 0 1rem;position:relative;overflow:hidden}
+.acthead::after{content:"";position:absolute;right:-60px;top:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(63,224,197,.16),transparent 65%);pointer-events:none}
+.acwho{display:flex;align-items:center;gap:1rem;min-width:0}
+.face.xl{width:104px;height:104px;border:4px solid var(--gold);flex:none;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.acwho h2{margin:0;font-size:2rem;line-height:1.05}
+.acwho .pname>b{font:inherit}
+.acwho .pname .ttl{font-size:.74rem}
+.acwho .mut{margin:.2rem 0 .5rem;font-size:.86rem}
+.actiles{display:grid;grid-template-columns:repeat(4,minmax(92px,1fr));gap:.5rem;flex:1;min-width:280px}
+.actile{background:rgba(8,12,26,.6);border:2px solid var(--line);border-radius:14px;padding:.6rem .4rem;text-align:center}
+.actile b{display:block;font:400 1.5rem/1 "Lilita One",sans-serif;color:#fff}
+.actile span{font:800 .62rem Nunito;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.actile.lvl b{color:var(--gold)}.actile.her b{color:var(--teal)}.actile.sum b{color:#c08cff}.actile.tim b{color:#ffcd6b}
+.actabs{margin-bottom:.9rem}.actabs .chip{font-size:.85rem;padding:.4em .9em}
+.skgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.7rem;margin-top:.5rem}
+.skrow{background:#0b1020;border:2px solid var(--line);border-radius:14px;padding:.6rem .7rem}
+.skrow b{font-size:.95rem}.skrow b em{font-style:normal;color:var(--gold)}
+.skrow .spread span{font-size:.82rem;color:var(--mut)}
+.skbar{height:8px;border-radius:99px;background:#060a16;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;margin:.4rem 0 .3rem}
+.skbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#2c7a49,#6fe394)}
+.skrow .mut{font-size:.78rem}.skrow .btn{margin-top:.4rem}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:.45rem;margin-top:.5rem}
+.statgrid .stat{background:#0b1020;padding:.55rem .6rem}
+.statgrid .stat b{font-size:1.1rem}.statgrid .stat span{font-size:.64rem;line-height:1.2;display:block}
+.panel.col .statgrid .stat b{color:#8fd3ff}.panel.wrk .statgrid .stat b{color:#6fe394}
+.panel.gld .statgrid .stat b{color:var(--gold)}.panel.fgt .statgrid .stat b{color:#ff9a5a}
+.panel.col{border-color:#2a4a6e}.panel.wrk{border-color:#2c5a3e}.panel.gld{border-color:#6a5420}.panel.fgt{border-color:#6a3a28}
+@media(max-width:700px){.acthead{gap:.8rem;padding:.8rem}.face.xl{width:76px;height:76px;border-width:3px}.acwho h2{font-size:1.5rem}
+  .actiles{grid-template-columns:repeat(2,1fr);min-width:0;width:100%}.actile b{font-size:1.25rem}}

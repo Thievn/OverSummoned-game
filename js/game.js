@@ -174,7 +174,7 @@
   // a sheet is a step in history too, so Back closes it
   const sheetEl = () => document.querySelector('#modal .sheet');
   const modal = { open(node, cls) { $('modal-body').innerHTML = ''; $('modal-body').appendChild(node); sheetEl().className = 'sheet' + (cls ? ' ' + cls : ''); sheetEl().scrollTop = 0; if (!$('modal').classList.contains('on')) { $('modal').classList.add('on'); history.pushState({ v: (history.state && history.state.v) || 'home', sheet: 1 }, ''); } },
-    close() { if (!$('modal').classList.contains('on')) return; $('modal').classList.remove('on'); if (history.state && history.state.sheet) { closing = true; history.back(); } } };
+    close() { if (!$('modal').classList.contains('on')) return; $('modal').classList.remove('on'); if (inRaid) { inRaid = null; tune(); } if (history.state && history.state.sheet) { closing = true; history.back(); } } };
   $('modal-x').onclick = modal.close; $('modal').addEventListener('click', e => { if (e.target === $('modal')) modal.close(); });
   const line = ev => { const l = OS.voice[S.mode][ev] || OS.voice[S.mode].idle; return l[Math.floor(Math.random() * l.length)]; };
   const fmt = s => s >= 3600 ? Math.floor(s / 3600) + 'h ' + Math.floor(s % 3600 / 60) + 'm' : s >= 60 ? Math.floor(s / 60) + 'm ' + Math.floor(s % 60) + 's' : Math.ceil(s) + 's';
@@ -253,7 +253,11 @@
   }
   // the music follows where you are: a battle theme on Raids, the place's own tune while watching Smudge work, the archive theme elsewhere
   const PLACETUNE = { dock: 'med', vault: 'med', bondi: 'sun', outback: 'sun', fjord: 'north', blackforest: 'north', speakeasy: 'jazz', closet: 'jazz' };
-  function tune() { if (!OS.Sound) return; const j = S.jobs[0]; OS.Sound.music(current === 'raids' ? 'raid' : current === 'jobs' && j && PLACETUNE[j.place] ? PLACETUNE[j.place] : 'home'); }
+  // each boss fights to its own era: picked when you go in, back to the shuffled battle pool when you come out
+  const BOSSTUNE = { tiber: 'b_ancient', tony: 'b_noir', vanguard: 'b_romp', gary: 'b_romp', nephew: 'b_noir', well: 'b_gothic', antlers: 'b_north', brenda: 'b_romp' };
+  let inRaid = null;
+  function tune() { if (!OS.Sound) return; const j = S.jobs[0];
+    OS.Sound.music(inRaid ? (BOSSTUNE[inRaid] || 'battle') : current === 'raids' ? 'battle' : current === 'jobs' && j && PLACETUNE[j.place] ? PLACETUNE[j.place] : 'home'); }
   history.replaceState({ v: 'home' }, '', location.pathname + location.search + '#home');
   addEventListener('popstate', e => {
     if (closing) { closing = false; const q = queued; queued = null; if (q) show(q[0], q[1]); return; }
@@ -886,6 +890,7 @@
   // the three you sent, named like people rather than a headcount: "Astrid", "Astrid & Kevin", "Astrid & co."
   const teamName = t => t.length < 2 ? (t.length ? short(t[0]) : 'Nobody') : t.length === 2 ? short(t[0]) + ' & ' + short(t[1]) : short(t[0]) + ' & co.';
   function runRaid(b, B, team, pots) {
+    inRaid = b.id; tune();
     S.tickets--; if (S.tickets === RD.tickets - 1) S.ticketT = now(); save(true);
     const p = places[b.place], t = effStats(team, B), maxhp = Math.round(teamStats(team).health * RD.hp_mult * (B.weak === 'health' ? RD.weak_mult : B.resist === 'health' ? RD.resist_mult : 1));
     const st = { hp: maxhp, bhp: b.hp, fury: 0, furyAmt: 0, shield: 0, shieldAmt: 0, round: 0 }, diff = RD.room_diff[p.tier] || 100, lineMs = RD.line_ms || 1300;
@@ -1071,35 +1076,92 @@
     petList.forEach(d => { const row = el('div', 'frow', `<div><b>${esc(d.name)}</b><span class="mut">Linked ${new Date(d.linked).toLocaleDateString()}${d.seen ? ' · last seen ' + new Date(d.seen).toLocaleDateString() : ' · not used yet'}</span></div>`);
       row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
   let NOTES = [];   // the update notes, newest first (loaded further down)
-  function renderAccount() { renderPet();
-    $('ac-me').innerHTML = `<i class="face lg" style="${faceStyle(me.profile.avatar)}"></i><div><b>${esc(me.profile.username)}</b><span class="mut">${me.profile.avatar && OS.heroes[me.profile.avatar] ? 'Wearing ' + OS.heroes[me.profile.avatar].name + '’s face' : 'Wearing Smudge’s face'}</span></div>`;
-    $('ac-me').appendChild(btn('small ghost', 'Change picture', faceSheet));
-    $('ac-me').appendChild(btn('small ghost', 'Title and colour', lookSheet));
-    $('ac-ver').textContent = NOTES[0] ? 'Beta ' + NOTES[0].v : '';
-    const up = $('ac-up'); up.innerHTML = ''; const em = el('label', 'kv', '<span>Email me update notes</span>'), eb = el('input'); eb.type = 'checkbox'; eb.checked = !!me.profile.email_updates;
-    eb.onchange = async () => { const on = eb.checked, ok = await Cloud.setProfile({ email_updates: on }); if (!ok) { eb.checked = !on; return toast('That did not save. Try again.'); } me.profile.email_updates = on; toast(on ? 'Done. Smudge writes when the game updates, and only then.' : 'No more update emails.'); };
-    em.appendChild(eb); up.appendChild(em); up.appendChild(el('p', 'mut', 'A short note from Smudge when the game updates. Nothing else, ever.')); up.lastChild.style.cssText = 'font-size:.85rem;margin:.3rem 0 .7rem';
-    up.appendChild(btn('small ghost', 'What changed lately', () => notesSheet()));
-    $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>${me.profile.founder ? '<div class="kv"><span>Title</span><b>Founding Clerk</b></div>' : ''}`;
-    const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv soon"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Coming soon'}</b></div>
-      <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links through your browser, below.</p>`;
-    const st = $('ac-settings'); st.innerHTML = ''; const voice = el('div', 'kv', '<span>Smudge\'s voice</span>'), sel = el('select'); MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
-    sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); }; voice.appendChild(sel); st.appendChild(voice);
-    if (OS.Sound) { const c0 = OS.Sound.config();
-      const tog = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'checkbox'; i.checked = !!c0[key]; i.onchange = () => OS.Sound.config({ [key]: i.checked }); l.appendChild(i); st.appendChild(l); };
-      const sld = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'range'; i.min = 0; i.max = 100; i.value = Math.round(c0[key] * 100); i.oninput = () => OS.Sound.config({ [key]: i.value / 100 }); i.onchange = () => OS.Sound.play('click'); l.appendChild(i); st.appendChild(l); };
-      tog('Sound effects', 'sfx'); sld('Sound volume', 'vol'); tog('Music', 'music'); sld('Music volume', 'mvol'); }
-    const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
-    const as = el('label', 'kv', '<span>Smudge summons by himself when the ink is full</span>'), ab = el('input'); ab.type = 'checkbox'; ab.checked = !!S.autoSummon; ab.onchange = () => { S.autoSummon = ab.checked; save(true); }; as.appendChild(ab); st.appendChild(as);
-    $('ac-stats').innerHTML = R.skills.map(s => `<div class="kv"><span>${s}${rebirths(s) ? ' ' + '★'.repeat(rebirths(s)) : ''}</span><b>Level ${level(s)}${level(s) >= 99 && rebirths(s) < RB.max ? ` <button class="btn small" data-rb="${s}">Rebirth</button>` : ''}</b></div>`).join('') + `<div class="kv"><span>Hauls</span><b>${OS.num(S.actions)}</b></div><div class="kv"><span>Summons</span><b>${S.summons}</b></div>`;
-    const L = S.life || {}, best = Object.keys(S.roster).sort((x, y) => power(y) - power(x))[0], mTot = Object.values(S.mastery).reduce((t, m) => t + Object.values(m).reduce((q, x) => q + lvlOf(x) - 1, 0), 0);
+  let acTab = 'you';
+  function renderAccount() {
+    renderPet();
+    const P = me.profile, L = S.life || {};
+    // ---- the header: who you are, as everyone else sees you, with the four numbers worth bragging about
+    $('ac-face').style.cssText = faceStyle(P.avatar);
+    $('ac-name').innerHTML = `<span class="pname${FLAIRS.includes(P.flair) ? ' f f-' + P.flair : ''}"><b>${esc(P.username)}</b>${TITLE[P.title] ? `<em class="ttl">${TITLE[P.title].name}</em>` : ''}</span>`;
+    $('ac-sub').textContent = [P.founder ? 'Founding Clerk' : null, 'Joined ' + (P.created_at ? new Date(P.created_at).toLocaleDateString() : 'today'),
+      P.avatar && OS.heroes[P.avatar] ? 'Wearing ' + short(P.avatar) + '’s face' : 'Wearing Smudge’s face'].filter(Boolean).join(' · ');
+    const look = $('ac-look'); look.innerHTML = '';
+    look.append(btn('small ghost', 'Change picture', faceSheet), btn('small ghost', 'Title and colour', lookSheet));
+    const tile = (k, v, lab) => `<div class="actile ${k}"><b>${v}</b><span>${lab}</span></div>`;
+    $('ac-top').innerHTML = tile('lvl', totalLevel(), 'Total level') + tile('her', Object.keys(S.roster).length + ' / ' + Object.keys(OS.heroes).length, 'Arrivals met')
+      + tile('sum', OS.num(S.summons || 0), 'Summons') + tile('tim', fmt(L.seconds || 0), 'Time played');
+
+    // ---- tabs, so nothing is three screens down
+    const T = [['you', 'You'], ['set', 'Settings'], ['stats', 'Your ledger']];
+    $('ac-tabs').innerHTML = ''; T.forEach(([k, n]) => { const b = el('button', 'chip' + (acTab === k ? ' on' : ''), n); b.onclick = () => { acTab = k; renderAccount(); }; $('ac-tabs').appendChild(b); });
+    T.forEach(([k]) => $('acp-' + k).hidden = acTab !== k);
+
+    if (acTab === 'you') {
+      $('ac-you').innerHTML = `<div class="kv"><span>Name</span><b>${esc(P.username)}</b></div><div class="kv"><span>Email</span><b>${esc(me.email || '')}</b></div>
+        <div class="kv"><span>Joined</span><b>${P.created_at ? new Date(P.created_at).toLocaleDateString() : 'today'}</b></div>
+        ${P.founder ? '<div class="kv"><span>Title held for good</span><b style="color:var(--gold)">Founding Clerk</b></div>' : ''}`;
+      const has = q => (me.providers || []).includes(q);
+      $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div>
+        <div class="kv soon"><span>Steam</span><b>${P.steam_id ? 'Connected' : 'Coming soon'}</b></div>
+        <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Steam opens when the game reaches Steam. Until then the desktop pet links through your browser.</p>`;
+    }
+
+    if (acTab === 'set') {
+      const st = $('ac-settings'); st.innerHTML = '';
+      const voice = el('div', 'kv', '<span>Smudge’s voice</span>'), sel = el('select');
+      MODES.forEach(m => sel.appendChild(new Option(m === 'unhinged' ? 'Unhinged (18+)' : OS.cap(m), m))); sel.value = S.mode;
+      sel.onchange = () => { if (sel.value === 'unhinged' && !confirm('Unhinged Smudge swears. A lot. Adults only. Turn it on?')) { sel.value = S.mode; return; } S.mode = sel.value; Cloud.setProfile({ voice: S.mode }); save(true); toast(line('idle')); };
+      voice.appendChild(sel); st.appendChild(voice);
+      if (OS.Sound) { const c0 = OS.Sound.config();
+        const tog = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'checkbox'; i.checked = !!c0[key]; i.onchange = () => OS.Sound.config({ [key]: i.checked }); l.appendChild(i); st.appendChild(l); };
+        const sld = (label, key) => { const l = el('label', 'kv', `<span>${label}</span>`), i = el('input'); i.type = 'range'; i.min = 0; i.max = 100; i.value = Math.round(c0[key] * 100); i.oninput = () => OS.Sound.config({ [key]: i.value / 100 }); i.onchange = () => OS.Sound.play('click'); l.appendChild(i); st.appendChild(l); };
+        tog('Sound effects', 'sfx'); sld('Sound volume', 'vol'); tog('Music', 'music'); sld('Music volume', 'mvol'); }
+      const ac = el('label', 'kv', '<span>Open crates the moment they land</span>'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.autoCrate; cb.onchange = () => { S.autoCrate = cb.checked; save(true); }; ac.appendChild(cb); st.appendChild(ac);
+      const as = el('label', 'kv', '<span>Smudge summons by himself when the ink is full</span>'), ab = el('input'); ab.type = 'checkbox'; ab.checked = !!S.autoSummon; ab.onchange = () => { S.autoSummon = ab.checked; save(true); }; as.appendChild(ab); st.appendChild(as);
+      $('ac-ver').textContent = NOTES[0] ? 'Beta ' + NOTES[0].v : '';
+      const up = $('ac-up'); up.innerHTML = '';
+      const em = el('label', 'kv', '<span>Email me update notes</span>'), eb = el('input'); eb.type = 'checkbox'; eb.checked = !!P.email_updates;
+      eb.onchange = async () => { const on = eb.checked, ok = await Cloud.setProfile({ email_updates: on }); if (!ok) { eb.checked = !on; return toast('That did not save. Try again.'); } P.email_updates = on; toast(on ? 'Done. Smudge writes when the game updates, and only then.' : 'No more update emails.'); };
+      em.appendChild(eb); up.appendChild(em);
+      const note = el('p', 'mut', 'A short note from Smudge when the game updates. Nothing else, ever.'); note.style.cssText = 'font-size:.85rem;margin:.3rem 0 .7rem'; up.appendChild(note);
+      up.appendChild(btn('small ghost', 'What changed lately', () => notesSheet()));
+    }
+
+    if (acTab !== 'stats') return;
+    // ---- the ledger: skills with their own bars, then everything counted, in colour
+    const box = $('ac-stats'); box.innerHTML = '';
+    const skills = el('div', 'panel'); skills.innerHTML = '<h3>Trades</h3>';
+    const sg = el('div', 'skgrid');
+    R.skills.forEach(k => {
+      const lv = level(k), rb = rebirths(k), cur = S.xp[k] || 0, at = lv > 1 ? R.xp_table[lv - 1] : 0, next = R.xp_table[lv] || cur, pc = lv >= 99 ? 100 : Math.max(0, Math.min(100, (cur - at) / Math.max(1, next - at) * 100));
+      const w = el('div', 'skrow'); w.innerHTML = `<div class="spread"><b>${k}${rb ? ' <em>' + '★'.repeat(rb) + '</em>' : ''}</b><span>Level ${lv}</span></div>
+        <div class="skbar"><i style="width:${pc}%"></i></div><span class="mut">${OS.num(Math.floor(cur))} xp</span>`;
+      if (lv >= 99 && rb < RB.max) w.appendChild(btn('small', 'Rebirth', () => rebirth(k)));
+      sg.appendChild(w);
+    });
+    skills.appendChild(sg); box.appendChild(skills);
+
+    const best = Object.keys(S.roster).sort((a, c) => power(c) - power(a))[0], mTot = Object.values(S.mastery).reduce((t, m) => t + Object.values(m).reduce((q, x) => q + lvlOf(x) - 1, 0), 0);
     const gearOwned = Object.values(OS.items).filter(i => i.kind === 'gear' && owns(i.id)).length, gearAll = Object.values(OS.items).filter(i => i.kind === 'gear').length, kits = Object.keys(S.roster).filter(id => kitCount(id) >= 3).length;
     const groups = [
-      ['Collection', [['Heroes met', Object.keys(S.roster).length], ['Cards at top level', Object.keys(S.roster).filter(id => cardLevel(S.roster[id]) >= R.card.max_level).length], ['Cabinet pieces', Object.keys(S.cabinet).length + ' / ' + treasures.length], ['Gear found', gearOwned + ' / ' + gearAll], ['Full kits worn', kits], ['Duplicate summons', L.dupes || 0], ['Shards in hand', S.bag.x_shard || 0]]],
-      ['Work', [['Total level', totalLevel()], ['Rebirths', rebirthTotal()], ['Hauls', OS.num(S.actions)]].concat(R.skills.filter(k => k !== 'Summoning').map(k => [k + ' hauls', OS.num(L['hauls_' + k] || 0)])).concat([['Things found', OS.num(L.finds || 0)], ['Expeditions', L.expeditions || 0], ['Things made', L.made || 0]].concat(MK.skills.map(k => [k, 'Level ' + level(k)])).concat([ ['Rare or better found', OS.num(RAR.slice(2).reduce((t, r) => t + (L['finds_' + r] || 0), 0))], ['Mastery levels', mTot], ['Contracts done', L.contracts || 0]]))],
-      ['Ink and gold', [['Ink earned', OS.num(L.ink || 0)], ['Ink spent summoning', OS.num(L.ink_spent || 0)], ['Ink bonus', '+' + Math.round((inkBonus() - 1) * 1000) / 10 + '%'], ['Stamps', OS.num(L.stamps || 0)], ['Summons', S.summons], ['Gold earned', OS.num(L.gold || 0)], ['Gold from selling', OS.num(L.gold_sold || 0)]]],
-      ['Fights and extras', [['Raids won', L.raids_won || 0], ['Bosses beaten', Object.keys(S.raids).length + ' / ' + R.raids.bosses.length], ['Strongest hero', best ? OS.heroes[best].name + ' (' + power(best) + ')' : 'nobody'], ['Crates opened', L.crates || 0], ['Tonics drunk', L.tonics || 0], ['Time played', fmt(L.seconds || 0)]]]];
-    $('ac-stats').innerHTML += groups.map(([t, rows]) => `<div class="tag" style="margin-top:.9rem">${t}</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin-top:.4rem">${rows.map(([a, v]) => `<div class="stat" style="padding:.55rem .6rem"><b style="font-size:1.05rem">${v}</b><span>${a}</span></div>`).join('')}</div>`).join('') + '<p class="mut" style="font-size:.8rem;margin-top:.7rem">Counting started when this page was added, so older ledgers begin part-way.</p>';
+      ['Collection', 'col', [['Arrivals', Object.keys(S.roster).length], ['Maxed cards', Object.keys(S.roster).filter(id => cardLevel(S.roster[id]) >= R.card.max_level).length],
+        ['Cabinet', Object.keys(S.cabinet).length + ' / ' + treasures.length], ['Gear found', gearOwned + ' / ' + gearAll], ['Full kits', kits],
+        ['Duplicates', L.dupes || 0], ['Shards', S.bag.x_shard || 0], ['Strongest', best ? short(best) : '—']]],
+      ['Work', 'wrk', [['Hauls', OS.num(S.actions)], ['Finds', OS.num(L.finds || 0)], ['Expeditions', L.expeditions || 0], ['Crafted', L.made || 0],
+        ['Rare+ found', OS.num(RAR.slice(2).reduce((t, r) => t + (L['finds_' + r] || 0), 0))], ['Mastery', mTot], ['Contracts', L.contracts || 0], ['Rebirths', rebirthTotal()]]],
+      ['Ink and gold', 'gld', [['Ink earned', OS.num(L.ink || 0)], ['Ink spent', OS.num(L.ink_spent || 0)], ['Ink bonus', '+' + Math.round((inkBonus() - 1) * 1000) / 10 + '%'],
+        ['Stamps', OS.num(L.stamps || 0)], ['Summons', OS.num(S.summons)], ['Gold earned', OS.num(L.gold || 0)], ['Sold for', OS.num(L.gold_sold || 0)], ['Gold spent', OS.num(L.gold_spent || 0)]]],
+      ['Fights', 'fgt', [['Raids won', L.raids_won || 0], ['Bosses', Object.keys(S.raids).length + ' / ' + RD.bosses.length], ['Crates', L.crates || 0],
+        ['Tonics', L.tonics || 0], ['Gifts', L.gifts || 0], ['Time played', fmt(L.seconds || 0)]]]];
+    groups.forEach(([t, cls, rows]) => {
+      const pan = el('div', 'panel ' + cls); pan.style.marginTop = '.9rem'; pan.innerHTML = `<h3>${t}</h3>`;
+      const g = el('div', 'statgrid');
+      rows.forEach(([a, v]) => g.appendChild(el('div', 'stat', `<b>${v}</b><span>${a}</span>`)));
+      pan.appendChild(g); box.appendChild(pan);
+    });
+    const foot = el('p', 'mut'); foot.style.cssText = 'font-size:.8rem;margin:.7rem 0 0';
+    foot.textContent = 'Counting started when this page was added, so an older ledger begins part-way.';
+    box.appendChild(foot);
   }
   $('ac-stats').addEventListener('click', e => { const b = e.target.closest('[data-rb]'); if (b) rebirth(b.dataset.rb); });
   $('ac-out').onclick = async () => { await save(true); Cloud.signOut(); };
@@ -1151,13 +1213,10 @@
   // face is found from the rig (the eyes if it has them, the head part if not) and shown by background position.
   function faceStyle(id) {
     const e = id && OS.heroes[id] && OS.rig['h_' + id];
-    if (!e) return `background-image:url(/assets/v2/smudge/stamp.webp${OS.VER});background-size:215% auto;background-position:56% 6%`;
-    const hd = (e.parts || []).find(p => p.name === 'head') || { pivot: [e.size[0] / 2, e.size[1] * .3], offset: [0, 0] }; let cx, cy, box;
-    const pv = hd.pivot || [e.size[0] / 2, e.size[1] * .3], of = hd.offset || [pv[0] - 60, Math.max(0, pv[1] - 130)];
-    if (e.face && e.face.eyes && e.face.eyes.length > 1) { const [a, b] = e.face.eyes; box = Math.max(Math.abs(b[0] - a[0]) * 4.4, 100); cx = (a[0] + b[0]) / 2; cy = (a[1] + b[1]) / 2 + box * .06; }
-    else { const h = Math.max(pv[1] - of[1], 90); box = h * 1.05; cx = pv[0]; cy = of[1] + h * .55; }
-    box = Math.min(box, e.size[0] - 1); const cl = v => Math.min(1, Math.max(0, v)) * 100;
-    return `background-image:url(${OS.img('heroes', id)});background-size:${(e.size[0] / box * 100).toFixed(1)}% auto;background-position:${cl((cx - box / 2) / (e.size[0] - box)).toFixed(1)}% ${cl((cy - box / 2) / (e.size[1] - box)).toFixed(1)}%`;
+    if (!e || !e.avatar) return `background-image:url(/assets/v2/smudge/stamp.webp${OS.VER});background-size:215% auto;background-position:56% 6%`;
+    const [cx, cy, s, ar] = e.avatar, sh = s * ar, px = s < 1 ? (cx - s / 2) / (1 - s) * 100 : 50, py = sh < 1 ? (cy - sh / 2) / (1 - sh) * 100 : 50;
+    const cl = v => Math.min(100, Math.max(0, v)).toFixed(1);
+    return `background-image:url(${OS.img('heroes', id)});background-size:${(100 / s).toFixed(1)}% auto;background-position:${cl(px)}% ${cl(py)}%`;
   }
   const setFace = () => { $('av-face').style.cssText = faceStyle(me.profile.avatar); };
   setFace();

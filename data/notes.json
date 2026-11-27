@@ -1,5 +1,24 @@
 [
  {
+  "v": "0.5.3",
+  "build": "1127g",
+  "date": "2026-11-27",
+  "title": "A proper account page",
+  "added": [
+   "Your account is three tabs now, with your name, your picture and your four best numbers up top",
+   "Trades show a level bar each, and the counts are sorted and coloured",
+   "Battle music is picked at random on the Raids screen, and each boss will fight to its own era"
+  ],
+  "fixed": [
+   "Profile pictures are cut from each drawing's own face, so nobody is off-centre any more",
+   "No more scrolling to the bottom of your account to find anything"
+  ],
+  "known": [
+   "The new battle tracks are not in the build yet, so raids still use the old one",
+   "Alerts only reach you while the game is open"
+  ]
+ },
+ {
   "v": "0.5.2",
   "build": "1127f",
   "date": "2026-11-27",
