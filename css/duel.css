@@ -1,5 +1,6 @@
 /* Duels (O9): the practice table and the Duels screen. Phone first: the whole table fits one screen, no scrolling. */
 body.induel{overflow:hidden}
+body.induel .gnav,body.induel .gbar{display:none}   /* the table owns the whole screen */
 .duel{position:fixed;inset:0;z-index:900;color:#fff;overflow:hidden;touch-action:manipulation}
 .duel[hidden]{display:none}
 .dtbg{position:absolute;inset:0;background:#0b1020 center/cover no-repeat;filter:saturate(.85) brightness(.42)}
