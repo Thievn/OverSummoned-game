@@ -187,12 +187,18 @@ Each step ends with screenshots at phone and desktop width that Opus has actuall
 **Words for Fable:** F7 fifty Move names and lines, nine arena lines, the five calls, every word on the table screen and the first-duel guide. F8 the six doors, market shelves, board names, season titles. F9 guild boss, bench, requests, levels.
 **Art (Grok queue):** the city street (wide and phone), six door tiles, a duel table surface per place (nine, can reuse place backdrops darkened), the rope knot, the guild boss.
 
-## 6. Dean decides
+## 6. Decisions (Dean, 26 Nov: "we'll try this and tweak as we go", so the recommended answer stands on each)
 
-1. Training cost steps (2c): yes or no. It is the one change that touches what players already have.
-2. Does era gear count in duels, or only the hero's own kit (3.3)? Recommended: kit only at first.
-3. Deck of 12 and duels opening at 12 heroes: right for how many heroes beta players actually own?
-4. SETTLED 26 Nov: duel marks (5, one per 30 minutes), free unlimited Practice, and a 10 minute rest per hero played. Say if the rest should go.
-5. Ranked against defence decks first, live queue later: agreed?
-6. Stakes against the house only, none between friends (3.6b): agreed?
-7. The name. "Duels" is a working word. F7 will bring three options in Smudge's voice.
+1. Training cost steps (2c): YES. Nobody loses a point they already have.
+2. Gear in duels: the hero's own three-piece kit only. Era gear stays out until the sim says otherwise.
+3. Deck of 12; duels open at 12 heroes. Opus: in O8, count how many heroes each beta account owns and tell Dean if most are under 12.
+4. Duel marks (5, one per 30 minutes), free unlimited Practice, 10 minute rest per hero played.
+5. Ranked against saved defence decks first; live duels by challenge later.
+6. Stakes against the house only; none between friends.
+7. The name: "Duels" until F7 brings options.
+
+All of these are numbers in `rules/build.py`. Expect them to move after Dean plays O9.
+
+## 7. Start here (Opus)
+
+Read PLAN.md, then this file. Back up to the secondary GitHub repo first. Do O8 and stop: show Dean the group table and the sim results before any screen. Then O9, Practice only, and stop again for Dean to play it. Do not start ranked, the city or the market until he has said the table is fun.
