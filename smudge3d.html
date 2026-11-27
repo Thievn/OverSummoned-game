@@ -7,8 +7,9 @@
 html,body{margin:0;height:100%;background:#0b1020;color:#e8edfb;font:600 14px/1.3 system-ui,sans-serif;-webkit-user-select:none;user-select:none}
 #stage{position:fixed;inset:0;background:#0b1020 center/cover no-repeat;touch-action:none}
 #stage canvas{display:block}
-.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:linear-gradient(transparent,rgba(11,16,32,.92) 35%)}
-.bar button{font:800 13px system-ui;border:2px solid #2a3560;background:var(--ink);color:#fff;border-radius:999px;padding:8px 13px}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:6px;align-items:center;background:linear-gradient(transparent,rgba(11,16,32,.92) 35%)}
+.bar .row{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center}.bar i{font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-right:4px}
+.bar button{font:800 12px system-ui;border:2px solid #2a3560;background:var(--ink);color:#fff;border-radius:999px;padding:6px 11px}
 .bar button.on{border-color:var(--teal);color:var(--teal)}
 .top{position:fixed;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;opacity:.85}
 .top b{color:var(--gold)}#msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
@@ -16,27 +17,50 @@ html,body{margin:0;height:100%;background:#0b1020;color:#e8edfb;font:600 14px/1.
 <script type="importmap">{"imports":{"three":"/js/vendor/three/three.module.min.js"}}</script>
 </head><body>
 <div id="stage"></div>
-<div class="top"><span><b>Smudge 3D</b> · test page, not in the game yet · drag to turn him</span><span id="fps"></span></div>
+<div class="top"><span><b>Smudge 3D</b> · test page, not in the game yet · drag to turn him · outfits, gear and fur</span><span id="fps"></span></div>
 <div id="msg">Loading Smudge…</div>
 <div class="bar" id="bar"></div>
 <script type="module">
 import { mount } from '/js/smudge3d.js';
 const stage = document.getElementById('stage'), bar = document.getElementById('bar');
 const BG = ['archive', 'dock', 'bondi', 'fjord', 'speakeasy', 'vault', 'closet', 'outback', 'blackforest'];
-let st = { look: 'toon', clip: 'idle', bg: 0, spin: true }, s = null, ang = 0;
+// models: the same rig in three outfits. Every accessory is placed in metres against a bone, so one set of
+// numbers fits all three.
+const MODEL = { cloak: ['Cloak', '/assets/v2/3d/smudge_cloak.glb'], bare: ['No outfit', '/assets/v2/3d/smudge_tail.glb'], speakeasy: ['1920s outfit', '/assets/v2/3d/smudge_1920s.glb'] };
+const W = '/assets/v2/3d/wear/';
+const GEAR = {
+  satchel: ['Satchel', { src: W + 'satchel.glb', bone: 'Spine01', pos: [0, 0.01, -0.1], rot: [0.12, Math.PI, 0], scale: 0.33 }],
+  crown:   ['Crown', { src: W + 'crown.glb', bone: 'Head', pos: [0, 0.16, -0.015], rot: [-0.15, 0, 0], scale: 0.15 }],
+  glasses: ['Glasses', { src: W + 'glasses.glb', bone: 'Head', pos: [0, 0.07, -0.02], rot: [0.08, 0, 0], scale: 0.21, clear: true }],
+  rocket:  ['Rocket pack', { src: W + 'rocket.glb', bone: 'Spine01', pos: [0, 0.03, -0.14], rot: [0, Math.PI, 0], scale: 0.32, flames: [[-0.053, -0.151, 0.048], [0.05, -0.151, 0.049]] }],
+  rod:     ['1920s rod', { src: W + 'rod.glb', bone: 'RightHand', pos: [-0.005, 0.112, 0.228], rot: [0, Math.PI / 2, 0], scale: 0.55 }],
+  shovel:  ['Roman spade', { src: W + 'shovel.glb', bone: 'LeftHand', pos: [0.01, -0.13, 0.02], scale: 0.5 }],
+};
+const FUR = { natural: ['Natural fur', null], plum: ['Plum', { hue: -0.5, sat: 0.7, val: 0.85 }], arctic: ['Arctic', { hue: 0, sat: 0.12, val: 1.35 }],
+  golden: ['Golden', { hue: 0.18, sat: 1.25, val: 1.15 }], midnight: ['Midnight', { hue: 2.6, sat: 0.55, val: 0.55 }] };
+let st = { model: 'cloak', look: 'toon', clip: 'idle', bg: 0, spin: true, fur: 'natural', gear: { satchel: true } }, s = null, ang = 0, busy = 0;
 async function build() {
-  if (s) s.dispose();
-  s = await mount(stage, { toon: st.look !== 'plain', ink: st.look === 'toon' ? 0.006 : 0, clip: st.clip, zoom: innerWidth < 600 ? 1.75 : 1.35, lookAt: innerWidth < 600 ? 0.4 : 0.48 });
+  const my = ++busy; document.getElementById('msg').style.display = '';
+  if (st.model === 'cloak' && st.gear.rocket) st.gear.satchel = false;     // both go on his back
+  const wear = Object.keys(st.gear).filter(k => st.gear[k]).map(k => GEAR[k][1]);
+  const el = document.createElement('div'); el.style.cssText = 'position:absolute;inset:0';
+  const n = await mount(el, { src: MODEL[st.model][1], wear, furColor: FUR[st.fur][1], toon: st.look !== 'plain', ink: st.look === 'toon' ? 0.006 : 0, clip: st.clip, zoom: innerWidth < 600 ? 1.75 : 1.35, lookAt: innerWidth < 600 ? 0.4 : 0.48 });
+  if (my !== busy) { n.dispose(); return; }
+  if (s) s.dispose(); stage.innerHTML = ''; stage.appendChild(el); s = n; window.S = s;
   document.getElementById('msg').style.display = 'none'; s.turn(ang);
 }
 function setBg() { stage.style.backgroundImage = `url(/assets/v2/scenes/${BG[st.bg]}.webp)`; }
-function btn(label, on, fn) { const b = document.createElement('button'); b.textContent = label; if (on) b.className = 'on'; b.onclick = () => { fn(); ui(); }; bar.appendChild(b); }
+function row(t) { const r = document.createElement('div'); r.className = 'row'; if (t) r.innerHTML = `<i>${t}</i>`; bar.appendChild(r); return r; }
+function btn(r, label, on, fn) { const b = document.createElement('button'); b.textContent = label; if (on) b.className = 'on'; b.onclick = () => { fn(); ui(); }; r.appendChild(b); }
 function ui() {
   bar.innerHTML = '';
-  [['toon', 'Cartoon + outline'], ['flat', 'Cartoon, no outline'], ['plain', 'Plain 3D']].forEach(([k, l]) => btn(l, st.look === k, () => { st.look = k; build(); }));
-  ['idle', 'walk', 'run'].forEach(k => btn(k[0].toUpperCase() + k.slice(1), st.clip === k, () => { st.clip = k; s && s.play(k); }));
-  btn('Background: ' + BG[st.bg], false, () => { st.bg = (st.bg + 1) % BG.length; setBg(); });
-  btn(st.spin ? 'Stop turning' : 'Turn slowly', st.spin, () => { st.spin = !st.spin; });
+  let r = row('Outfit'); Object.entries(MODEL).forEach(([k, [l]]) => btn(r, l, st.model === k, () => { st.model = k; build(); }));
+  r = row('Gear'); Object.entries(GEAR).forEach(([k, [l]]) => btn(r, l, !!st.gear[k], () => { st.gear[k] = !st.gear[k]; if (k === 'rocket' && st.gear.rocket) st.gear.satchel = false; if (k === 'satchel' && st.gear.satchel) st.gear.rocket = false; build(); }));
+  r = row('Fur'); Object.entries(FUR).forEach(([k, [l]]) => btn(r, l, st.fur === k, () => { st.fur = k; build(); }));
+  r = row('Move'); ['idle', 'walk', 'run'].forEach(k => btn(r, k[0].toUpperCase() + k.slice(1), st.clip === k, () => { st.clip = k; s && s.play(k); }));
+  btn(r, 'Scene: ' + BG[st.bg], false, () => { st.bg = (st.bg + 1) % BG.length; setBg(); });
+  btn(r, st.spin ? 'Stop turning' : 'Turn', st.spin, () => { st.spin = !st.spin; });
+  btn(r, st.look === 'toon' ? 'Outline on' : 'Outline off', st.look === 'toon', () => { st.look = st.look === 'toon' ? 'flat' : 'toon'; build(); });
 }
 let drag = null;
 stage.addEventListener('pointerdown', e => { drag = e.clientX; st.spin = false; ui(); });
