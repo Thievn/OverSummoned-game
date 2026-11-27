@@ -47,3 +47,10 @@
 ## Decided (Dean, 27 Nov)
 - Smudge is not named in the headline; he is introduced in the sentence under it, and shown in the scene beside it.
 - No hero count.
+
+## Done (Opus, 27 Nov, build 1127p)
+- L1 to L5 shipped. Backups: origin `backup-pre-landing-2026-11-27`, secondary repo `backup-oversummoned-game-pre-landing-2026-11-27`.
+- Screenshots: Arrivals, a raid (room 1 of the Tiber Thing), and the Work screen (used instead of Home because it matches the caption "They keep working while you are away").
+- Analytics events: `invite_click` on every "Get my invite" press, `sign_up` on success (with `where`: hero or bottom). The old `beta_signup` event still fires so older reports keep working.
+- tools/run_seo.py FAQ filler fixed so it can't eat the section after the FAQ.
+- Page length: about 6 screens on desktop, 7 to 8 on a phone.
