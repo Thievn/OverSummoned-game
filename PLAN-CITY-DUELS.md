@@ -82,19 +82,36 @@ Examples for tone (Fable writes all fifty in F7): Kevin, "Circling Back": Exit, 
 
 The ranked board never includes Practice.
 
-### 3.6 Rest (Dean's idea, and the second half of the fix)
+### 3.6 How much you can play (Dean, 26 Nov: an energy limit, and people who want to keep playing still can)
 
-Every hero you actually played in a ranked duel rests 20 minutes, win or lose (same `S.recover` field as raids, same gold patch-up). Heroes left in the deck unplayed do not. No tickets: rest is the limiter, so a player with thirty raised heroes plays more duels an hour than a player with twelve. Full rewards on the first ten ranked wins a day; rating always counts.
+- **Duel marks:** ranked costs 1 mark. Hold 5, one comes back every 30 minutes. Their own meter, NOT raid tickets: sharing would make every duel cost a raid.
+- **Practice is free and unlimited.** Anyone who wants to keep playing always can; it just pays nothing after the first three a day and never touches rating.
+- **Rest stays, shorter:** every hero you actually played in a ranked duel rests 10 minutes (same `S.recover` field and gold patch-up as raids). Marks limit the player; rest is what makes a second deck worth raising.
 
-### 3.7 The table (how it looks)
+### 3.6b Stakes (gold on the table)
 
-Phone first, one screen, no scrolling.
-- Top: their name plate with title and name colour, their three slots face down until the flip.
-- Middle: **the rope**. One wide bar, your colour (gold) from the left, theirs (rift violet) from the right, the knot sliding as points land. Both totals count up digit by digit. Under it, five round pips, and three call chips for this round with the live one lit and pulsing.
-- Bottom: your three slots, your hand of five fanned, an energy bar of fifteen pips that fill and drain, a Ready button, a timer ring.
-- On the flip: cards turn one at a time fastest first, the called stat lifts off the card and flies into the rope, green if a Move raised it, red if it was sapped (same colours as `OS.spread`). Move names stamp across the card. Round won: the rope snaps to your side and a pip fills.
-- A narrow ticker of text runs under the rope: Smudge calling the match, and the heroes answering in their own voices.
-- Sound: reuse the battle pool; each arena uses its place's theme.
+- Ranked only. Before the duel pick a stake: none, 100, 500 or 2,000 gold, the top one capped by bracket (Copper 100, Silver 500, Gold and Open 2,000).
+- You stake against the house, never against the other player: win and get 1.8 times the stake back, lose and it is gone. The missing tenth is a gold sink.
+- The owner of a defence deck risks nothing and wins nothing from a stake. They did not agree to the bet.
+- No stakes in live duels between friends or guildmates, ever. Gold buys things on the market, so a bet between two players is a way to pass gold to a second account or sell it. Friend duels are for pride and the board.
+- Daily cap on gold staked (start at 10,000). Stakes and payouts happen on the server in the same transaction as the result.
+- Other prizes: rating, a small fixed gold and a crate chance on the first wins of the day, season titles and frames. No shards, no stats.
+- Not legal advice: gold cannot be bought or cashed out today, which is what keeps this a game mechanic. If gold is ever sold for real money, stakes must be looked at again before that ships.
+
+### 3.7 The table (how it looks) — built around the screenshot Dean sent of Cards, the Universe and Everything
+
+What that screen does well, and we keep: their three slots at the top and yours at the bottom with open ground between; a winding path joining the two sides, half in each colour, with a marker that walks it carrying the score; energy shown as a number with "+ per turn" beside it; your points and theirs as two fat coloured bars; hand along the bottom, deck in the corner, round counter under the hand; cards dragged up into a slot.
+What we change so it is ours, not theirs:
+- **The marker is Smudge.** He walks the path holding a signboard with the gap between the scores, toward whoever is losing ground, and reacts (reuse `lookAt`, `sulk`, `hello` and the cheer). When a round ends he reaches one end and plants the sign.
+- **The path is an ink trail**, the same ink he summons with, drawn fresh at the start of each duel (SVG path, stroke animates in). Your half gold, their half rift violet. Not their yellow and pink, not their exact snake.
+- **The call sits on the signpost at the middle of the trail:** this turn's stat, with the round's other two calls small beside it. This is the thing their game does not have.
+- **Backdrop:** each hero already has an era backdrop (`bg`). Each duel picks one at random from the 24 heroes in the two decks, darkened so cards read. No picture is generated per duel: it would cost money, take seconds and could come out wrong. New backdrops are drawn once through the Grok queue and reused.
+- **Playing a card:** drag it up or tap it then tap a slot; it lifts, tilts and drops in with a thud. Tap a played card to take it back until you press Ready. Cards you cannot afford are dimmed with the missing energy shown.
+- **The flip:** cards turn fastest first, the called stat lifts off each card and flies down the trail into Smudge's sign, green if a Move raised it, red if it was sapped. Move names stamp across the card. Both point bars count up digit by digit.
+- **Energy:** the number, "+5" beside it, and fifteen pips that fill and drain.
+- A narrow line of text under the trail: Smudge calling it, heroes answering in their own voices.
+- Phone first, one screen, no scrolling. On desktop the same table centred with the hand wider and the text line to the side.
+- Sound: each backdrop's place theme, else the battle pool.
 
 ### 3.8 The words (ties to the Grok plan Dean approved)
 
@@ -175,6 +192,7 @@ Each step ends with screenshots at phone and desktop width that Opus has actuall
 1. Training cost steps (2c): yes or no. It is the one change that touches what players already have.
 2. Does era gear count in duels, or only the hero's own kit (3.3)? Recommended: kit only at first.
 3. Deck of 12 and duels opening at 12 heroes: right for how many heroes beta players actually own?
-4. Rest of 20 minutes per hero played, no tickets: or would you rather tickets and no rest?
+4. SETTLED 26 Nov: duel marks (5, one per 30 minutes), free unlimited Practice, and a 10 minute rest per hero played. Say if the rest should go.
 5. Ranked against defence decks first, live queue later: agreed?
-6. The name. "Duels" is a working word. F7 will bring three options in Smudge's voice.
+6. Stakes against the house only, none between friends (3.6b): agreed?
+7. The name. "Duels" is a working word. F7 will bring three options in Smudge's voice.
