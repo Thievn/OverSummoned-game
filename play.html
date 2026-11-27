@@ -23,10 +23,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <meta name="theme-color" content="#080c1a">
-<link rel="stylesheet" href="/css/os.css?v=1127c">
+<link rel="stylesheet" href="/css/os.css?v=1127d">
 </head>
 <body class="game">
-<div class="boot" id="boot"><div class="boothi"><img src="/assets/v2/smudge/boot.webp?v=1127c" alt=""><img class="wink" src="/assets/v2/smudge/boot_wink.webp?v=1127c" alt=""></div><p>Opening the ledger…</p></div>
+<div class="boot" id="boot"><div class="boothi"><img src="/assets/v2/smudge/boot.webp?v=1127d" alt=""><img class="wink" src="/assets/v2/smudge/boot_wink.webp?v=1127d" alt=""></div><p>Opening the ledger…</p></div>
 <header class="gbar"><div class="wrap">
   <button class="backbtn" id="go-back" type="button" aria-label="Back" hidden>&#8249;</button>
   <a class="brand" href="/" aria-label="OverSummoned"><span class="o">O</span>ver<b>Summoned</b></a>
@@ -35,9 +35,11 @@
     <span title="Ink. Smudge spends it to summon." data-go="summon"><img src="/assets/v2/loot/x_ink.webp" alt="Ink"><b id="r-ink">0</b></span>
     <span title="Gold. Spend it in the shop." data-go="shop"><img src="/assets/v2/loot/x_gold.webp" alt="Gold"><b id="r-gold">0</b></span>
     <button class="fbbtn" id="go-feedback" type="button">Ideas or feedback?</button>
-    <button class="avatar" id="go-account" aria-label="Your account"><img src="/assets/v2/smudge/stamp.webp?v=1127c" alt=""></button>
+    <button class="bell" id="go-bell" type="button" aria-label="Alerts"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a1.5 1.5 0 0 0-1.5 1.5v.7A6 6 0 0 0 6 10v4.2l-1.6 2.4A.9.9 0 0 0 5.2 18h13.600a.9.9 0 0 0 .8-1.400L18 14.200V10a6 6 0 0 0-4.500-5.800v-.7A1.500 1.500 0 0 0 12 2zm-2.2 17.5a2.3 2.3 0 0 0 4.4 0z"/></svg><b id="bell-n" hidden></b></button>
+    <button class="avatar" id="go-account" aria-label="Your account"><i class="face" id="av-face"></i></button>
   </div>
 </div></header>
+<div class="upbar" id="upbar" hidden></div>
 
 <main class="wrap">
   <section class="view on" id="v-home">
@@ -86,7 +88,7 @@
         <p class="mut">Only Smudge can do this part. Every stamp is a drop of ink. Fill the circle and the book gives up one of its strangers. The more of them you have met, the more ink the next one costs.</p>
         <div class="bar"><i id="s-bar"></i></div>
         <div class="spread" style="margin:.4rem 0 .9rem"><b id="s-ink"></b><span class="mut" id="s-met"></span></div>
-        <div class="row"><button class="btn" id="s-go">Summon</button><button class="btn ghost small" id="s-stamp">Stamp the ledger (or type)</button><button class="btn ghost small" id="s-trade">Trade gold for ink</button></div>
+        <div class="row"><button class="btn" id="s-go">Summon</button><button class="btn ghost small" id="s-stamp">Stamp the ledger (or type)</button><button class="btn ghost small" id="s-trade">Buy ink</button></div>
         <h3 style="margin-top:1.2rem;font-size:1.05rem">The odds, in plain sight</h3>
         <div class="odds" id="s-odds"></div>
         <p class="mut" style="font-size:.8rem;margin-top:.6rem">These never change. No streaks, no pity, no tricks. Within a rarity every stranger is equally likely.</p>
@@ -144,11 +146,12 @@
 
   <section class="view" id="v-account"><button class="back" data-go="home">← Home</button><h2>Your account</h2>
     <div class="grid2" style="margin-top:1rem">
-      <div class="panel"><h3>You</h3><div id="ac-you"></div>
+      <div class="panel"><h3>You</h3><div class="acme" id="ac-me"></div><div id="ac-you"></div>
         <h3 style="margin-top:1.1rem">Ways to sign in</h3><div id="ac-logins"></div>
         <h3 style="margin-top:1.1rem">Desktop pet</h3><p class="mut" style="margin:.2rem 0 .6rem">Smudge can sit on your desktop and work while you type, on this same ledger. Two ways to link it, both under the pet’s Settings: press <i>Link in browser</i> there and say Yes here, or get a code here and type it in. Once per computer: a second PC links again. Every code is random, works one time and runs out after ten minutes. When the game reaches Steam you will not need a code at all.</p>
         <div id="ac-pet"></div></div>
       <div><div class="panel"><h3>Settings</h3><div id="ac-settings"></div></div>
+        <div class="panel" style="margin-top:.9rem"><div class="spread"><h3>Updates</h3><b class="mut" id="ac-ver"></b></div><div id="ac-up"></div></div>
         <div class="panel" style="margin-top:.9rem"><h3>Your ledger so far</h3><div id="ac-stats" class="mut"></div><div class="row" style="margin-top:.8rem"><button class="btn small ghost" id="ac-out">Sign out</button><button class="btn small ghost" id="ac-reset">Start over</button></div></div></div>
     </div>
   </section>
@@ -171,13 +174,13 @@
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
 <script src="/js/cloud.js"></script>
-<script src="/js/os.js?v=1127c"></script>
-<script src="/js/sound.js?v=1127c"></script>
-<script src="/js/stage.js?v=1127c"></script>
-<script src="/js/scenefx.js?v=1127c"></script>
+<script src="/js/os.js?v=1127d"></script>
+<script src="/js/sound.js?v=1127d"></script>
+<script src="/js/stage.js?v=1127d"></script>
+<script src="/js/scenefx.js?v=1127d"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1127c"></script>
-<script src="/js/game.js?v=1127c"></script>
+<script src="/js/dbcanvas.js?v=1127d"></script>
+<script src="/js/game.js?v=1127d"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
 </body>
 </html>

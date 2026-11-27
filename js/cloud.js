@@ -9,7 +9,7 @@ window.Cloud = (function () {
   C.sb = sb;
   C.session = async () => DEV ? { user: { id: 'dev', email: 'dev@local' } } : (await sb.auth.getSession()).data.session;
   C.whoami = async function () {
-    if (DEV) return C.me = { allowed: true, admin: true, email: 'dev@local', profile: { username: 'DevOtter', voice: 'salty' }, providers: ['email'] };
+    if (DEV) return C.me = { allowed: true, admin: true, email: 'dev@local', profile: { username: 'DevOtter', voice: 'salty', avatar: null, email_updates: false }, providers: ['email'] };
     const { data, error } = await sb.rpc('os2_me'); if (error) throw error; return C.me = data;
   };
   // Sends anyone without a usable account to the login page. Resolves with the account otherwise.
@@ -30,7 +30,7 @@ window.Cloud = (function () {
     const { data } = await sb.from('os2_save').select('data,rev').eq('user_id', C.user.id).maybeSingle(); C.rev = data ? +data.rev : 0; return data ? data.data : null;
   };
   // just the page number, to see whether another device has played since
-  C.peek = async function () { if (DEV) return null; const { data } = await sb.from('os2_save').select('rev').eq('user_id', C.user.id).maybeSingle(); return data ? +data.rev : null; };
+  C.peekRev = async function () { if (DEV) return null; const { data } = await sb.from('os2_save').select('rev').eq('user_id', C.user.id).maybeSingle(); return data ? +data.rev : null; };
   C.save = async function (S) {
     if (DEV) { localStorage.setItem('os2_dev', JSON.stringify(S)); return { ok: true }; }
     const { data, error } = await sb.rpc('os2_save_put', { p_data: S, p_rev: C.rev }); if (error || !data) return null; if (data.rev != null) C.rev = +data.rev; return data;

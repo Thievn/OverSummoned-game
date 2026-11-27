@@ -73,7 +73,7 @@ def head(title, desc, path, image, ld, extra_css=""):
     <a class="hide-s" href="/desktop-pet">Desktop pet</a>
     <a class="hide-s" href="https://x.com/OverSummonedHQ" target="_blank" rel="noopener">Follow on X</a>
     <a class="hide-s" href="/play">Sign in</a>
-    <a class="btn small" href="/#wishlist">Get beta access</a>
+    <a class="btn small" href="/#wishlist">Join the beta</a>
   </nav>
 </div></header>
 <main>
@@ -165,7 +165,7 @@ def hero_page(h):
       </ul>
       <p class="bio">{E(h['bio'])}</p>
       {saying}
-      <a class="btn" href="/#wishlist">Get beta access</a>
+      <a class="btn" href="/#wishlist">Join the beta</a>
     </div>
   </div>
 
@@ -189,8 +189,8 @@ def hero_page(h):
 
   <section class="hsec cta-end">
     <h2>Meet {E(name)} in the ledger</h2>
-    <p class="mut">OverSummoned is in early beta and the door is open. Drop your email and you are in, right now.</p>
-    <a class="btn" href="/#wishlist">Get beta access</a>
+    <p class="mut">OverSummoned is in closed beta. Sign up and Smudge sends your invite.</p>
+    <a class="btn" href="/#wishlist">Join the beta</a>
   </section>
 </div>
 </article>
@@ -221,7 +221,7 @@ def place_page(p):
     {'<div class="kinrow">' + folk + '</div>' if folk else '<p class="mut">Nothing with a name on it has washed up here yet.</p>'}
   </section>
   <section class="hsec cta-end"><h2>Go looking yourself</h2>
-    <p class="mut">OverSummoned is in early beta. Drop your email and you are in.</p><a class="btn" href="/#wishlist">Get beta access</a></section>
+    <p class="mut">OverSummoned is in closed beta. Sign up and Smudge sends your invite.</p><a class="btn" href="/#wishlist">Join the beta</a></section>
 </div>
 </article>
 """

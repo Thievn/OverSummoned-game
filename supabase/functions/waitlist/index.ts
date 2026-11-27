@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
 
   const email = String(b.email || '').trim().toLowerCase();
   if (email.length > 200 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    return J({ ok: false, msg: "That's not an email. That's a cry for help." }, 400);
+    return J({ ok: false, msg: 'Smudge cannot send an invite there. Check the address and try again.' }, 400);
   }
 
   const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || req.headers.get('cf-connecting-ip') || 'unknown';
@@ -45,15 +45,15 @@ Deno.serve(async (req) => {
 
   const sb = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
   const { data, error } = await sb.rpc('den_waitlist_join', { p_email: email, p_ip_hash: ipHash });
-  if (error) return J({ ok: false, msg: "The Den coughed and didn't catch it. Try again in a minute." }, 500);
+  if (error) return J({ ok: false, msg: 'Smudge dropped that one. Try again in a minute.' }, 500);
   if (data && data.code === 'slow_down') return J({ ok: false, msg: 'Easy there. Try again in a few minutes.' }, 429);
-  if (data && data.code === 'bad_email') return J({ ok: false, msg: "That's not an email. That's a cry for help." }, 400);
-  // instant access (27 Nov 2026): every address that signs up is let straight in, the way an invite lets it in
+  if (data && data.code === 'bad_email') return J({ ok: false, msg: 'Smudge cannot send an invite there. Check the address and try again.' }, 400);
+  // every address that signs up is invited at once
   const { error: inErr } = await sb.rpc('os2_beta_instant', { p_email: email });
-  if (inErr) return J({ ok: false, msg: "The Den coughed and didn't catch it. Try again in a minute." }, 500);
+  if (inErr) return J({ ok: false, msg: 'Smudge dropped that one. Try again in a minute.' }, 500);
   if (data && data.dupe) return J({ ok: true, dupe: true, open: true });
 
-  // first time: the key to them, and a note to the owner
+  // first time: the invite to them, and a note to the owner
   const [welcome] = await Promise.allSettled([sendMail(email, accessMail(email)), sendMail(NOTIFY_TO, ownerMail(email))]);
   const mailed = welcome.status === 'fulfilled' && welcome.value === true;
   if (mailed) await sb.from('den_waitlist').update({ mailed_at: new Date().toISOString() }).eq('email', email);

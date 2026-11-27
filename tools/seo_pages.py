@@ -18,7 +18,7 @@ PAGES = {
  "index.html": dict(
    path="/", index=True,
    title="OverSummoned · Free Desktop Pet and Idle Game",
-   desc="Smudge the otter lives above your taskbar and works while you type — stamping a cursed ledger, fishing and picking locks. Summon heroes out of history, one misfire at a time. In early beta: get instant access.",
+   desc="Smudge the otter lives above your taskbar and works while you type — stamping a cursed ledger, fishing and picking locks. Summon heroes out of history, one misfire at a time. In closed beta: sign up and Smudge sends your invite.",
    ogtitle="OverSummoned · A desktop pet with a filing problem",
    ogdesc="He stamped the wrong name. Now history keeps showing up. A free desktop pet and idle game powered by your typing.",
    crumbs=[("Home","/")]),

@@ -1,6 +1,6 @@
 // OverSummoned app shell. Pages and code come from the network first (so updates show at once) and
 // fall back to the last copy when offline; pictures with a version in their link are kept.
-const V = 'os-1127c';
+const V = 'os-1127d';
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(V).then(c => c.addAll(['/offline', '/css/os.css', '/assets/fonts/LilitaOne.ttf', '/assets/fonts/Nunito.ttf']).catch(() => { }))); });
 self.addEventListener('activate', e => e.waitUntil((async () => { for (const k of await caches.keys()) if (k !== V) await caches.delete(k); await self.clients.claim(); })()));
 self.addEventListener('fetch', e => {
@@ -16,3 +16,6 @@ self.addEventListener('fetch', e => {
   }
   e.respondWith(fetch(r).then(keep).catch(async () => (await caches.match(r)) || (r.mode === 'navigate' ? caches.match('/offline') : Response.error())));
 });
+// A tap on a system alert brings the game forward (or opens it).
+self.addEventListener('notificationclick', e => { e.notification.close(); const url = (e.notification.data && e.notification.data.url) || '/play';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => { const c = cs.find(x => new URL(x.url).pathname.startsWith('/play')); return c ? c.focus() : self.clients.openWindow(url); })); });

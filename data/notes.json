@@ -1,0 +1,9 @@
+[
+ {"v": "0.5.0", "build": "1127d", "date": "2026-11-26", "title": "Alerts, pictures and a tidy-up",
+  "added": ["A bell up top for friend requests and gifts", "Pick your profile picture from any hero you have met", "Update notes, which you are reading", "Update emails, if you tick the box in your account"],
+  "fixed": ["Friend requests no longer turn up unannounced", "The account picture is bigger and no longer squashed", "Changes made on another device now show up when you come back", "Card frames, the ink shop and the raid patch-up have proper names"],
+  "known": ["Alerts only reach you while the game is open", "A few heroes still talk without moving their mouths"]},
+ {"v": "0.4.0", "build": "1126", "date": "2026-11-26", "title": "Loot and gold",
+  "added": ["Card frames, bought with gold", "Buy ink with gold, a few pots a day", "Pay gold to get resting heroes back on their feet"],
+  "fixed": ["Era sets are three pieces everywhere", "Gear for the newest heroes now drops"]}
+]

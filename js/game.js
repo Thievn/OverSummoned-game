@@ -106,7 +106,7 @@
   }
   function lockedSheet(id) {
     const h = OS.heroes[id], cost = SH.cost[h.rarity], have = S.bag.x_shard || 0, d = el('div', '');
-    d.innerHTML = `<h3 style="font-size:1.5rem">Somebody you have not met</h3><p class="mut">A ${OS.cap(h.rarity)} stranger. Summoning might turn them up. Or spend shards and call them by name: the book hates that, but it works.</p>
+    d.innerHTML = `<h3 style="font-size:1.5rem">Somebody you have not met</h3><p class="mut">A ${OS.cap(h.rarity)} stranger. Summoning might turn them up. Or spend shards and call them by name. Smudge calls it cheating, but it works.</p>
       <div class="kv"><span>Shards needed</span><b>${cost}</b></div><div class="kv"><span>Shards you have</span><b>${have}</b></div>
       <p class="mut" style="font-size:.85rem">Every duplicate summon gives ${SH.per_dupe} shard. Weekly contracts pay shards too.</p>`;
     const b = btn('', have >= cost ? `Call them by name (${cost} shards)` : `${cost - have} more shards needed`, () => callByName(id)); b.disabled = have < cost; d.appendChild(b); modal.open(d);
@@ -190,14 +190,14 @@
   // crates the desktop already opened.
   async function sync() {
     if (Cloud.dev || saving || busy || document.hidden || $('modal').classList.contains('on')) return false;
-    let rev = null; try { rev = await Cloud.peek(); } catch (e) { } if (rev == null || rev <= Cloud.rev) return false;
+    let rev = null; try { rev = await Cloud.peekRev(); } catch (e) { } if (rev == null || rev <= Cloud.rev) return false;
     let d = null; try { d = await Cloud.load(); } catch (e) { } if (!d) return false;
     S = Object.assign(fresh(), d); S.v = 3; S.mode = MODES.includes(S.mode) ? S.mode : 'salty'; dirty = false; render(); return true;
   }
   setInterval(sync, 25000); addEventListener('focus', sync);
   async function flush() { while (saving) await new Promise(r => setTimeout(r, 80)); await save(true); while (saving) await new Promise(r => setTimeout(r, 80)); }
   // anything that moves between players happens on the server's copy; it answers with the new numbers and we take them as they are
-  async function srv(fn) { await flush(); busy = true; try { const r = await fn(); if (r && r.set) { Object.keys(r.set.bag || {}).forEach(k => S.bag[k] = r.set.bag[k]); if (r.set.gold != null) S.gold = r.set.gold; } return r || { r: 'Already done.' }; } catch (e) { return { r: 'The city is not answering.' }; } finally { busy = false; } }
+  async function srv(fn) { await flush(); busy = true; try { const r = await fn(); if (r && r.set) { Object.keys(r.set.bag || {}).forEach(k => S.bag[k] = r.set.bag[k]); if (r.set.gold != null) S.gold = r.set.gold; } return r || { r: 'Already done.' }; } catch (e) { return { r: 'Smudge cannot reach the city right now.' }; } finally { busy = false; } }
   Cloud.devS = () => S;
   // ---- the server rolls the dice. Every find, crate, expedition and raid prize is drawn on the server and put in its copy of the bag
   //      first; the game only shows what came back. (Local testing has no server, so it rolls here.)
@@ -274,13 +274,13 @@
   $('go-account').onclick = () => show('account');
   // beta: a note straight to the owner
   $('go-feedback').onclick = () => { const d = el('div', '');
-    d.innerHTML = `<div class="tag">Early beta</div><h3 style="font-size:1.5rem;margin:.2rem 0 .4rem">Got an idea, or found something broken?</h3><p class="mut">It goes straight to the person who makes the game. Be as blunt as you like.</p>
+    d.innerHTML = `<div class="tag">Closed beta</div><h3 style="font-size:1.5rem;margin:.2rem 0 .4rem">Got an idea, or found something broken?</h3><p class="mut">Tell Smudge. He passes every note to the person who makes the game, and it gets written down so we can get back to you. Be as blunt as you like.</p>
       <div class="seg" style="grid-template-columns:repeat(3,1fr);margin-top:.8rem"><button class="on" data-k="idea">An idea</button><button data-k="bug">Something broke</button><button data-k="other">Something else</button></div>
       <textarea id="fb-body" rows="6" maxlength="2000" placeholder="What happened, or what would you add?" style="width:100%;font:inherit;color:#fff;background:#0b1020;border:2px solid var(--line);border-radius:12px;padding:.7em .8em"></textarea><p class="ferr" id="fb-err" role="alert"></p>`;
     let kind = 'idea'; d.querySelectorAll('.seg button').forEach(b => b.onclick = () => { kind = b.dataset.k; d.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === b)); });
     const row = el('div', 'row'); row.style.justifyContent = 'center';
     row.appendChild(btn('', 'Send it', async e => { const body = d.querySelector('#fb-body').value.trim(), er = d.querySelector('#fb-err'); if (body.length < 3) { er.textContent = 'Write a little more than that.'; return; }
-      e.target.disabled = true; let r; try { const q = await Cloud.sb.rpc('os2_feedback_send', { p_kind: kind, p_body: body }); r = q.error ? { ok: false, why: 'The city is not answering.' } : q.data; } catch (x) { r = { ok: false, why: 'The city is not answering.' }; }
+      e.target.disabled = true; let r; try { const q = await Cloud.sb.rpc('os2_feedback_send', { p_kind: kind, p_body: body }); r = q.error ? { ok: false, why: 'Smudge cannot reach the city right now.' } : q.data; } catch (x) { r = { ok: false, why: 'Smudge cannot reach the city right now.' }; }
       if (r && r.ok) { modal.close(); toast('Sent. Thank you. Smudge has filed it under Important.'); } else { er.textContent = (r && r.why) || 'That did not send.'; e.target.disabled = false; } }));
     row.appendChild(btn('ghost', 'Never mind', () => modal.close())); d.appendChild(row); modal.open(d); };
   function renderTop() { $('r-ink').textContent = OS.num(S.ink); $('r-gold').textContent = OS.num(S.gold); $('r-energy').textContent = S.energy; }
@@ -510,11 +510,11 @@
   // ---- gold for ink (O6 gold sink): the rate was always in the rules; capped a day so it cannot undo the summon pacing
   function inkTrade() {
     rollDay(); const P = R.gold.ink_pack, left = Math.max(0, P.daily - (S.packs || 0)), can = Math.min(left, Math.floor(S.gold / P.gold));
-    const d = el('div', '', `<h3 style="font-size:1.4rem">Trade gold for ink</h3>
-      <p class="mut" style="font-size:.9rem;margin:.3rem 0 .8rem">${OS.num(P.gold)} gold buys ${OS.num(P.ink)} ink. The Archive's ink-seller takes up to ${P.daily} lots a day; ${left ? `${left} left today` : 'none left today. Back tomorrow'}. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
+    const d = el('div', '', `<h3 style="font-size:1.4rem">Buy ink with gold</h3>
+      <p class="mut" style="font-size:.9rem;margin:.3rem 0 .8rem">${OS.num(P.gold)} gold buys a pot of ${OS.num(P.ink)} ink. Smudge's ink-seller parts with ${P.daily} pots a day and not one more. ${left ? `${left} left today` : 'Sold out. Fresh pots tomorrow'}. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
     const row = el('div', 'row'); row.style.flexWrap = 'wrap';
-    [1, 5, 10, can].filter((n, i, a) => n > 0 && a.indexOf(n) === i && n <= can).forEach(n => row.appendChild(btn(n === can && n > 10 ? '' : 'small', `${n === can && n > 10 ? 'All ' + n : n} · ${OS.num(n * P.gold)} gold → ${OS.num(n * P.ink)} ink`, () => {
-      S.gold -= n * P.gold; S.ink += n * P.ink; S.packs = (S.packs || 0) + n; bump('gold_spent', n * P.gold); SND('coin'); save(true); render(); toast(`${OS.num(n * P.ink)} ink, fresh from the pot.`); inkTrade(); })));
+    [1, 5, 10, can].filter((n, i, a) => n > 0 && a.indexOf(n) === i && n <= can).forEach(n => row.appendChild(btn(n === can && n > 10 ? '' : 'small', `${n === can && n > 10 ? 'All ' + n + ' pots' : n === 1 ? '1 pot' : n + ' pots'} · ${OS.num(n * P.gold)} gold for ${OS.num(n * P.ink)} ink`, () => {
+      S.gold -= n * P.gold; S.ink += n * P.ink; S.packs = (S.packs || 0) + n; bump('gold_spent', n * P.gold); SND('coin'); save(true); render(); toast(`${OS.num(n * P.ink)} ink. Smudge is already eyeing the summoning circle.`); inkTrade(); })));
     if (!can) row.appendChild(el('p', 'mut', left ? 'Not enough gold for a lot.' : ''));
     d.appendChild(row); modal.open(d);
   }
@@ -622,23 +622,23 @@
   OS.frameOf = id => { const f = frameRec(id); return S.roster[id] && f[1] >= 0 && FR[f[1]] ? FR[f[1]].id : null; };
   function frameSheet(id, armed) {
     const h = OS.heroes[id], lv = cardLevel(S.roster[id]), [own, on] = frameRec(id), first = short(id);
-    const d = el('div', '', `<h3 style="font-size:1.4rem">A frame for ${h.name}</h3>
-      <p class="mut" style="margin:.2rem 0 0;font-size:.9rem">For show only. Buying a frame unlocks every frame below it, for ${first}. The better frames need ${first}'s card at a higher level first. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
+    const d = el('div', '', `<h3 style="font-size:1.4rem">Frame ${h.name}</h3>
+      <p class="mut" style="margin:.2rem 0 0;font-size:.9rem">Purely for showing off. Buy a frame and ${first} gets every frame below it too. The fancy ones wait for a higher card level, so they prove you two go back. You have <b style="color:var(--gold)">${OS.num(S.gold)} gold</b>.</p>`);
     const g = el('div', 'frpick');
     const set = i => { S.frames = S.frames || {}; S.frames[id] = [Math.max(own, i), i]; save(true); render(); };
     const opt = (i) => {
       const f = FR[i], w = el('div', 'fopt' + (i === on ? ' on' : ''));
       const card = OS.card(h, { mini: true, level: lv, frame: f ? f.id : null, noflip: true });
       let label, act = null, why = '';
-      if (i === on) label = 'In use';
-      else if (i < 0 || i <= own) { label = 'Use'; act = () => { set(i); frameSheet(id); }; }
+      if (i === on) label = 'Wearing it';
+      else if (i < 0 || i <= own) { label = 'Put it on'; act = () => { set(i); frameSheet(id); }; }
       else if (lv < f.level) { label = `Needs card level ${f.level}`; w.classList.add('lockd'); }
       else if (S.gold < f.gold) { label = `${OS.num(f.gold)} gold`; why = `${OS.num(f.gold - S.gold)} short`; }
-      else if (armed === i) { label = `Yes, spend ${OS.num(f.gold)}`; act = () => { S.gold -= f.gold; set(i); SND('coin'); bump('gold_spent', f.gold); toast(`${first} has a ${f.name} frame.`); frameSheet(id); }; }
+      else if (armed === i) { label = `Sure? ${OS.num(f.gold)} gold`; act = () => { S.gold -= f.gold; set(i); SND('coin'); bump('gold_spent', f.gold); toast(`${first} is framed in ${f.name}. Smudge approves.`); frameSheet(id); }; }
       else { label = `Buy · ${OS.num(f.gold)} gold`; act = () => frameSheet(id, i); }
       const b = btn('small' + (armed === i ? '' : ' ghost'), label, act || (() => {})); b.disabled = !act;
-      const note = i < 0 ? 'The card as it comes.' : i <= own ? 'Yours.' : `Card level ${f.level}${why ? ' · <b>' + why + '</b>' : ''}`;
-      w.append(card, el('div', 'fn', i < 0 ? 'No frame' : f.name), el('div', 'fp', note), b); g.appendChild(w);
+      const note = i < 0 ? 'Just the card.' : i <= own ? 'Paid for.' : `Card level ${f.level}${why ? ' · <b>' + why + '</b>' : ''}`;
+      w.append(card, el('div', 'fn', i < 0 ? 'Bare' : f.name), el('div', 'fp', note), b); g.appendChild(w);
     };
     opt(-1); FR.forEach((_, i) => opt(i));
     d.append(g, el('div', 'row', '')); d.lastChild.style.marginTop = '.9rem'; d.lastChild.appendChild(btn('small ghost', 'Back to the card', () => heroSheet(id)));
@@ -806,8 +806,8 @@
       c.onclick = () => { if (resting(id)) return toast(`${OS.heroes[id].name} is still recovering from the last raid.`); const k = team.indexOf(id); if (k >= 0) team.splice(k, 1); else if (team.length < 3) team.push(id); c.classList.toggle('sel', team.includes(id)); upd(); }; heroes.appendChild(c); });
     const tired = Object.keys(S.roster).filter(id => resting(id)), patchCost = () => tired.reduce((a, id) => a + Math.ceil(resting(id) / 60000) * R.gold.patch_per_minute, 0);
     let patch = null;
-    if (tired.length) { const c0 = patchCost(); patch = btn('small ghost', `Patch up ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length + ' resting'} · ${OS.num(c0)} gold`, () => {
-        const c = patchCost(); if (S.gold < c) return toast(`That takes ${OS.num(c)} gold.`); S.gold -= c; tired.forEach(id => S.recover[id] = 0); bump('gold_spent', c); SND('coin'); save(true); render(); toast('Bandaged, fed and back on their feet.'); raidSheet(b); });
+    if (tired.length) { const c0 = patchCost(); patch = btn('small ghost', `Get ${tired.length === 1 ? short(tired[0]) : 'all ' + tired.length} back on their feet · ${OS.num(c0)} gold`, () => {
+        const c = patchCost(); if (S.gold < c) return toast(`That takes ${OS.num(c)} gold.`); S.gold -= c; tired.forEach(id => S.recover[id] = 0); bump('gold_spent', c); SND('coin'); save(true); render(); toast('Patched up, fed, and only slightly grumbling.'); raidSheet(b); });
       patch.disabled = S.gold < c0; patch.style.marginBottom = '.6rem'; }
     const go = btn('', `Go in (1 ticket)`, () => { if (S.tickets < 1) return toast('No raid tickets left. One comes back every ' + RD.regen_minutes / 60 + ' hours.'); runRaid(b, B, team.slice(), pots.slice()); });
     if (patch) d.appendChild(patch);
@@ -909,7 +909,7 @@
     const n = soc.mail.length; const dot = document.querySelector('[data-go="board"] .dot'); if (dot) dot.hidden = !n; return soc; }
   const say = r => { if (r && r !== 'ok') toast(r); return r === 'ok' || r === 'Asked.' || r === 'Friends now.'; };
   async function renderBoard() { const tabs = $('city-tabs'), box = $('city-body'); await loadSoc();
-    const T = [['ranks', 'Rankings'], ['friends', 'Friends'], ['guild', 'Guild'], ['market', 'Market'], ['mail', 'Mailbox' + (soc.mail.length ? ' (' + soc.mail.length + ')' : '')]];
+    const T = [['ranks', 'Rankings'], ['friends', 'Friends' + (soc.friends.filter(f => f.status !== 'ok' && !f.mine).length ? ' (' + soc.friends.filter(f => f.status !== 'ok' && !f.mine).length + ')' : '')], ['guild', 'Guild'], ['market', 'Market'], ['mail', 'Mailbox' + (soc.mail.length ? ' (' + soc.mail.length + ')' : '')]];
     tabs.innerHTML = ''; T.forEach(([k, n]) => { const b = el('button', cityTab === k ? 'on' : '', n); b.onclick = () => { cityTab = k; renderBoard(); }; tabs.appendChild(b); });
     if (box.dataset.tab === cityTab && box.dataset.t && now() - box.dataset.t < 15000) return; box.dataset.tab = cityTab; box.dataset.t = now();
     ({ ranks: cityRanks, friends: cityFriends, guild: cityGuild, market: cityMarket, mail: cityMail })[cityTab](box); }
@@ -921,14 +921,14 @@
     let rows = []; try { rows = citySkill ? await Cloud.boardSkill(citySkill) : await Cloud.board(); } catch (e) { }
     $('rk-list').innerHTML = rows.length ? rows.map((r, i) => `<div class="brow ${r.username === me.profile.username ? 'me' : ''}"><i>${i + 1}</i>${nameBtn(r.username)}` + (citySkill ? `<span>Level ${lvlOf(r.xp)}${r.rebirth ? ' ' + '★'.repeat(r.rebirth) : ''}</span><span>${OS.num(r.xp)} xp</span>` : `<span>Total level ${r.total_level}</span><span>${r.heroes} arrivals</span><span>${r.summons} summons</span>`) + '</div>').join('') : '<p class="mut">Nobody yet. Be the first name in the book.</p>'; wirePeek(box); }
   function cityFriends(box) { box.innerHTML = `<div class="panel"><div class="addrow"><input type="text" id="fr-name" maxlength="24" placeholder="A name from the rankings"><button class="btn small" id="fr-add">Add friend</button></div><div id="fr-list"></div></div>`;
-    $('fr-add').onclick = async () => { const n = $('fr-name').value.trim(); if (!n) return; try { toast(await Cloud.friendAdd(n)); } catch (e) { toast('The city is not answering.'); } cityAgain(true); };
+    $('fr-add').onclick = async () => { const n = $('fr-name').value.trim(); if (!n) return; try { toast(await Cloud.friendAdd(n)); } catch (e) { toast('Smudge cannot reach the city right now.'); } cityAgain(true); };
     const L = $('fr-list'); if (!soc.friends.length) { L.innerHTML = '<p class="mut" style="margin:.8rem 0 0">No friends yet. Tap any name in the rankings to look at their ledger and add them. Friends can send each other things.</p>'; return; }
-    soc.friends.forEach(f => { const row = el('div', 'frow', `<div>${nameBtn(f.username)}<span class="mut">${f.status === 'ok' ? 'Total level ' + f.total_level + ' · ' + f.heroes + ' arrivals' : f.mine ? 'Asked. Waiting on them.' : 'Wants to be friends.'}</span></div>`), acts = el('div', 'facts');
+    soc.friends.forEach(f => { const row = el('div', 'frow', `<div><i class="face sm" style="${faceStyle(f.avatar)}"></i>${nameBtn(f.username)}<span class="mut">${f.status === 'ok' ? 'Total level ' + f.total_level + ' · ' + f.heroes + ' arrivals' : f.mine ? 'Asked. Waiting on them.' : 'Wants to be friends.'}</span></div>`), acts = el('div', 'facts');
       if (f.status === 'ok') acts.appendChild(btn('small', 'Send a gift', () => giftSheet(f.username))); else if (!f.mine) acts.appendChild(btn('small', 'Accept', async () => { await Cloud.friendAdd(f.username); cityAgain(true); }));
       acts.appendChild(btn('small ghost', f.status === 'ok' ? 'Remove' : f.mine ? 'Cancel' : 'No', async () => { await Cloud.friendDrop(f.username); cityAgain(true); })); row.appendChild(acts); L.appendChild(row); }); wirePeek(box); }
   async function peek(n) { let p; try { p = await Cloud.peek(n); } catch (e) { } if (!p) { toast('That ledger is shut.'); return; }
     const d = el('div', 'peek'), top = Object.keys(p.xp).sort((a, c) => p.xp[c] - p.xp[a]).slice(0, 4), own = Object.keys(p.roster);
-    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem">${esc(p.username)}</h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} arrivals met · ${p.cabinet} treasures on display</p>
+    d.innerHTML = `<div class="tag">Somebody else’s ledger</div><h3 style="margin:.2rem 0 .1rem;display:flex;align-items:center;gap:.6rem"><i class="face md" style="${faceStyle(p.avatar)}"></i>${esc(p.username)}</h3><p class="mut" style="margin:0 0 .7rem">${p.guild ? 'Guild: ' + esc(p.guild) + ' · ' : ''}Total level ${p.total_level} · ${own.length} arrivals met · ${p.cabinet} treasures on display</p>
       <div class="pkstats">${top.map(k => `<div class="stat"><b>${lvlOf(p.xp[k])}${p.rebirth[k] ? '<small> ' + '★'.repeat(p.rebirth[k]) + '</small>' : ''}</b><span>${k}</span></div>`).join('')}</div><div class="tag" style="margin-top:.8rem">${(p.crew || []).some(x => x) ? 'Their crew' : 'Their best cards'}</div><div class="pkcards"></div>`;
     const show = ((p.crew || []).filter(x => x && OS.heroes[x]).length ? p.crew.filter(x => x && OS.heroes[x]) : own.filter(x => OS.heroes[x]).sort((a, c) => p.roster[c] - p.roster[a]).slice(0, 3));
     show.forEach(id => d.querySelector('.pkcards').appendChild(OS.card(OS.heroes[id], { mini: true, level: p.roster[id] || 1, noflip: true })));
@@ -954,7 +954,7 @@
     if (done) { const b = btn('', got ? 'Collected' : 'Collect the reward', async () => { const r = await srv(() => Cloud.guildClaim()); if (r.r === 'ok') { S.guildWk = 'w' + g.week; bump('guild_goals'); toast('3 crates and 5 shards are in your bag.'); } else { toast(r.r); if (/Already/.test(r.r)) S.guildWk = 'w' + g.week; } render(); cityAgain(); }); b.disabled = got; $('gd-claim').appendChild(b); }
     $('gd-mem').innerHTML = g.members.map(m => `<div class="brow g ${m.username === me.profile.username ? 'me' : ''}">${nameBtn(m.username)}<span>Level ${m.total_level}</span><span>${OS.num(m.hauls)} hauls</span></div>`).join('');
     const ch = $('gd-chat'); ch.innerHTML = g.chat.length ? g.chat.map(c => `<p><b>${esc(c.username)}</b> ${esc(c.body)}</p>`).join('') : '<p class="mut">Quiet in here.</p>'; ch.scrollTop = 1e6;
-    const send = async () => { const t = $('gd-say').value.trim(); if (!t) return; $('gd-say').value = ''; try { say(await Cloud.guildSay(t)); } catch (e) { toast('The city is not answering.'); } cityAgain(true); };
+    const send = async () => { const t = $('gd-say').value.trim(); if (!t) return; $('gd-say').value = ''; try { say(await Cloud.guildSay(t)); } catch (e) { toast('Smudge cannot reach the city right now.'); } cityAgain(true); };
     $('gd-send').onclick = send; $('gd-say').onkeydown = e => { if (e.key === 'Enter') send(); };
     $('gd-leave').onclick = async () => { await Cloud.guildLeave(); cityAgain(true); }; wirePeek(box); }
   async function cityMarket(box) { box.innerHTML = '<div class="panel"><p class="mut">Opening the shutters.</p></div>'; try { mkt = await Cloud.market(); } catch (e) { mkt = { open: [], mine: [] }; }
@@ -976,7 +976,7 @@
   function petAsk() { const req = Cloud.petWaiting(); if (!req) return; const d = el('div', 'reveal');
     d.innerHTML = `<div class="tag">Desktop pet</div><h3 style="font-size:1.5rem;margin:.2rem 0 .5rem">Link this desktop pet to ${esc(me.profile.username)}?</h3><p class="mut">The pet on your screen should be showing this check. If it is not, or you did not just press Link in your own pet, press No.</p><div class="petcode" style="align-items:center"><b>${esc(req.slice(0, 4).toUpperCase())}</b></div>`;
     const row = el('div', 'row'); row.style.justifyContent = 'center';
-    row.appendChild(btn('', 'Yes, link it', async () => { let r; try { r = await Cloud.linkApprove(req, 'Desktop pet'); } catch (e) { r = 'The city is not answering.'; } Cloud.petDone(); modal.close(); toast(r === 'ok' ? 'Linked. The pet will pick it up in a moment.' : r); renderPet(true); }));
+    row.appendChild(btn('', 'Yes, link it', async () => { let r; try { r = await Cloud.linkApprove(req, 'Desktop pet'); } catch (e) { r = 'Smudge cannot reach the city right now.'; } Cloud.petDone(); modal.close(); toast(r === 'ok' ? 'Linked. The pet will pick it up in a moment.' : r); renderPet(true); }));
     row.appendChild(btn('ghost', 'No', () => { Cloud.petDone(); modal.close(); })); d.appendChild(row); modal.open(d); }
   // the desktop pet: linked from the pet itself through the browser; here, the list of pets already linked
   let petCode = null, petList = null, petAt = 0;
@@ -984,7 +984,15 @@
     box.innerHTML = ''; box.appendChild(el('p', 'mut', 'To link a desktop pet, open its Settings and press <i>Link in browser</i>. This page will ask you to confirm.'));
     petList.forEach(d => { const row = el('div', 'frow', `<div><b>${esc(d.name)}</b><span class="mut">Linked ${new Date(d.linked).toLocaleDateString()}${d.seen ? ' · last seen ' + new Date(d.seen).toLocaleDateString() : ' · not used yet'}</span></div>`);
       row.appendChild(btn('small ghost', 'Unlink', async () => { try { await Cloud.deviceDrop(d.id); } catch (e) { } renderPet(true); })); box.appendChild(row); }); }
+  let NOTES = [];   // the update notes, newest first (loaded further down)
   function renderAccount() { renderPet();
+    $('ac-me').innerHTML = `<i class="face lg" style="${faceStyle(me.profile.avatar)}"></i><div><b>${esc(me.profile.username)}</b><span class="mut">${me.profile.avatar && OS.heroes[me.profile.avatar] ? 'Wearing ' + OS.heroes[me.profile.avatar].name + '’s face' : 'Wearing Smudge’s face'}</span></div>`;
+    $('ac-me').appendChild(btn('small ghost', 'Change picture', faceSheet));
+    $('ac-ver').textContent = NOTES[0] ? 'Beta ' + NOTES[0].v : '';
+    const up = $('ac-up'); up.innerHTML = ''; const em = el('label', 'kv', '<span>Email me update notes</span>'), eb = el('input'); eb.type = 'checkbox'; eb.checked = !!me.profile.email_updates;
+    eb.onchange = async () => { const on = eb.checked, ok = await Cloud.setProfile({ email_updates: on }); if (!ok) { eb.checked = !on; return toast('That did not save. Try again.'); } me.profile.email_updates = on; toast(on ? 'Done. Smudge writes when the game updates, and only then.' : 'No more update emails.'); };
+    em.appendChild(eb); up.appendChild(em); up.appendChild(el('p', 'mut', 'A short note from Smudge when the game updates. Nothing else, ever.')); up.lastChild.style.cssText = 'font-size:.85rem;margin:.3rem 0 .7rem';
+    up.appendChild(btn('small ghost', 'What changed lately', () => notesSheet()));
     $('ac-you').innerHTML = `<div class="kv"><span>Username</span><b>${me.profile.username}</b></div><div class="kv"><span>Email</span><b>${me.email || ''}</b></div><div class="kv"><span>Joined</span><b>${me.profile.created_at ? new Date(me.profile.created_at).toLocaleDateString() : 'today'}</b></div>${me.profile.founder ? '<div class="kv"><span>Title</span><b>Founding Clerk</b></div>' : ''}`;
     const has = p => (me.providers || []).includes(p); $('ac-logins').innerHTML = `<div class="kv"><span>Password</span><b>${has('email') ? 'Set' : 'Not set'}</b></div><div class="kv"><span>Google</span><b>${has('google') ? 'Connected' : 'Not connected'}</b></div><div class="kv soon"><span>Steam</span><b>${me.profile.steam_id ? 'Connected' : 'Coming soon'}</b></div>
       <p class="mut" style="font-size:.85rem;margin:.6rem 0 0">Connecting Steam opens when the game reaches Steam. Until then the desktop pet links through your browser, below.</p>`;
@@ -1039,17 +1047,100 @@
     if ($('modal').classList.contains('on')) return setTimeout(welcome, 1500);   // let an "while you were away" sheet go first
     const name = me.profile && me.profile.username ? ', ' + me.profile.username : '';
     const d = el('div', 'welcome');
-    d.innerHTML = `<div class="tag">Early beta</div><h3 style="font-size:1.6rem;margin:.25rem 0 .6rem">Welcome to the ledger${name}!</h3>
-      <p>Thank you for trying OverSummoned. Truly. You are one of the very first people through the door, and Smudge has been practising his welcome all week. He dropped the ledger twice and summoned a goose.</p>
-      <p><b>Fair warning: this is a beta.</b> Things will break. Heroes may arrive in the wrong century, buttons may sulk, and numbers may do things numbers should not do. That is not you. That is us, and we would love to hear about it.</p>
-      <p>See the <b>Ideas or feedback?</b> button at the top? It goes straight to the one person who makes this game. Bugs, ideas, complaints, compliments, a picture of your cat described in words: all of it is welcome.</p>
-      ${OS.founder ? '<div class="note"><b>You are a Founding Clerk.</b> Everyone who joins during the beta keeps the title, and the FC seal on their cards, for good.</div>' : ''}`;
+    d.innerHTML = `<div class="who"><img src="/assets/v2/smudge/stamp.webp${OS.VER}" alt=""><div><div class="tag">A word from Smudge</div><h3>You made it${name}!</h3></div></div>
+      <p>Thank you for being here. I mean that. One person builds this whole game, I do the summoning, and you are one of the very first people to see any of it. That makes you important. Sorry, no pressure.</p>
+      <p><b>Now the honest part: things will break.</b> This is a closed beta, and I summoned the wrong hero four times before breakfast. If something looks wrong, it probably is, and it is never your fault.</p>
+      <p>When it happens, press <b>Ideas or feedback?</b> up top and tell us. Bugs, ideas, complaints, all of it. Every note is read and written down, so nothing gets lost and we can get back to you.</p>
+      ${OS.founder ? '<div class="note"><b>You are a Founding Clerk.</b> First players keep the title, and the FC seal on their cards, for good. I checked. Twice.</div>' : ''}`;
     const row = el('div', 'row'); row.style.cssText = 'justify-content:center;flex-wrap:wrap;margin-top:1rem';
     const close = () => modal.close();
-    row.appendChild(btn('', "Let's summon something", () => { close(); show('summon'); }));
+    row.appendChild(btn('', "Let's summon someone", () => { close(); show('summon'); }));
     row.appendChild(btn('ghost', 'Show me that button', () => { close(); const f = $('go-feedback'); f.classList.add('pulse'); setTimeout(() => f.classList.remove('pulse'), 4200); }));
     d.appendChild(row); S.welcomed = Date.now(); save(true); modal.open(d);   // seen once it opens, however it is closed
   }
   setTimeout(welcome, 900);
+
+  // ---- profile picture: Smudge, or the face of any hero you have met. The hero art is a full figure, so the
+  // face is found from the rig (the eyes if it has them, the head part if not) and shown by background position.
+  function faceStyle(id) {
+    const e = id && OS.heroes[id] && OS.rig['h_' + id];
+    if (!e) return `background-image:url(/assets/v2/smudge/stamp.webp${OS.VER});background-size:215% auto;background-position:56% 6%`;
+    const hd = (e.parts || []).find(p => p.name === 'head') || { pivot: [e.size[0] / 2, e.size[1] * .3], offset: [0, 0] }; let cx, cy, box;
+    const pv = hd.pivot || [e.size[0] / 2, e.size[1] * .3], of = hd.offset || [pv[0] - 60, Math.max(0, pv[1] - 130)];
+    if (e.face && e.face.eyes && e.face.eyes.length > 1) { const [a, b] = e.face.eyes; box = Math.max(Math.abs(b[0] - a[0]) * 4.4, 100); cx = (a[0] + b[0]) / 2; cy = (a[1] + b[1]) / 2 + box * .06; }
+    else { const h = Math.max(pv[1] - of[1], 90); box = h * 1.05; cx = pv[0]; cy = of[1] + h * .55; }
+    box = Math.min(box, e.size[0] - 1); const cl = v => Math.min(1, Math.max(0, v)) * 100;
+    return `background-image:url(${OS.img('heroes', id)});background-size:${(e.size[0] / box * 100).toFixed(1)}% auto;background-position:${cl((cx - box / 2) / (e.size[0] - box)).toFixed(1)}% ${cl((cy - box / 2) / (e.size[1] - box)).toFixed(1)}%`;
+  }
+  const setFace = () => { $('av-face').style.cssText = faceStyle(me.profile.avatar); };
+  setFace();
+  function faceSheet() {
+    const d = el('div', ''), own = Object.keys(S.roster).filter(id => OS.heroes[id]).sort((a, c) => rr(OS.heroes[c].rarity) - rr(OS.heroes[a].rarity) || OS.heroes[a].name.localeCompare(OS.heroes[c].name));
+    d.innerHTML = `<h3 style="font-size:1.4rem">Pick your picture</h3><p class="mut" style="margin:.2rem 0 .8rem;font-size:.9rem">Smudge, or any hero you have met. Friends and guildmates see it next to your name.</p>`;
+    const g = el('div', 'facegrid'), cur = me.profile.avatar && OS.heroes[me.profile.avatar] ? me.profile.avatar : null;
+    [null].concat(own).forEach(id => { const b = el('button', 'facepick' + (id === cur ? ' on' : ''), `<i class="face" style="${faceStyle(id)}"></i><span>${id ? short(id) : 'Smudge'}</span>`); b.type = 'button';
+      b.onclick = async () => { const ok = await Cloud.setProfile({ avatar: id }); if (!ok) return toast('That did not save. Try again.'); me.profile.avatar = id; setFace(); modal.close(); if (current === 'account') renderAccount(); toast(id ? `You are ${short(id)} now. Smudge is trying not to take it personally.` : 'Back to Smudge. He knew you would be.'); };
+      g.appendChild(b); });
+    d.appendChild(g); if (!own.length) d.appendChild(el('p', 'mut', 'Summon a hero and their face turns up here.'));
+    modal.open(d);
+  }
+
+  // ---- the bell: friend requests and things waiting in the mailbox. Checked once a minute while the game is open;
+  // anything new gets a toast, a number on the bell and the app icon, and a system alert if the game is in the background.
+  let seenAl = []; try { seenAl = JSON.parse(localStorage.getItem('os2_alseen') || '[]'); } catch (e) { }
+  const alertList = () => soc ? soc.friends.filter(f => f.status !== 'ok' && !f.mine).map(f => ({ k: 'f:' + f.username, t: `${f.username} wants to be friends.`, f })).concat(soc.mail.map(m => ({ k: 'm:' + m.id, t: `${m.from || 'Someone'} sent you something. It is in your mailbox.`, m }))) : [];
+  function sysAlert(t) { try { if (!document.hidden || !('Notification' in window) || Notification.permission !== 'granted' || !navigator.serviceWorker) return;
+      navigator.serviceWorker.ready.then(r => r.showNotification('OverSummoned', { body: t, icon: '/icon-192.png', badge: '/icon-192.png', tag: 'os-alert', renotify: true, data: { url: '/play#board' } })); } catch (e) { } }
+  async function checkAlerts(force, force2) {
+    await loadSoc(force); const L = alertList(), n = L.length;
+    $('bell-n').hidden = !n; $('bell-n').textContent = n > 9 ? '9+' : n; $('go-bell').classList.toggle('has', !!n);
+    try { if (n && navigator.setAppBadge) navigator.setAppBadge(n); else if (!n && navigator.clearAppBadge) navigator.clearAppBadge(); } catch (e) { }
+    const fresh = $('modal').classList.contains('on') && !force2 ? [] : L.filter(a => !seenAl.includes(a.k));   // never talk over an open sheet; the next check says it
+    if (fresh.length) { fresh.forEach(a => seenAl.push(a.k)); const say = fresh.length === 1 ? fresh[0].t : `${fresh.length} new alerts. Tap the bell.`; toast(say); sysAlert(say); seenAl = seenAl.slice(-200); try { localStorage.setItem('os2_alseen', JSON.stringify(seenAl)); } catch (e) { }
+      const b = $('go-bell'); b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring'); if (OS.Sound) OS.Sound.play('toast'); }
+    return L;
+  }
+  async function bellSheet() {
+    const L = await checkAlerts(true, true), d = el('div', 'bellsheet'); d.innerHTML = `<h3 style="font-size:1.4rem;margin-bottom:.6rem">Alerts</h3>`;
+    if (!L.length) d.appendChild(el('p', 'mut', 'Nothing new. Smudge rings this bell when a friend request or a gift turns up.'));
+    L.forEach(a => { const row = el('div', 'frow'), acts = el('div', 'facts');
+      if (a.f) { row.innerHTML = `<div><i class="face sm" style="${faceStyle(a.f.avatar)}"></i><b>${esc(a.f.username)}</b><span class="mut">wants to be friends</span></div>`;
+        acts.appendChild(btn('small', 'Accept', async () => { try { toast(await Cloud.friendAdd(a.f.username)); } catch (e) { toast('That did not go through. Try again.'); } socAt = 0; bellSheet(); if (current === 'board') render(); }));
+        acts.appendChild(btn('small ghost', 'No thanks', async () => { try { await Cloud.friendDrop(a.f.username); } catch (e) { } socAt = 0; bellSheet(); if (current === 'board') render(); })); }
+      else { row.innerHTML = `<div><b>${esc(a.m.from || 'Someone')}</b><span class="mut">sent you something</span></div>`; acts.appendChild(btn('small', 'Open mailbox', () => { modal.close(); cityTab = 'mail'; show('board'); })); }
+      row.appendChild(acts); d.appendChild(row); });
+    if ('Notification' in window && navigator.serviceWorker) { const p = el('div', 'bellperm'), st = Notification.permission;
+      if (st === 'granted') p.innerHTML = '<span class="mut">Alerts are on for this device. They reach you while the game is open, even in another tab or minimised.</span>';
+      else if (st === 'denied') p.innerHTML = '<span class="mut">Alerts are blocked for this site in your browser settings.</span>';
+      else { p.innerHTML = '<span class="mut">Want a nudge when the game is in another tab or minimised?</span>'; p.appendChild(btn('small ghost', 'Turn on alerts', async () => { try { await Notification.requestPermission(); } catch (e) { } bellSheet(); })); }
+      d.appendChild(p); }
+    modal.open(d);
+  }
+  $('go-bell').onclick = bellSheet;
+  setTimeout(() => checkAlerts(true).catch(() => { }), 2500); setInterval(() => checkAlerts(true).catch(() => { }), 60000);
+
+  // ---- updates: a bar when a newer build is out (it waits five minutes, then saves and reloads by itself),
+  // and short notes per version. /version.json is the build that is live; /data/notes.json is the list.
+  const BUILD = OS.VER.replace('?v=', ''); let pending = null, upT = 0;
+  const notesReady = fetch('/data/notes.json' + OS.VER).then(r => r.json()).then(j => { NOTES = j; if (current === 'account') renderAccount(); }).catch(() => { });
+  const day = s => { const t = new Date(s + 'T12:00:00'); return isNaN(t) ? '' : t.toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); };
+  function notesSheet(list, head) {
+    const L = list || NOTES, d = el('div', 'notes'); d.innerHTML = `<div class="tag">${head || 'Update notes'}</div>` + (L.length ? L.map(n => `<div class="nver"><h3>Beta ${esc(n.v)}${n.title ? ' · ' + esc(n.title) : ''}</h3><span class="mut">${day(n.date)}</span>` +
+      [['New', n.added], ['Fixed', n.fixed], ['Still on Smudge’s list', n.known]].filter(x => x[1] && x[1].length).map(([h, a]) => `<b>${h}</b><ul>${a.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`).join('') + '</div>').join('') : '<p class="mut">No notes yet.</p>');
+    const row = el('div', 'row'); row.style.cssText = 'justify-content:center;margin-top:.8rem'; row.appendChild(btn('', 'Got it', modal.close)); d.appendChild(row); modal.open(d);
+  }
+  async function applyUpdate() { $('upbar').innerHTML = '<span>Saving, then updating…</span>'; try { await save(true); } catch (e) { }
+    try { const r = navigator.serviceWorker && await navigator.serviceWorker.getRegistration(); if (r) await r.update(); } catch (e) { } location.reload(); }
+  function showUpdate() {
+    const bar = $('upbar'); bar.hidden = false; bar.innerHTML = `<span><b>Update ready${pending.v ? ': Beta ' + esc(pending.v) : ''}.</b> <i id="up-left"></i></span>`;
+    bar.appendChild(btn('small ghost', 'What’s new', async () => { let L = NOTES; try { L = await (await fetch('/data/notes.json?t=' + now(), { cache: 'no-store' })).json(); } catch (e) { } notesSheet(L.slice(0, 1), 'Coming in this update'); }));
+    bar.appendChild(btn('small', 'Update now', applyUpdate));
+    let left = 300; const tk = () => { if (left <= 0) { clearInterval(upT); return applyUpdate(); } const e = $('up-left'); if (e) e.textContent = `Smudge updates it for you in ${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}.`; left--; }; tk(); upT = setInterval(tk, 1000);
+  }
+  async function checkUpdate() { if (pending || document.hidden) return; try { const j = await (await fetch('/version.json?t=' + now(), { cache: 'no-store' })).json(); if (j && j.build && j.build !== BUILD) { pending = j; showUpdate(); } } catch (e) { } }
+  setTimeout(checkUpdate, 20000); setInterval(checkUpdate, 180000); addEventListener('visibilitychange', () => { if (!document.hidden) { checkUpdate(); checkAlerts(true).catch(() => { }); } });
+  // the first time a ledger opens on a new build, show what changed (new players get the welcome instead)
+  notesReady.then(() => { if (S.build === BUILD) return; const had = S.build; S.build = BUILD; save(true); if (!had || !S.welcomed || !NOTES[0] || NOTES[0].build !== BUILD) return;
+    const go = () => $('modal').classList.contains('on') ? setTimeout(go, 1500) : notesSheet(NOTES.slice(0, 1), 'You are up to date'); setTimeout(go, 1800); });
   window.__os = { openCrate, summon, pend: () => PEND.length, S: () => S, crew, collect, haul, placeSheet, startMake: id => startMake(id), heroStats, fx, cardLoad, rebirth, contracts, claim, callByName, worked, huntPlace, nextPlace, fillCabinet, inkBonus, summon, show, advance, give, save, heroSheet, lootSheet, places, openCrate, render, frameSheet, inkTrade, raidSheet };   // for testing
 })();

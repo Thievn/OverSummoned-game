@@ -1,5 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
-import { MAIL_FROM, NOTIFY_TO, sendMail, accessMail, inviteMail } from './mail.ts';
+import { MAIL_FROM, NOTIFY_TO, sendMail, accessMail, notesMail } from './mail.ts';
 
 const ALLOWED = new Set([
   'https://oversummoned.com',
@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
     if (b.company) return J({ ok: true });
     const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || req.headers.get('cf-connecting-ip') || 'unknown';
     const { data, error } = await sb.rpc('os2_beta_redeem', { p_code: String(b.code || '').slice(0, 40), p_email: String(b.email || '').slice(0, 200), p_ip_hash: await sha256('oversummoned-waitlist:' + ip) });
-    if (error) return J({ ok: false, msg: 'The city is not answering. Try again in a minute.' }, 500);
+    if (error) return J({ ok: false, msg: 'Smudge cannot reach the city right now. Try again in a minute.' }, 500);
     if (data.code === 'slow_down') return J({ ok: false, msg: 'Easy there. Try again in a few minutes.' }, 429);
     if (data.code === 'bad_email') return J({ ok: false, msg: 'That does not look like an email address.' }, 400);
     if (data.code === 'bad_code') return J({ ok: false, msg: 'That code is not on the list. Check it and try again.' }, 400);
@@ -60,7 +60,8 @@ Deno.serve(async (req) => {
     const { data: me } = await asUser.auth.getUser(auth.slice(7));
     const to = me?.user?.email;
     if (!to) return J({ ok: false, msg: 'No email on this account.' }, 400);
-    const sent = await Promise.all([sendMail(to, accessMail(to)), sendMail(to, inviteMail(to))]);
+    let latest: any = null; try { latest = (await (await fetch('https://oversummoned.com/data/notes.json?t=' + Date.now())).json())[0]; } catch { /* the invite alone */ }
+    const sent = [await sendMail(to, accessMail(to))]; if (latest) { await new Promise((r) => setTimeout(r, 700)); sent.push(await sendMail(to, notesMail(latest))); }
     return J({ ok: sent.every(Boolean), to, msg: sent.every(Boolean) ? '' : 'The email did not send. Check the Resend key and that the sending domain is verified.' });
   }
 
@@ -69,9 +70,26 @@ Deno.serve(async (req) => {
     if (error) return J({ ok: false, msg: 'That did not save.' }, 500);
     if (!data.ok) return J({ ok: false, msg: 'That does not look like an email address.' }, 400);
     const to = data.email as string;
-    const mailed = await sendMail(to, inviteMail(to));
+    const mailed = await sendMail(to, accessMail(to));
     if (mailed) await sb.from('os2_beta_invite').update({ mailed: true }).eq('email', to);
     return J({ ok: true, mailed });
+  }
+  // Email one version's update notes to everyone who ticked "Email me update notes". dry: just count. A version is sent once.
+  if (b.op === 'notes') {
+    let all: any[] = [];
+    try { all = await (await fetch('https://oversummoned.com/data/notes.json?t=' + Date.now())).json(); } catch { return J({ ok: false, msg: 'Could not read the notes from the site.' }, 502); }
+    const n = (b.v ? all.find((x) => x.v === String(b.v)) : all[0]); if (!n) return J({ ok: false, msg: 'No notes for that version.' }, 404);
+    const { data: subs, error: sErr } = await sb.rpc('os2_update_subscribers'); if (sErr) return J({ ok: false, msg: 'Could not read the list.' }, 500);
+    const list: string[] = (subs || []).map((x: any) => x.email).filter(Boolean);
+    const { data: done } = await sb.from('os2_notes_sent').select('v,sent_at,sent').eq('v', n.v).maybeSingle();
+    if (b.dry) return J({ ok: true, v: n.v, title: n.title || '', count: list.length, already: done || null });
+    if (done) return J({ ok: false, msg: 'Beta ' + n.v + ' was already emailed.' }, 409);
+    if (!list.length) return J({ ok: true, v: n.v, sent: 0, count: 0 });
+    const { error: iErr } = await sb.from('os2_notes_sent').insert({ v: n.v }); if (iErr) return J({ ok: false, msg: 'Beta ' + n.v + ' was already emailed.' }, 409);
+    let sent = 0; const letter = notesMail(n);
+    for (const to of list.slice(0, 180)) { if (await sendMail(to, letter)) sent++; await new Promise((r) => setTimeout(r, 600)); }
+    await sb.from('os2_notes_sent').update({ sent }).eq('v', n.v);
+    return J({ ok: true, v: n.v, sent, count: list.length });
   }
   return J({ ok: false, msg: 'Unknown request.' }, 400);
 });

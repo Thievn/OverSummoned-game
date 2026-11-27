@@ -20,7 +20,7 @@
   }
   async function route() {
     const s = await Cloud.session(); if (!s) { show('main'); return; }
-    Cloud.user = s.user; let me; try { me = await Cloud.whoami(); } catch (e) { show('main'); $('in-err').textContent = 'The city is not answering. Try again in a moment.'; return; }
+    Cloud.user = s.user; let me; try { me = await Cloud.whoami(); } catch (e) { show('main'); $('in-err').textContent = 'Smudge cannot reach the city right now. Try again in a moment.'; return; }
     if (!me.allowed) { show('closed'); $('closed-email').textContent = 'Signed in as ' + me.email; return; }
     if (!me.profile) {
       const want = (s.user.user_metadata || {}).username;

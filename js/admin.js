@@ -105,7 +105,11 @@
     if (b.dataset.rev) { if (confirm('Switch this code off? People who already used it keep their place.')) { await beta('code_revoke', { code: b.dataset.rev }); paintBeta(); } return; }
     if (b.dataset.fb) { await beta('feedback_status', { id: +b.dataset.fb, status: b.dataset.st }); paintBeta(); return; }
     if (b.id === 'b-invite') { const v = $('b-email').value.trim(); if (v) { await invite(v, b); b.disabled = false; $('b-email').value = ''; } return; }
-    if (b.id === 'b-test') { b.disabled = true; const r = await betaFn({ op: 'test' }); toast(r.ok ? 'Sent the wishlist letter and the invite to ' + r.to : (r.msg || 'That did not send.')); b.disabled = false; return; }
+    if (b.id === 'b-notes') { b.disabled = true; const d = await betaFn({ op: 'notes', dry: true }); b.disabled = false;
+      if (!d.ok) return toast(d.msg || 'Could not check.'); if (d.already) return toast(`Beta ${d.v} was already emailed (${d.already.sent} sent).`); if (!d.count) return toast(`Nobody has ticked update emails yet. Beta ${d.v} not sent.`);
+      if (!confirm(`Email the Beta ${d.v} notes to ${d.count} player${d.count === 1 ? '' : 's'} who asked for updates? This can only be sent once.`)) return;
+      b.disabled = true; const r = await betaFn({ op: 'notes', v: d.v }); b.disabled = false; return toast(r.ok ? `Sent Beta ${r.v} to ${r.sent} of ${r.count}.` : (r.msg || 'That did not send.')); }
+    if (b.id === 'b-test') { b.disabled = true; const r = await betaFn({ op: 'test' }); toast(r.ok ? 'Sent the invite and the latest update notes to ' + r.to : (r.msg || 'That did not send.')); b.disabled = false; return; }
     if (b.id === 'b-code') { const d = await beta('code_new', { note: $('b-note').value, max_uses: +$('b-uses').value || 1 }); if (d && d.made) { toast('Made ' + d.made); $('b-note').value = ''; } paintBeta(); } });
 
   // ---------------------------------------------------------------- movement review

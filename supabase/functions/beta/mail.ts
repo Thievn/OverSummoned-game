@@ -1,4 +1,4 @@
-// Every email OverSummoned sends. One look, four letters: instant access, wishlist welcome (retired), beta invite, note to the owner.
+// Every email OverSummoned sends, all written by Smudge: the beta invite, patch notes, a note to the owner.
 // This file is copied as-is into each function that sends mail (waitlist, beta). Change both together.
 export const MAIL_FROM = Deno.env.get('BETA_MAIL_FROM') || 'Smudge at OverSummoned <hello@oversummoned.com>';
 export const NOTIFY_TO = Deno.env.get('BETA_NOTIFY_TO') || 'hello@oversummoned.com';
@@ -22,7 +22,7 @@ function frame(p: Parts) {
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:560px">
 <tr><td align="center" bgcolor="#101936" style="border-radius:18px 18px 0 0;padding:18px 0 0">
 <a href="${SITE}" style="font:700 13px Arial,Helvetica,sans-serif;letter-spacing:4px;color:#f2b935;text-decoration:none">OVERSUMMONED</a></td></tr>
-<tr><td bgcolor="#101936" style="font-size:0;line-height:0"><a href="${SITE}"><img src="${SITE}/assets/mail/header.png" width="560" alt="Smudge the otter, stamping the ledger" style="display:block;width:100%;max-width:560px;height:auto;border:0"></a></td></tr>
+<tr><td bgcolor="#101936" style="font-size:0;line-height:0"><a href="${SITE}"><img src="${SITE}/assets/mail/header.png" width="560" alt="Smudge the otter at his desk" style="display:block;width:100%;max-width:560px;height:auto;border:0"></a></td></tr>
 <tr><td bgcolor="#f3e6c8" style="border-top:4px solid #f2b935;border-radius:0 0 18px 18px;padding:28px 30px 22px">
 <h1 style="margin:0 0 16px;font:700 28px/1.2 Georgia,'Times New Roman',serif;color:#17224a">${p.title}</h1>
 ${p.lines.map(P).join('')}${button}${note}
@@ -34,50 +34,41 @@ OverSummoned · <a href="${SITE}" style="color:#3fe0c5">oversummoned.com</a> · 
 </table></td></tr></table></body></html>`;
 }
 
-export function wishlistMail(): Letter {
-  return {
-    subject: "You're on the list. Smudge wrote it down twice.",
-    text: "You're on the list.\n\nSmudge wrote your name in the ledger, stamped it, and stamped it again to be safe. The ledger has a habit of summoning the wrong people, so he is being careful with you.\n\nOverSummoned is in closed beta. When a seat opens for you, one more email comes to this address with your way in. That is the only thing we will email you about.\n\nWhile you wait, meet the arrivals: https://oversummoned.com/heroes/\n\nWasn't you? Ignore this and nothing else will arrive.\n\nSmudge\nhttps://oversummoned.com",
-    html: frame({
-      pre: 'One more email when your seat opens. That is the whole deal.', title: "You're on the list.",
-      lines: [
-        'Smudge wrote your name in the ledger, stamped it, and stamped it again to be safe. The ledger has a habit of summoning the wrong people, so he is being careful with you.',
-        'OverSummoned is in closed beta. When a seat opens for you, <b>one more email</b> comes to this address with your way in. That is the only thing we will email you about.'],
-      note: ['While you wait', `Meet the people the ledger has dragged out of history so far. <a href="${SITE}/heroes/" style="color:#17224a;font-weight:bold">See the arrivals</a>`],
-      small: "Wasn't you? Ignore this and nothing else will arrive.",
-    }),
-  };
-}
-
-// Instant beta access (27 Nov 2026): the landing-page sign-up lets the address straight in, and this is the key.
+// The beta invite: sent the moment someone signs up on the landing page. Smudge writes it, in the first person.
 export function accessMail(to: string): Letter {
   return {
-    subject: "You're in. Smudge already unlocked the door.",
-    text: "You're in.\n\nNo queue, no waiting list, no velvet rope. Smudge stamped your name into the ledger and the door swung open. He is as surprised as you are.\n\nMake your account here with this email address (" + to + "): https://oversummoned.com/login\nThat address is the one on the list, so use it and the door opens. Any other one and it stays shut.\n\nThen summon your first hero. Fair warning: the ledger has opinions about who turns up.\n\nThis is an early beta. Things will break, the occasional hero will arrive in the wrong century, and you will be one of the first people to find out how. The \"Ideas or feedback?\" button at the top of the game goes straight to the person who makes it.\n\nFounding Clerk: everyone who joins during the beta keeps the title for good.\n\nSmudge\nhttps://oversummoned.com",
+    subject: 'Your OverSummoned beta invite',
+    text: "You're in.\n\nSmudge here. I'm the apprentice who keeps summoning the wrong heroes, and I have just put your name on the beta list. In ink, so it is staying.\n\nMake your account here, with this email address (" + to + "): https://oversummoned.com/login\nIt is the address I wrote down, so it is the one that gets you in.\n\nYou are one of the first players, which means you keep the Founding Clerk title for good. I do not hand those out twice.\n\nFair warning: this is a closed beta, so things will break. Some of it will be my fault. When something goes wrong, or you have an idea, press \"Ideas or feedback?\" at the top of the game. Every note is read and written down, so nothing gets lost and we can get back to you.\n\nSee you inside.\n\nSmudge\nhttps://oversummoned.com\n\nWasn't you? Ignore this and nothing happens.",
     html: frame({
-      pre: 'No queue. Your way in is the big gold button.', title: "You're in.",
+      pre: 'Smudge put your name on the list. Your way in is inside.', title: "You're in.",
       lines: [
-        'No queue, no waiting list, no velvet rope. Smudge stamped your name into the ledger and the door swung open. He is as surprised as you are.',
-        'Make your account with this email address (<b>' + esc(to) + '</b>). It is the one on the list, so it opens the door. Then summon your first hero. Fair warning: the ledger has opinions about who turns up.'],
-      button: ['Open the ledger', SITE + '/login'],
-      note: ['Early beta, early bugs', 'Things will break, and you will be one of the first to find out how. The <b>Ideas or feedback?</b> button at the top of the game goes straight to the person who makes it. Everyone who joins now keeps the Founding Clerk title for good.'],
-      small: "Wasn't you? Ignore this. Nothing happens unless someone makes an account with this address.",
+        "Smudge here. I'm the apprentice who keeps summoning the wrong heroes, and I have just put your name on the beta list. In ink, so it is staying.",
+        'Make your account with this email address (<b>' + esc(to) + '</b>). It is the one I wrote down, so it is the one that gets you in.',
+        'You are one of the first players, which means you keep the <b>Founding Clerk</b> title for good. I do not hand those out twice.'],
+      button: ['Make my account', SITE + '/login'],
+      note: ['Fair warning', 'This is a closed beta, so things will break. Some of it will be my fault. When something goes wrong, or you have an idea, press <b>Ideas or feedback?</b> at the top of the game. Every note is read and written down, so nothing gets lost and we can get back to you.'],
+      small: "Wasn't you? Ignore this and nothing happens.",
     }),
   };
 }
 
-export function inviteMail(to: string): Letter {
+// The same invite, sent by hand from the owner's office.
+export function inviteMail(to: string): Letter { return accessMail(to); }
+
+// Patch notes, for players who ticked "email me updates" in their account. Never sent to anyone else.
+export function notesMail(n: { v: string; title?: string; added?: string[]; fixed?: string[]; known?: string[] }): Letter {
+  const sec = (h: string, a?: string[]) => (a && a.length ? [h, ...a.map((x) => '  - ' + x), ''] : []);
+  const hs = (h: string, a?: string[]) => (a && a.length ? `<b>${h}</b><br>` + a.map((x) => '&bull; ' + esc(x)).join('<br>') : '');
+  const body = [hs('New', n.added), hs('Fixed', n.fixed), hs('Still on my list', n.known)].filter(Boolean);
   return {
-    subject: 'Your seat in OverSummoned is open',
-    text: "Your seat is open.\n\nSmudge found your name in the ledger and, against the odds, summoned the right person.\n\nMake your account at https://oversummoned.com/login using this email address (" + to + "). It is the one on the list, so a different address will not get in.\n\nYou are one of the first people in, so things will break. The \"Ideas or feedback?\" button at the top of the game goes straight to the person who makes it.\n\nFounding Clerk: everyone who joins during the beta keeps the title for good.\n\nSmudge\nhttps://oversummoned.com",
+    subject: 'OverSummoned beta ' + n.v + ': what changed',
+    text: ['Beta ' + n.v + (n.title ? ': ' + n.title : ''), '', 'Smudge here, with the short version of what changed.', '', ...sec('New', n.added), ...sec('Fixed', n.fixed), ...sec('Still on my list', n.known),
+      'Play: https://oversummoned.com/play', '', 'Smudge', '', 'You get these because you ticked "Email me updates" in your account. Untick it there any time: https://oversummoned.com/play#account'].join('\n'),
     html: frame({
-      pre: 'Smudge summoned the right person for once. Come in.', title: 'Your seat is open.',
-      lines: [
-        'Smudge found your name in the ledger and, against the odds, summoned the right person.',
-        'Make your account with this email address (<b>' + esc(to) + '</b>). It is the one on the list, so a different address will not get in.'],
-      button: ['Claim your seat', SITE + '/login'],
-      note: ['Founding Clerk', 'Everyone who joins during the beta keeps the title for good.'],
-      small: 'You are one of the first people in, so things will break. The <b>Ideas or feedback?</b> button at the top of the game goes straight to the person who makes it.',
+      pre: 'The short version of what changed.', title: 'Beta ' + esc(n.v) + (n.title ? ': ' + esc(n.title) : ''),
+      lines: ['Smudge here, with the short version of what changed.', ...body],
+      button: ['Play', SITE + '/play'],
+      small: `You get these because you ticked <b>Email me updates</b> in your account. <a href="${SITE}/play#account" style="color:#8a7a5c">Untick it there</a> any time.`,
     }),
   };
 }
@@ -85,8 +76,8 @@ export function inviteMail(to: string): Letter {
 export function ownerMail(email: string): Letter {
   return {
     subject: 'New beta player: ' + email,
-    text: email + ' signed up for instant beta access and was let straight in.\n\nSee them in https://oversummoned.com/admin (Beta tab).',
-    html: frame({ pre: 'A new name in the ledger.', title: 'New beta player', lines: ['<b>' + esc(email) + '</b> signed up for instant beta access and was let straight in. They have their key by email.'], button: ['Open the Beta tab', SITE + '/admin'] }),
+    text: email + ' signed up for the beta and Smudge sent the invite.\n\nSee them in https://oversummoned.com/admin (Beta tab).',
+    html: frame({ pre: 'A new name on the list.', title: 'New beta player', lines: ['<b>' + esc(email) + '</b> signed up for the beta. Smudge sent the invite.'], button: ['Open the Beta tab', SITE + '/admin'] }),
   };
 }
 

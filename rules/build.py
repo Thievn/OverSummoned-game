@@ -64,12 +64,11 @@ C = dict(
           "patch_per_minute": 12},
     # O6 card frames: bought with gold, one hero at a time, for show only. Owning a frame unlocks the frames below it.
     # A frame needs that hero's card at a level first, so the best frames say how long you have kept someone.
-    # Names are stand-ins for Fable (F6).
-    frames=[{"id": "bronze", "name": "Bronze", "gold": 500, "level": 1},
-            {"id": "silver", "name": "Silver", "gold": 2000, "level": 3},
-            {"id": "gilt", "name": "Gilt", "gold": 6000, "level": 5},
-            {"id": "foil", "name": "Foil", "gold": 15000, "level": 7},
-            {"id": "ledger", "name": "Ledger", "gold": 40000, "level": 10}],
+    frames=[{"id": "bronze", "name": "Scuffed Bronze", "gold": 500, "level": 1},
+            {"id": "silver", "name": "Sunday Silver", "gold": 2000, "level": 3},
+            {"id": "gilt", "name": "Proper Gold", "gold": 6000, "level": 5},
+            {"id": "foil", "name": "Show-Off Foil", "gold": 15000, "level": 7},
+            {"id": "ledger", "name": "Archive's Finest", "gold": 40000, "level": 10}],
 )
 
 BG = dict(kevin="office", marco="city", maya="city", brokk="iceage", gaius="rome", edith="london", albrecht="medieval", vincenzo="chicago", slapton="hollywood", napoleon="france",

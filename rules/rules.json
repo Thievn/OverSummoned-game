@@ -254,31 +254,31 @@
  "frames": [
   {
    "id": "bronze",
-   "name": "Bronze",
+   "name": "Scuffed Bronze",
    "gold": 500,
    "level": 1
   },
   {
    "id": "silver",
-   "name": "Silver",
+   "name": "Sunday Silver",
    "gold": 2000,
    "level": 3
   },
   {
    "id": "gilt",
-   "name": "Gilt",
+   "name": "Proper Gold",
    "gold": 6000,
    "level": 5
   },
   {
    "id": "foil",
-   "name": "Foil",
+   "name": "Show-Off Foil",
    "gold": 15000,
    "level": 7
   },
   {
    "id": "ledger",
-   "name": "Ledger",
+   "name": "Archive's Finest",
    "gold": 40000,
    "level": 10
   }
@@ -10354,7 +10354,7 @@
    "slot": "head",
    "rarity": "common",
    "icon": "e_doug_head",
-   "flavor": "Worn on the end of the nose, for looking over.",
+   "flavor": "For looking over, slowly, at your receipt.",
    "stats": {
     "defense": 2,
     "luck": 3
@@ -10371,7 +10371,7 @@
    "slot": "body",
    "rarity": "common",
    "icon": "e_doug_body",
-   "flavor": "The uniform of a man who controls the thermostat.",
+   "flavor": "Free at the 2019 away day. Worn every day since.",
    "stats": {
     "defense": 3,
     "health": 2
@@ -10388,7 +10388,7 @@
    "slot": "feet",
    "rarity": "common",
    "icon": "e_doug_feet",
-   "flavor": "Arch support. Eleven years of corridor.",
+   "flavor": "Built for the long walk over to tell you no.",
    "stats": {
     "speed": 3,
     "luck": 1
@@ -10405,7 +10405,7 @@
    "slot": "head",
    "rarity": "common",
    "icon": "e_bjorn_head",
-   "flavor": "The frost never fully leaves it. Nor does he.",
+   "flavor": "Still frosted from the second time he died.",
    "stats": {
     "defense": 3,
     "luck": 2
@@ -10422,7 +10422,7 @@
    "slot": "body",
    "rarity": "common",
    "icon": "e_bjorn_body",
-   "flavor": "Mended twice, by two different widows.",
+   "flavor": "Mended once per funeral.",
    "stats": {
     "defense": 2,
     "health": 3
@@ -10439,7 +10439,7 @@
    "slot": "feet",
    "rarity": "common",
    "icon": "e_bjorn_feet",
-   "flavor": "Iron studs. For ice, and for standing on it.",
+   "flavor": "Hobnailed for grip. A lesson he learned twice.",
    "stats": {
     "speed": 3,
     "luck": 1
@@ -10456,7 +10456,7 @@
    "slot": "head",
    "rarity": "uncommon",
    "icon": "e_mona_head",
-   "flavor": "Worn at an angle that says the work is going badly.",
+   "flavor": "Tilted further every time a sitter asks to peek.",
    "stats": {
     "defense": 4,
     "luck": 3
@@ -10473,7 +10473,7 @@
    "slot": "body",
    "rarity": "uncommon",
    "icon": "e_mona_body",
-   "flavor": "Every colour she has ever been is on it somewhere.",
+   "flavor": "Wears every colour she has turned this week.",
    "stats": {
     "defense": 4,
     "health": 2
@@ -10490,7 +10490,7 @@
    "slot": "feet",
    "rarity": "uncommon",
    "icon": "e_mona_feet",
-   "flavor": "Silent on marble. That matters more than it should.",
+   "flavor": "Quiet enough to leave a sitting with the candlesticks.",
    "stats": {
     "speed": 4,
     "luck": 2
@@ -10507,7 +10507,7 @@
    "slot": "head",
    "rarity": "uncommon",
    "icon": "e_dusty_head",
-   "flavor": "Eleven years of sun and no shade.",
+   "flavor": "Eleven years of sun and one nugget of shade.",
    "stats": {
     "defense": 5,
     "luck": 3
@@ -10524,7 +10524,7 @@
    "slot": "body",
    "rarity": "uncommon",
    "icon": "e_dusty_body",
-   "flavor": "Holds a bedroll, a canteen and one grudge.",
+   "flavor": "Room for a bedroll, a canteen and the nugget. She checks the nugget hourly.",
    "stats": {
     "defense": 3,
     "health": 4
@@ -10541,7 +10541,7 @@
    "slot": "feet",
    "rarity": "uncommon",
    "icon": "e_dusty_feet",
-   "flavor": "Steel toes, red dust, no apologies.",
+   "flavor": "Steel toes, for kicking the claim on bad days.",
    "stats": {
     "speed": 4,
     "luck": 2
@@ -10558,7 +10558,7 @@
    "slot": "head",
    "rarity": "rare",
    "icon": "e_hootsworth_head",
-   "flavor": "Never mentioned in the case files. Worn anyway.",
+   "flavor": "Left out of every case file. She stared until they agreed.",
    "stats": {
     "attack": 2,
     "defense": 5,
@@ -10576,7 +10576,7 @@
    "slot": "body",
    "rarity": "rare",
    "icon": "e_hootsworth_body",
-   "flavor": "The chain holds a watch she never looks at.",
+   "flavor": "The watch times confessions. The record is four minutes.",
    "stats": {
     "defense": 4,
     "health": 7,
@@ -10594,7 +10594,7 @@
    "slot": "feet",
    "rarity": "rare",
    "icon": "e_hootsworth_feet",
-   "flavor": "You do not hear her arrive. You hear her ask.",
+   "flavor": "Suspects never hear her coming. They just notice the staring.",
    "stats": {
     "health": 2,
     "speed": 7,
@@ -10612,7 +10612,7 @@
    "slot": "head",
    "rarity": "rare",
    "icon": "e_sterling_head",
-   "flavor": "Low brim. Half a face is plenty.",
+   "flavor": "Pulled low enough to hide who he works for. Even from him.",
    "stats": {
     "attack": 2,
     "defense": 6,
@@ -10630,7 +10630,7 @@
    "slot": "body",
    "rarity": "rare",
    "icon": "e_sterling_body",
-   "flavor": "Holds a camera, a file and one spare bow tie.",
+   "flavor": "Nine hidden pockets. Eight hold cocktail reports.",
    "stats": {
     "defense": 7,
     "health": 6
@@ -10647,7 +10647,7 @@
    "slot": "feet",
    "rarity": "rare",
    "icon": "e_sterling_feet",
-   "flavor": "Polished to a shine. Ruinous on gravel.",
+   "flavor": "Shiny enough to check behind him in. He checks constantly.",
    "stats": {
     "defense": 1,
     "speed": 7,
@@ -10665,7 +10665,7 @@
    "slot": "head",
    "rarity": "rare",
    "icon": "e_dolly_head",
-   "flavor": "Fresh every night. Nobody knows where from.",
+   "flavor": "Pinned fresh every night. The flower came with proposal thirty-eight.",
    "stats": {
     "attack": 2,
     "defense": 8,
@@ -10683,7 +10683,7 @@
    "slot": "body",
    "rarity": "rare",
    "icon": "e_dolly_body",
-   "flavor": "Borrowed from the navy. Never given back.",
+   "flavor": "Lent by a sailor in 1942. He still thinks she sang to him.",
    "stats": {
     "defense": 5,
     "health": 4,
@@ -10701,7 +10701,7 @@
    "slot": "feet",
    "rarity": "rare",
    "icon": "e_dolly_feet",
-   "flavor": "Danced through four years and two soles.",
+   "flavor": "Danced through forty-one proposals and away from every one.",
    "stats": {
     "speed": 7,
     "luck": 3
@@ -10718,7 +10718,7 @@
    "slot": "head",
    "rarity": "rare",
    "icon": "e_gladius_head",
-   "flavor": "Bent in a fall nobody is allowed to mention.",
+   "flavor": "Tilted on purpose. He practised in a shield.",
    "stats": {
     "defense": 7,
     "luck": 6
@@ -10735,7 +10735,7 @@
    "slot": "body",
    "rarity": "rare",
    "icon": "e_gladius_body",
-   "flavor": "Straps arranged to show the most chest legally possible.",
+   "flavor": "Covers as little as the arena rules allow. He asked.",
    "stats": {
     "attack": 2,
     "defense": 5,
@@ -10753,7 +10753,7 @@
    "slot": "feet",
    "rarity": "rare",
    "icon": "e_gladius_feet",
-   "flavor": "Sand still in the laces from the last bout.",
+   "flavor": "Laced high, so the crowd looks up slowly.",
    "stats": {
     "health": 2,
     "speed": 5,
@@ -10771,7 +10771,7 @@
    "slot": "head",
    "rarity": "epic",
    "icon": "e_quack_head",
-   "flavor": "Cracked in the sixth strike. Still worn in the seventh.",
+   "flavor": "Cracked by strike six. He called the crack promising.",
    "stats": {
     "defense": 11,
     "health": 2,
@@ -10789,7 +10789,7 @@
    "slot": "body",
    "rarity": "epic",
    "icon": "e_quack_body",
-   "flavor": "Rubber. He thought of it after the eleventh.",
+   "flavor": "Rubber. A fine idea, eleven strikes late.",
    "stats": {
     "defense": 6,
     "health": 13
@@ -10806,7 +10806,7 @@
    "slot": "feet",
    "rarity": "epic",
    "icon": "e_quack_feet",
-   "flavor": "Insulated. Mostly.",
+   "flavor": "Insulated, he says. He has been wrong fourteen times.",
    "stats": {
     "health": 3,
     "speed": 12,
@@ -10824,7 +10824,7 @@
    "slot": "head",
    "rarity": "epic",
    "icon": "e_selene_head",
-   "flavor": "Bought in a shop that does not exist in daylight.",
+   "flavor": "Worn to dinner at every house she has robbed. They compliment it.",
    "stats": {
     "defense": 10,
     "luck": 9
@@ -10841,7 +10841,7 @@
    "slot": "body",
    "rarity": "epic",
    "icon": "e_selene_body",
-   "flavor": "Nine pouches. Eight of them yours.",
+   "flavor": "Nine pouches. Check yours. Eight of hers are full.",
    "stats": {
     "defense": 8,
     "health": 7,
@@ -10859,7 +10859,7 @@
    "slot": "feet",
    "rarity": "epic",
    "icon": "e_selene_feet",
-   "flavor": "Soft as a thought on a tiled roof.",
+   "flavor": "She crosses a tiled roof like a rumour.",
    "stats": {
     "attack": 3,
     "speed": 9,
@@ -10877,7 +10877,7 @@
    "slot": "head",
    "rarity": "epic",
    "icon": "e_beep_head",
-   "flavor": "The bow tie is screwed on. It was a gift.",
+   "flavor": "The bow tie screws on. It is the one part not on fire.",
    "stats": {
     "defense": 11,
     "luck": 7
@@ -10894,7 +10894,7 @@
    "slot": "body",
    "rarity": "epic",
    "icon": "e_beep_body",
-   "flavor": "Polished daily, by itself, out of habit.",
+   "flavor": "Polished nightly, between small fires.",
    "stats": {
     "defense": 13,
     "health": 6
@@ -10911,7 +10911,7 @@
    "slot": "feet",
    "rarity": "epic",
    "icon": "e_beep_feet",
-   "flavor": "Never squeaks. Never has.",
+   "flavor": "Silent on carpet. You smell the smoke first.",
    "stats": {
     "speed": 15,
     "luck": 4
@@ -10928,7 +10928,7 @@
    "slot": "head",
    "rarity": "legendary",
    "icon": "e_tut_head",
-   "flavor": "Recut three times. The antlers kept growing.",
+   "flavor": "Recut every spring. The tailors stopped asking why.",
    "stats": {
     "defense": 13,
     "speed": 4,
@@ -10946,7 +10946,7 @@
    "slot": "body",
    "rarity": "legendary",
    "icon": "e_tut_body",
-   "flavor": "Pleated by eleven people over four days.",
+   "flavor": "Eleven servants pleat it. He would settle for the snacks.",
    "stats": {
     "defense": 15,
     "health": 13
@@ -10963,7 +10963,7 @@
    "slot": "feet",
    "rarity": "legendary",
    "icon": "e_tut_feet",
-   "flavor": "Gilded. Worn over hooves. Nobody mentioned it.",
+   "flavor": "Gold sandals on hooves. Egypt agreed not to ask.",
    "stats": {
     "speed": 18,
     "luck": 8
@@ -10980,7 +10980,7 @@
    "slot": "head",
    "rarity": "absurd",
    "icon": "e_eagleton_head",
-   "flavor": "Raised to crowds that were not there.",
+   "flavor": "Tipped to crowds only he can see.",
    "stats": {
     "defense": 18,
     "speed": 4,
@@ -10998,7 +10998,7 @@
    "slot": "body",
    "rarity": "absurd",
    "icon": "e_eagleton_body",
-   "flavor": "Every rosette from every race he has lost.",
+   "flavor": "One rosette per election. He has won none of them.",
    "stats": {
     "defense": 12,
     "health": 17,
@@ -11016,7 +11016,7 @@
    "slot": "feet",
    "rarity": "absurd",
    "icon": "e_eagleton_feet",
-   "flavor": "Polished before every speech. Both of them.",
+   "flavor": "Polished for nine victory speeches and no victories.",
    "stats": {
     "attack": 5,
     "speed": 25,
@@ -11034,7 +11034,7 @@
    "slot": "head",
    "rarity": "unhinged",
    "icon": "e_zorp_head",
-   "flavor": "It hides nothing. Greg believes otherwise.",
+   "flavor": "Greg says it hides the antennae. It does not.",
    "stats": {
     "defense": 19,
     "speed": 8,
@@ -11052,7 +11052,7 @@
    "slot": "body",
    "rarity": "unhinged",
    "icon": "e_zorp_body",
-   "flavor": "Humans wear these. Greg has researched it.",
+   "flavor": "Greg has studied human faces. Not closely.",
    "stats": {
     "defense": 26,
     "health": 17
@@ -11069,7 +11069,7 @@
    "slot": "feet",
    "rarity": "unhinged",
    "icon": "e_zorp_feet",
-   "flavor": "Two left. Greg says this is the fashion.",
+   "flavor": "Two left shoes. Greg calls it the human style.",
    "stats": {
     "attack": 6,
     "speed": 27,
