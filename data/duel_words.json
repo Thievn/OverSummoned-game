@@ -1,5 +1,5 @@
 {
- "_note": "ALL STAND-IN (F7). Smudge is the only voice here. {you} and {them} are hero first names, {n} a number, {call} the stat.",
+ "_note": "Fable, F7. Smudge narrates; rivals and heroes may speak for themselves. {you} is a hero's short name, {n} a number, {call} the stat, {calls} the round's three, {rival} the opponent.",
  "calls": {
   "attack": "Attack",
   "defense": "Defense",
@@ -7,70 +7,105 @@
   "speed": "Speed",
   "luck": "Luck"
  },
- "house": [
-  "The house deck",
-  "Smudge's spare deck",
-  "The house"
- ],
  "level": [
   "Easy",
   "Normal",
   "Careful"
  ],
  "level_text": [
-  "Plays whatever is to hand.",
-  "Plays the numbers.",
-  "Holds cards back for the right call and lets a lost round go."
- ],
- "start": [
-  "Cards on the table. Speed goes first, then whatever is called.",
-  "Three turns a round, three rounds to win. Smudge has the ink ready.",
-  "Pick up to three. Press Ready. Try not to look smug."
+  "Plays whatever it draws and hopes.",
+  "Counts properly. No tricks.",
+  "Saves cards for the right turn and walks away from rounds it cannot win."
  ],
  "round_start": [
-  "New round. The calls are {calls}.",
-  "Round {n}: {calls}. Plan for the last one now."
+  "Round {n}. Smudge will be asking for {calls}, in that order.",
+  "Round {n}: {calls}. Worth a think before the first card.",
+  "{calls}. That is round {n}. Smudge has sharpened the quill."
  ],
  "your_turn": [
-  "The call is {call}.",
-  "{call} this turn.",
-  "This one counts {call}."
+  "{call} now.",
+  "This turn Smudge is counting {call}.",
+  "Next up: {call}."
  ],
  "you_round": [
-  "That round is yours.",
-  "Smudge stamps it in your colour.",
-  "Round to you."
+  "Yours. Smudge stamps it before anyone argues.",
+  "That round goes in your column.",
+  "Round to you. {rival} is pretending not to mind."
  ],
  "them_round": [
-  "The house takes that one.",
-  "That round goes the other way.",
-  "Round to the house."
+  "{rival} takes that one. Smudge writes it very small.",
+  "That round went the other way.",
+  "Round to {rival}. There are more rounds."
  ],
  "big": [
-  "{you} put up {n} on their own.",
-  "{n} from {you}. Smudge wrote it down twice."
+  "{n} from {you} alone. Smudge underlined it.",
+  "{you} put up {n}. Somebody had a good breakfast.",
+  "{n}. {you} would like that noted, and it is."
  ],
  "sapped": [
-  "{you} got knocked down a peg.",
-  "Something took a bite out of {you}."
+  "{you} has been got at.",
+  "Something happened to {you} on the way to the table.",
+  "{you} came out of that smaller than they went in."
  ],
  "pass": [
-  "Nothing played. The energy waits.",
-  "Saving up. Smudge respects it."
+  "Nothing played. The energy keeps.",
+  "A quiet turn. Smudge approves of patience, in others."
  ],
  "win": [
-  "You won the duel.",
-  "Duel won. Smudge closes the book on it."
+  "Yours. Smudge closes the ledger on it.",
+  "Won. {rival} is asking for a recount and not getting one.",
+  "That is the duel. Smudge has already inked it."
  ],
  "lose": [
-  "The house wins this one.",
-  "Lost. Smudge has already shuffled for the next."
+  "{rival} wins this one.",
+  "That one goes to {rival}. Smudge has seen worse.",
+  "{rival} takes it. The deck is already reshuffled."
  ],
- "paid": "+{n} gold. The first {max} repeat wins a day pay.",
- "unpaid": "No more paid wins today. That one was for the joy of it.",
- "cant_energy": "Not enough energy for {you}.",
- "cant_three": "Three cards a turn at most.",
- "cant_lock": "{you} is locked this turn.",
+ "paid": "+{n} gold. The first {max} repeat wins of the day pay.",
+ "unpaid": "The purse is empty until tomorrow. That one was for the love of it.",
+ "first": "First win against {rival} on {level}: {n} gold.",
+ "cant_energy": "{you} costs more energy than you have left.",
+ "cant_three": "Three cards a turn. Smudge only has so much table.",
+ "cant_lock": "{you} is locked this turn. Someone on the other side did that.",
+ "stand_you": "You sat this round out. {rival} can have it; the energy is yours.",
+ "stand_them": "{rival} has folded the round. Spend to be safe, or save it.",
+ "stand_banner": "{rival} sat out",
+ "captain_you": "{you} steps forward. Play them this turn or the call is wasted.",
+ "captain_them": "{rival} is calling on {you}. Expect a large number.",
+ "captain_banner": "{you} leads",
+ "sum_idle": "Tap a card to play it. Smudge is counting {call}.",
+ "sum_down": "Sitting this round out. {n} extra energy next round.",
+ "swap_title": "Put back up to {n}",
+ "swap_text": "Anything you put back goes under your deck and comes round again.",
+ "swap_keep": "Keep these",
+ "swap_go": "Put back {n}",
+ "lesson": [
+  "This is your energy. Seven more arrives every turn, and what you do not spend keeps.",
+  "Each turn Smudge counts one thing. A fast card is worth nothing when he is counting Health.",
+  "Tap a card to play it. Top right is what it scores this turn. Top left is what it costs.",
+  "Now press Ready. Both sides turn their cards over together.",
+  "Smudge carries the difference on his board and stands nearer whoever is behind. Three turns a round, three rounds to win."
+ ],
+ "rival_win": {
+  "tiber": "Something in the river laughs. It goes on for a while.",
+  "tony": "“No hard feelings. We will be keeping the table.”",
+  "brenda": "“I will be putting this in the minutes.”",
+  "vanguard": "They did not even break formation.",
+  "gary": "He circles the table once, slowly, to make the point.",
+  "nephew": "“Uncle will hear of this. He will be so pleased.”",
+  "well": "The well makes a satisfied sound.",
+  "antlers": "The ice creaks. It sounds like an opinion."
+ },
+ "rival_lose": {
+  "tiber": "A long bubble rises from the Tiber and pops, sourly.",
+  "tony": "“The boys would like a rematch. The boys insist.”",
+  "brenda": "“Fine. But somebody is restocking the staples.”",
+  "vanguard": "They retreat in good order and will deny it.",
+  "gary": "Gary leaves between the flags, which he never does.",
+  "nephew": "“I let you win. Ask anyone. Do not ask anyone.”",
+  "well": "Something goes back down, slowly, muttering.",
+  "antlers": "The antlers sink out of sight. The ice says nothing."
+ },
  "fx": {
   "boost": "Boost",
   "ramp": "Ramp",
@@ -87,7 +122,5 @@
   "peek": "Peek",
   "gamble": "Lucky",
   "top": "Back on top"
- },
- "swap_title": "Put back up to {n}",
- "stand_down": "You stood down. The round is theirs, the energy is yours."
+ }
 }

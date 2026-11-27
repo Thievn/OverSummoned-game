@@ -225,3 +225,5 @@ body.induel .gnav,body.induel .gbar{display:none}   /* the table owns the whole 
 .capmark{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-8deg);z-index:4;font:400 .72rem "Lilita One";background:#ffd35c;color:#2a1a00;border:2px solid #0b1020;border-radius:5px;padding:.1em .35em}
 
 .dugrid .dc .dctag{font-size:.72rem}.dugrid .dc .dcname{font-size:.86rem}
+
+.dendin .taunt{font:italic 600 .95rem/1.4 Nunito;color:#cfd8f0;margin:.3rem 0 .2rem}

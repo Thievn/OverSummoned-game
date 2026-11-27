@@ -328,3 +328,6 @@ Why O9b first: it costs nothing in art and fixes "I had to stop and read every c
 ### 27 Nov, after Dean's second look (Fable)
 - Card tags rewritten to one line of 12 characters or fewer, whole words only ("+5 Attack", "Sap 6", "Allies +2", "Comes back", "Shield"), no wrapping; deck-builder cards are wider. The full sentence is still on tap.
 - Duel gold roughly tripled, because it looked small next to raids: first wins are 150 / 450 / 1,200 by difficulty, times 1, 2 or 3 by rival tier (so 150 up to 3,600). A repeat win pays a fifth of that rival's first-win prize, five times a day.
+
+### F7 done (27 Nov, Fable)
+All fifty Moves have real names and a line each in `rules/duel.py` (a short joke about the hero, then the effect in plain words). Every sentence on the table now comes from `data/duel_words.json`: round calls, round results, stand down, Captain's Call, the swap window, the five lesson steps, the end sheet, and a win line and a loss line for each of the eight rivals (rivals speak for themselves; Smudge narrates everything else). Peek is not shown on the table yet, so Hootsworth and Sterling's cards only promise the bonus they actually give. Still unnamed: Duels itself, and the duelist-road titles.

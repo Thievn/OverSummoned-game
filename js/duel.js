@@ -193,10 +193,10 @@
   }
   function drawSwap() {
     const max = D().swap || 2, box = $('dt-swap');
-    box.innerHTML = `<div class="dswin"><h3>Put back up to ${max}</h3>
-      <p class="mut">A card you put back goes under your deck and comes round again later.</p>
+    box.innerHTML = `<div class="dswin"><h3>${fill(W.swap_title, { n: max })}</h3>
+      <p class="mut">${W.swap_text}</p>
       <div class="dsrow" id="ds-row"></div>
-      <div class="row"><button class="btn" id="ds-go">${swapPicks.length ? 'Swap ' + swapPicks.length : 'Keep this hand'}</button></div></div>`;
+      <div class="row"><button class="btn" id="ds-go">${swapPicks.length ? fill(W.swap_go, { n: swapPicks.length }) : W.swap_keep}</button></div></div>`;
     const row = $('ds-row');
     st.sides[0].hand.forEach(id => { const c = miniCard(id, { val: E.cardValue(R(), st, 0, id) });
       c.classList.toggle('picked', swapPicks.includes(id));
@@ -204,7 +204,7 @@
       row.appendChild(c); });
     $('ds-go').onclick = () => { if (swapPicks.length) { E.swapTwo(R(), st, 0, swapPicks); X.SND('flip'); }
       st.swap = false; box.hidden = true; drawAll();
-      say(fill(pick(W.round_start), { n: st.round, calls: st.calls.map(k => W.calls[k]).join(', ') })); };
+      say(fill(pick(W.round_start), { n: st.round, calls: st.calls.map(k => W.calls[k]).join(', then ') })); };
   }
   function close(silent) {
     if (!tableOpen) return; tableOpen = false; $('duel').hidden = true; document.body.classList.remove('induel'); st = null;
@@ -243,10 +243,10 @@
     dn.hidden = st.sides[0].down;
     const sum = mine.reduce((t, id) => t + E.cardValue(R(), st, 0, id), 0);
     $('dt-sum').innerHTML = st.sides[0].down
-      ? `<span class="mut">You stood down. ${D().stand_down_energy} extra energy next round.</span>`
+      ? `<span class="mut">${fill(W.sum_down, { n: D().stand_down_energy })}</span>`
       : mine.length
       ? `Playing <b>${mine.length}</b>: <b style="color:${statColor()}">${sum}</b> on ${W.calls[E.call(st)]} for <b>${spent}</b> energy`
-      : `<span class="mut">Tap a card to play it. This turn counts <b style="color:${statColor()}">${W.calls[E.call(st)]}</b>.</span>`;
+      : `<span class="mut">${fill(W.sum_idle, { call: `<b style="color:${statColor()}">${W.calls[E.call(st)]}</b>` })}</span>`;
   }
   function drawSlots() {
     ['dt-slots-you', 'dt-slots-them'].forEach((sid, side) => {
@@ -365,8 +365,8 @@
   async function ready() {
     if (busy || !st || st.over) return; busy = true; $('dt-ready').disabled = true; $('dt-info').classList.remove('on'); lessonDid('ready');
     const ai = D().levels[lvl].ai;
-    if (E.wantsDown(R(), st, 1, ai)) { E.standDown(R(), st, 1); say(`${rival.name} stands down.`); banner('They stood down', 'them'); await wait(900); }
-    if (E.wantsCaptain(R(), st, 1, ai)) { const g = E.captainCall(R(), st, 1); if (g) { say(`${rival.name} calls on ${nm(g)}.`); await wait(700); } }
+    if (E.wantsDown(R(), st, 1, ai)) { E.standDown(R(), st, 1); say(fill(W.stand_them, { rival: rival.name })); banner(fill(W.stand_banner, { rival: rival.name }), 'them'); await wait(900); }
+    if (E.wantsCaptain(R(), st, 1, ai)) { const g = E.captainCall(R(), st, 1); if (g) { say(fill(W.captain_them, { rival: rival.name, you: nm(g) })); await wait(700); } }
     const theirs = E.choose(R(), st, 1, ai), picks = [mine.slice(), theirs];
     if (!picks[0].length) say(pick(W.pass));
     X.SND('confirm');
@@ -410,14 +410,14 @@
     const rd = ev.find(e => e.t === 'round'), end = ev.find(e => e.t === 'end');
     if (rd) {
       X.SND('stamp'); buzz(rd.winner === 0 ? [20, 60, 30] : 40); pose(rd.winner === 0 ? 'cheer' : 'sulk', 2200);
-      say(pick(rd.winner === 0 ? W.you_round : W.them_round));
-      banner(rd.winner === 0 ? 'Round to you' : 'Round to the house', rd.winner === 0 ? 'you' : 'them');
+      say(fill(pick(rd.winner === 0 ? W.you_round : W.them_round), { rival: rival.name }));
+      banner(rd.winner === 0 ? 'Round to you' : 'Round to ' + rival.name, rd.winner === 0 ? 'you' : 'them');
       drawTop(); if (X.OS.Sound) X.OS.Sound.music(tuneFor()); await wait(1500);
     }
     if (end) return finish(end.winner === 0);
     // clear the table and deal
     document.querySelectorAll('#duel .dslot .dc').forEach(c => c.classList.add('away')); await wait(300);
-    mine = []; drawAll(); if (rd) { drawTrail(true); say(fill(pick(W.round_start), { n: st.round, calls: st.calls.map(k => W.calls[k]).join(', ') })); } else say(fill(pick(W.your_turn), { call: W.calls[E.call(st)] }));
+    mine = []; drawAll(); if (rd) { drawTrail(true); say(fill(pick(W.round_start), { n: st.round, calls: st.calls.map(k => W.calls[k]).join(', then ') })); } else say(fill(pick(W.your_turn), { call: W.calls[E.call(st)] }));
     busy = false; $('dt-ready').disabled = false;
   }
   const cardIn = (side, id) => $(side ? 'dt-slots-them' : 'dt-slots-you').querySelector(`.dc[data-id="${id}"]`);
@@ -440,7 +440,7 @@
     const was = roadLevel(d.xp || 0);
     let pay = 0, lines = [];
     if (won) {
-      if (firstWin) { const g = payFor(rival, L); beat.push(lvl); pay += g; lines.push(`First win against ${rival.name} on ${L.name}: <b>${OSnum(g)} gold</b>.`); }
+      if (firstWin) { const g = payFor(rival, L); beat.push(lvl); pay += g; lines.push(fill(W.first, { rival: rival.name, level: L.name, n: `<b>${OSnum(g)}</b>` })); }
       else if (d.paid < P.paid_per_day) { const g = repeatFor(rival, L); d.paid++; pay += g; lines.push(fill(W.paid, { n: OSnum(g), max: P.paid_per_day })); }
       else lines.push(fill(W.unpaid, { max: P.paid_per_day }));
       d.xp = (d.xp || 0) + xpFor(rival, L);
@@ -453,7 +453,7 @@
     const left = D().levels.length * D().rivals.length - Object.values(d.beat).reduce((t, a) => t + a.length, 0);
     const box = $('dt-end'); box.hidden = false;
     box.innerHTML = `<div class="dendin ${won ? 'won' : 'lost'}"><img src="/assets/v2/smudge/${won ? 'boot' : 'sleep'}.webp${X.OS.VER}" alt="">
-      <h2>${won ? pick(W.win) : `${rival.name} wins this one.`}</h2><p class="score">${st.sides[0].rounds} rounds to ${st.sides[1].rounds} \u00b7 ${rival.name}</p>
+      <h2>${fill(pick(won ? W.win : W.lose), { rival: rival.name })}</h2><p class="taunt">${((won ? W.rival_lose : W.rival_win) || {})[rival.id] || ''}</p><p class="score">${st.sides[0].rounds} rounds to ${st.sides[1].rounds} \u00b7 ${rival.name}</p>
       <p class="mut">${won ? lines.join('<br>') : `Against ${rival.name} on ${L.name}: won ${d.rec[lvl][0]}, lost ${d.rec[lvl][1]}. ${left} first wins still out there.`}</p>
       <div class="row"><button class="btn" id="dt-again">Play again</button><button class="btn ghost" id="dt-leave">Back to Duels</button></div></div>`;
     $('dt-again').onclick = () => { box.hidden = true; open(true); };
@@ -481,7 +481,7 @@
     if (t) t.classList.add('dpoint');
     box.hidden = false; box.classList.toggle('attop', !!sp.top);
     box.innerHTML = `<div class="dlbox"><img src="/assets/v2/smudge/boot.webp${X.OS.VER}" alt="">
-      <div><p>${sp.text}</p><div class="row">${sp.until ? '' : `<button class="btn small" id="dl-next">${sp.last ? 'Let me play' : 'Next'}</button>`}<button class="btn small ghost" id="dl-skip">Skip</button></div></div></div>`;
+      <div><p>${(W.lesson || [])[step] || sp.text}</p><div class="row">${sp.until ? '' : `<button class="btn small" id="dl-next">${sp.last ? 'Let me play' : 'Next'}</button>`}<button class="btn small ghost" id="dl-skip">Skip</button></div></div></div>`;
     if (!sp.until) $('dl-next').onclick = () => lessonNext();
     $('dl-skip').onclick = () => lessonEnd();
     if (sp.until) box.classList.add('waiting'); else box.classList.remove('waiting');
@@ -496,11 +496,11 @@
   function wire() {
     $('dt-ready').onclick = ready;
     $('dt-down').onclick = () => { if (busy || !st || st.sides[0].down) return;
-      E.standDown(R(), st, 0); mine = []; X.SND('back'); say('You stood down. The round is theirs, the energy is yours.');
+      E.standDown(R(), st, 0); mine = []; X.SND('back'); say(fill(W.stand_you, { rival: rival.name }));
       drawAll(); ready(); };
     $('dt-captain').onclick = () => { if (busy || !st) return;
       const got = E.captainCall(R(), st, 0); if (!got) return;
-      X.SND('levelup'); banner(`${nm(got)} is called`, 'you'); say(`${nm(got)} steps up. Play them this turn and they will be worth far more.`);
+      X.SND('levelup'); banner(fill(W.captain_banner, { you: nm(got) }), 'you'); say(fill(W.captain_you, { you: nm(got) }));
       drawAll(); };
     $('dt-quit').onclick = () => { if (busy) return; if (st && !st.over && (st.round > 1 || st.turn > 0) && !confirm('Leave this duel? Practice keeps no score of it.')) return; close(); };
     $('dt-info').onclick = e => { if (e.target.closest('.dix') || e.target === $('dt-info')) $('dt-info').classList.remove('on'); };

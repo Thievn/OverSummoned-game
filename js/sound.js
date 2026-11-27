@@ -2,7 +2,7 @@
 // Settings are per device (localStorage) and are changed from the account screen. Nothing plays until the
 // first tap or key press, because browsers do not allow it sooner.
 (function () {
-  const BASE = '/assets/v2/sfx/', VER = '?v=1127m';
+  const BASE = '/assets/v2/sfx/', VER = '?v=1127n';
   // name: [volume, pitch wobble (so a sound heard hundreds of times never sounds mechanical), least seconds between plays]
   const SFX = { click: [.5, .05, .04], tab: [.5, .04, .06], back: [.5, .03, .06], confirm: [.6, .02, .08], stamp: [.6, .06, .05],
     haul: [.55, .05, .12], splash: [.5, .06, .15], lock: [.55, .04, .15], dig: [.55, .06, .15], rare: [.7, 0, .3], coin: [.6, .04, .1],
