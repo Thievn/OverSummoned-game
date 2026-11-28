@@ -1,5 +1,15 @@
 [
  {
+  "v": "0.5.14",
+  "build": "1127s",
+  "date": "2026-11-27",
+  "title": "Everything on one page",
+  "added": [
+   "The front page now lists everything in the game, including what is coming soon: Duels, the Shop and the new desktop pet."
+  ],
+  "fixed": []
+ },
+ {
   "v": "0.5.13",
   "build": "1127r",
   "date": "2026-11-27",

@@ -974,3 +974,13 @@ body.game input,body.game textarea,body.game [contenteditable],body.game select,
 .phone figcaption{margin-top:.8rem;font:400 1.15rem/1.2 "Lilita One";color:#fff}
 @media(max-width:760px){.shots{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:68%;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 0 .6rem;-webkit-overflow-scrolling:touch}.phone{scroll-snap-align:center}}
 .top .btn.small{white-space:nowrap}
+
+/* landing: everything in the game, as a compact grid */
+.feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}
+.feat{display:flex;gap:.75rem;align-items:flex-start;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:.85rem .9rem}
+.feat img{flex:none;width:44px;height:44px;object-fit:contain}
+.feat h3{font-size:1.05rem;color:#fff;margin:0 0 .15rem;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem}
+.feat p{margin:0;color:#c3cce6;font-size:.88rem;line-height:1.35}
+.soon{font:800 .62rem/1 Nunito,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#141c33;background:var(--gold);border-radius:999px;padding:.3em .6em;white-space:nowrap}
+@media(max-width:1100px){.feats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.feats{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.feat{flex-direction:column;gap:.4rem;padding:.7rem}.feat img{width:36px;height:36px}.feat h3{font-size:.98rem}.feat p{font-size:.8rem}}

@@ -3,6 +3,7 @@
 Read PLAN.md first. The wording rule applies to everything here: plain English, no hero count.
 
 ---------------------------------------------------------------------------------------------------
+## L6. DONE by Fable, build 1127s (City already has rankings, market and mailbox, so it is not "coming soon"; Shop, Duels and Desktop pet are). Original notes follow.
 ## L6. Front page: replace "What you can do" with a grid of everything in the game
 
 Dean: the four tiles undersell the game, and "Plenty to keep them busy" is confusing. Show everything
@@ -211,6 +212,11 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
   tool in `art/raw/pet2/part_lockpicks_1.jpg`. The T-shaped "rake" in that same file is WRONG, do not use.
 - No hooks. Dean said the hooked ones look like dental tools.
 - He holds the rake in one paw and the wrench in the other, both pointing down behind the chest.
+
+### What Opus builds next, in one line
+`desktop-pet2/` Godot project per everything above: P2 parts (each generated alone and checked by
+eye), P4 the pet with typing movements for all four activities, P6 menu + wardrobe + stats, then P5
+chests with the rarity glow. Hand Dean the folder to open in Godot. Front page is finished.
 
 ### Still open
 - Paid cosmetics: Steam, the site, or later. Build free first.

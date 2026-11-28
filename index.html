@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080c1a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="preload" href="/assets/fonts/LilitaOne.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="/css/os.css?v=1127r">
+<link rel="stylesheet" href="/css/os.css?v=1127s">
 </head>
 <body>
 <script>document.documentElement.classList.add('js-rv')</script>
@@ -110,12 +110,20 @@
 </div></section>
 
 <section id="do"><div class="wrap">
-  <div class="sec-head rv"><p class="kicker">What you can do</p><h2>Plenty to keep them busy.</h2></div>
-  <div class="beats four">
-    <div class="beat rv"><img src="/assets/v2/loot/outback_4.webp" alt="" loading="lazy"><h3>Jobs</h3><p>Send Smudge to fish, dig and pick locks, with heroes behind him to make him faster and luckier. He keeps going while you are away.</p></div>
-    <div class="beat rv"><img src="/assets/v2/loot/x_sword.webp" alt="" loading="lazy"><h3>Raids</h3><p>Pick three heroes and take on a boss. Win and you bring home the best loot that place has.</p></div>
-    <div class="beat rv"><img src="/assets/v2/loot/x_anvil.webp" alt="" loading="lazy"><h3>Workshop and Training</h3><p>Turn spare loot into tonics and better gear. Spend energy to raise a hero's stats.</p></div>
-    <div class="beat rv"><img src="/assets/v2/loot/x_dumbbell.webp" alt="" loading="lazy"><h3>Desktop pet</h3><p>Optional: a small Smudge on your taskbar who reacts when you type. He counts key presses and never sees what you type.</p></div>
+  <div class="sec-head rv"><p class="kicker">What is in the game</p><h2>There is a lot to do.</h2></div>
+  <div class="feats">
+    <div class="feat rv"><img src="/assets/v2/loot/x_ink.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Summon</h3><p>Spend ink to summon a new hero card. You never know who you will get.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_shard.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Heroes</h3><p>Your card collection. Flip any card to read its story and see its stats and gear.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/outback_4.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Work</h3><p>Send Smudge fishing, digging and lock picking. He keeps going while you are away.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_map.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Expeditions</h3><p>Send heroes off on trips of their own. They come back with loot.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_crate.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Gear</h3><p>Weapons, hats, boots and charms to find and equip. Every hero also has three pieces of their own.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_anvil.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Workshop</h3><p>Turn spare loot into tonics and make your gear stronger.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_dumbbell.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Training</h3><p>Spend energy to raise a hero's stats.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_sword.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Raids</h3><p>Pick three heroes and fight a boss for the best loot.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_trophy.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Duels <span class="soon">Coming soon</span></h3><p>Card battles against rival captains. Build a deck from your heroes and outplay them.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_friends.webp" alt="" width="44" height="44" loading="lazy"><div><h3>City</h3><p>Rankings, friends, guilds, a player market and a mailbox.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/loot/x_gold.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Shop <span class="soon">Coming soon</span></h3><p>New looks for Smudge, card frames and scenery. Looks only. Nothing that makes you stronger.</p></div></div>
+    <div class="feat rv"><img src="/assets/v2/site/pet-icon.webp" alt="" width="44" height="44" loading="lazy"><div><h3>Desktop pet <span class="soon">Coming soon</span></h3><p>A small Smudge on your desktop who taps along as you type and earns you chests.</p></div></div>
   </div>
 </div></section>
 
@@ -151,12 +159,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js" defer></script>
 <script src="/js/os.js"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1127r"></script>
-<script src="/js/stage.js?v=1127r"></script>
-<script src="/js/land.js?v=1127r"></script>
-<script src="/js/wish.js?v=1127r"></script>
+<script src="/js/dbcanvas.js?v=1127s"></script>
+<script src="/js/stage.js?v=1127s"></script>
+<script src="/js/land.js?v=1127s"></script>
+<script src="/js/wish.js?v=1127s"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
-<script src="/js/sound.js?v=1127r"></script>
+<script src="/js/sound.js?v=1127s"></script>
 <script>(function () { var b = document.getElementById('music-btn'), on = false; if (!b || !window.OSSound) return;
   b.onclick = function () { on = !on; OSSound.unlock(); OSSound.config({ music: true }); OSSound.music(on ? 'home' : null); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Stop the music' : 'Play the music'); b.classList.toggle('on', on); }; })();</script>
 </body>
