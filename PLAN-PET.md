@@ -193,6 +193,18 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
   particle burst), so one set of art covers every rarity.
 - The same opening is used for the chest that drops from the key bar, in every activity.
 
+### Chest art notes (Fable, after three tries with Grok)
+- Dean's rule: **no lock, keyhole or latch on the side we see.** Only planks, iron bands, two hinges.
+  The chest sits near the front edge of the desk with a gap behind it, and Smudge's paws work **in
+  that gap, behind the chest**, half hidden by it. Nothing pokes into the lid.
+- Grok keeps drawing a keyhole on our side when the otter is in the picture (`chest2_closed_1/2`
+  are wrong for that reason; paw position in `chest2_closed_2` is close). The open ones
+  (`chest2_open_1/2`) are right: plain back, lid up, light behind it.
+- So do not generate them together. The chest is its own part anyway: generate the chest alone
+  ("back view of a small treasure chest, no lock"), closed and open, check it by eye, and place it
+  in front of the paw layer in the rig. Look at every generated part before using it. Dean checks
+  details like this closely.
+
 ### Still open
 - Paid cosmetics: Steam, the site, or later. Build free first.
 - Chest numbers: Opus proposes them from the sim, Dean approves.
