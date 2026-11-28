@@ -12,7 +12,7 @@ Dean wants a seamless, loopable foil texture that he can animate in Scenario.
 
 I made a pearly foil tile, soft diagonal bands of lilac, blue, pink and mint, that wraps cleanly in both directions: scroll it left, right, up or down forever and you never see a seam. It comes in a 2048 and a 4096 size, plus a more subtle version for lower rarities.
 
-The textures now live in this repo, under `docs/ideas/assets/foil/`. That folder is with the idea docs, not with the live game art in `assets/v2/`, because the foil is not wired into the game yet. `docs/` is already kept off the live site. Copies are still on Dean's Drive with the frames: https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs.
+The textures now live in this repo, under `docs/ideas/assets/foil/`. That folder is with the idea docs, not with the live game art in `assets/v2/`, because the foil is not wired into the game yet. `docs/` is already kept off the live site. Copies are also on Dean's Drive, in the older v3 frames folder: https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs.
 
 | File | What it is |
 |---|---|
