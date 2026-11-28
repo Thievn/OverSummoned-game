@@ -123,9 +123,40 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
 - **P7. Tell the site.** Update /desktop-pet page and the front page tile with the new art and plain
   wording. Add a notes entry.
 
-### Open questions for Dean
-1. Which concept look (or what to change)?
-2. Chest bar instead of keys-to-ink: yes or no?
-3. Does the pet keep any background at all, or is it only Smudge and his desk? (Recommended: only
-   Smudge and desk, transparent. A backdrop can be a cosmetic later.)
-4. Paid cosmetics: Steam, the site, or decide later? (Recommended: decide later, build free first.)
+### Decided (Dean, 27 Nov, evening). These replace anything above that disagrees.
+- **Look:** Dean likes all three concepts. Base = `front_idle` (hood up, stamping). Hood down when a
+  hat is worn, as in `front_fish`. P1 is done; start at P2.
+- **The pet is "farming on your desk".** Say it that way in the menu and on the site.
+- **Each activity must read clearly and move properly, not only swap a prop:**
+  - Fishing: he holds the rod and casts. The rod tilts forward and back on each tap, the line and
+    float swing and settle (a simple spring), and now and then a fish comes up.
+  - Digging: shovel goes down into the dirt on one tap and lifts with dirt flying on the next.
+  - Stamping: stamp comes down on the ledger with an ink splat. **Stamping is the ink activity:**
+    it fills ink for summons. Fishing, digging and lock picking bring loot from their places.
+  - Lock picking: picks wiggle, the padlock pops open now and then.
+  Each activity is 2 arm frames plus one moving prop. See `art/raw/pet2/sheet_actions`.
+- **Key counter like Bongo Cat:** a number that goes up with every key and click, and never resets.
+  Lifetime total is saved to the account.
+- **Stats page in the menu:** lifetime keys, today, this session, keys per second right now, best
+  keys per second, best day, days in a row, chests opened, time farming per activity.
+- **Chests stay** (Dean's own idea): the bar fills from keys, the chest drops, rewards go to the site.
+- **Fur colours:** the fur is its own layer, separate from the hood, face and outline, drawn in a
+  light neutral brown so the code can tint it (Godot shader, hue and brightness, masked to the fur
+  layer). Start with brown, white, black, gold, plus a free colour slider. Hood colour the same way.
+- **Expressions:** eyes and mouth are their own layers: happy, surprised, angry, sleepy, focused
+  (tongue out), plus blink. He reacts: happy on a chest, focused when typing fast, sleepy when idle.
+- **Versions of Smudge (special skins):** a full replacement part set on the same canvas, so every
+  hat and prop still fits. First two: **Evil Smudge** (dark fur, red eyes, torn hood, small horns)
+  and **Ghost Smudge**. See `art/raw/pet2/sheet_versions`. These are the rare or paid ones.
+- **Go all out on the wardrobe.** First batch: at least 12 hats, 4 face items, 4 neck items, 4 fur
+  colours, 2 special versions. See `art/raw/pet2/sheet_cosmetics`. Sheets are for choosing only;
+  each chosen item is then generated on its own, on the shared canvas, and cut from white.
+- **Wardrobe must be testable by Dean:** in the menu he picks any item and sees it on Smudge at
+  once, in every activity, with nothing misplaced. For testing, a dev switch unlocks everything.
+- **Who builds:** Opus. Web preview first (P3, `pettest.html`) so Dean can try the wardrobe in his
+  browser the same day, then the Godot build (P4) reading the same json. P6 (menu, wardrobe, stats)
+  is done in both.
+
+### Still open
+- Paid cosmetics: Steam, the site, or later. Build free first.
+- Chest numbers: Opus proposes them from the sim, Dean approves.
