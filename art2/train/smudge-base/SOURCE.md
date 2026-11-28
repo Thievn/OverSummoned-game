@@ -11,11 +11,23 @@ all three Z-Image models at inference.
 
 ## Images
 
-Nothing here yet.
+Eight poses, one per file, 1024x1024 on white, all at the same scale.
 
-Wanted: the eight-pose turnaround of Smudge with no cloak, arms out, on a white background. Made
-by Poppy Rose (Grok). There is a second version of the same sheet with the cloak on — keep that
-one too, in `_sheets/`, but do not train on it.
+They came from `Smudge 360 - bare base` in Dean's Scenario project, which was only a 1240x678
+contact sheet. Topaz Image Upscale (Standard V2, 4x, face enhancement off) took it to
+4960x2712, which is about 1240x1200 a pose, and `rules/cut_turnaround.py` found each figure and
+put it on its own square. Face enhancement was left off on purpose: it is tuned for photographs
+of people and makes a mess of a drawn animal.
+
+Cost: 10 CU for the upscale.
+
+There is no higher-resolution original. Dean checked; the eight-pose sheets were never rendered
+as separate files.
+
+**Known limitation.** His face drifts between the eight views. `01_front` has proper eyes and
+brows; `05_back` and `07_side_left` are nearly featureless and read as a real otter rather than
+the character. So this model is for the **body**, which is what a rig needs. His face comes from
+the expression art, which is separate and much better.
 
 Already in the repo and **not** suitable for this model, because he is wearing the cloak in all
 of them:
