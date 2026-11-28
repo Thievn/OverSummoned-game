@@ -121,6 +121,27 @@ Follow `docs/ideas/card-frame-template.md` by Poppy Rose. The short version:
 **Never generate a card with its frame baked into the picture.** Stats will be tuned for months.
 A painted-in number means regenerating the card to change it.
 
+## 6b. Card size
+
+Cards are the standard trading-card shape: **63.5 x 88.9 mm (2.5 x 3.5 inches), which is exactly
+5:7, or 0.714**. That's the size Magic, Pokemon and every poker deck use, so sleeves, binders,
+print runs and every mockup anyone sends us all line up without an argument.
+
+In CSS that is `aspect-ratio: 5/7`.
+
+**Two things in the code are currently off and should be fixed together:**
+
+| Where | Now | Should be |
+|---|---|---|
+| `css/os.css` line 89, `.card` | `5/7.2` (0.694) | `5/7` |
+| `css/duel.css` lines 39 and 110, `.dslot` and `.dc` | `.72` | `5/7` |
+
+So the same card is a slightly different shape in the collection than it is in a duel. Neither
+is standard. It's a two-character change in two files, but it touches the live site, so it ships
+when Dean says.
+
+Every frame, template and mockup from here on is built at 5:7.
+
 ## 7. Foil
 
 One seamless iridescent texture, scrolled under a mask that covers only the border ring. The art,
