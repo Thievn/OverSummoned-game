@@ -1,0 +1,281 @@
+{
+ "version": 4,
+ "canvas": {
+  "width": 1500,
+  "height": 2100,
+  "corner_radius": 84,
+  "aspect": 0.7143,
+  "physical": "63 x 88 mm (2.5 x 3.5 in), 600 dpi",
+  "note": "Standard TCG card size. All coordinates are pixels of the 1500x2100 PNGs, origin top-left."
+ },
+ "outline": {
+  "note": "Border only. One big transparent opening, identical on front and back.",
+  "opening": {
+   "x": 120,
+   "y": 126,
+   "w": 1262,
+   "h": 1850,
+   "chamfer": 22
+  },
+  "safe_content_box": {
+   "x": 152,
+   "y": 150,
+   "w": 1198,
+   "h": 1802
+  },
+  "files": {
+   "front_outline": "fronts/<tier>/frame_outline.png",
+   "back": "backs/<tier>/back.png (identical to the front outline)",
+   "back_preview": "backs/<tier>/back_preview.png",
+   "opening_mask": "fronts/<tier>/art_mask_outline.png",
+   "foil_mask": "fronts/<tier>/foil_mask.png",
+   "foil_overlay": "fronts/<tier>/foil_overlay.png"
+  }
+ },
+ "plates": {
+  "note": "The older front with painted name plate, type bar, five stat boxes and power bar. Optional. Same border ring as the outline.",
+  "files": {
+   "frame": "fronts/<tier>/frame.png",
+   "art_mask": "fronts/<tier>/art_mask.png",
+   "preview": "fronts/<tier>/front_blank.png"
+  },
+  "slots": {
+   "name_plate": {
+    "x": 106,
+    "y": 110,
+    "w": 1296,
+    "h": 134
+   },
+   "name_text": {
+    "x": 126,
+    "y": 112,
+    "w": 1256,
+    "h": 88
+   },
+   "born_text": {
+    "x": 126,
+    "y": 196,
+    "w": 1256,
+    "h": 46
+   },
+   "art_window": {
+    "x": 120,
+    "y": 304,
+    "w": 1262,
+    "h": 1194
+   },
+   "art_underlay": {
+    "x": 104,
+    "y": 288,
+    "w": 1294,
+    "h": 1226
+   },
+   "badge": {
+    "x": 150,
+    "y": 344,
+    "w": 242,
+    "h": 114
+   },
+   "type_text": {
+    "x": 106,
+    "y": 1554,
+    "w": 1174,
+    "h": 110
+   },
+   "gem": {
+    "x": 1265,
+    "y": 1556,
+    "w": 90,
+    "h": 104
+   },
+   "stat_attack": {
+    "x": 104,
+    "y": 1698,
+    "w": 243,
+    "h": 164
+   },
+   "stat_attack_num": {
+    "x": 112,
+    "y": 1704,
+    "w": 227,
+    "h": 102
+   },
+   "stat_attack_label": {
+    "x": 112,
+    "y": 1806,
+    "w": 227,
+    "h": 49
+   },
+   "stat_defense": {
+    "x": 365,
+    "y": 1698,
+    "w": 245,
+    "h": 164
+   },
+   "stat_defense_num": {
+    "x": 373,
+    "y": 1704,
+    "w": 229,
+    "h": 102
+   },
+   "stat_defense_label": {
+    "x": 373,
+    "y": 1806,
+    "w": 229,
+    "h": 49
+   },
+   "stat_health": {
+    "x": 628,
+    "y": 1698,
+    "w": 242,
+    "h": 164
+   },
+   "stat_health_num": {
+    "x": 636,
+    "y": 1704,
+    "w": 226,
+    "h": 102
+   },
+   "stat_health_label": {
+    "x": 636,
+    "y": 1806,
+    "w": 226,
+    "h": 49
+   },
+   "stat_speed": {
+    "x": 888,
+    "y": 1698,
+    "w": 249,
+    "h": 164
+   },
+   "stat_speed_num": {
+    "x": 896,
+    "y": 1704,
+    "w": 233,
+    "h": 102
+   },
+   "stat_speed_label": {
+    "x": 896,
+    "y": 1806,
+    "w": 233,
+    "h": 49
+   },
+   "stat_luck": {
+    "x": 1153,
+    "y": 1698,
+    "w": 245,
+    "h": 164
+   },
+   "stat_luck_num": {
+    "x": 1161,
+    "y": 1704,
+    "w": 229,
+    "h": 102
+   },
+   "stat_luck_label": {
+    "x": 1161,
+    "y": 1806,
+    "w": 229,
+    "h": 49
+   },
+   "power_bar": {
+    "x": 104,
+    "y": 1898,
+    "w": 1296,
+    "h": 100
+   },
+   "power_text": {
+    "x": 128,
+    "y": 1898,
+    "w": 846,
+    "h": 100
+   },
+   "power_pips": {
+    "x": 966,
+    "y": 1936,
+    "w": 410,
+    "h": 32
+   }
+  },
+  "rarity_colors": {
+   "common": "#9aa3b8",
+   "uncommon": "#3ecf6b",
+   "rare": "#4a8dff",
+   "epic": "#b06bff",
+   "legendary": "#ff9a2e",
+   "absurd": "#ff4fb4",
+   "unhinged": "#ff3b30"
+  }
+ },
+ "tiers": [
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+  "absurd",
+  "unhinged",
+  "true-summon"
+ ],
+ "foil": {
+  "note": "Scroll a seamless foil tile under foil_mask.png. The ring is the same on the back, so one mask serves both sides.",
+  "textures": [
+   "docs/ideas/assets/foil/foil_seamless_2048.png",
+   "docs/ideas/assets/foil/foil_seamless_subtle.png",
+   "docs/ideas/assets/foil/foil_seamless_4096.png"
+  ]
+ },
+ "example_card": {
+  "file": "example_card_tcg.png",
+  "layout": {
+   "name_bar": {
+    "x": 152,
+    "y": 150,
+    "w": 1198,
+    "h": 98
+   },
+   "cost_orb": {
+    "cx": 1288,
+    "cy": 199,
+    "r": 48
+   },
+   "art": {
+    "x": 152,
+    "y": 268,
+    "w": 1198,
+    "h": 722
+   },
+   "type_line": {
+    "x": 152,
+    "y": 1004,
+    "w": 1198,
+    "h": 80
+   },
+   "ability_box": {
+    "x": 152,
+    "y": 1098,
+    "w": 1198,
+    "h": 470
+   },
+   "stat_tiles": {
+    "x": 152,
+    "y": 1580,
+    "w": 1198,
+    "h": 120,
+    "count": 5
+   },
+   "mode_ratings": {
+    "x": 152,
+    "y": 1714,
+    "w": 1198,
+    "h": 150
+   },
+   "rarity_strip": {
+    "x": 152,
+    "y": 1880,
+    "w": 1198,
+    "h": 72
+   }
+  }
+ }
+}
