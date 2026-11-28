@@ -390,8 +390,9 @@
   function crewSay(pp, text, hold) {
     const host = document.querySelector('[data-who="0"]'); if (!host || !text) return;
     const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
-    OS.Stage.say(host, { x: pp.x, top: pp.y - pp.tall }, text, hold, jobPups.filter(q => q !== pp).map(box));
-    pp.say((hold || OS.Stage.holdFor(text)) / 1000 - .3);
+    const nw = ((OS.heroes[pp.id] || {}).name || '').split(' '), name = pp.me ? 'Smudge' : nw[0].length <= 3 && nw[1] ? nw[0] + ' ' + nw[1] : nw[0];
+    OS.Stage.say(host, { x: pp.x, top: pp.y - pp.tall, h: pp.tall, name }, text, hold, jobPups.filter(q => q !== pp).map(box));
+    pp.say(Math.min(3, .6 + String(text).length * .035));            // the mouth moves while the line is said, not the whole time it shows
     // Smudge turns to whoever is talking
     const me = jobPups.find(q => q && q.me), r = host.getBoundingClientRect(); if (me && me !== pp) me.lookAt(r.left + pp.x, r.top + pp.y - pp.tall * .8, Math.min(4, (hold || OS.Stage.holdFor(text)) / 1000));
   }

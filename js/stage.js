@@ -38,24 +38,38 @@
     // the rod tip in host pixels for a pose placed at `at` and `h` tall
     rodTip(pose, at, h, rig) { const t = ROD[pose], e = rig[pose]; if (!t || !e) return null; const k = h / e.size[1];
       return [at[0] + (t[0] - e.foot[0]) * k, at[1] + (t[1] - e.foot[1]) * k]; },
-    holdFor(text) { return Math.min(9000, 3200 + String(text || '').length * 65); },
+    // how long a line stays up: long enough to read twice, longer lines longer
+    holdFor(text) { return Math.min(12000, 4800 + String(text || '').length * 85); },
     flip(id, face) { return !!(LOOKS[id] && LOOKS[id] !== face); },
-    // A speech bubble with a tail that points at whoever is talking. who = { x, top } in host pixels (the middle of the
-    // head and its top edge); others = [{ x0, y0, x1, y1 }] boxes of everyone else, which the bubble keeps off.
+    // A speech bubble with a tail that points at whoever is talking.
+    // who = { x, top, h, name } in host pixels: the middle of the head, the top of the body, the body's height, and
+    // an optional name for the little tab. others = [{ x0, y0, x1, y1 }] boxes of everyone else.
+    // The bubble never sits on a face: the speaker's own face counts most, then everyone else's, then their bodies.
     say(host, who, text, hold, others) {
       if (!host || !text) return null;
-      const b = document.createElement('div'); b.className = 'osb'; b.textContent = text; host.appendChild(b);
-      const W = host.clientWidth, H = host.clientHeight, bw = b.offsetWidth, bh = b.offsetHeight, pad = 6, tail = 9;
-      const clampX = x => Math.max(pad, Math.min(W - bw - pad, x));
-      const hit = (x, y) => (others || []).reduce((n, o) => n + Math.max(0, Math.min(x + bw, o.x1) - Math.max(x, o.x0)) * Math.max(0, Math.min(y + bh, o.y1) - Math.max(y, o.y0)), 0);
+      const b = document.createElement('div'); b.className = 'osb' + (host.clientWidth < 520 ? ' sm' : '');
+      if (who.name) { const n = document.createElement('b'); n.className = 'osb-n'; n.textContent = who.name; b.appendChild(n); }
+      const t = document.createElement('span'); t.textContent = text; b.appendChild(t); host.appendChild(b);
+      const W = host.clientWidth, H = host.clientHeight, bw = b.offsetWidth, bh = b.offsetHeight, pad = 6, tail = 11;
+      const tall = who.h || Math.max(60, H * .35), fw = tall * .34;
+      const face = o => ({ x0: o.x0 + (o.x1 - o.x0) * .15, x1: o.x1 - (o.x1 - o.x0) * .15, y0: o.y0, y1: o.y0 + (o.y1 - o.y0) * .4 });
+      const mine = { x0: who.x - fw, x1: who.x + fw, y0: who.top - tall * .08, y1: who.top + tall * .5 };
+      const zones = [[mine, 30]].concat((others || []).map(o => [face(o), 12]), (others || []).map(o => [o, 1]));
+      const over = (x, y, z) => Math.max(0, Math.min(x + bw, z.x1) - Math.max(x, z.x0)) * Math.max(0, Math.min(y + bh, z.y1) - Math.max(y, z.y0));
       let best = null;
-      const tryAt = (x, y, side) => { x = clampX(x); y = Math.max(pad, Math.min(H - bh - pad, y)); const cost = hit(x, y) + (side ? 40 : 0) + Math.abs(x + bw / 2 - who.x) * .2; if (!best || cost < best.cost) best = { x, y, side, cost }; };
-      const above = who.top - bh - tail - 2;
-      if (above >= pad) [0, -.25, .25, -.5, .5].forEach(f => tryAt(who.x - bw / 2 + f * bw, above, ''));
-      else { const y = who.top + 2; tryAt(who.x + 26 + tail, y, 'l'); tryAt(who.x - 26 - tail - bw, y, 'r'); }      // no room overhead: beside the head
+      const tryAt = (x, y, side, extra) => {
+        x = Math.max(pad, Math.min(W - bw - pad, x)); y = Math.max(pad, Math.min(H - bh - pad, y));
+        const cost = zones.reduce((n, [z, w]) => n + over(x, y, z) * w, 0) + (extra || 0) + Math.hypot(x + bw / 2 - who.x, y + bh - who.top) * .3;
+        if (!best || cost < best.cost) best = { x, y, side, cost };
+      };
+      const above = who.top - bh - tail;
+      [0, -.3, .3, -.55, .55].forEach(f => tryAt(who.x - bw / 2 + f * bw, above, ''));                 // over the head
+      [.1, .35].forEach(f => { tryAt(who.x + fw + tail, who.top - bh * f, 'l', 30); tryAt(who.x - fw - tail - bw, who.top - bh * f, 'r', 30); }); // beside it
+      [0, .25].forEach(f => { tryAt(who.x + fw + tail, who.top + tall * f, 'l', 60); tryAt(who.x - fw - tail - bw, who.top + tall * f, 'r', 60); });
       b.style.left = best.x + 'px'; b.style.top = best.y + 'px';
-      if (best.side) { b.classList.add('side-' + best.side); b.style.setProperty('--ty', Math.max(8, Math.min(bh - 8, who.top + 14 - best.y)) + 'px'); }
-      else b.style.setProperty('--tx', Math.max(12, Math.min(bw - 12, who.x - best.x)) + 'px');
+      if (best.side) { b.classList.add('side-' + best.side); b.style.setProperty('--ty', Math.max(10, Math.min(bh - 10, who.top + tall * .15 - best.y)) + 'px'); }
+      else b.style.setProperty('--tx', Math.max(14, Math.min(bw - 14, who.x - best.x)) + 'px');
+      b.style.setProperty('--tilt', (Math.random() * 3 - 1.5).toFixed(2) + 'deg');
       requestAnimationFrame(() => b.classList.add('on'));
       // long enough to read (longer lines stay longer), then a slow fade rather than a snap
       const stay = hold || Stage.holdFor(text);

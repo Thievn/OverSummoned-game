@@ -31,7 +31,7 @@
     const crewOnly = cast.filter(m => m.id); if (!crewOnly.length || document.hidden) return;
     const m = crewOnly[Math.floor(Math.random() * crewOnly.length)], l = (lines[m.id] || {}).say; if (!l || !l.length) return;
     const box = q => ({ x0: q.x - q.wide * .4, x1: q.x + q.wide * .4, y0: q.y - q.tall, y1: q.y });
-    OS.Stage.say(crew, { x: m.x, top: m.y - m.tall }, l[Math.floor(Math.random() * l.length)], 0, cast.filter(q => q !== m).map(box)); m.p.say(4);
+    OS.Stage.say(crew, { x: m.x, top: m.y - m.tall, h: m.tall }, l[Math.floor(Math.random() * l.length)], 0, cast.filter(q => q !== m).map(box)); m.p.say(4);
   }, 9500);
   placeRigs(); addEventListener('resize', () => { clearTimeout(crew._t); crew._t = setTimeout(placeRigs, 250); });
 

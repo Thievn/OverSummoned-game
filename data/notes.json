@@ -1,5 +1,18 @@
 [
  {
+  "v": "0.5.13",
+  "build": "1127r",
+  "date": "2026-11-27",
+  "title": "Speech bubbles that stay out of the way",
+  "added": [
+   "New speech bubbles with the speaker's name on a little tab."
+  ],
+  "fixed": [
+   "Speech bubbles no longer cover Smudge's face or anyone else's, on the front page and in the Work scene.",
+   "Lines stay up longer, so you have time to read them, then fade out."
+  ]
+ },
+ {
   "v": "0.5.12",
   "build": "1127q",
   "date": "2026-11-27",

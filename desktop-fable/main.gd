@@ -1106,7 +1106,7 @@ func _num(n: int) -> String:
 
 func _build_bubble() -> void:
 	bubble = PanelContainer.new()
-	bubble.add_theme_stylebox_override("panel", _panel_style(Color(1, 1, 1, 0.97), Color("#1E2A47"), 12))
+	bubble.add_theme_stylebox_override("panel", _panel_style(Color("#FFF8EC"), Color("#2A2238"), 14))
 	bubble_label = _label(14, false)
 	bubble_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bubble_label.custom_minimum_size = Vector2(180, 0)
@@ -1126,19 +1126,54 @@ func _say(event: String) -> void:
 	_say_text(str(lines[randi() % lines.size()]))
 
 var bubble_tween: Tween
+# Smudge's face in window pixels, worked out from where his eyes and mouth are drawn in the current pose
+func _face_rect() -> Rect2:
+	var e: Dictionary = smudge.rig.get(smudge.pose, {})
+	var f = e.get("face")
+	var a: Vector2
+	var b: Vector2
+	if f is Dictionary and f.get("eyes", []).size() > 0:
+		var lo := Vector2(INF, INF)
+		var hi := Vector2(-INF, -INF)
+		for ey in f["eyes"]:
+			lo = Vector2(minf(lo.x, ey[0]), minf(lo.y, ey[1]))
+			hi = Vector2(maxf(hi.x, ey[0]), maxf(hi.y, ey[1]))
+		var m: Array = f.get("mouth", [hi.x, hi.y])
+		hi = Vector2(maxf(hi.x, m[0]), maxf(hi.y, m[1]))
+		a = smudge.point(lo - Vector2(80, 110))
+		b = smudge.point(hi + Vector2(80, 45))
+	else:
+		var tl: Vector2 = smudge.top_left()
+		var sz: Vector2 = smudge.size()
+		a = tl + Vector2(sz.x * 0.2, 0)
+		b = tl + Vector2(sz.x * 0.8, sz.y * 0.45)
+	return Rect2(Vector2(minf(a.x, b.x), minf(a.y, b.y)), (b - a).abs())
+
 func _say_text(text: String) -> void:
 	bubble_label.text = text
 	bubble.visible = true
 	bubble.reset_size()
-	var head: Vector2 = smudge.top_left() + Vector2(smudge.size().x * 0.5, 0)
-	if head.y - bubble.size.y - 4.0 >= 104.0:
-		bubble.position = Vector2(clampf(head.x - 30, 4, WIN.x - bubble.size.x - 4), head.y - bubble.size.y - 4.0)
-	else:
-		# no room above him under the HUD: put it beside his head instead
-		var side: float = smudge.top_left().x + smudge.size().x * 0.92
-		if side + bubble.size.x > WIN.x - 4.0:
-			side = smudge.top_left().x - bubble.size.x + smudge.size().x * 0.08
-		bubble.position = Vector2(clampf(side, 4, WIN.x - bubble.size.x - 4), maxf(104.0, head.y + 4.0))
+	# keep the bubble off his face: try above it, then beside it, and take the spot that covers the least of it
+	var bs: Vector2 = bubble.size
+	var fb: Rect2 = _face_rect()
+	var c: Vector2 = fb.get_center()
+	var tries: Array = [
+		Vector2(c.x - bs.x * 0.3, fb.position.y - bs.y - 8.0),
+		Vector2(c.x - bs.x * 0.7, fb.position.y - bs.y - 8.0),
+		Vector2(fb.end.x + 10.0, fb.position.y),
+		Vector2(fb.position.x - bs.x - 10.0, fb.position.y),
+		Vector2(fb.end.x + 10.0, fb.end.y - bs.y * 0.5),
+		Vector2(fb.position.x - bs.x - 10.0, fb.end.y - bs.y * 0.5)]
+	var best: Vector2 = tries[0]
+	var best_cost: float = INF
+	for p in tries:
+		var q := Vector2(clampf(p.x, 4.0, WIN.x - bs.x - 4.0), clampf(p.y, 104.0, maxf(104.0, WIN.y - bs.y - 4.0)))
+		var cost: float = Rect2(q, bs).intersection(fb).get_area() * 10.0 + q.distance_to(c) * 0.2
+		if cost < best_cost:
+			best_cost = cost
+			best = q
+	bubble.position = best
+	bubble.modulate.a = 1.0
 	bubble.scale = Vector2(0.6, 0.6)
 	bubble.pivot_offset = Vector2(30, bubble.size.y)
 	_play("blip", randf_range(0.95, 1.1), -14.0)
@@ -1148,7 +1183,9 @@ func _say_text(text: String) -> void:
 		bubble_tween.kill()
 	bubble_tween = create_tween()
 	bubble_tween.tween_property(bubble, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	bubble_tween.tween_interval(clampf(2.2 + text.length() * 0.04, 3.0, 6.5))
+	# stays up long enough to read, then fades instead of vanishing
+	bubble_tween.tween_interval(clampf(4.0 + text.length() * 0.07, 5.0, 11.0))
+	bubble_tween.tween_property(bubble, "modulate:a", 0.0, 0.8)
 	bubble_tween.tween_callback(func(): bubble.visible = false)
 
 func _ask_ai(event: String) -> void:

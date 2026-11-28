@@ -8,7 +8,7 @@
   const OS = await window.OS.load(), R = OS.R, $ = id => document.getElementById(id);
 
   // ---------------------------------------------------------------- the desk
-  const desk = $('desk-demo'), bubble = $('bubble'), prog = $('prog'), glow = $('glow');
+  const desk = $('desk-demo'), prog = $('prog'), glow = $('glow');
   let smudge, k = 1, ink = 0, busy = false, taps = 0, lastTap = 0;
   const NEED = 28, SAMPLE = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin']   // only the five shown below; the rest stay secret;
   function layout() {
@@ -17,12 +17,15 @@
     smudge.scale = 0.45 * k; smudge.place(453 * k, (61 + 255) * k);
   }
   layout(); addEventListener('resize', layout);
-  let bubbleTimer;
+  // Smudge talks in the same bubble as the game, kept off his face and off the hint
+  let lastB = null;
   function say(text) {
-    bubble.textContent = text; const [x, y] = smudge.point(430, 40);
-    bubble.style.left = Math.min(x, desk.clientWidth * 0.52) + 'px'; bubble.style.top = Math.max(0, y - 10) + 'px';
-    bubble.classList.add('on'); smudge.say(Math.min(2.6, 0.5 + text.length * 0.035));
-    clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => bubble.classList.remove('on'), 4200);
+    if (lastB) lastB.remove();
+    const [x, y] = smudge.point(430, 40), dr = desk.getBoundingClientRect(), hr = $('hint').getBoundingClientRect();
+    const hint = $('hint').style.opacity === '0' ? [] : [{ x0: hr.left - dr.left, x1: hr.right - dr.left, y0: hr.top - dr.top, y1: hr.bottom - dr.top }];
+    const hold = OS.Stage.holdFor(text);
+    lastB = OS.Stage.say(desk, { x, top: y, h: desk.clientHeight * .42, name: 'Smudge' }, text, hold, hint);
+    smudge.say(Math.min(2.6, 0.5 + text.length * 0.035));
   }
   function summon() {
     busy = true; const h = OS.heroes[SAMPLE[Math.floor(Math.random() * SAMPLE.length)]];

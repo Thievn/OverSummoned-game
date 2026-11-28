@@ -666,21 +666,24 @@ a.place:hover{transform:translateY(-3px);border-color:var(--teal)}
 .xbtn{font:800 1rem/1 Nunito;color:var(--mut);background:transparent;border:2px solid var(--line);border-radius:8px;width:1.9rem;height:1.9rem;cursor:pointer;vertical-align:middle}
 .xbtn:hover{color:#fff;border-color:var(--ember);background:rgba(255,140,74,.15)}
 /* speech bubble (js/stage.js): white, inked, with a tail that points at whoever is talking */
-.osb{position:absolute;z-index:8;max-width:min(230px,46%);background:#fff;color:#1e2a47;border:2.5px solid #1e2a47;border-radius:14px;padding:.34em .7em;font:700 .8rem/1.25 Nunito,sans-serif;box-shadow:0 3px 0 rgba(8,12,26,.45);opacity:0;transform:translateY(6px) scale(.8);transform-origin:var(--tx,50%) 100%;transition:opacity .16s,transform .2s cubic-bezier(.3,1.6,.5,1);pointer-events:none;text-align:left}
-.osb.on{opacity:1;transform:none}
-.osb.off{opacity:0;transform:translateY(-4px);transition:opacity 1.1s ease,transform 1.1s ease}
+.osb{position:absolute;z-index:8;max-width:min(240px,48%);background:linear-gradient(#fffaf0,#fbefd2);color:#2a2238;border:2.5px solid #2a2238;border-radius:16px 16px 16px 6px;padding:.42em .8em .48em;font:700 .86rem/1.3 Nunito,sans-serif;box-shadow:0 4px 0 rgba(8,12,26,.4),0 10px 22px rgba(0,0,0,.25);opacity:0;transform:rotate(var(--tilt,0deg)) translateY(8px) scale(.75);transform-origin:var(--tx,50%) 100%;transition:opacity .18s,transform .28s cubic-bezier(.3,1.6,.5,1);pointer-events:none;text-align:left}
+.osb.on{opacity:1;transform:rotate(var(--tilt,0deg))}
+.osb.off{opacity:0;transform:rotate(var(--tilt,0deg)) translateY(-6px);transition:opacity 1.1s ease,transform 1.1s ease}
+.osb-n{display:inline-block;position:absolute;top:-.95em;left:.7em;font:400 .78rem/1 "Lilita One",sans-serif;letter-spacing:.02em;color:#141c33;background:var(--gold,#f2b935);border:2px solid #2a2238;border-radius:999px;padding:.22em .6em .18em;white-space:nowrap}
+.osb:has(.osb-n){padding-top:.62em}
+.osb.sm{font-size:.74rem;max-width:44%;padding:.32em .6em .36em;border-width:2px}.osb.sm .osb-n{font-size:.66rem}.osb.sm:has(.osb-n){padding-top:.55em}
 .jscene,.jscene *,.desk-scene,.desk-scene *,.gnav,.gbar,.card,.btn,.rstage{-webkit-user-select:none;user-select:none}
 /* In the app nothing is selectable: a long press or a swipe used to paint half the screen blue and open the
    copy bar. Anything a person genuinely types in is put back below. */
 body.game,body.game *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 body.game input,body.game textarea,body.game [contenteditable],body.game select,body.game .pick-text,body.game .pick-text *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 .gbar .res span[data-go]{cursor:pointer}.prow .acts{flex-direction:column;align-items:stretch;gap:.35rem}
-.osb::before,.osb::after{content:"";position:absolute;left:var(--tx,50%);top:100%;border:9px solid transparent;border-top-color:#1e2a47;border-bottom:0;transform:translateX(-50%)}
-.osb::after{border-width:6px;border-top-color:#fff;border-bottom:0;margin-top:-1px}
-.osb.side-l::before,.osb.side-l::after{left:auto;right:100%;top:var(--ty,50%);border:9px solid transparent;border-right-color:#1e2a47;border-left:0;transform:translateY(-50%)}
-.osb.side-l::after{border-width:6px;border-right-color:#fff;border-left:0;margin:0 -1px 0 0}
-.osb.side-r::before,.osb.side-r::after{left:100%;top:var(--ty,50%);border:9px solid transparent;border-left-color:#1e2a47;border-right:0;transform:translateY(-50%)}
-.osb.side-r::after{border-width:6px;border-left-color:#fff;border-right:0;margin:0 0 0 -1px}
+.osb::before,.osb::after{content:"";position:absolute;left:var(--tx,50%);top:100%;border:11px solid transparent;border-top-color:#2a2238;border-bottom:0;transform:translateX(-50%)}
+.osb::after{border-width:7px;border-top-color:#fbefd2;border-bottom:0;margin-top:-1px}
+.osb.side-l::before,.osb.side-l::after{left:auto;right:100%;top:var(--ty,50%);border:11px solid transparent;border-right-color:#2a2238;border-left:0;transform:translateY(-50%)}
+.osb.side-l::after{border-width:7px;border-right-color:#fbefd2;border-left:0;margin:0 -1px 0 0}
+.osb.side-r::before,.osb.side-r::after{left:100%;top:var(--ty,50%);border:11px solid transparent;border-left-color:#2a2238;border-right:0;transform:translateY(-50%)}
+.osb.side-r::after{border-width:7px;border-left-color:#fbefd2;border-right:0;margin:0 0 0 -1px}
 /* admin: the movement review gallery */
 .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:.8rem}
 .rcell{background:var(--ink2);border:2px solid var(--line);border-radius:14px;padding:.5rem;display:flex;flex-direction:column;gap:.4rem}
