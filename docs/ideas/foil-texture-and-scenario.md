@@ -10,7 +10,17 @@ Two connected ideas. One is a seamless foil texture that moves under the card bo
 
 Dean wants a seamless, loopable foil texture that he can animate in Scenario.
 
-I made a pearly foil tile, soft diagonal bands of lilac, blue, pink and mint, that wraps cleanly in both directions: scroll it left, right, up or down forever and you never see a seam. It comes in a 2048 and a 4096 size, plus a more subtle version for lower rarities. It is on Dean's Drive with the frames: https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs.
+I made a pearly foil tile, soft diagonal bands of lilac, blue, pink and mint, that wraps cleanly in both directions: scroll it left, right, up or down forever and you never see a seam. It comes in a 2048 and a 4096 size, plus a more subtle version for lower rarities.
+
+The textures now live in this repo, under `docs/ideas/assets/foil/`. That folder is with the idea docs, not with the live game art in `assets/v2/`, because the foil is not wired into the game yet. `docs/` is already kept off the live site. Copies are still on Dean's Drive with the frames: https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs.
+
+| File | What it is |
+|---|---|
+| [`foil_seamless_2048.png`](assets/foil/foil_seamless_2048.png) | Seamless tile, 2048 x 2048. The one to use in the game. |
+| [`foil_seamless_4096.png`](assets/foil/foil_seamless_4096.png) | The same tile, 4096 x 4096, for print or a close-up. |
+| [`foil_seamless_subtle.png`](assets/foil/foil_seamless_subtle.png) | A quieter version, for lower rarities. |
+| [`foil_tile_preview_2x2.png`](assets/foil/foil_tile_preview_2x2.png) | Four copies of the 2048 tile in a square, so you can see it tiles. |
+| [`foil_tile_preview_subtle_diag_offset_2x2.png`](assets/foil/foil_tile_preview_subtle_diag_offset_2x2.png) | The same check for the subtle version, offset on the diagonal. |
 
 How it is used:
 

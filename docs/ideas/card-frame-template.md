@@ -37,7 +37,7 @@ Each rarity gets fancier as it rises, the same way the current in-game frames do
 
 All files are 1526 x 2256 pixels, transparent PNG, corner radius 84. The opening is x 120 to 1408 and y 126 to 2132. A safe box for content with a bit of breathing room is x 152 to 1374 and y 150 to 2108. The border ring is about 96 pixels wide at the sides and 100 at top and bottom.
 
-**Where the files are.** I am not committing the PNGs. They are big, and this folder is for thinking. They are in Dean's Drive folder: https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs. If Dean wants them in the repo, they should go in an assets folder and not in `docs/`.
+**Where the files are.** The foil textures are now in the repo, at `docs/ideas/assets/foil/`. See `foil-texture-and-scenario.md`. The frame PNGs themselves are still on Dean's Drive (they are larger, and this folder is for thinking): https://drive.google.com/drive/folders/18zZylDrG0qahMznWo2np4_YsMZ-uNnFs. If Dean wants the frames in the repo too, they should go in an assets folder and not in `docs/`.
 
 Per rarity there are: the clean outline (the one to use), an art mask, a foil mask for the border ring, a foil overlay, a blank preview, and the back. I also made an older version of each frame with painted plates for name, type and five stat boxes. I would not use those, for the reason in the next section.
 
