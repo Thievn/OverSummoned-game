@@ -244,7 +244,7 @@ func _open_chest() -> void:
 		var place: String = str(where)
 		var r = await cloud.pet("roll", {"rolls": [{"place": place, "n": int(c["rolls"]), "luck": 0.0}]})
 		if r is Dictionary and r.has("add"):
-			for id in r["add"]:
+			for id: String in r["add"]:
 				bag[id] = int(bag.get(id, 0)) + int(r["add"][id])
 				names.append(id)
 				best = _better(best, _rarity_of(id))
@@ -402,7 +402,7 @@ func _draw_bubble(k: float) -> void:
 	var lines := _wrap(bubble, maxw - pad * 2, size)
 	var lh := font.get_height(size) + 2.0
 	var bw := 0.0
-	for l in lines:
+	for l: String in lines:
 		bw = maxf(bw, font.get_string_size(l, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x)
 	bw += pad * 2
 	var bh := lh * lines.size() + pad * 1.6
@@ -431,7 +431,7 @@ func _draw_bubble(k: float) -> void:
 func _wrap(text: String, w: float, size: int) -> Array:
 	var out: Array = []
 	var line := ""
-	for word in text.split(" "):
+	for word: String in text.split(" "):
 		var t := word if line == "" else line + " " + word
 		if font.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > w and line != "":
 			out.append(line)
@@ -444,7 +444,7 @@ func _wrap(text: String, w: float, size: int) -> Array:
 
 
 func _ink_text(s: String, at: Vector2, size: int, col: Color) -> void:
-	for d in [Vector2(-2, 0), Vector2(2, 0), Vector2(0, -2), Vector2(0, 2), Vector2(-1.4, -1.4), Vector2(1.4, 1.4), Vector2(-1.4, 1.4), Vector2(1.4, -1.4)]:
+	for d: Vector2 in [Vector2(-2, 0), Vector2(2, 0), Vector2(0, -2), Vector2(0, 2), Vector2(-1.4, -1.4), Vector2(1.4, 1.4), Vector2(-1.4, 1.4), Vector2(1.4, -1.4)]:
 		ui.draw_string(font, at + d, s, HORIZONTAL_ALIGNMENT_LEFT, -1, size, Color(0.04, 0.06, 0.12, col.a * 0.9))
 	ui.draw_string(font, at, s, HORIZONTAL_ALIGNMENT_LEFT, -1, size, col)
 
@@ -502,7 +502,7 @@ func _build_menu() -> void:
 	tabbar = HBoxContainer.new()
 	tabbar.add_theme_constant_override("separation", 4)
 	col.add_child(tabbar)
-	for t in tabs:
+	for t: String in tabs:
 		var b := Button.new()
 		b.text = t
 		b.toggle_mode = true
@@ -523,7 +523,7 @@ func _build_menu() -> void:
 
 func _clear(n: Node) -> void:
 	# taken out of the tree first, so a rebuilt tab never shows the old one underneath for a frame
-	for c in n.get_children():
+	for c: Node in n.get_children():
 		n.remove_child(c)
 		c.queue_free()
 
@@ -559,7 +559,7 @@ func _chip(parent: Node, text: String, on: bool, fn: Callable, dim := false) -> 
 
 
 func _refresh_menu() -> void:
-	for b in tabbar.get_children():
+	for b: Node in tabbar.get_children():
 		(b as Button).button_pressed = (b as Button).text == tab
 	_clear(body)
 	match tab:
@@ -572,7 +572,7 @@ func _refresh_menu() -> void:
 
 func _tab_doing() -> void:
 	_lbl(body, "Pick what he works on. Stamping makes ink for your summons. The other three bring back things from the place they belong to.", 11, Color(0.68, 0.75, 0.92))
-	for id in items["activities"]:
+	for id: String in items["activities"]:
 		var a: Dictionary = items["activities"][id]
 		var r := _row(body)
 		var pick := func():
@@ -586,12 +586,12 @@ func _tab_doing() -> void:
 func _tab_wardrobe() -> void:
 	_lbl(body, "Anything in here goes with anything else, and with whatever he is doing.", 11, Color(0.68, 0.75, 0.92))
 	var by_slot := {}
-	for id in items["items"]:
+	for id: String in items["items"]:
 		var slot := str(items["items"][id]["slot"])
 		if not by_slot.has(slot):
 			by_slot[slot] = []
 		by_slot[slot].append(id)
-	for slot in items["slots"]:
+	for slot: String in items["slots"]:
 		if not by_slot.has(slot):
 			continue
 		_lbl(body, str(items["slots"][slot]), 13, Color(1, 1, 1))
@@ -599,7 +599,7 @@ func _tab_wardrobe() -> void:
 		grid.add_theme_constant_override("h_separation", 4)
 		grid.add_theme_constant_override("v_separation", 4)
 		body.add_child(grid)
-		for id in by_slot[slot]:
+		for id: String in by_slot[slot]:
 			var it: Dictionary = items["items"][id]
 			var val := str(it.get("value", id))
 			var have: bool = unlock_all or bool(owned.get(id, false))
@@ -647,13 +647,13 @@ func _tab_numbers() -> void:
 		["Days in a row", str(streak)],
 		["Chests opened", str(chests_opened)],
 	]
-	for r in rows:
+	for r: Array in rows:
 		var h := _row(body)
 		var a := _lbl(h, str(r[0]), 12, Color(0.72, 0.79, 0.95))
 		a.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_lbl(h, str(r[1]), 13, Color(1, 1, 1))
 	_lbl(body, "Time at each job", 13, Color(1, 1, 1))
-	for id in items["activities"]:
+	for id: String in items["activities"]:
 		var h := _row(body)
 		var a := _lbl(h, str(items["activities"][id]["name"]), 12, Color(0.72, 0.79, 0.95))
 		a.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -664,7 +664,7 @@ func _tab_numbers() -> void:
 func _tab_settings() -> void:
 	_lbl(body, "Size", 13, Color(1, 1, 1))
 	var r := _row(body)
-	for s in SIZES:
+	for s: String in SIZES:
 		_chip(r, s, s == size_name, func():
 			size_name = s
 			_apply_size()
@@ -672,7 +672,7 @@ func _tab_settings() -> void:
 			_refresh_menu())
 	_lbl(body, "How he talks", 13, Color(1, 1, 1))
 	var r2 := _row(body)
-	for m in ["sweet", "salty", "unhinged"]:
+	for m: String in ["sweet", "salty", "unhinged"]:
 		_chip(r2, m.capitalize(), m == mood, func():
 			mood = m
 			say(_line("idle"))

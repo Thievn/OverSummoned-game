@@ -109,7 +109,7 @@ func _ready() -> void:
 	desk = _sprite(self, "desk", false)
 	desk.position = _off("desk")
 	desk_prop = _sprite(self, "", false)
-	for s in ["l", "r"]:
+	for s: String in ["l", "r"]:
 		var h := Node2D.new()
 		add_child(h)
 		hand[s] = h
@@ -169,7 +169,7 @@ func _sprite(parent: Node, nm: String, tintable: bool) -> Sprite2D:
 # ---------------------------------------------------------------- what he is wearing
 
 func dress(changed := {}) -> void:
-	for k in changed:
+	for k: String in changed:
 		look[k] = changed[k]
 	var skin: String = look.get("skin", "smudge")
 	var base := "core" if skin == "smudge" else "core_" + skin
@@ -179,7 +179,7 @@ func dress(changed := {}) -> void:
 	var mk := tex(base + "_fur_mask")
 	_shade(core, "mask", mk if mk else tex("core_fur_mask"))
 	_fur(core, look.get("fur", "brown"))
-	for s in ["l", "r"]:
+	for s: String in ["l", "r"]:
 		_fur(paw[s], look.get("fur", "brown"))
 	var head: String = look.get("head", "hood")
 	head_item.texture = tex(_pic(head))
@@ -271,8 +271,8 @@ func set_activity(nm: String) -> void:
 	_prop(desk_prop, a.get("desk_at", [512, 806]), float(a.get("desk_w", 300)), 1.0)
 	front_prop.texture = tex(str(a.get("front", "")))
 	_prop(front_prop, a.get("front_at", [512, 870]), float(a.get("front_w", 300)), 1.0)
-	for s in ["l", "r"]:
-		var key := "hold_" + s
+	for s: String in ["l", "r"]:
+		var key: String = "hold_" + s
 		held[s].texture = tex(str(a.get(key, "")))
 		held[s].visible = held[s].texture != null
 		if held[s].texture:
@@ -359,7 +359,7 @@ func _process(dt: float) -> void:
 	t += dt
 	dt = minf(dt, 0.05)
 	var a: Dictionary = items.get("activities", {}).get(activity, {})
-	for s in ["l", "r"]:
+	for s: String in ["l", "r"]:
 		var rest := float(a.get("rest_" + s, 0.0))
 		var y: float = lift[s].step(dt, -rest)
 		var r: float = tilt[s].step(dt, 0.0)
@@ -391,7 +391,7 @@ func _process(dt: float) -> void:
 		blink = maxf(0.0, blink - dt)
 		lid_spring.step(dt, 1.0 if blink > 0.0 else 0.0)
 
-	for b in bits:
+	for b: Dictionary in bits:
 		b["age"] += dt
 		var v: Vector2 = b["v"]          # a Vector2 inside a dictionary has to be put back, not poked
 		v.y += 1250.0 * dt
@@ -423,7 +423,7 @@ func _draw_face() -> void:
 	var e := expression
 	if asleep:
 		e = "sleepy"
-	for side in ["l", "r"]:
+	for side: String in ["l", "r"]:
 		var at: Array = rig.get("eye_" + side, [426, 291])
 		var c := Vector2(float(at[0]), float(at[1]))
 		var r := float(rig.get("eye_r_px", 42))
@@ -515,7 +515,7 @@ func _draw_fx() -> void:
 		fx.draw_circle(fl, 15.0, Color(0.86, 0.22, 0.18))
 		fx.draw_circle(fl + Vector2(0, -8), 15.0, Color(0.96, 0.96, 0.96))
 		fx.draw_arc(fl, 15.0, 0, TAU, 24, Color(0.1, 0.07, 0.07), 3.0, true)
-	for b in bits:
+	for b: Dictionary in bits:
 		var f: float = 1.0 - b["age"] / b["life"]
 		var col: Color = BIT_COL.get(b["kind"], Color(1, 1, 1))
 		col.a = clampf(f * 1.4, 0.0, 1.0)
