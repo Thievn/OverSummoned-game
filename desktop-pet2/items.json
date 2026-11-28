@@ -1,0 +1,393 @@
+{
+ "_note": "Everything Smudge can wear, hold or sit behind. Every position is a place on the shared 1024 page. A new cosmetic is one picture in art/ and one line in here. Nothing is baked together, so any item works with any other and with every activity.",
+ "activities": {
+  "summon": {
+   "name": "Stamping",
+   "blurb": "He stamps the ledger. Every key is a drop of ink for your next summon.",
+   "earns": "ink",
+   "hand": "r",
+   "desk": "prop_ledger",
+   "desk_at": [
+    512,
+    906
+   ],
+   "desk_w": 470,
+   "hold_r": "prop_stamp",
+   "hold_r_at": [
+    2,
+    -6
+   ],
+   "hold_r_w": 96,
+   "hold_r_grip": [
+    0.5,
+    0.22
+   ],
+   "hold_r_rot": 0,
+   "rest_r": 66
+  },
+  "fish": {
+   "name": "Fishing",
+   "blurb": "He fishes off the edge of the desk. Keys bring up whatever is down there.",
+   "earns": "loot",
+   "place": "dock",
+   "hand": "r",
+   "desk": "prop_bucket",
+   "desk_at": [
+    812,
+    900
+   ],
+   "desk_w": 195,
+   "hold_r": "prop_rod",
+   "hold_r_at": [
+    0,
+    -12
+   ],
+   "hold_r_w": 330,
+   "hold_r_grip": [
+    0.14,
+    0.86
+   ],
+   "hold_r_rot": -10,
+   "float_at": [
+    812,
+    840
+   ],
+   "rest_r": 26
+  },
+  "dig": {
+   "name": "Digging",
+   "blurb": "He digs through a heap on the desk. Keys turn up buried things.",
+   "earns": "loot",
+   "place": "outback",
+   "hand": "r",
+   "desk": "prop_dirt",
+   "desk_at": [
+    470,
+    908
+   ],
+   "desk_w": 300,
+   "hold_r": "prop_shovel",
+   "hold_r_at": [
+    -6,
+    -10
+   ],
+   "hold_r_w": 112,
+   "hold_r_grip": [
+    0.5,
+    0.12
+   ],
+   "hold_r_rot": 16,
+   "rest_r": 78
+  },
+  "pick": {
+   "name": "Lock picking",
+   "blurb": "He picks the lock on a chest. Keys get him closer to what is inside.",
+   "earns": "loot",
+   "place": "speakeasy",
+   "hand": "alt",
+   "front": "prop_chest",
+   "front_at": [
+    516,
+    902
+   ],
+   "front_w": 236,
+   "hold_l": "prop_rake",
+   "hold_l_at": [
+    14,
+    -26
+   ],
+   "hold_l_w": 165,
+   "hold_l_grip": [
+    0.08,
+    0.5
+   ],
+   "hold_l_rot": -48,
+   "hold_r": "prop_wrench",
+   "hold_r_at": [
+    -12,
+    -26
+   ],
+   "hold_r_w": 26,
+   "hold_r_grip": [
+    0.5,
+    0.88
+   ],
+   "hold_r_rot": -16,
+   "rest_l": 34,
+   "rest_r": 34
+  }
+ },
+ "slots": {
+  "head": "Hat",
+  "face": "Face",
+  "neck": "Neck",
+  "fur": "Fur",
+  "cloak": "Cloak",
+  "skin": "Smudge"
+ },
+ "items": {
+  "hood": {
+   "slot": "head",
+   "name": "His own hood",
+   "pic": "hood",
+   "full": true,
+   "how": "Always yours.",
+   "value": "hood"
+  },
+  "bare": {
+   "slot": "head",
+   "name": "No hat",
+   "pic": "",
+   "how": "Always yours.",
+   "value": "bare"
+  },
+  "hat_wizard": {
+   "slot": "head",
+   "name": "Wizard hat",
+   "at": [
+    517,
+    156
+   ],
+   "anchor_y": 0.82,
+   "w": 410,
+   "how": "Found in a chest.",
+   "value": "hat_wizard"
+  },
+  "hat_crown": {
+   "slot": "head",
+   "name": "Gold crown",
+   "at": [
+    517,
+    186
+   ],
+   "anchor_y": 0.92,
+   "w": 320,
+   "how": "Found in a chest.",
+   "value": "hat_crown"
+  },
+  "hat_viking": {
+   "slot": "head",
+   "name": "Viking helmet",
+   "at": [
+    517,
+    206
+   ],
+   "anchor_y": 0.7,
+   "w": 440,
+   "how": "Found in a chest.",
+   "value": "hat_viking"
+  },
+  "hat_chef": {
+   "slot": "head",
+   "name": "Chef hat",
+   "at": [
+    517,
+    158
+   ],
+   "anchor_y": 0.84,
+   "w": 340,
+   "how": "Found in a chest.",
+   "value": "hat_chef"
+  },
+  "hat_top": {
+   "slot": "head",
+   "name": "Top hat",
+   "at": [
+    517,
+    164
+   ],
+   "anchor_y": 0.86,
+   "w": 330,
+   "how": "Found in a chest.",
+   "value": "hat_top"
+  },
+  "hat_cans": {
+   "slot": "head",
+   "name": "Headphones",
+   "at": [
+    517,
+    236
+   ],
+   "anchor_y": 0.46,
+   "w": 430,
+   "how": "Found in a chest.",
+   "value": "hat_cans"
+  },
+  "hat_night": {
+   "slot": "head",
+   "name": "Nightcap",
+   "at": [
+    517,
+    166
+   ],
+   "anchor_y": 0.82,
+   "w": 350,
+   "how": "Found in a chest.",
+   "value": "hat_night"
+  },
+  "hat_straw": {
+   "slot": "head",
+   "name": "Straw hat",
+   "at": [
+    517,
+    200
+   ],
+   "anchor_y": 0.7,
+   "w": 440,
+   "how": "Found in a chest.",
+   "value": "hat_straw"
+  },
+  "face_none": {
+   "slot": "face",
+   "name": "Nothing",
+   "pic": "",
+   "how": "Always yours.",
+   "value": "face_none"
+  },
+  "face_glasses": {
+   "slot": "face",
+   "name": "Round glasses",
+   "at": [
+    519,
+    292
+   ],
+   "anchor_y": 0.5,
+   "w": 330,
+   "how": "Found in a chest.",
+   "value": "face_glasses"
+  },
+  "face_patch": {
+   "slot": "face",
+   "name": "Eye patch",
+   "at": [
+    519,
+    286
+   ],
+   "anchor_y": 0.5,
+   "w": 330,
+   "how": "Found in a chest.",
+   "value": "face_patch"
+  },
+  "face_shades": {
+   "slot": "face",
+   "name": "Sunglasses",
+   "at": [
+    519,
+    292
+   ],
+   "anchor_y": 0.5,
+   "w": 340,
+   "how": "Found in a chest.",
+   "value": "face_shades"
+  },
+  "neck_none": {
+   "slot": "neck",
+   "name": "Nothing",
+   "pic": "",
+   "how": "Always yours.",
+   "value": "neck_none"
+  },
+  "neck_bow": {
+   "slot": "neck",
+   "name": "Bow tie",
+   "at": [
+    519,
+    505
+   ],
+   "anchor_y": 0.5,
+   "w": 190,
+   "how": "Found in a chest.",
+   "value": "neck_bow"
+  },
+  "neck_scarf": {
+   "slot": "neck",
+   "name": "Scarf",
+   "at": [
+    519,
+    512
+   ],
+   "anchor_y": 0.4,
+   "w": 400,
+   "how": "Found in a chest.",
+   "value": "neck_scarf"
+  },
+  "fur_brown": {
+   "slot": "fur",
+   "name": "Brown",
+   "value": "brown",
+   "how": "Always yours."
+  },
+  "fur_white": {
+   "slot": "fur",
+   "name": "Arctic white",
+   "value": "white",
+   "how": "Type 100,000 keys."
+  },
+  "fur_black": {
+   "slot": "fur",
+   "name": "Midnight",
+   "value": "black",
+   "how": "Found in a chest."
+  },
+  "fur_gold": {
+   "slot": "fur",
+   "name": "Gold",
+   "value": "gold",
+   "how": "Type a million keys."
+  },
+  "cloak_teal": {
+   "slot": "cloak",
+   "name": "Teal",
+   "value": "teal",
+   "how": "Always yours."
+  },
+  "cloak_red": {
+   "slot": "cloak",
+   "name": "Red",
+   "value": "red",
+   "how": "Found in a chest."
+  },
+  "cloak_purple": {
+   "slot": "cloak",
+   "name": "Purple",
+   "value": "purple",
+   "how": "Found in a chest."
+  },
+  "cloak_green": {
+   "slot": "cloak",
+   "name": "Green",
+   "value": "green",
+   "how": "Found in a chest."
+  },
+  "cloak_black": {
+   "slot": "cloak",
+   "name": "Black",
+   "value": "black",
+   "how": "Found in a chest."
+  },
+  "cloak_sand": {
+   "slot": "cloak",
+   "name": "Sand",
+   "value": "sand",
+   "how": "Found in a chest."
+  },
+  "skin_smudge": {
+   "slot": "skin",
+   "name": "Smudge",
+   "value": "smudge",
+   "how": "Always yours."
+  },
+  "skin_evil": {
+   "slot": "skin",
+   "name": "Evil Smudge",
+   "value": "evil",
+   "how": "Rare. Found in a chest."
+  },
+  "skin_ghost": {
+   "slot": "skin",
+   "name": "Ghost Smudge",
+   "value": "ghost",
+   "how": "Rare. Found in a chest."
+  }
+ }
+}

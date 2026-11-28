@@ -1,0 +1,28 @@
+; OverSummoned desktop pet, second version. Open this folder in Godot 4.3 or newer.
+
+config_version=5
+
+[application]
+
+config/name="OverSummoned Desktop Pet"
+config/description="Smudge sits on your desk and farms while you type. Every key is one movement, and the keys fill a chest that goes to your account on oversummoned.com."
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=430
+window/size/viewport_height=451
+window/size/resizable=false
+window/size/borderless=true
+window/size/always_on_top=true
+window/size/transparent=true
+window/stretch/mode="canvas_items"
+window/per_pixel_transparency/allowed=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+viewport/transparent_background=true
+textures/canvas_textures/default_texture_filter=1

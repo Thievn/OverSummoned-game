@@ -1,0 +1,17 @@
+{
+ "_note": "The numbers behind the desktop pet. Opus works them out from rules/sim_pet.py; Dean approves them.",
+ "max_keys_per_second": 14,
+ "daily_full": 40000,
+ "after_daily": 0.05,
+ "sleep_after": 150,
+ "chest": {
+  "keys": 1400,
+  "gold": [40, 130],
+  "ink": 220,
+  "rolls": 3,
+  "gear_chance": 0.22,
+  "cosmetic_chance": 0.05
+ },
+ "ink_per_key": 1.0,
+ "say_every": [70, 160]
+}
