@@ -205,6 +205,13 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
   in front of the paw layer in the rig. Look at every generated part before using it. Dean checks
   details like this closely.
 
+### Lock-picking parts Dean has seen (27 Nov, 8:20pm)
+- Chest, back view, no lock: `art/raw/pet2/part_chest_back_2.jpg` (use this look; `_1` also fine).
+- Rake pick with the wavy tip: `art/raw/pet2/part_rake_1.jpg`. Tension wrench (the L bar): right-hand
+  tool in `art/raw/pet2/part_lockpicks_1.jpg`. The T-shaped "rake" in that same file is WRONG, do not use.
+- No hooks. Dean said the hooked ones look like dental tools.
+- He holds the rake in one paw and the wrench in the other, both pointing down behind the chest.
+
 ### Still open
 - Paid cosmetics: Steam, the site, or later. Build free first.
 - Chest numbers: Opus proposes them from the sim, Dean approves.
