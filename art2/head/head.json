@@ -1,0 +1,15 @@
+{
+ "page": 660,
+ "nose": [
+  330,
+  340
+ ],
+ "faces": [
+  "calm",
+  "open",
+  "laugh",
+  "focus",
+  "happy",
+  "gasp"
+ ]
+}

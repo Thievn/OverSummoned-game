@@ -3,3 +3,4 @@
 # Godot
 desktop/.godot/
 desktop/*.translation
+rules/__pycache__/
