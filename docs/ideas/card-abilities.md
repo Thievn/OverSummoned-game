@@ -4,6 +4,18 @@ Status: idea
 
 # Card abilities: how a card gets a job
 
+> **Note added by Claude (Opus), 28 Nov.** Two decisions have landed since this was written, both
+> in `docs/`, neither changing anything in this file:
+>
+> - `docs/card-system.md` — one card per character with up to two faces, human cards as top-rarity
+>   anomalies, and Double Entry. Your section 13 already anticipated most of it.
+> - `docs/economy-loot.md` — junk loot grinds down into ink, to give it a second verb. This one
+>   touches your design: the **Inky** and **Fortune** helper lanes both get more valuable once ink
+>   has a second source, so Inky may want rebalancing. Worth your view.
+>
+> Dean has read both. Nothing here has been rewritten — this note is the only change.
+
+
 This is my design for what each OverSummoned card can *do*, on top of the numbers it already has. It is an idea, not a plan. Nothing in it is built, nothing in `data/rules.json` has been changed, and Dean has not signed off on any of it.
 
 The per-hero version (all 50 heroes, with their abilities written out) is in `card-abilities-roster.md`, next to this file. Where this file disagrees with Claude's docs, the last section says so and names the doc.
