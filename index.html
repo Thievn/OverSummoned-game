@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080c1a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="preload" href="/assets/fonts/LilitaOne.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="/css/os.css?v=1127p">
+<link rel="stylesheet" href="/css/os.css?v=1127q">
 </head>
 <body>
 <script>document.documentElement.classList.add('js-rv')</script>
@@ -87,7 +87,7 @@
 </div></section>
 
 <section class="band" id="see"><div class="wrap">
-  <div class="sec-head rv"><p class="kicker">See the game</p><h2>This is what you will be playing.</h2></div>
+  <div class="sec-head rv"><p class="kicker">See the game</p><h2>Build a crew of misfits, then throw them at a sea monster.</h2><p class="lede">Real screens from the game: your hero collection, a raid against the Tiber Thing, and Smudge fishing the Roman dock while you are gone.</p></div>
   <div class="shots">
     <figure class="phone rv"><img src="/assets/v2/site/shot-cards.webp" width="540" height="1169" loading="lazy" decoding="async" alt="The hero collection screen, showing hero cards in a grid"><figcaption>Collect hero cards</figcaption></figure>
     <figure class="phone rv"><img src="/assets/v2/site/shot-raid.webp" width="540" height="1169" loading="lazy" decoding="async" alt="A raid in progress: three heroes against the Tiber Thing, choosing how to cross a broken pier"><figcaption>Fight bosses in raids</figcaption></figure>
@@ -105,7 +105,7 @@
 </div></section>
 
 <section id="arrivals" class="band"><div class="wrap">
-  <div class="sec-head rv"><p class="kicker">The heroes</p><h2>Meet a few of them. New heroes are added regularly.</h2><p class="lede">Tap a card to turn it over.</p></div>
+  <div class="sec-head rv"><p class="kicker">The heroes</p><h2>Meet a few of them. New heroes are added regularly.</h2><p class="lede">Tap a card to turn it over and see what they are wearing.</p></div>
   <div class="cards rv" id="cards"></div>
   <p class="rv" style="text-align:center;margin-top:1.4rem"><a class="btn ghost" href="/heroes">See all heroes</a></p>
 </div></section>
@@ -152,11 +152,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js" defer></script>
 <script src="/js/os.js"></script>
 <script src="/js/vendor/dragonBones.core.min.js"></script>
-<script src="/js/dbcanvas.js?v=1127p"></script>
-<script src="/js/land.js?v=1127p"></script>
-<script src="/js/wish.js?v=1127p"></script>
+<script src="/js/dbcanvas.js?v=1127q"></script>
+<script src="/js/land.js?v=1127q"></script>
+<script src="/js/wish.js?v=1127q"></script>
 <script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { }));</script>
-<script src="/js/sound.js?v=1127p"></script>
+<script src="/js/sound.js?v=1127q"></script>
 <script>(function () { var b = document.getElementById('music-btn'), on = false; if (!b || !window.OSSound) return;
   b.onclick = function () { on = !on; OSSound.unlock(); OSSound.config({ music: true }); OSSound.music(on ? 'home' : null); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Stop the music' : 'Play the music'); b.classList.toggle('on', on); }; })();</script>
 </body>

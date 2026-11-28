@@ -51,7 +51,26 @@
 
   // ---------------------------------------------------------------- cards
   const show = ['kevin', 'lola', 'cleocatra', 'florida', 'raspawtin'];
-  show.forEach(id => $('cards').appendChild(OS.card(OS.heroes[id], { live: true })));
+  // dress each sample card differently, with random pieces, so the backs show what gear looks like
+  const GEAR = Object.values(OS.items).filter(i => i.kind === 'gear' && !i.owner), RAR = R.rarities;
+  const pickGear = (slot, minR) => { const pool = GEAR.filter(i => i.slot === slot && RAR.indexOf(i.rarity) >= RAR.indexOf(minR || 'common')); return pool.length ? pool[Math.floor(Math.random() * pool.length)].id : null; };
+  const LOOKS = [                                                   // [general slots, how many of their own pieces, lowest rarity]
+    [['weapon', 'feet'], 0, 'common'],                             // a couple of plain pieces
+    [['head'], 3, 'uncommon'],                                     // their own full kit
+    [['weapon', 'head', 'body', 'feet'], 1, 'uncommon'],
+    [['weapon', 'body', 'charm'], 2, 'rare'],
+    [['weapon', 'head', 'body', 'feet', 'charm'], 3, 'epic']];      // fully dressed
+  LOOKS.sort(() => Math.random() - .5);
+  show.forEach((id, n) => {
+    const h = OS.heroes[id], [slots, nOwn, minR] = LOOKS[n], g = {}, own = [null, null, null];
+    slots.forEach(k => g[k] = pickGear(k, minR));
+    [0, 1, 2].sort(() => Math.random() - .5).slice(0, nOwn).forEach(i => own[i] = h.gear[i]);
+    const st = Object.assign({}, h.stats), add = it => it && Object.entries(OS.items[it].stats || {}).forEach(([k, v]) => { if (k in st) st[k] += v; });
+    Object.values(g).forEach(add); own.forEach(add);
+    const kit = nOwn >= 3 ? R.kit.three : nOwn >= 2 ? R.kit.two : 0;
+    if (kit) Object.keys(st).forEach(k => st[k] = Math.round(st[k] * (1 + kit)));
+    $('cards').appendChild(OS.card(h, { live: true, stats: st, base: h.stats, load: { g, own, charmOpen: slots.includes('charm'), has: () => false } }));
+  });
   setTimeout(() => { const c = $('cards').children[2]; if (c) { c.classList.add('flip'); setTimeout(() => c.classList.remove('flip'), 2600); } }, 1800);
   setTimeout(() => { if (window.Cloud) Cloud.track(); else if (window.supabase) { const s = document.createElement('script'); s.src = '/js/cloud.js'; s.onload = () => Cloud.track(); document.body.appendChild(s); } }, 1500);
 })();

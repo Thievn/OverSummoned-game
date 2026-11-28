@@ -1,11 +1,12 @@
 [
  {
   "v": "0.5.12",
-  "build": "1127p",
+  "build": "1127q",
   "date": "2026-11-27",
   "title": "A clearer front page",
   "added": [
-   "The front page now says plainly what the game is, shows real screenshots, and has the sign-up box at the top."
+   "The front page now says plainly what the game is, shows real screenshots, and has the sign-up box at the top.",
+   "The sample hero cards on the front page now wear gear: some a couple of pieces, some their full kit, picked at random each visit."
   ],
   "fixed": []
  },
