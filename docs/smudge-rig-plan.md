@@ -20,28 +20,80 @@ parts for five things he does. A sixth activity means a sixth drawing and a sixt
 With a rig, a new activity is **new keyframes on parts that already exist**. It costs an evening
 of animating and no credits at all. That is the whole reason for doing this.
 
-## 2. Two rigs, three sizes
+## 2. One rig, a scene per activity, three sizes
 
-Dean wants the desktop pet to offer a size choice. That is two rigs, not three:
+**Dean's idea, 28 Nov, and it replaces the two-rig plan that was here before.** Not a desk for
+everything. Each activity gets its own front-facing scene:
 
-| Size | What you see | Rig |
-|---|---|---|
-| **Small** | Head and paws at the edge of a desk, Bongo Cat style | A |
-| **Medium** | Head, torso, arms, the desk and whatever he is using | A, zoomed out |
-| **Large** | Smudge sitting on the dock, legs over the edge, scene behind him | B |
+- **fishing** — sitting on the edge of a dock, water in front of him
+- **lock-picking** — in front of a safe, head down and barely showing, then popping up with
+  whatever he got
+- **digging** — a hole in front of him
 
-Small and medium are the **same rig at a different zoom and crop** — one set of parts, two camera
-settings, no extra art.
+Size then decides how much of the scene you see, not what he is doing.
 
-The dock is not. He is seated and side-on, so his legs are visible and his body reads completely
-differently. That needs its own parts. It can come second.
+| Size | What you see |
+|---|---|
+| **Small** | Smudge and his prop, no scene at all, transparent behind him |
+| **Medium** | Smudge and the near part of the scene |
+| **Large** | The whole scene behind him |
+
+**Why this is better than two rigs.** The old plan assumed the poses differ, so it needed a
+separate seated rig for the dock. If everything is front-facing, **one rig does all of it.** An
+activity becomes a pose on the same parts plus a scene plus a prop. A new activity costs a
+background and an object, not a new body.
+
+### Cut every scene at his waist
+
+Front-facing seated is the one awkward case: legs pointing at the camera foreshorten badly and
+always look wrong. Dean's own examples already solve it. The dock board, the mound of dirt, the
+front of the safe — in each one something stands in front of his lower half.
+
+So make it a rule. **Every scene has a foreground element at waist height and he is never drawn
+below it.** No legs, in any activity, ever.
+
+That is why Bongo Cat is cheap to make, and it means six fewer parts, no foreshortening problem,
+and a new activity needing a new foreground object rather than a new body.
+
+### The pop-up
+
+The best part of the idea, and it generalises. Every activity gets the same rhythm: head down
+working, then up with the thing he found. Lock-picking is the obvious one, but fishing and
+digging want it too — he goes under and comes up with a fish.
+
+It works everywhere precisely because there is always a waist-height line to pop up over. It is
+animation, not art: the loot props are already on the list below.
+
+A pet that does this is worth glancing at. One that just moves is not.
+
+### Scenes in three layers
+
+Not one picture. Far (water, wall, sky), mid (behind him), near (the dock board, the dirt, the
+safe front). Size is then just how many layers are drawn: small none, medium near, large all
+three. Costs nothing extra, gives real depth, and parallax comes free later if it is wanted.
+
+### Open: which look
+
+Nine scenes already exist in `art2/scenes/` — dock, vault, outback, archive, speakeasy, fjord,
+bondi, blackforest, closet — and they are good. But they are **three-quarter dioramas**, little
+stages seen from slightly above, built to match the website. Front-facing is a different
+composition.
+
+- **A.** Redo them front-on for the pet. Matches the idea exactly. Scenes need no rigging so they
+  are cheap, but it is nine new pieces and the pet stops matching the site.
+- **B.** Keep the diorama angle and put Smudge in it at three-quarters. Nothing new to draw, pet
+  matches the site, but he is no longer front-facing and the compact size stops working.
+- **C.** Front-on for the pet, dioramas stay on the site. Two looks, each right for where it
+  lives.
+
+Claude leans C. Dean is thinking about it; not decided.
 
 ## 3. Parts to generate
 
 Each part is its own image on a blank background. Nothing is generated already attached to
 anything else.
 
-### Rig A — desk, front on
+One rig, front-facing, cut off at the waist.
 
 | Part | Notes |
 |---|---|
@@ -55,21 +107,10 @@ anything else.
 | paw L / R | the grip, drawn empty |
 | tail × 3 | three segments, weighted mesh, so it sways |
 
-About 18 pieces. The face parts come from the expression sheet, which is better art than the
-turnaround and already exists.
+About 18 pieces, and **no legs** — the scene's foreground covers everything below the waist.
 
-### Rig B — dock, seated
-
-Everything above, plus legs, and the head and face redrawn at the three-quarter angle:
-
-| Part | Notes |
-|---|---|
-| thigh near / far | |
-| shin near / far | |
-| foot near / far | |
-| head, face set | at the seated angle; the front-on set will not reuse |
-
-About 14 more.
+The face parts come from the expression sheet, which is better art than the turnaround and
+already exists.
 
 ## 4. Props
 
@@ -124,11 +165,14 @@ always the thing that is safe to cut.
 
 ## 7. Order
 
-1. **Rig A parts** — 18 pieces. The compact pet is the smallest useful thing that can ship.
+1. **The rig's parts** — 18 pieces. The compact pet is the smallest useful thing that can ship,
+   and it needs no scene art at all.
 2. **Props for what he already does** — stamp, rod, shovel, lockpick, chest. 6 pieces.
-3. **Rig A in DragonBones**, and the animations. No credits, just time.
+3. **The rig in DragonBones**, and the animations, including the pop-up on every activity. No
+   credits, just time.
 4. **The hood**, so the wardrobe works at all.
-5. **Rig B** — the dock, 14 more pieces and a second rig.
+5. **Scenes**, once the look is settled — three layers each, starting with the three Dean named:
+   the dock, the safe and the dig.
 6. Everything else as it is wanted.
 
 Rough total for steps 1, 2 and 4: about 25 pieces. At a few attempts each that is a few hundred
@@ -137,7 +181,7 @@ running on a desktop to look at.
 
 ## 8. Open
 
-- Does the medium size show the desk, or Smudge against the room?
-- Does the dock rig need its own face set, or can the front-on faces be reused at an angle? Worth
-  testing with two generations before committing to a second full set.
+- Which scene look: front-on for the pet, dioramas, or both. See section 2.
 - Where the rarity glow sits relative to the chest: behind it, in front of the lid, or both.
+- Whether the smallest size is a shaped transparent window, as Bongo Cat does it, or a small
+  panel. Dean said no scene behind him, which points at transparent.
