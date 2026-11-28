@@ -213,6 +213,36 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
 - No hooks. Dean said the hooked ones look like dental tools.
 - He holds the rake in one paw and the wrench in the other, both pointing down behind the chest.
 
+### BUILT (Opus, 27 Nov, late). P2, P4, P6, P5 are done; the project is `desktop-pet2/`.
+- **Art.** `rules/pet2_cut.py` cuts the core (head + body + cloak), the desk, the two paws and the
+  hood out of two Grok drawings (`base_hooddown_2`, `base_hoodup_1`), all on one 1024 page, with the
+  holes left behind filled in, plus fur and cloak masks for recolouring. `rules/pet2_props.py` cuts
+  the props and cosmetics and hollows out ring-shaped hats. `rig.json` holds every position.
+- **Nothing is baked together.** Layers: core · cloak colour · neck item · face · face item · hood
+  or hat · desk · desk prop · the two paws with their tools · props in front · effects. A new
+  cosmetic is one picture plus one line in `items.json`.
+- **His face is drawn in code, not art.** The drawn eye is painted over in his own fur colour and a
+  new one drawn on top, so blink, happy, sleepy, surprised, angry and focused (tongue out) all come
+  free, and they work on every fur colour.
+- **Four activities, each moving properly:** the stamp slams the ledger with ink flying; the rod
+  flicks and the line and float swing on a spring into the bucket; the shovel plunges and throws
+  dirt; both picks wiggle at a chest and the lid pops. Tools are held at a named grip point, so
+  swapping a tool is one line.
+- **Key counter** under the desk, Bongo Cat style, never resets. **Stats tab** has all time, today,
+  session, keys a second now and best, best day, days in a row, chests, and minutes per job.
+- **Chests**: the bar fills from keys, a chest lands, clicking it opens it with rays and sparkles in
+  the colour of the best thing inside (`rarity_color`, same as the card frames). Loot comes from the
+  server's own roll for the place he is working.
+- **Numbers**: `desktop-pet2/pet.json`, checked by `rules/sim_pet.py`. A chest every 1,400 keys,
+  3 finds a chest. A normal 9,000-key day = 6 chests, 19 finds, 546 gold, 9,000 ink. That is 5% of
+  two idle hours in finds and about two thirds of a summon in ink. All four checks pass.
+- **Not done**: Evil and Ghost skins need their drawings (the slot and the wardrobe entry are
+  already there, `core_evil.png` / `core_ghost.png` is all that is missing); no sound; keys are only
+  counted while the pet's own window has focus (a Windows add-on job, already in PLAN.md).
+- **Untested in Godot**: there is no Godot in the workspace, so every script was checked by hand and
+  the art was checked with `rules/pet2_preview.py`, which draws him exactly the way Godot will.
+  Expect a round of fixes from Dean's first run.
+
 ### What Opus builds next, in one line
 `desktop-pet2/` Godot project per everything above: P2 parts (each generated alone and checked by
 eye), P4 the pet with typing movements for all four activities, P6 menu + wardrobe + stats, then P5
