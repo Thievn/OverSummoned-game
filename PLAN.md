@@ -474,3 +474,32 @@ Music, readability, the lesson, the Gwent and Destiny mechanics, nine painted ar
 
 ### 27 Nov: WORDING RULE for every writer, Fable included (Dean)
 Anything that tells the player what to do, or what a thing does, is plain everyday English: tutorials, how-to-play, card effects, buttons, errors, tooltips. Short sentences, common words, numbers as digits. No clever phrasing, no dropped words ("what you do not spend keeps" was the offender), no old-fashioned words like "dear" for expensive. Smudge's personality goes only in commentary and flavour (round results, win and lose lines, names), never in instructions. If a line could be either, treat it as an instruction.
+
+## Hero cards with Smudge-level animation (planned 27 Nov, needs the Scenario model first)
+
+Where it stands: every hero is already a DragonBones rig with idle, act, cheer, blink and talk, but a
+hero's skeleton is only `root, body, head, <prop>, mouth` while Smudge's is `root, body, head, arm,
+hand, tail1-3, lid0, lid1, mouth`. That gap is the whole difference. Heroes cannot raise an arm,
+their eyes do not have real lids, and their mouths are coarse.
+
+What each hero needs, and all of it is art, not code:
+1. **Arm cut away from the body**, with what it was covering painted back in. This is the big one and
+   the reason it was never done by hand: you cannot cut an arm off a flat drawing without leaving a
+   hole in the chest behind it.
+2. **Eyelids** drawn to sit over each eye in the hero's own fur colour.
+3. **Mouth parts**: closed, open, and one in between.
+4. **Tail** separated on the nine that have one (seven are already done).
+
+How to make it, once the Scenario models exist:
+- The **style model** keeps every fill and every new piece in the house look.
+- The **edit model** is the one that does the work: Scenario can train an instruction-following editor
+  from before/after pairs. Make ten pairs by hand ("arm removed, chest painted in") and the editor
+  then does the other forty heroes on the same instruction. This is what turns a fifty-hero job from
+  weeks into an afternoon.
+- No per-hero training. Each hero is reference-guided editing against the portrait that already
+  exists, roughly 4 to 8 images a hero.
+
+Order: Smudge first, all the way through to a rigged pet, so the pipeline is proven on one character.
+Then heroes in batches of five, newest first, checking each batch in motion before the next.
+
+Cost check before starting: run every job with `?dryRun=true` and total it, so Dean sees the bill first.
