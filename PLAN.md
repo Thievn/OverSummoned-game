@@ -100,8 +100,23 @@ Status: [x] done, [~] partly done, [ ] not started.
 - [x] Soft chest bone with bounce-and-settle on Cleocatra, Astrid, Bella, Lola and Frau Troffea (`CHEST` in `rules/dbexport.py`)
 - [x] Player download halved: comments stripped from the core (680 KB to 328 KB before compression)
 - [ ] Proper minify of the player and loading it after first paint (needs a build tool; none in the workspace)
-- [ ] Godot desktop pet: play the same files (add-on if one works on 4.3, otherwise a small player on Godot's built-in Skeleton2D)
+- [ ] Godot desktop pet: play the same files. FOUND 27 Nov: `Godot-DragonBones` by Daylily-Zeleen is a
+      GDExtension add-on for Godot 4.x, MIT, in the asset library (v1.2.2, Apr 2025, v2 said to be coming).
+      Try it first. It is one developer and 78 stars, so if it does not hold up, write a small player on
+      Godot's Skeleton2D: we generate the format ourselves, so the subset we need is small.
 - [ ] The DragonBones editor itself is a Windows/Mac hand tool; files can be opened there for hand polish later
+
+### SETTLED. Do not reopen without Dean. (27 Nov, after Opus wasted an evening reopening it)
+- **DragonBones is the rig for everything: website, heroes, Smudge, and the desktop pet.** It is free and
+  MIT, it already has 50 heroes and all five Smudge poses exported, and `rules/dbexport.py` already writes
+  weighted meshes, eyelid bones, a mouth bone and idle / act / cheer / blink / talk. Spine costs $379 for
+  the mesh tier and buys nothing here except a maintained editor to sit in by hand. Opus compared the two
+  on 27 Nov and DragonBones won on the facts. Do not price Spine again.
+- **No faking art with code.** Opus built `desktop-pet2/` with the mouth and eyes drawn as code circles and
+  arcs over the painting. Dean's words: "absolutely fucking terrible", and he was right. Every part of a
+  character is a real drawing, cut out, swapped or rigged. If a thing cannot be drawn properly, say so and
+  name the tool that would do it, rather than approximating it in code.
+- **Before building any rig, read this section.** The pipeline exists. Extend it; never start a parallel one.
 
 ## Waiting on Dean
 - [ ] Header logo: tried a ring-O wordmark, Dean did not like it; plain two-tone restored. Logo and icon set on hold
