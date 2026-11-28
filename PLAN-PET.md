@@ -157,6 +157,28 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
   browser the same day, then the Godot build (P4) reading the same json. P6 (menu, wardrobe, stats)
   is done in both.
 
+### Decided (Dean, 27 Nov, 8pm). Dean saw the sheets and loved them. These win over anything above.
+- **Lock picking is a small treasure chest on the desk**, not a padlock standing up. He works the
+  picks at its keyhole; now and then the lid pops open. Concept: `art/raw/pet2/front_lockpick_chest`.
+- **Every piece is its own separate part, and everything swaps with everything.** No baked-in
+  combinations. Layers, back to front, all on one shared canvas:
+  backdrop (empty) · body fur · belly fur · cloak · strap and satchel · neck item · head fur ·
+  face markings · eyes · mouth · face item · hood OR hat (hood is just another head item) ·
+  desk · desk prop · paw left · paw right · held item · effect.
+  A skin (Evil, Ghost) is a set of replacement fur, eyes and mouth parts. It must still take any
+  hood, hat, cloak, neck or face item. A cloak colour, a hood, a fur colour and a hat are four
+  separate choices. Adding a cosmetic later = adding one picture and one line in the json.
+  Test for done: Evil fur + pale blue hood + crown + bow tie + fishing all show together, lined up.
+- **Build the Godot pet first** (this replaces "web preview first"). Dean wants to run it on his
+  computer and see Smudge do the movements as he types. Order is now: P2 parts, P4 Godot pet with
+  typing movements for all four activities, P6 menu + wardrobe + stats, P5 chests, then P3 the web
+  preview only if it is still useful, P7 the site.
+- **Getting it to Dean:** Opus cannot run Godot in the cloud workspace. Build it as a new project
+  folder `desktop-pet2/` (leave `desktop-fable/` alone as the backup), check every script with care,
+  and hand Dean the folder to open in Godot on his computer (through his connected folder if the
+  desktop app is linked, otherwise as a zip). Expect a round or two of fixes from what Dean sees;
+  ask him for a screenshot or the error text each time.
+
 ### Still open
 - Paid cosmetics: Steam, the site, or later. Build free first.
 - Chest numbers: Opus proposes them from the sim, Dean approves.
