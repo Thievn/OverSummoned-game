@@ -98,8 +98,8 @@ func _ready() -> void:
 	core.position = _off("core")
 	cloak_layer = _sprite(body, "core", true)
 	cloak_layer.position = _off("core")
-	_set(cloak_layer, "mask", tex("core_cloak_mask"))
-	_set(cloak_layer, "clip_to_mask", 1.0)
+	_shade(cloak_layer, "mask", tex("core_cloak_mask"))
+	_shade(cloak_layer, "clip_to_mask", 1.0)
 	neck_item = _sprite(body, "", false)       # a scarf sits under his chin, so it goes on early
 	faces = Node2D.new()
 	faces.draw.connect(_draw_face)
@@ -134,13 +134,13 @@ func _json(path: String) -> Dictionary:
 	return d if d is Dictionary else {}
 
 
-func tex(name: String) -> Texture2D:
-	if name == "":
+func tex(nm: String) -> Texture2D:
+	if nm == "":
 		return null
-	if not art.has(name):
-		var p := "res://art/%s.png" % name
-		art[name] = load(p) if ResourceLoader.exists(p) else null
-	return art[name]
+	if not art.has(nm):
+		var p := "res://art/%s.png" % nm
+		art[nm] = load(p) if ResourceLoader.exists(p) else null
+	return art[nm]
 
 
 func _off(part: String) -> Vector2:
@@ -149,16 +149,16 @@ func _off(part: String) -> Vector2:
 	return Vector2(float(v[0]), float(v[1]))
 
 
-func _sprite(parent: Node, name: String, tintable: bool) -> Sprite2D:
+func _sprite(parent: Node, nm: String, tintable: bool) -> Sprite2D:
 	var s := Sprite2D.new()
 	s.centered = false
 	s.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	if name != "":
-		s.texture = tex(name)
+	if nm != "":
+		s.texture = tex(nm)
 	if tintable:
 		var m := ShaderMaterial.new()
 		m.shader = load("res://fur.gdshader")
-		var mk2 := tex(name + "_fur_mask")
+		var mk2 := tex(nm + "_fur_mask")
 		if mk2:
 			m.set_shader_parameter("mask", mk2)
 		s.material = m
@@ -177,7 +177,7 @@ func dress(changed := {}) -> void:
 		base = "core"
 	core.texture = tex(base)
 	var mk := tex(base + "_fur_mask")
-	_set(core, "mask", mk if mk else tex("core_fur_mask"))
+	_shade(core, "mask", mk if mk else tex("core_fur_mask"))
 	_fur(core, look.get("fur", "brown"))
 	for s in ["l", "r"]:
 		_fur(paw[s], look.get("fur", "brown"))
@@ -223,50 +223,50 @@ func _place(s: Sprite2D, id: String) -> void:
 						 float(at[1]) - s.texture.get_height() * k * float(it.get("anchor_y", 0.0)))
 
 
-func _set(s: Sprite2D, key: String, value) -> void:
+func _shade(s: Sprite2D, key: String, value) -> void:
 	var m := s.material as ShaderMaterial
 	if m:
 		m.set_shader_parameter(key, value)
 
 
-func _fur(s: Sprite2D, name: String) -> void:
+func _fur(s: Sprite2D, nm: String) -> void:
 	if s.material == null:
 		return
-	var c: Array = FUR.get(name, FUR["brown"])
-	_set(s, "dark_col", c[0])
-	_set(s, "light_col", c[1])
-	_set(s, "amount", c[2])
+	var c: Array = FUR.get(nm, FUR["brown"])
+	_shade(s, "dark_col", c[0])
+	_shade(s, "light_col", c[1])
+	_shade(s, "amount", c[2])
 
 
-func _cloak_core(name: String) -> void:
+func _cloak_core(nm: String) -> void:
 	# the body picture has his cloak in it too; a second sprite over the top carries the new colour
 	if cloak_layer == null:
 		return
-	var c: Array = CLOAK.get(name, CLOAK["teal"])
-	_set(cloak_layer, "dark_col", c[0])
-	_set(cloak_layer, "light_col", c[1])
-	_set(cloak_layer, "amount", c[2])
+	var c: Array = CLOAK.get(nm, CLOAK["teal"])
+	_shade(cloak_layer, "dark_col", c[0])
+	_shade(cloak_layer, "light_col", c[1])
+	_shade(cloak_layer, "amount", c[2])
 
 
-func _cloak(s: Sprite2D, name: String) -> void:
-	var c: Array = CLOAK.get(name, CLOAK["teal"])
+func _cloak(s: Sprite2D, nm: String) -> void:
+	var c: Array = CLOAK.get(nm, CLOAK["teal"])
 	if s.material == null:
 		var m := ShaderMaterial.new()
 		m.shader = load("res://fur.gdshader")
 		s.material = m
 	var mk := tex("hood_fur_mask")
 	if mk:
-		_set(s, "mask", mk)
-	_set(s, "dark_col", c[0])
-	_set(s, "light_col", c[1])
-	_set(s, "amount", c[2])
+		_shade(s, "mask", mk)
+	_shade(s, "dark_col", c[0])
+	_shade(s, "light_col", c[1])
+	_shade(s, "amount", c[2])
 
 
 # ---------------------------------------------------------------- what he is doing
 
-func set_activity(name: String) -> void:
-	activity = name
-	var a: Dictionary = items.get("activities", {}).get(name, {})
+func set_activity(nm: String) -> void:
+	activity = nm
+	var a: Dictionary = items.get("activities", {}).get(nm, {})
 	desk_prop.texture = tex(str(a.get("desk", "")))
 	_prop(desk_prop, a.get("desk_at", [512, 806]), float(a.get("desk_w", 300)), 1.0)
 	front_prop.texture = tex(str(a.get("front", "")))
