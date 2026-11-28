@@ -179,6 +179,20 @@ Rig = layered sprites with offsets in one json file. No bones needed: paws swap 
   desktop app is linked, otherwise as a zip). Expect a round or two of fixes from what Dean sees;
   ask him for a screenshot or the error text each time.
 
+### The chest (Dean, 27 Nov, 8:12pm)
+- **The lock-picking chest is turned around:** we see the back of it (hinges), the lock faces Smudge,
+  and he reaches over it to work the picks. Concepts: `art/raw/pet2/chest_back_closed`, `chest_back_open`.
+- **When a chest opens, light pours out of it, in the colour of the best thing inside.** Use
+  `rarity_color` from rules.json (the same colours as the card frames). Decide the rewards first,
+  take the highest rarity, then play the opening in that colour. So a gold glow means something good
+  before the player even looks.
+- Make it look good: the lid swings up, rays fan out and slowly turn, sparkles drift up, Smudge's
+  face is lit from below in the same colour, and he pulls the happy face. Higher rarity = brighter,
+  more rays, lasts a little longer, and a different sound. Common is a small soft glow so the big
+  ones feel special. Draw the glow in white and tint it in code (Godot: additive sprites + a small
+  particle burst), so one set of art covers every rarity.
+- The same opening is used for the chest that drops from the key bar, in every activity.
+
 ### Still open
 - Paid cosmetics: Steam, the site, or later. Build free first.
 - Chest numbers: Opus proposes them from the sim, Dean approves.
