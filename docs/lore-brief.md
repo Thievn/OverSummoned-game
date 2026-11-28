@@ -79,6 +79,45 @@ form, which nobody has seen, including Smudge.
 
 Dean likes it. It is not locked. If something better comes out of the writing, say so.
 
+**Where his name came from.** "Smudge" is not a name. It is what Tobias called the mark on the
+page — the blot where an entry should have been. Three hundred years later he is still the only
+one in the book without a proper entry, and he is named after the fact.
+
+This also settles a question Dean raised: if he ever gets a human card, it is not a human called
+Smudge, because Smudge was never a name. Whoever is under there has a real one and nobody knows
+it, him included.
+
+**Tobias, and the date.** Three hundred years back is about 1726, which is not an age of wizards,
+and that is better than inventing one. 1726 is the tail end of alchemy — Newton had died the year
+before, having spent much of his life on it — and the century of the great cataloguing projects,
+men trying to write down everything that was known.
+
+So Tobias is not a wizard in a tower. He is a scholar who set out to compile a record of
+everything that had ever been written down, and got further than he should have. The book started
+writing back.
+
+That gives a ledger that works as an object, a Tobias who works as a man, and no need for an age
+of magic. It also keeps the three hundred years exactly as stated, which matters because the
+number is in all three voice moods.
+
+Loose thread worth using rather than fixing: the hood is from the 1400s, which is also canon. The
+simplest answer is that the hood is older than he is — it came through the rift, or Tobias had it
+already. A three-hundred-year-old otter in a six-hundred-year-old coat is a better detail than
+either fact on its own.
+
+**The Archive travels, and so does Smudge.** This one is already canon and easy to miss. His
+"move" lines in `data/voice.json` include *"Hold on to your ass, we're jumping centuries"* and
+*"New place, same otter, same damn ledger."* He goes.
+
+The way it holds together: the Archive is not in a place, it is attached to the rift, and the
+rift moves. Where it opens is where you can go. Smudge travels because the Archive travels — he
+packs the snacks and the ledger and the whole room goes with him.
+
+The heroes get *sent* on expeditions because Smudge has to stay and work the book. He is the only
+one who can, so he is the one who never gets to go on the jobs. Worth keeping: it is a small
+tragedy for a character who complains for a living, and it uses both things the game already does
+without changing either.
+
 **Two forms per character.** The animal is how they were *remembered*. The human is how they were
 *recorded*. Neither is wrong and neither is the true one. Do not write the human form as a
 correction of a mistake — the animals are the hook of the game and the lore must not call them
